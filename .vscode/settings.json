@@ -1,0 +1,69 @@
+{
+	// タブキーを押したときのスペースの数を4に設定します。
+	"editor.tabSize": 4,
+
+	// エディターが自動的にファイルのインデントを検出し、それに従ってタブまたはスペースを挿入するように設定します。
+	"editor.detectIndentation": true,
+
+	// タブキーを押したときにスペースを挿入するように設定します。この設定が有効になっている場合、タブ文字が自動的にスペースに変換されます。
+	"editor.insertSpaces": true,
+
+	// .blade.phpという拡張子のファイルをphpファイルとして認識させるように設定します。
+	"files.associations": {
+		"*.blade.php": "php"
+	},
+
+	// ファイルの最後に自動的に改行を挿入するように設定します。
+	"files.insertFinalNewline": true,
+
+	// 行末の空白文字を自動的に削除するように設定します。
+	"files.trimTrailingWhitespace": true,
+
+	// PHPファイルの構文チェックを有効にします。
+	"php.validate.enable": true,
+
+	// PHPの実行ファイルのパスを設定します。この設定は、構文チェックを有効にするために必要です。
+	"php.validate.executablePath": "/usr/local/bin/php",
+
+	// PHPファイルの構文チェックを実行するタイミングを設定します。
+	"php.validate.run": "onType",
+
+	// PHPコードの補完機能を制御するための設定です。
+	"php.suggest.basic": false,
+
+	// Intelephenseが使用するPHPのバージョンを指定します。
+	"intelephense.environment.phpVersion": "8.1",
+
+	// Intelephenseが提供するコード診断機能を設定します。
+	// これらの設定をtrueに設定すると、未定義の型、関数、定数、メソッド、プロパティ、変数に関する警告を表示します。
+	"intelephense.diagnostics.undefinedTypes": true,
+	"intelephense.diagnostics.undefinedFunctions": true,
+	"intelephense.diagnostics.undefinedConstants": true,
+	"intelephense.diagnostics.undefinedMethods": true,
+	"intelephense.diagnostics.undefinedProperties": true,
+	"intelephense.diagnostics.undefinedVariables": true,
+
+	// Intelephenseがスキャンするファイルを除外するための設定です。
+	// ここに記述されたファイルやフォルダは、Intelephenseによる自動補完やシンボル検索の対象外となります。
+	"intelephense.files.exclude": [
+		"**/.git",
+		"**/.svn",
+		"**/.hg",
+		"**/CVS",
+		"**/.DS_Store",
+		"**/*.min.js",
+		"**/*.min.css",
+		"**/node_modules/**",
+		"**/vendor/**",
+		"**/bower_components/**"
+	],
+
+	// ファイルを保存する際に自動的にコードを整形する
+	"editor.formatOnSave": true,
+
+	// コードを入力する際に自動的にフォーマットしない
+	"editor.formatOnType": false,
+
+	// コードを貼り付ける際に自動的にフォーマットする
+	"editor.formatOnPaste": true
+}
