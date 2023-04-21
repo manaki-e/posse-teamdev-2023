@@ -36,12 +36,13 @@
 
 	// Intelephenseが提供するコード診断機能を設定します。
 	// これらの設定をtrueに設定すると、未定義の型、関数、定数、メソッド、プロパティ、変数に関する警告を表示します。
-	"intelephense.diagnostics.undefinedTypes": true,
-	"intelephense.diagnostics.undefinedFunctions": true,
-	"intelephense.diagnostics.undefinedConstants": true,
-	"intelephense.diagnostics.undefinedMethods": true,
-	"intelephense.diagnostics.undefinedProperties": true,
-	"intelephense.diagnostics.undefinedVariables": true,
+	"intelephense.diagnostics.undefinedClassConstants": false,
+	"intelephense.diagnostics.undefinedConstants": false,
+	"intelephense.diagnostics.undefinedFunctions": false,
+	"intelephense.diagnostics.undefinedMethods": false,
+	"intelephense.diagnostics.undefinedProperties": false,
+	"intelephense.diagnostics.undefinedTypes": false,
+	"intelephense.diagnostics.undefinedVariables": false,
 
 	// Intelephenseがスキャンするファイルを除外するための設定です。
 	// ここに記述されたファイルやフォルダは、Intelephenseによる自動補完やシンボル検索の対象外となります。
