@@ -20,19 +20,31 @@ class UserSeeder extends Seeder
     {
         $faker = Faker::create();
         DB::table('users')->insert([
-            'name' => '管理者',
-            'email' => env('ADMIN_EMAIL_ADDRESS'),
-            'password' => Hash::make(env('ADMIN_PASSWORD')),
-            'created_at' => now(),
-            'updated_at' => now(),
-            'slack' => env('ADMIN_SLACK_ID'),
-            'admin_bool' => 1,
-            'department_id' => 1,
+            [
+                'name' => '管理者1',
+                'email' => 'manaki.endou@anti-pattern.co.jp',
+                'password' => Hash::make('password'),
+                'created_at' => now(),
+                'updated_at' => now(),
+                'slack' => $this->slackUserId(),
+                'admin_bool' => 1,
+                'department_id' => 1,
+            ],
+            [
+                'name' => '管理者2',
+                'email' => 'manaki_nhk@keio.jp',
+                'password' => Hash::make('password'),
+                'created_at' => now(),
+                'updated_at' => now(),
+                'slack' => $this->slackUserId(),
+                'admin_bool' => 1,
+                'department_id' => 1,
+            ]
         ]);
         for ($i = 0; $i < 50; $i++) {
             DB::table('users')->insert([
                 'name' => $faker->name,
-                'email' => $faker->freeEmail . env('ALLOWED_EMAIL_DOMAIN'),
+                'email' => $faker->freeEmail . '@anti-pattern.co.jp',
                 'password' => Hash::make('password'),
                 'created_at' => now(),
                 'updated_at' => now(),
