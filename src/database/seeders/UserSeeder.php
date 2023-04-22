@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class UserSeeder extends Seeder
 {
+    public $usedNames = [];
     /**
      * Run the database seeds.
      *
@@ -41,17 +42,19 @@ class UserSeeder extends Seeder
                 'department_id' => 1,
             ]
         ]);
-        for ($i = 0; $i < 50; $i++) {
-            DB::table('users')->insert([
-                'name' => $faker->name,
-                'email' => $faker->freeEmail . '@anti-pattern.co.jp',
+        for($i=0;$i<50;$i++){
+            $unique_user_name=$this->unique_name($faker);
+            $users_array[]=[
+                'name' => $unique_user_name,
+                'email' => $unique_user_name . '@anti-pattern.co.jp',
                 'password' => Hash::make('password'),
                 'created_at' => now(),
                 'updated_at' => now(),
                 'slack' => 'U' . $this->slackUserId(),
                 'department_id' => $faker->randomElement(Department::getDepartmentIds()),
-            ]);
+            ];
         }
+        DB::table('users')->insert($users_array);
     }
     public function slackUserId()
     {
@@ -63,5 +66,12 @@ class UserSeeder extends Seeder
             $randomString .= $characters[rand(0, strlen($characters) - 1)];
         }
         return $prefix . $randomString;
+    }
+    public function unique_name($faker){
+        do{
+            $name = $faker->name;
+        }while(in_array($name,$this->usedNames));
+        $this->usedNames[] = $name;
+        return $name;
     }
 }
