@@ -42,9 +42,9 @@ class UserSeeder extends Seeder
                 'department_id' => 1,
             ]
         ]);
-        for($i=0;$i<50;$i++){
-            $unique_user_name=$this->unique_name($faker);
-            $users_array[]=[
+        for ($i = 0; $i < 50; $i++) {
+            $unique_user_name = $this->unique_name($faker);
+            $users_array[] = [
                 'name' => $unique_user_name,
                 'email' => $unique_user_name . '@anti-pattern.co.jp',
                 'password' => Hash::make('password'),
@@ -67,10 +67,11 @@ class UserSeeder extends Seeder
         }
         return $prefix . $randomString;
     }
-    public function unique_name($faker){
-        do{
+    public function unique_name($faker)
+    {
+        do {
             $name = $faker->name;
-        }while(in_array($name,$this->usedNames));
+        } while (in_array($name, $this->usedNames));
         $this->usedNames[] = $name;
         return $name;
     }
