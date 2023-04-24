@@ -42,11 +42,11 @@ class UserSeeder extends Seeder
                 'department_id' => 1,
             ]
         ]);
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 1; $i <= 50; $i++) {
             $unique_user_name = $this->unique_name($faker);
             $users_array[] = [
                 'name' => $unique_user_name,
-                'email' => $unique_user_name . '@anti-pattern.co.jp',
+                'email' => 'user' . $i . '@anti-pattern.co.jp',
                 'password' => Hash::make('password'),
                 'created_at' => now(),
                 'updated_at' => now(),
