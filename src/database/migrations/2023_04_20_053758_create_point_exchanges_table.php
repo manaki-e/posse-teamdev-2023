@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer('point');
             $table->foreignId('user_id')->constrained('users');
+            $table->integer('status');
             $table->timestamps();
             $table->softDeletes();
         });

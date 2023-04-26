@@ -8,6 +8,7 @@ use Faker\Factory as Faker;
 use App\Models\Product;
 use App\Models\ProductDeal;
 use App\Models\User;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class ProductDealSeeder extends Seeder
@@ -19,17 +20,20 @@ class ProductDealSeeder extends Seeder
      */
     public function run()
     {
+        $faker=Faker::create();
         $product_ids = Product::getProductIds();
         $user_ids = User::getUserIds();
         //返却済み
         foreach($product_ids as $product_id){
             $product_deals_array[] = [
                 'product_id' => $product_id,
-                'user_id' => $user_ids[array_rand($user_ids)],
-                'status' => 0,
-                'created_at'=>now(),
+                'borrower_user_id' => $faker->randomElement($user_ids),
+                //ポイントの変動考えるのめんどくさいから先月返したことにする
+                'created_at'=>Carbon::now()->subMonths(2),
+                'returned_at'=>Carbon::now()->subMonth()
             ];
         }
         //利用中
+        
     }
 }
