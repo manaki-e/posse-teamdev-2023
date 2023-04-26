@@ -18,9 +18,9 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->string('title');
             $table->string('description');
-            $table->timestamp('date');
+            $table->timestamp('date')->default(null)->nullable();
             $table->string('location');
-            $table->foreignId('slack_channel_id')->constrained('slack_channels');
+            $table->string('slack_channel');
             $table->timestamp('completed_at');
             $table->timestamps();
         });

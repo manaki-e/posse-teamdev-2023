@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('slack_channels', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('credential');
+            $table->string('credential')->unique();
             $table->timestamps();
             $table->softDeletes();
         });

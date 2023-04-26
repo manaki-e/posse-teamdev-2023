@@ -28,7 +28,7 @@ class ProductSeeder extends Seeder
             $products_array[] = [
                 'title' => 'アイテム'.$i,
                 'point' => null,
-                'description' => 'これはアイテム'.$i.'の備考です。',
+                'description' => "これはアイテム".$i."の備考です。\nこれはアイテム".$i."の備考です。",
                 'status'=>$status['pending'],
                 'request_id'=>$faker->randomElement($request_ids),
                 'user_id'=>$faker->randomElement($user_ids),
@@ -40,8 +40,8 @@ class ProductSeeder extends Seeder
             $products_array[] = [
                 'title' => 'アイテム'.$i,
                 'point' => $faker->randomElement([100, 200, 300, 400, 500]),
-                'description' => 'これはアイテム'.$i.'の備考です。',
-                'product_status_id'=>$status['available'],
+                'description' => "これはアイテム" . $i . "の備考です。\nこれはアイテム" . $i . "の備考です。",
+                'status'=>$status['available'],
                 'request_id'=>$faker->randomElement($request_ids),
                 'user_id'=>$faker->randomElement($user_ids),
                 'created_at' => now()
@@ -52,8 +52,8 @@ class ProductSeeder extends Seeder
             $products_array[] = [
                 'title' => 'アイテム'.$i,
                 'point' => $faker->randomElement([100, 200, 300, 400, 500]),
-                'description' => 'これはアイテム'.$i.'の備考です。',
-                'product_status_id'=>$status['occupied'],
+                'description' => "これはアイテム" . $i . "の備考です。\nこれはアイテム" . $i . "の備考です。",
+                'status'=>$status['occupied'],
                 'request_id'=>$faker->randomElement($request_ids),
                 'user_id'=>$faker->randomElement($user_ids),
                 'created_at' => now()
