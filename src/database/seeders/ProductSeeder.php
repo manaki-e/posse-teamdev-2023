@@ -20,14 +20,44 @@ class ProductSeeder extends Seeder
     public function run()
     {
         $faker = Faker::create();
-        for ($i = 1; $i <= 30; $i++) {
+        $pending_product_status_id = ProductStatus::PENDING_PRODUCT_STATUS_ID;
+        $available_product_status_id = ProductStatus::AVAILABLE_PRODUCT_STATUS_ID;
+        $occupied_product_status_id = ProductStatus::OCCUPIED_PRODUCT_STATUS_ID;
+        $request_ids=Request::getRequestIds();
+        $user_ids=User::getUserIds();
+        //申請中アイテム
+        for ($i = 1; $i <= 10; $i++) {
             $products_array[] = [
                 'title' => 'アイテム'.$i,
-                'point' => $faker->randomElement([null,$faker->randomElement([100, 200, 300, 400, 500])]),
+                'point' => null,
                 'description' => 'これはアイテム'.$i.'の備考です。',
-                'product_status_id'=>$faker->randomElement(ProductStatus::getProductStatusIds()),
-                'request_id'=>$faker->randomElement(Request::getRequestIds()),
-                'user_id'=>$faker->randomElement(User::getUserIds()),
+                'product_status_id'=>$pending_product_status_id,
+                'request_id'=>$faker->randomElement($request_ids),
+                'user_id'=>$faker->randomElement($user_ids),
+                'created_at' => now()
+            ];
+        }
+        //利用中、利用可能アイテム
+        for($i=11;$i<=20;$i++){
+            $products_array[] = [
+                'title' => 'アイテム'.$i,
+                'point' => $faker->randomElement([100, 200, 300, 400, 500]),
+                'description' => 'これはアイテム'.$i.'の備考です。',
+                'product_status_id'=>$available_product_status_id,
+                'request_id'=>$faker->randomElement($request_ids),
+                'user_id'=>$faker->randomElement($user_ids),
+                'created_at' => now()
+            ];
+        }
+        //利用中アイテム
+        for($i=21;$i<=30;$i++){
+            $products_array[] = [
+                'title' => 'アイテム'.$i,
+                'point' => $faker->randomElement([100, 200, 300, 400, 500]),
+                'description' => 'これはアイテム'.$i.'の備考です。',
+                'product_status_id'=>$occupied_product_status_id,
+                'request_id'=>$faker->randomElement($request_ids),
+                'user_id'=>$faker->randomElement($user_ids),
                 'created_at' => now()
             ];
         }

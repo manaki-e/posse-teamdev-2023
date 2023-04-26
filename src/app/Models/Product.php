@@ -5,8 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PointExchange extends Model
+class Product extends Model
 {
     use HasFactory;
-    const MULTIPLE_OF = 500;
+    public static function getProductIds(){
+        return self::pluck('id')->toArray();
+    }
 }

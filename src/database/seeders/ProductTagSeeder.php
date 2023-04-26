@@ -2,6 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Product;
+use App\Models\Tag;
+use DB;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
@@ -16,15 +19,19 @@ class ProductTagSeeder extends Seeder
     public function run()
     {
         $faker=Faker::create();
-        for ($i = 1; $i <= 10; $i++) {
-            $requests_array[] = [
-                'title' => 'リクエスト' . $i,
-                'description' => 'これはリクエスト' . $i . 'の備考です。',
-                'user_id' => $faker->randomElement(User::getUserIds()),
-                'request_type_id' => $faker->randomElement(RequestType::getRequestTypeIds()),
-                'created_at' => now()
-            ];
+        $tag_instance=new Tag();
+        $product_tags=$tag_instance->getTagIdsByRequestTypeId(Tag::PRODUCT_REQUEST_TYPE_ID);
+        $product_ids=Product::getProductIds();
+        foreach($product_ids as $product_id){
+            $tag_count=$faker->numberBetween(0, 2);
+            $random_product_tags=$faker->randomElements($product_tags, $tag_count);
+            foreach($random_product_tags as $random_product_tag){
+                $product_tags_array[] = [
+                    'product_id' => $product_id,
+                    'tag_id' => $random_product_tag,
+                ];
+            }
         }
-        DB::table('product_statuses')->insert($product_tags_array);
+        DB::table('product_tag')->insert($product_tags_array);
     }
 }

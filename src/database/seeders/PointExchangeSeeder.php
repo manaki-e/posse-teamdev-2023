@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\PointExchange;
 use App\Models\User;
+use DB;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
@@ -17,16 +18,12 @@ class PointExchangeSeeder extends Seeder
      */
     public function run()
     {
-        $instance = new PointExchange();
         $faker = Faker::create();
+        $user_ids=User::getUserIds();
         for ($i = 0; $i < 10; $i++) {
             $random_number = PointExchange::MULTIPLE_OF * $faker->numberBetween(1, 10);
-            $instance->createPointExchange($random_number, $this->getRandomUserId());
+            $point_exchanges_array[] = ['point' => $random_number, 'user_id' => $faker->randomElement($user_ids)];
         }
-    }
-    public function getRandomUserId()
-    {
-        $users = User::all();
-        return $users->random()->id;
+        DB::table('point_exchanges')->insert($point_exchanges_array);
     }
 }

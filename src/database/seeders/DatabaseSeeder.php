@@ -22,8 +22,8 @@ class DatabaseSeeder extends Seeder
             TagSeeder::class,
             RequestSeeder::class,
             RequestTagSeeder::class,
-            ProductSeeder::class,
             ProductStatusSeeder::class,
+            ProductSeeder::class,
             ProductTagSeeder::class,
             // ProductImageSeeder::class,
             // ProductLikeSeeder::class,/
