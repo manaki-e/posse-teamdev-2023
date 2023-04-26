@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $faker = Faker::create();
+        $faker = Faker::create('ja_JP');
         DB::table('users')->insert([
             [
                 'name' => '管理者1',

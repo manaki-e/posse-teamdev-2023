@@ -14,6 +14,7 @@ class ProductImageSeeder extends Seeder
      */
     public function run()
     {
-        //
+        $faker = Faker::create();
+        DB::table('product_images')->insert($product_images_array);
     }
 }
