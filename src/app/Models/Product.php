@@ -8,6 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     use HasFactory;
+    const STATUS=[
+        'pending'=>1,
+        'available'=>2,
+        'occupied'=>3
+    ];
     public static function getProductIds(){
         return self::pluck('id')->toArray();
     }

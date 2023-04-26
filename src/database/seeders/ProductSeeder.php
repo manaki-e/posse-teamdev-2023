@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\ProductStatus;
+use App\Models\Product;
 use App\Models\Request;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -20,9 +20,7 @@ class ProductSeeder extends Seeder
     public function run()
     {
         $faker = Faker::create();
-        $pending_product_status_id = ProductStatus::PENDING_PRODUCT_STATUS_ID;
-        $available_product_status_id = ProductStatus::AVAILABLE_PRODUCT_STATUS_ID;
-        $occupied_product_status_id = ProductStatus::OCCUPIED_PRODUCT_STATUS_ID;
+        $status=Product::STATUS;
         $request_ids=Request::getRequestIds();
         $user_ids=User::getUserIds();
         //申請中アイテム
@@ -31,7 +29,7 @@ class ProductSeeder extends Seeder
                 'title' => 'アイテム'.$i,
                 'point' => null,
                 'description' => 'これはアイテム'.$i.'の備考です。',
-                'product_status_id'=>$pending_product_status_id,
+                'status'=>$status['pending'],
                 'request_id'=>$faker->randomElement($request_ids),
                 'user_id'=>$faker->randomElement($user_ids),
                 'created_at' => now()
@@ -43,7 +41,7 @@ class ProductSeeder extends Seeder
                 'title' => 'アイテム'.$i,
                 'point' => $faker->randomElement([100, 200, 300, 400, 500]),
                 'description' => 'これはアイテム'.$i.'の備考です。',
-                'product_status_id'=>$available_product_status_id,
+                'product_status_id'=>$status['available'],
                 'request_id'=>$faker->randomElement($request_ids),
                 'user_id'=>$faker->randomElement($user_ids),
                 'created_at' => now()
@@ -55,7 +53,7 @@ class ProductSeeder extends Seeder
                 'title' => 'アイテム'.$i,
                 'point' => $faker->randomElement([100, 200, 300, 400, 500]),
                 'description' => 'これはアイテム'.$i.'の備考です。',
-                'product_status_id'=>$occupied_product_status_id,
+                'product_status_id'=>$status['occupied'],
                 'request_id'=>$faker->randomElement($request_ids),
                 'user_id'=>$faker->randomElement($user_ids),
                 'created_at' => now()

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('title');
             $table->integer('point')->default(null)->nullable();
             $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('product_status_id')->constrained('product_statuses');
+            $table->integer('status');
             $table->string('description');
             $table->foreignId('request_id')->constrained('requests');
             $table->timestamps();
