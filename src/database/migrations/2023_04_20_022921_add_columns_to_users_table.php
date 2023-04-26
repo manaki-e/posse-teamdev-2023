@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->integer('earned_point')->default(0);
-            $table->integer('remaining_point')->default(5000);
-            $table->boolean('admin_bool')->default(0);
+            $table->integer('distribution_point')->default(5000);
+            $table->boolean('is_admin')->default(0);
             $table->string('slack');
             $table->foreignId('department_id')->constrained('departments');
             $table->softDeletes();

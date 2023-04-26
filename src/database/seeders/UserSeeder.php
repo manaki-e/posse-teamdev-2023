@@ -28,7 +28,7 @@ class UserSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
                 'slack' => $this->slackUserId(),
-                'admin_bool' => 1,
+                'is_admin' => 1,
                 'department_id' => 1,
             ],
             [
@@ -38,7 +38,7 @@ class UserSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
                 'slack' => $this->slackUserId(),
-                'admin_bool' => 1,
+                'is_admin' => 1,
                 'department_id' => 1,
             ]
         ]);
