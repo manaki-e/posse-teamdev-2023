@@ -20,20 +20,28 @@ class ProductDealSeeder extends Seeder
      */
     public function run()
     {
-        $faker=Faker::create();
-        $product_ids = Product::getApprovedProductIds();
+        $faker = Faker::create();
+        $product_ids = Product::getAvailableProductIds();
         $user_ids = User::getUserIds();
         //返却済み
-        foreach($product_ids as $product_id){
+        //ポイントの変動とステータスの変動考えるのめんどくさいから先月返したことにする
+        foreach ($product_ids as $product_id) {
             $product_deals_array[] = [
                 'product_id' => $product_id,
                 'borrower_user_id' => $faker->randomElement($user_ids),
-                //ポイントの変動考えるのめんどくさいから先月返したことにする
-                'created_at'=>Carbon::now()->subMonths(2),
-                'returned_at'=>Carbon::now()->subMonth()
+                'created_at' => Carbon::now()->subMonths(2),
+                'returned_at' => Carbon::now()->subMonth()
             ];
         }
         //利用中
-
+        foreach ($product_ids as $product_id) {
+            $product_deals_array[] = [
+                'product_id' => $product_id,
+                'borrower_user_id' => $faker->randomElement($user_ids),
+                'created_at' => Carbon::now(),
+                'returned_at' => null
+            ];
+        }
+       DB::table('product_deals')->insert($product_deals_array);
     }
 }

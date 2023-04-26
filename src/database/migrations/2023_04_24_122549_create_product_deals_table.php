@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('product_id')->constrained('products');
             $table->foreignId('borrower_user_id')->constrained('users');
-            $table->timestamp('returned_at');
+            $table->timestamp('returned_at')->default(null)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

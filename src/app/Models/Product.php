@@ -17,9 +17,15 @@ class Product extends Model
         return self::pluck('id')->toArray();
     }
     public static function getPendingProductIds(){
-        return self::where('point',null)->pluck('id')->toArray();
+        return self::where('status',self::STATUS['pending'])->pluck('id')->toArray();
+    }
+    public static function getAvailableProductIds(){
+        return self::where('status',self::STATUS['available'])->pluck('id')->toArray();
+    }
+    public static function getOccupiedProductIds(){
+        return self::where('status',self::STATUS['occupied'])->pluck('id')->toArray();
     }
     public static function getApprovedProductIds(){
-        return self::where('point','!=',null)->pluck('id')->toArray();
+        return self::whereIn('status',[self::STATUS['available'],self::STATUS['occupied']])->pluck('id')->toArray();
     }
 }
