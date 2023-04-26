@@ -22,11 +22,13 @@ class DatabaseSeeder extends Seeder
             TagSeeder::class,
             RequestSeeder::class,
             RequestTagSeeder::class,
+            RequestLikeSeeder::class,
             ProductSeeder::class,
             ProductTagSeeder::class,
             ProductImageSeeder::class,
             ProductLikeSeeder::class,
             ProductDealSeeder::class,
+            // PointLogSeeder::class,=>これは一番最後にやる(dealsとparticipantsの内容反映させるから)
         ]);
     }
 }
