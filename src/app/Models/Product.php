@@ -11,4 +11,10 @@ class Product extends Model
     public static function getProductIds(){
         return self::pluck('id')->toArray();
     }
+    public static function getPendingProductIds(){
+        return self::where('point',null)->pluck('id')->toArray();
+    }
+    public static function getApprovedProductIds(){
+        return self::where('point','!=',null)->pluck('id')->toArray();
+    }
 }

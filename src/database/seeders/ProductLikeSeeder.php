@@ -19,7 +19,7 @@ class ProductLikeSeeder extends Seeder
     public function run()
     {
         $faker = Faker::create();
-        $product_ids = Product::getProductIds();
+        $product_ids = Product::getApprovedProductIds();
         $user_ids = User::getUserIds();
         $user_id_count = count($user_ids);
         foreach ($product_ids as $product_id) {

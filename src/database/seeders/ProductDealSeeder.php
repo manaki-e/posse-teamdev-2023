@@ -21,7 +21,7 @@ class ProductDealSeeder extends Seeder
     public function run()
     {
         $faker=Faker::create();
-        $product_ids = Product::getProductIds();
+        $product_ids = Product::getApprovedProductIds();
         $user_ids = User::getUserIds();
         //返却済み
         foreach($product_ids as $product_id){
@@ -34,6 +34,6 @@ class ProductDealSeeder extends Seeder
             ];
         }
         //利用中
-        
+
     }
 }
