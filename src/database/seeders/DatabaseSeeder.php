@@ -32,8 +32,8 @@ class DatabaseSeeder extends Seeder
             EventParticipantSeeder::class,
             EventLikeSeeder::class,
             EventTagSeeder::class,
-            // SlackChannelSeeder::class,=>まなき返信次第
-            // PointLogSeeder::class,=>これは一番最後にやる(dealsとparticipantsの内容反映させるから)
+            PointLogSeeder::class,
+            // =>これは一番最後にやる(dealsとparticipantsの内容反映させるから)
         ]);
     }
 }

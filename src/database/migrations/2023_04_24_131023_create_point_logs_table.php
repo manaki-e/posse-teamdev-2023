@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('event_id')->constrained('events');
             $table->foreignId('product_id')->constrained('products');
-            $table->foreignId('point_type_id')->constrained('point_types');
+            $table->string('point_type');
             $table->timestamps();
             $table->softDeletes();
         });
