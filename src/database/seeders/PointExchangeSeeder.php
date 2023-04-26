@@ -22,7 +22,7 @@ class PointExchangeSeeder extends Seeder
         $user_ids=User::getUserIds();
         for ($i = 0; $i < 10; $i++) {
             $random_number = PointExchange::MULTIPLE_OF * $faker->numberBetween(1, 10);
-            $point_exchanges_array[] = ['point' => $random_number, 'user_id' => $faker->randomElement($user_ids)];
+            $point_exchanges_array[] = ['point' => $random_number, 'user_id' => $faker->randomElement($user_ids),'created_at'=>now()];
         }
         DB::table('point_exchanges')->insert($point_exchanges_array);
     }
