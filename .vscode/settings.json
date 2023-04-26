@@ -23,7 +23,7 @@
 	"php.validate.enable": true,
 
 	// PHPの実行ファイルのパスを設定します。この設定は、構文チェックを有効にするために必要です。
-	"php.validate.executablePath": "/usr/local/bin/php",
+	"php.validate.executablePath": "/usr/bin/php7.4",
 
 	// PHPファイルの構文チェックを実行するタイミングを設定します。
 	"php.validate.run": "onType",
@@ -66,5 +66,6 @@
 	"editor.formatOnType": false,
 
 	// コードを貼り付ける際に自動的にフォーマットする
-	"editor.formatOnPaste": true
+	"editor.formatOnPaste": true,
+	"php.debug.executablePath": ""
 }

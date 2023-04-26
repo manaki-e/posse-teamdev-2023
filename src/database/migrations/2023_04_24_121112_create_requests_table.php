@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('title');
             $table->foreignId('user_id')->constrained('users');
             $table->string('description');
-            $table->timestamp('completed_at');
+            $table->timestamp('completed_at')->default(null)->nullable();
+            $table->foreignId('request_type_id')->constrained('request_types');
             $table->timestamps();
             $table->softDeletes();
         });

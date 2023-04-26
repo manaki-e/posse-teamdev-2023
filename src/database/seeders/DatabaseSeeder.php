@@ -18,6 +18,16 @@ class DatabaseSeeder extends Seeder
             DepartmentSeeder::class,
             UserSeeder::class,
             PointExchangeSeeder::class,
+            RequestTypeSeeder::class,
+            TagSeeder::class,
+            RequestSeeder::class,
+            RequestTagSeeder::class,
+            ProductSeeder::class,
+            ProductStatusSeeder::class,
+            ProductTagSeeder::class,
+            // ProductImageSeeder::class,
+            // ProductLikeSeeder::class,/
+            // ProductDealSeeder::class,
         ]);
     }
 }

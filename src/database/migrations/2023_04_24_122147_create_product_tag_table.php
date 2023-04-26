@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('product_tag', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained('products');
-            $table->foreignId('tag_id')->constrained('tags');
+            $table->foreignId('tag_id')->constrained('tags')->where('request_type_id','=','1');
             $table->timestamps();
         });
     }

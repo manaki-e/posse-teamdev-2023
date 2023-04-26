@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('tags', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->foreignId('request_type_id')->constrained('request_types');
             $table->timestamps();
             $table->softDeletes();
         });
