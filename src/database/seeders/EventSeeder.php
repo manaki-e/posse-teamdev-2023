@@ -18,18 +18,18 @@ class EventSeeder extends Seeder
      */
     public function run()
     {
-        $faker=Faker::create('ja_JP');
-        for($i=1;$i<=10;$i++){
-            $user_id=$faker->randomElement(User::getUserIds());
-            $date=$faker->dateTimeBetween('today','+1 month');
-            $events_array[]=[
-                'user_id'=>$user_id,
-                'title'=>'イベント'.$i,
-                'description'=>"イベント".$i."の説明\nイベント".$i."の説明",
-                'date'=>$faker->randomElement([null,$date]),
-                'location'=>$faker->randomElement(['オンライン',$faker->address]),
-                'slack_channel'=>$this->channelId(),
-                'completed_at'=>$date
+        $faker = Faker::create('ja_JP');
+        for ($i = 1; $i <= 10; $i++) {
+            $user_id = $faker->randomElement(User::getUserIds());
+            $date = $faker->dateTimeBetween('today', '+1 month');
+            $events_array[] = [
+                'user_id' => $user_id,
+                'title' => 'イベント' . $i,
+                'description' => "イベント" . $i . "の説明\nイベント" . $i . "の説明",
+                'date' => $faker->randomElement([null, $date]),
+                'location' => $faker->randomElement(['オンライン', $faker->address]),
+                'slack_channel' => $this->channelId(),
+                'completed_at' => $date
             ];
         }
         DB::table('events')->insert($events_array);
@@ -38,7 +38,7 @@ class EventSeeder extends Seeder
     {
         do {
             $id = str_pad(rand(1, 99999999), 8, "0", STR_PAD_LEFT);
-            $this->slack_channels[] = 'C'.$id;
+            $this->slack_channels[] = 'C' . $id;
         } while (in_array($id, $this->slack_channels));
         return 'C' . $id;
     }

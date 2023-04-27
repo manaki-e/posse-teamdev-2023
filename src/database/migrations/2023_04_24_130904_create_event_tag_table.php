@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('event_tag', function (Blueprint $table) {
             $table->id();
             $table->foreignId('event_id')->constrained('events');
-            $table->foreignId('tag_id')->constrained('tags')->where('request_type_id','=','2');
+            $table->foreignId('tag_id')->constrained('tags')->where('request_type_id', '=', '2');
             $table->timestamps();
             $table->softDeletes();
         });

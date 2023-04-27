@@ -51,12 +51,12 @@ class EventParticipantLogSeeder extends Seeder
             }
         });
         //今月参加登録した参加者からポイント引く
-        $event_participant_log_instance=new EventParticipantLog();
-        $event_participant_log_grouped_by_user=$event_participant_log_instance->createdThisMonth()->get()->groupBy('user_id');
-        $event_participant_log_grouped_by_user->each(function($event_participant_log,$user_id){
-            $user_instance=User::findOrFail($user_id);
-            $point_sum=$event_participant_log->sum('point');
-            $user_instance->update(['distribution_point'=>$user_instance->distribution_point-$point_sum]);
+        $event_participant_log_instance = new EventParticipantLog();
+        $event_participant_log_grouped_by_user = $event_participant_log_instance->createdThisMonth()->get()->groupBy('user_id');
+        $event_participant_log_grouped_by_user->each(function ($event_participant_log, $user_id) {
+            $user_instance = User::findOrFail($user_id);
+            $point_sum = $event_participant_log->sum('point');
+            $user_instance->update(['distribution_point' => $user_instance->distribution_point - $point_sum]);
         });
     }
 }

@@ -19,16 +19,16 @@ class RequestTagSeeder extends Seeder
     public function run()
     {
         $faker = Faker::create();
-        $request_ids=Request::getRequestIds();
-        $request_tag_array=[];
-        $request_tag_instance=new RequestTag();
-        foreach($request_ids as $request){
-            $tag_count=$faker->numberBetween(1,3);
-            $tags=$request_tag_instance->getMultipleTags($tag_count);
-            foreach($tags as $tag){
-                $request_tag_array[]=[
-                    'request_id'=>$request->id,
-                    'tag_id'=>$tag->id,
+        $request_ids = Request::getRequestIds();
+        $request_tag_array = [];
+        $request_tag_instance = new RequestTag();
+        foreach ($request_ids as $request) {
+            $tag_count = $faker->numberBetween(1, 3);
+            $tags = $request_tag_instance->getMultipleTags($tag_count);
+            foreach ($tags as $tag) {
+                $request_tag_array[] = [
+                    'request_id' => $request->id,
+                    'tag_id' => $tag->id,
                 ];
             }
         }

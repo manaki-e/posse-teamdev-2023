@@ -32,11 +32,11 @@ class PointExchangeLogSeeder extends Seeder
         //usersテーブルのearned_pointカラムを更新=>default0だから換金したらマイナスになる
         //却下されたらポイント増やす、承認されたらポイントそのままにする
         $point_exchange_log_instance = new PointExchangeLog();
-        $point_exchange_logs_rejected= $point_exchange_log_instance->rejected()->get()->groupBy('user_id');
-        $point_exchange_logs_rejected->each(function($point_exchange_logs,$user_id){
+        $point_exchange_logs_rejected = $point_exchange_log_instance->rejected()->get()->groupBy('user_id');
+        $point_exchange_logs_rejected->each(function ($point_exchange_logs, $user_id) {
             $point_sum = $point_exchange_logs->sum('point');
             $user_instance = User::findOrFail($user_id);
-            $user_instance->update(['earned_point'=>$user_instance->earned_point+$point_sum]);
+            $user_instance->update(['earned_point' => $user_instance->earned_point + $point_sum]);
         });
     }
 }

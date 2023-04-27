@@ -32,7 +32,6 @@ class DatabaseSeeder extends Seeder
             EventParticipantLogSeeder::class,
             EventLikeSeeder::class,
             EventTagSeeder::class,
-            // =>これは一番最後にやる(dealsとparticipantsの内容反映させるから)
         ]);
     }
 }

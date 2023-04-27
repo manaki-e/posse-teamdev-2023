@@ -20,42 +20,42 @@ class ProductSeeder extends Seeder
     public function run()
     {
         $faker = Faker::create();
-        $status=Product::STATUS;
-        $request_ids=Request::getRequestIds();
-        $user_ids=User::getUserIds();
+        $status = Product::STATUS;
+        $request_ids = Request::getRequestIds();
+        $user_ids = User::getUserIds();
         //申請中アイテム
         for ($i = 1; $i <= 10; $i++) {
             $products_array[] = [
-                'title' => 'アイテム'.$i,
+                'title' => 'アイテム' . $i,
                 'point' => null,
-                'description' => "これはアイテム".$i."の備考です。\nこれはアイテム".$i."の備考です。",
-                'status'=>$status['pending'],
-                'request_id'=>$faker->randomElement($request_ids),
-                'user_id'=>$faker->randomElement($user_ids),
+                'description' => "これはアイテム" . $i . "の備考です。\nこれはアイテム" . $i . "の備考です。",
+                'status' => $status['pending'],
+                'request_id' => $faker->randomElement($request_ids),
+                'user_id' => $faker->randomElement($user_ids),
                 'created_at' => now()
             ];
         }
         //利用中、利用可能アイテム
-        for($i=11;$i<=20;$i++){
+        for ($i = 11; $i <= 20; $i++) {
             $products_array[] = [
-                'title' => 'アイテム'.$i,
+                'title' => 'アイテム' . $i,
                 'point' => $faker->randomElement([100, 200, 300, 400, 500]),
                 'description' => "これはアイテム" . $i . "の備考です。\nこれはアイテム" . $i . "の備考です。",
-                'status'=>$status['available'],
-                'request_id'=>$faker->randomElement($request_ids),
-                'user_id'=>$faker->randomElement($user_ids),
+                'status' => $status['available'],
+                'request_id' => $faker->randomElement($request_ids),
+                'user_id' => $faker->randomElement($user_ids),
                 'created_at' => now()
             ];
         }
         //利用中アイテム
-        for($i=21;$i<=30;$i++){
+        for ($i = 21; $i <= 30; $i++) {
             $products_array[] = [
-                'title' => 'アイテム'.$i,
+                'title' => 'アイテム' . $i,
                 'point' => $faker->randomElement([100, 200, 300, 400, 500]),
                 'description' => "これはアイテム" . $i . "の備考です。\nこれはアイテム" . $i . "の備考です。",
-                'status'=>$status['occupied'],
-                'request_id'=>$faker->randomElement($request_ids),
-                'user_id'=>$faker->randomElement($user_ids),
+                'status' => $status['occupied'],
+                'request_id' => $faker->randomElement($request_ids),
+                'user_id' => $faker->randomElement($user_ids),
                 'created_at' => now()
             ];
         }

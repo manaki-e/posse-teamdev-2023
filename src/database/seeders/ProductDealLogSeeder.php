@@ -21,7 +21,7 @@ class ProductDealLogSeeder extends Seeder
     public function run()
     {
         $faker = Faker::create();
-        $product_instance=new Product();
+        $product_instance = new Product();
         $product_ids = $product_instance->availableProducts()->getProductIds();
         $user_ids = User::getUserIds();
         //返却済み
@@ -45,23 +45,23 @@ class ProductDealLogSeeder extends Seeder
         }
         DB::table('product_deal_logs')->insert($product_deals_array);
         //usersテーブルのpointカラムを更新
-        $product_deal_log_instance= new ProductDealLog();
+        $product_deal_log_instance = new ProductDealLog();
         //すべてのアイテムを貸した人のearned_pointを増やす=>created_atとreturned_atの差分を求める例：1,2=>2ヵ月count(range(1,2))=2,returned_atがnullの場合はnow()を使う
         $product_instance->availableProducts()->with('deals')->each(function ($product) {
-            $month_sum_per_product=0;
-            $product->deals->each(function ($product_deal_log)use(&$month_sum_per_product) {
-                $timestamp_before=Carbon::parse($product_deal_log->created_at);
-                if(empty($product_deal_log->returned_at)){
-                    $timestamp_after=Carbon::now();
-                    $month_diff=ceil($timestamp_before->diffInMonths($timestamp_after,false));
-                }else{
-                    $timestamp_after=Carbon::parse($product_deal_log->returned_at);
-                    $month_diff=ceil($timestamp_before->diffInMonths($timestamp_after,false));
+            $month_sum_per_product = 0;
+            $product->deals->each(function ($product_deal_log) use (&$month_sum_per_product) {
+                $timestamp_before = Carbon::parse($product_deal_log->created_at);
+                if (empty($product_deal_log->returned_at)) {
+                    $timestamp_after = Carbon::now();
+                    $month_diff = ceil($timestamp_before->diffInMonths($timestamp_after, false));
+                } else {
+                    $timestamp_after = Carbon::parse($product_deal_log->returned_at);
+                    $month_diff = ceil($timestamp_before->diffInMonths($timestamp_after, false));
                 }
-                $month_sum_per_product+=$month_diff;
+                $month_sum_per_product += $month_diff;
             });
             $user_instance = User::findOrFail($product->user_id);
-            $user_instance->update(['earned_point' => $user_instance->earned_point + $month_sum_per_product*$product->point]);
+            $user_instance->update(['earned_point' => $user_instance->earned_point + $month_sum_per_product * $product->point]);
         });
 
         //今月のアイテムを借りた人のdistribution_pointを減らす

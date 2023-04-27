@@ -10,6 +10,7 @@ use App\Models\ProductImage;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\DB;
+
 class ProductImageSeeder extends Seeder
 {
     /**
