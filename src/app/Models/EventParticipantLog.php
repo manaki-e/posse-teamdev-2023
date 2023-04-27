@@ -20,4 +20,9 @@ class EventParticipantLog extends Model
     {
         return $query->where('created_at', '>=', now()->startOfMonth());
     }
+    //今月に参加登録した人=>今月の支払い対象者
+    public function scopeCreatedThisMonth($query)
+    {
+        return $query->whereYear('created_at', now()->year)->whereMonth('created_at', now()->month);
+    }
 }
