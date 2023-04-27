@@ -13,19 +13,22 @@ class Product extends Model
         'available'=>2,
         'occupied'=>3
     ];
-    public static function getProductIds(){
-        return self::pluck('id')->toArray();
+    public function scopeGetProductIds($query){
+        return $query->pluck('id')->toArray();
     }
-    public static function getPendingProductIds(){
-        return self::where('status',self::STATUS['pending'])->pluck('id')->toArray();
+    public function scopePendingProducts($query){
+        return $query->where('status',self::STATUS['pending']);
     }
-    public static function getAvailableProductIds(){
-        return self::where('status',self::STATUS['available'])->pluck('id')->toArray();
+    public function scopeAvailableProducts($query){
+        return $query->where('status',self::STATUS['available']);
     }
-    public static function getOccupiedProductIds(){
-        return self::where('status',self::STATUS['occupied'])->pluck('id')->toArray();
+    public function scopeOccupiedProducts($query){
+        return $query->where('status',self::STATUS['occupied']);
     }
-    public static function getApprovedProductIds(){
-        return self::whereIn('status',[self::STATUS['available'],self::STATUS['occupied']])->pluck('id')->toArray();
+    public function scopeApprovedProducts($query){
+        return $query->where('status','!=',self::STATUS['pending']);
+    }
+    public function deals(){
+        return $this->hasMany(ProductDealLog::class);
     }
 }

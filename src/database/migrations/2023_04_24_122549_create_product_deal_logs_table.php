@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('product_deal_logs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained('products');
-            $table->foreignId('borrower_user_id')->constrained('users');
+            $table->foreignId('user_id')->constrained('users');
             $table->timestamp('returned_at')->default(null)->nullable();
             $table->timestamps();
             $table->softDeletes();

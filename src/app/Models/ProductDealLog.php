@@ -20,4 +20,8 @@ class ProductDealLog extends Model
     {
         return $query->where('created_at', '>=', now()->startOfMonth());
     }
+    public function scopeBorrowedThisMonth($query)
+    {
+        return $query->whereYear('created_at',now()->year)->whereMonth('created_at',now()->month);
+    }
 }
