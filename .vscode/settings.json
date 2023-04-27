@@ -23,7 +23,7 @@
 	"php.validate.enable": true,
 
 	// PHPの実行ファイルのパスを設定します。この設定は、構文チェックを有効にするために必要です。
-	"php.validate.executablePath": "/usr/bin/php7.4",
+	"php.validate.executablePath": "/usr/bin/php",
 
 	// PHPファイルの構文チェックを実行するタイミングを設定します。
 	"php.validate.run": "onType",

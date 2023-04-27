@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('point_exchanges', function (Blueprint $table) {
+        Schema::create('product_deal_logs', function (Blueprint $table) {
             $table->id();
-            $table->integer('point');
-            $table->foreignId('user_id')->constrained('users');
-            $table->integer('status');
+            $table->foreignId('product_id')->constrained('products');
+            $table->foreignId('borrower_user_id')->constrained('users');
+            $table->timestamp('returned_at')->default(null)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('point_exchanges');
+        Schema::dropIfExists('product_deal_logs');
     }
 };

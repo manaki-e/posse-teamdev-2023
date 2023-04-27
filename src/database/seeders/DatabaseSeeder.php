@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             DepartmentSeeder::class,
             UserSeeder::class,
-            PointExchangeSeeder::class,
+            PointExchangeLogSeeder::class,
             RequestTypeSeeder::class,
             TagSeeder::class,
             RequestSeeder::class,
@@ -27,12 +27,11 @@ class DatabaseSeeder extends Seeder
             ProductTagSeeder::class,
             ProductImageSeeder::class,
             ProductLikeSeeder::class,
-            ProductDealSeeder::class,
+            ProductDealLogSeeder::class,
             EventSeeder::class,
-            EventParticipantSeeder::class,
+            EventParticipantLogSeeder::class,
             EventLikeSeeder::class,
             EventTagSeeder::class,
-            PointLogSeeder::class,
             // =>これは一番最後にやる(dealsとparticipantsの内容反映させるから)
         ]);
     }

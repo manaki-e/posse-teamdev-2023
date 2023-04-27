@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\PointType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,13 +14,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('point_logs', function (Blueprint $table) {
+        Schema::create('point_exchange_logs', function (Blueprint $table) {
             $table->id();
             $table->integer('point');
             $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('event_id')->constrained('events');
-            $table->foreignId('product_id')->constrained('products');
-            $table->string('point_type');
+            $table->integer('status');
+            $table->string('title')->default('ポイント換金申請');
+            $table->integer('point_type_id')->default(PointType::EARNED_POINT_TYPE_ID);
             $table->timestamps();
             $table->softDeletes();
         });
@@ -32,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('point_logs');
+        Schema::dropIfExists('point_exchange_logs');
     }
 };

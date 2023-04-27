@@ -6,12 +6,12 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
 use App\Models\Product;
-use App\Models\ProductDeal;
+use App\Models\ProductDealLog;
 use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
-class ProductDealSeeder extends Seeder
+class ProductDealLogSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -42,6 +42,7 @@ class ProductDealSeeder extends Seeder
                 'returned_at' => null
             ];
         }
-       DB::table('product_deals')->insert($product_deals_array);
+        DB::table('product_deal_logs')->insert($product_deals_array);
+        //usersテーブルのpointカラムを更新
     }
 }
