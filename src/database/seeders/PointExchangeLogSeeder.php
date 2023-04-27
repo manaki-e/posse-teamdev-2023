@@ -36,9 +36,7 @@ class PointExchangeLogSeeder extends Seeder
         $point_exchange_logs_rejected->each(function($point_exchange_logs,$user_id){
             $point_sum = $point_exchange_logs->sum('point');
             $user_instance = User::findOrFail($user_id);
-            print_r('before'.$user_instance->earned_point);
             $user_instance->update(['earned_point'=>$user_instance->earned_point+$point_sum]);
-            print_r('after'.$user_instance->earned_point."\n");
         });
     }
 }
