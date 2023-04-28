@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained('products');
             $table->foreignId('tag_id')->constrained('tags')->where('request_type_id', '=', '1');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
