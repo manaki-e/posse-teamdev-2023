@@ -20,8 +20,8 @@ class EventSeeder extends Seeder
     public function run()
     {
         $faker = Faker::create('ja_JP');
-        $user_ids=User::getUserIds();
-        $request_ids=Request::getRequestIds();
+        $user_ids = User::getUserIds();
+        $request_ids = Request::getRequestIds();
         for ($i = 1; $i <= 10; $i++) {
             $user_id = $faker->randomElement($user_ids);
             $date = $faker->dateTimeBetween('today', '+1 month');
