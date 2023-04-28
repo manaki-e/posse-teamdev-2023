@@ -10,8 +10,8 @@ use Intervention\Image\Facades\Image;
 class ProductImage extends Model
 {
     use HasFactory;
-    public function createImageAndSaveToPublicWithTextOverlay($file_name){
-        $file_path=public_path('images/'.$file_name);
+    public function createImageAndSaveToPublicWithTextOverlay($file_name,$path){
+        $file_path=public_path($path.$file_name);
         if (File::exists($file_path)) {
             File::delete($file_path);
         }

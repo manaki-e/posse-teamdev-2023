@@ -30,19 +30,19 @@ class ProductImageSeeder extends Seeder
                 'product_id' => $product_id,
                 'image_url' => $image_url,
             ];
-            $product_image_instance->createImageAndSaveToPublicWithTextOverlay($image_url);
+            $product_image_instance->createImageAndSaveToPublicWithTextOverlay($image_url,'images/main/');
         }
         //サブ画像を作成
         foreach ($product_ids as $product_id) {
             //サブ画像の数をランダムに決定=>デザインの崩れの対策しやすくするため
-            $image_count = $faker->numberBetween(1, 4);
+            $number_of_sub_image_files=count(glob(public_path('images/sub/*')));
+            $image_count = $faker->numberBetween(0, $number_of_sub_image_files);
             for ($i = 1; $i <= $image_count; $i++) {
-                $image_url = 'sub' . $product_id . '-' . $i . '.jpg';
+                $image_url = 'sub_' . $i .'.jpg';
                 $product_images_array[] = [
                     'product_id' => $product_id,
                     'image_url' => $image_url,
                 ];
-                $product_image_instance->createImageAndSaveToPublicWithTextOverlay($image_url);
             }
         }
         DB::table('product_images')->insert($product_images_array);
