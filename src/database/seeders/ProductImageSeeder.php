@@ -6,9 +6,6 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
 use App\Models\Product;
-use App\Models\ProductImage;
-use Illuminate\Support\Facades\Storage;
-use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\DB;
 
 class ProductImageSeeder extends Seeder
@@ -22,26 +19,15 @@ class ProductImageSeeder extends Seeder
     {
         $faker = Faker::create();
         $product_ids = Product::getProductIds();
-        $product_image_instance = new ProductImage();
-        //メイン画像を作成
         foreach ($product_ids as $product_id) {
-            $image_url = 'main' . $product_id . '.jpg';
-            $product_images_array[] = [
-                'product_id' => $product_id,
-                'image_url' => $image_url,
-            ];
-            $product_image_instance->createImageAndSaveToPublicWithTextOverlay($image_url,'images/main/');
-        }
-        //サブ画像を作成
-        foreach ($product_ids as $product_id) {
-            //サブ画像の数をランダムに決定=>デザインの崩れの対策しやすくするため
-            $number_of_sub_image_files=count(glob(public_path('images/sub/*')));
-            $image_count = $faker->numberBetween(0, $number_of_sub_image_files);
-            for ($i = 1; $i <= $image_count; $i++) {
-                $image_url = 'sub_' . $i .'.jpg';
-                $product_images_array[] = [
-                    'product_id' => $product_id,
-                    'image_url' => $image_url,
+            $image_files=glob(public_path('images/*'));
+            $image_count = $faker->numberBetween(1, 3);
+            $image_array=$faker->randomElements($image_files,$image_count);
+            foreach($image_array as $image){
+                $image_filename=basename($image);
+                $product_images_array[]=[
+                    'product_id'=>$product_id,
+                    'image_url'=>$image_filename,
                 ];
             }
         }
