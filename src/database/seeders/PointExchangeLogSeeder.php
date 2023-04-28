@@ -29,7 +29,6 @@ class PointExchangeLogSeeder extends Seeder
             $point_exchanges_array[] = ['point' => $random_number, 'user_id' => $faker->randomElement($user_ids), 'created_at' => $last_month, 'status' => $faker->randomElement($status)];
         }
         DB::table('point_exchange_logs')->insert($point_exchanges_array);
-        //usersテーブルのearned_pointカラムを更新=>default0だから換金したらマイナスになる
         //却下されたらポイント増やす、承認されたらポイントそのままにする
         $point_exchange_log_instance = new PointExchangeLog();
         $point_exchange_logs_rejected = $point_exchange_log_instance->rejected()->get()->groupBy('user_id');
