@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .admin-bg-basic {
-    background-color: rgb(243, 244, 246);
+    background-color: #f3f4f6;
 }
 
 .admin-bg-green {
