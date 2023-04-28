@@ -16,9 +16,8 @@ class RequestTypeSeeder extends Seeder
     public function run()
     {
         $request_types_array = [
-            ['name' => '貸出依頼'],
-            //イベント？勉強会？結局どっちにするんだっけ？
-            ['name' => '勉強会依頼'],
+            ['name' => 'アイテム'],
+            ['name' => 'イベント'],
         ];
         DB::table('request_types')->insert($request_types_array);
     }
