@@ -19,7 +19,6 @@ return new class extends Migration
             $table->integer('point');
             $table->foreignId('user_id')->constrained('users');
             $table->integer('status');
-            $table->string('title')->default('ポイント換金申請');
             $table->integer('point_type_id')->default(PointType::EARNED_POINT_TYPE_ID);
             $table->timestamps();
             $table->softDeletes();
