@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('location');
             $table->string('slack_channel');
             $table->timestamp('completed_at');
+            $table->foreignId('request_id')->nullable()->constrained('requests');
             $table->timestamps();
         });
     }

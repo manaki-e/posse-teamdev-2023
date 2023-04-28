@@ -54,7 +54,7 @@ class ProductSeeder extends Seeder
                 'point' => $faker->randomElement([100, 200, 300, 400, 500]),
                 'description' => "これはアイテム" . $i . "の備考です。\nこれはアイテム" . $i . "の備考です。",
                 'status' => $status['occupied'],
-                'request_id' => $faker->randomElement($request_ids),
+                'request_id' => $faker->randomElement([null,$faker->randomElement($request_ids)]),
                 'user_id' => $faker->randomElement($user_ids),
                 'created_at' => now()
             ];

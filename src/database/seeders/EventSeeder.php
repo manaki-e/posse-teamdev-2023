@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Request;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -19,8 +20,10 @@ class EventSeeder extends Seeder
     public function run()
     {
         $faker = Faker::create('ja_JP');
+        $user_ids=User::getUserIds();
+        $request_ids=Request::getRequestIds();
         for ($i = 1; $i <= 10; $i++) {
-            $user_id = $faker->randomElement(User::getUserIds());
+            $user_id = $faker->randomElement($user_ids);
             $date = $faker->dateTimeBetween('today', '+1 month');
             $events_array[] = [
                 'user_id' => $user_id,
@@ -29,7 +32,8 @@ class EventSeeder extends Seeder
                 'date' => $faker->randomElement([null, $date]),
                 'location' => $faker->randomElement(['オンライン', $faker->address]),
                 'slack_channel' => $this->channelId(),
-                'completed_at' => $date
+                'completed_at' => $date,
+                'request_id' => $faker->randomElement([null, $faker->randomElement($request_ids)])
             ];
         }
         DB::table('events')->insert($events_array);

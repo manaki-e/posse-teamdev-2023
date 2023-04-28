@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->integer('status');
             $table->string('description');
-            $table->foreignId('request_id')->constrained('requests');
+            $table->foreignId('request_id')->nullable()->constrained('requests');
             $table->timestamps();
             $table->softDeletes();
         });
