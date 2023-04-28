@@ -22,20 +22,12 @@
         .font-family-karla {
             font-family: karla;
         }
-
-        .bg-sidebar {
-            background: #079292;
-        }
-
-        .cta-btn {
-            color: #3d68ff;
-        }
     </style>
 </head>
 
 <body class="admin-bg-basic font-family-karla">
     <div class="flex overflow-hidden">
-        <aside class="relative bg-sidebar h-screen w-64 hidden sm:block shadow-xl">
+        <aside class="relative admin-bg-green h-screen w-64 hidden sm:block shadow-xl">
             <x-admin-sidebar></x-admin-sidebar>
         </aside>
         <div class="h-full w-full relative overflow-y-auto mx-4">
