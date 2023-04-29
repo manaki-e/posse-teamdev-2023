@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.admin-bg-basic {
+    background-color: #f3f4f6;
+}
+
+.admin-bg-green {
+    background-color: #079292;
+}
+
+.admin-text-green {
+    color: #079292;
+}
