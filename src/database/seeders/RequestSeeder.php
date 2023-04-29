@@ -25,7 +25,7 @@ class RequestSeeder extends Seeder
         $today = Carbon::now();
         $yesterday = $today->subDay();
         $user_ids = User::getUserIds();
-        $request_type_ids = [Request::PRODUCT_REQUEST_TYPE_ID,Request::EVENT_REQUEST_TYPE_ID];
+        $request_type_ids = [Request::PRODUCT_REQUEST_TYPE_ID, Request::EVENT_REQUEST_TYPE_ID];
         //未対応
         for ($i = 1; $i <= 10; $i++) {
             $requests_array[] = [

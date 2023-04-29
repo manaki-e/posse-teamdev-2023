@@ -9,7 +9,8 @@ class Tag extends Model
 {
     use HasFactory;
 
-    public function getIdsByRequestTypeId($request_type_id){
-        return $this->where('request_type_id',$request_type_id)->pluck('id')->toArray();
+    public function getIdsByRequestTypeId($request_type_id)
+    {
+        return $this->where('request_type_id', $request_type_id)->pluck('id')->toArray();
     }
 }

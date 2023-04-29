@@ -24,8 +24,8 @@ class RequestTagSeeder extends Seeder
         $product_request_type_id = Request::PRODUCT_REQUEST_TYPE_ID;
         $event_request_type_id = Request::EVENT_REQUEST_TYPE_ID;
         $tags = [
-            $product_request_type_id=>$tag_instance->getIdsByRequestTypeId($product_request_type_id),
-            $event_request_type_id=>$tag_instance->getIdsByRequestTypeId($event_request_type_id)
+            $product_request_type_id => $tag_instance->getIdsByRequestTypeId($product_request_type_id),
+            $event_request_type_id => $tag_instance->getIdsByRequestTypeId($event_request_type_id)
         ];
         foreach ($requests as $request) {
             $tag_count = $faker->numberBetween(1, 3);
