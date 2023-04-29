@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Event;
+use App\Models\Request;
 use App\Models\Tag;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -20,7 +21,7 @@ class EventTagSeeder extends Seeder
     {
         $faker = Faker::create();
         $tag_instance = new Tag();
-        $event_tags = $tag_instance->getTagIdsByRequestTypeId(Tag::REQUEST_TYPE_ID['event']);
+        $event_tags = $tag_instance->getIdsByRequestTypeId(Request::EVENT_REQUEST_TYPE_ID);
         $event_ids = Event::getEventIds();
         foreach ($event_ids as $event_id) {
             $tag_count = $faker->numberBetween(0, 2);

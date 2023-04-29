@@ -18,7 +18,6 @@ class DatabaseSeeder extends Seeder
             DepartmentSeeder::class,
             UserSeeder::class,
             PointExchangeLogSeeder::class,
-            RequestTypeSeeder::class,
             TagSeeder::class,
             RequestSeeder::class,
             RequestTagSeeder::class,

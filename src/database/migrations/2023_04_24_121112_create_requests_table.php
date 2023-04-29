@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->string('description');
             $table->timestamp('completed_at')->default(null)->nullable();
-            $table->foreignId('request_type_id')->constrained('request_types');
+            $table->integer('type_id');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Product;
+use App\Models\Request;
 use App\Models\Tag;
 use DB;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -20,7 +21,7 @@ class ProductTagSeeder extends Seeder
     {
         $faker = Faker::create();
         $tag_instance = new Tag();
-        $product_tags = $tag_instance->getTagIdsByRequestTypeId(Tag::REQUEST_TYPE_ID['product']);
+        $product_tags = $tag_instance->getIdsByRequestTypeId(Request::PRODUCT_REQUEST_TYPE_ID);
         $product_ids = Product::getProductIds();
         foreach ($product_ids as $product_id) {
             $tag_count = $faker->numberBetween(0, 2);

@@ -9,9 +9,6 @@ class RequestTag extends Model
 {
     use HasFactory;
     protected $table='request_tag';
-    public function getMultipleTags($number){
-        return $this->inRandomOrder()->limit($number)->get();
-    }
     public function request(){
         return $this->belongsTo(Request::class);
     }
