@@ -3,7 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -14,21 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('point_types', function (Blueprint $table) {
+        Schema::create('request_tag', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->foreignId('request_id')->constrained('requests');
+            $table->foreignId('tag_id')->constrained('tags');
             $table->timestamps();
             $table->softDeletes();
         });
-        //これダミーデータではなく、固定値だから、migrationで挿入する
-        DB::table('point_types')->insert([
-            [
-                'name' => '換金不可能'
-            ],
-            [
-                'name' => '換金可能'
-            ]
-        ]);
     }
 
     /**
@@ -38,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('point_types');
+        Schema::dropIfExists('request_tag');
     }
 };

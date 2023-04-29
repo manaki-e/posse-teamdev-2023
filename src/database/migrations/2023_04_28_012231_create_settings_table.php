@@ -13,13 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('point_exchanges', function (Blueprint $table) {
+        Schema::create('settings', function (Blueprint $table) {
             $table->id();
-            $table->integer('point');
-            $table->foreignId('user_id')->constrained('users');
+            $table->integer('monthly_distribution_point');
+            $table->integer('maximum_event_participate_point');
             $table->timestamps();
-            $table->softDeletes();
         });
+        DB::table('settings')->insert(['monthly_distribution_point'=>5000,'maximum_event_participate_point'=>500]);
     }
 
     /**
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('point_exchanges');
+        Schema::dropIfExists('settings');
     }
 };
