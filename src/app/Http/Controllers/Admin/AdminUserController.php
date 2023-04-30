@@ -15,17 +15,14 @@ class AdminUserController extends Controller
      */
     public function index()
     {
-        //管理者含める場合
-        // $users = User::with('department')->paginate(8);
-        // $total_users = User::count();
-        //管理者含めない場合
-        $users = User::with('department')->where('is_admin', 0)->paginate(8);
-        $total_users = User::where('is_admin', 0)->count();
-        //名前、slack_name、部署、獲得ポイント、配布ポイント
+        // 管理者含める場合
+        $users = User::with('department')->paginate(8);
+        $total_users = User::count();
+        //名前、email、部署、獲得ポイント、配布ポイント
         var_dump($total_users);
         foreach ($users as $user) {
             var_dump($user->name);
-            var_dump($user->slack);
+            var_dump($user->email);
             var_dump($user->department->name);
             var_dump($user->earned_point);
             var_dump($user->distribution_point);
