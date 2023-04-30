@@ -31,8 +31,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::middleware('check.admin')->group(function () {
         Route::get('/admin/histories', [AdminIndexController::class, 'histories'])->name('admin.histories');
-        Route::resource('admin/users', AdminUserController::class);
-        Route::resource('admin/items', AdminItemController::class);
+        Route::resource('/admin/users', AdminUserController::class);
+        Route::resource('/admin/items', AdminItemController::class);
     });
 });
 
