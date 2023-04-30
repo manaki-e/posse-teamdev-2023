@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class AdminIndexController extends Controller
 {
-    public function logs()
+    public function histories()
     {
         $event_participants = $this->event_participants();
         $product_deals = $this->product_deals();
@@ -28,7 +28,7 @@ class AdminIndexController extends Controller
             print_r($deal_log_with_product->returned_at->format('Y年m月d日 H:i:s') . "\n");
             dd();
         }
-        return $deal_log_with_product;
+        return $deal_log_with_products;
     }
     public function event_participants()
     {
@@ -41,6 +41,6 @@ class AdminIndexController extends Controller
             print_r($event_participant->created_at->format('Y年m月d日 H:i:s') . "\n");
             dd();
         }
-        return $event_participant;
+        return $event_participants;
     }
 }
