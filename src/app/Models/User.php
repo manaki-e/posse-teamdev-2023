@@ -45,4 +45,8 @@ class User extends Authenticatable
     {
         return self::pluck('id')->toArray();
     }
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
 }
