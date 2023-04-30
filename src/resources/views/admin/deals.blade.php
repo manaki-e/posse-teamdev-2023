@@ -134,16 +134,16 @@
                         <table class="w-full border-collapse bg-white text-left text-sm text-gray-500">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900">商品名</th>
-                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900">登録申請者氏名</th>
+                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900">イベント名</th>
+                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900">参加登録者氏名</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">申請日時</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-100 border-t border-gray-100">
-                                @foreach ([0, 1, 2] as $item)
+                                @foreach ([0, 1, 2, 3, 4, 5] as $item)
                                 <tr class="hover:bg-gray-50">
-                                    <th class="px-6 py-4 font-medium text-gray-900">ディスプレイ</th>
+                                    <th class="px-6 py-4 font-medium text-gray-900">HarborSもくもく会</th>
                                     <td class="px-6 py-4">
                                         <a href="#" class="hover:text-blue-700">井戸 宗達</a>
                                     </td>
@@ -151,8 +151,6 @@
                                     </td>
                                     <td class="flex justify-end gap-4 px-6 py-4 font-medium">
                                         <a href="#"><x-admin-button-detail></x-admin-button-detail></a>
-                                        <a href="#"><x-admin-button-edit>ポイント設定して承認</x-admin-button-edit></a>
-                                        <a href="#"><x-admin-button-delete></x-admin-button-delete></a>
                                     </td>
                                 </tr>
                                 @endforeach
