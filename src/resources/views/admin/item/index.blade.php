@@ -143,7 +143,7 @@
                             <thead class="bg-gray-50">
                                 <tr>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">商品名</th>
-                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900">貸出申請者氏名</th>
+                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900">登録申請者氏名</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">申請日時</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
                                 </tr>
