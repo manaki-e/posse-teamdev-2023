@@ -13,6 +13,11 @@ class Product extends Model
         'available' => 2,
         'occupied' => 3
     ];
+    const JAPANESE_STATUS = [
+        1 => '承認待ち',
+        2 => '貸出可能',
+        3 => '貸出中'
+    ];
     public function scopeGetProductIds($query)
     {
         return $query->pluck('id')->toArray();
