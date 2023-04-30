@@ -28,7 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::middleware('check.admin')->group(function () {
-        Route::get('/admin/deals', [AdminIndexController::class, 'deals'])->name('admin.deals');
+        Route::get('/admin/logs', [AdminIndexController::class, 'logs'])->name('admin.logs');
     });
 });
 

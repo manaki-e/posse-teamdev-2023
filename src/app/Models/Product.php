@@ -31,4 +31,7 @@ class Product extends Model
     public function deals(){
         return $this->hasMany(ProductDealLog::class);
     }
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }
