@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class ProductDealLog extends Model
 {
     use HasFactory;
+    protected $dates = ['created_at', 'updated_at', 'returned_at', 'deleted_at'];
+
     public function product()
     {
         return $this->belongsTo(Product::class);
@@ -22,6 +24,6 @@ class ProductDealLog extends Model
     }
     public function scopeBorrowedThisMonth($query)
     {
-        return $query->whereYear('created_at',now()->year)->whereMonth('created_at',now()->month);
+        return $query->whereYear('created_at', now()->year)->whereMonth('created_at', now()->month);
     }
 }
