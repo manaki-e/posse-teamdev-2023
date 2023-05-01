@@ -27,10 +27,10 @@
 
 <body class="admin-bg-basic font-family-karla">
     <div class="flex overflow-hidden">
-        <aside class="relative admin-bg-green h-screen w-64 hidden sm:block shadow-xl">
+        <aside class="fixed z-50 admin-bg-green h-screen w-64 hidden sm:block shadow-xl">
             <x-admin-sidebar></x-admin-sidebar>
         </aside>
-        <div class="h-full w-full relative overflow-y-auto mx-4">
+        <div class="h-full w-full relative overflow-y-auto mx-4 pl-64">
             <div class="flex">
                 <x-application-logo class="w-16 h-16 fill-current text-gray-500 rounded-full"></x-application-logo>
                 <x-application-title class="font-bold text-4xl"></x-application-title>
@@ -44,6 +44,8 @@
                         {{ $discription }}
                     </x-slot>
                 </x-admin-title>
+
+                {{ $slot }}
             </main>
         </div>
     </div>

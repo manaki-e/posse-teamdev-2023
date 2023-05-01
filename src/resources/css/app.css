@@ -28,4 +28,8 @@
 
 .user-border-green {
     border-color: #36B1BF;
-}
+
+.flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
