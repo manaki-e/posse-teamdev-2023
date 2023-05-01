@@ -13,3 +13,19 @@
 .admin-text-green {
     color: #079292;
 }
+
+.user-bg-gray {
+    background-color: #F3F3F3;
+}
+
+.user-tab-text-green {
+    color: #36B1BF;
+}
+
+.user-tab-bg-green {
+    background-color: #36B1BF;
+}
+
+.user-border-green {
+    border-color: #36B1BF;
+}
