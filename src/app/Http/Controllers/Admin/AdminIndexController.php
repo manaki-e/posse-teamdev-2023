@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\EventParticipantLog;
+use App\Models\PointExchangeLog;
 use App\Models\ProductDealLog;
 use Illuminate\Http\Request;
 
@@ -42,5 +43,22 @@ class AdminIndexController extends Controller
             dd();
         }
         return $event_participants;
+    }
+    public function point_exchanges(){
+        $done_point_exchanges=PointExchangeLog::with('user')->approved()->get();
+        foreach($done_point_exchanges as $done_point_exchange){
+            print_r($done_point_exchange->user->name."\n");
+            print_r($done_point_exchange->point."\n");
+            print_r($done_point_exchange->created_at->format('Y年m月d日 H:i:s')."\n");
+            print_r($done_point_exchange->updated_at->format('Y年m月d日 H:i:s')."<br>");
+        }
+        $undone_point_exchanges=PointExchangeLog::with('user')->pending()->get();
+        foreach($undone_point_exchanges as $undone_point_exchange){
+            print_r($undone_point_exchange->user->name."\n");
+            print_r($undone_point_exchange->point."\n");
+            print_r($undone_point_exchange->created_at->format('Y年m月d日 H:i:s')."<br>");
+        }
+        dd();
+        return view('admin.point-exchanges',compact('done_point_exchanges','undone_point_exchanges'));
     }
 }
