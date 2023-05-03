@@ -1,3 +1,13 @@
+<?php
+
+$imgs = [
+    'https://images.unsplash.com/photo-1553525245-9d0d32b61e75?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxNTgwfDB8MXxzZWFyY2h8OHx8bWFjYm9va2FpcnxlbnwwfHx8fDE2ODMxMTk1MzU&ixlib=rb-4.0.3&q=80&w=400',
+    'https://images.unsplash.com/photo-1616502844612-4b3d523fc00e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxNTgwfDB8MXxzZWFyY2h8MTB8fG1hY2Jvb2thaXJ8ZW58MHx8fHwxNjgzMTE5NTM1&ixlib=rb-4.0.3&q=80&w=400',
+    'https://images.unsplash.com/photo-1532198528077-0d9e4ca9bb40?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxNTgwfDB8MXxzZWFyY2h8OXx8bWFjYm9va2FpcnxlbnwwfHx8fDE2ODMxMTk1MzU&ixlib=rb-4.0.3&q=80&w=400'
+]
+
+?>
+
 <x-user-app>
     <x-slot name="header_slot">
         <x-header-top>
@@ -31,21 +41,27 @@
             <div class="mx-auto max-w-screen-xl px-4 md:px-8">
                 <div class="grid gap-8 md:grid-cols-2">
                     <!-- images - start -->
-                    <div class="grid gap-4 lg:grid-cols-5">
-                        <div class="order-last flex gap-4 lg:order-none lg:flex-col">
-                            <div class="overflow-hidden rounded-lg bg-gray-100">
-                                <img src="https://pixabay.com/get/g99d6b4842ba7137ee41f04054bba656fac302e366af1162bca527744c5492ffb9087ad3414f357dcdf8c1bc8c5f9d28d3629d201f399006e087b705c2d7f62a9_640.jpg" loading="lazy" alt="Photo by Himanshu Dewangan" class="h-full w-full object-cover object-center" />
+                    <div x-data="{ activeTab:  0 }">
+                        <div class="grid gap-4 lg:grid-cols-5">
+                            <ul class="order-last flex gap-4 lg:order-none lg:flex-col">
+                                @foreach ($imgs as $index => $img)
+                                <li>
+                                    <a @click="activeTab = {{ $index }}" class="inline-flex cursor-pointer items-center gap-2 px-1 py-3" :class="{ 'relative text-primary-700  after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-full after:bg-primary-700': activeTab === {{ $index }} }">
+                                        <div class="overflow-hidden rounded-lg bg-gray-100">
+                                            <img src="{{ $img }}" loading="lazy" alt="Photo by Himanshu Dewangan" class="h-full w-full object-cover object-center" />
+                                        </div>
+                                    </a>
+                                </li>
+                                @endforeach
+                            </ul>
+                            <div class="h-full relative overflow-hidden rounded-lg lg:col-span-4">
+                                @foreach ($imgs as $index => $img)
+                                <div :class="{ '!block': activeTab === {{ $index }} }" class="hidden">
+                                    <img src="{{ $img }}" loading="lazy" alt="Photo by Himanshu Dewangan" class="w-full object-center overflow-hidden" />
+                                    <span class="absolute left-0 top-0 rounded-br-lg bg-red-500 px-3 py-1.5 text-sm uppercase tracking-wider text-white">sale</span>
+                                </div>
+                                @endforeach
                             </div>
-                            <div class="overflow-hidden rounded-lg bg-gray-100">
-                                <img src="https://pixabay.com/get/g638ac3a46d08a1c39fa95ead511083f16a8bee3f32a63cac2eff61f760fb403b11fc091f3cf1bd4c46f5921d00931d5d148f29ecb6033a6669f1ae7e63f1d4e9_640.jpg" loading="lazy" alt="Photo by Himanshu Dewangan" class="h-full w-full object-cover object-center" />
-                            </div>
-                            <div class="overflow-hidden rounded-lg bg-gray-100">
-                                <img src="https://pixabay.com/get/g0c5b58e4266a666a6e131f6bbbe74def1c9113c2256cb866b6393fe6f81edc338e13b7b15dfc1b1e08c5d2068d4f3a4e7f913a6887b0d7de93f9f5d46a6afe30_640.jpg" loading="lazy" alt="Photo by Himanshu Dewangan" class="h-full w-full object-cover object-center" />
-                            </div>
-                        </div>
-                        <div class="relative overflow-hidden rounded-lg bg-gray-100 lg:col-span-4">
-                            <img src="https://pixabay.com/get/g0c5b58e4266a666a6e131f6bbbe74def1c9113c2256cb866b6393fe6f81edc338e13b7b15dfc1b1e08c5d2068d4f3a4e7f913a6887b0d7de93f9f5d46a6afe30_640.jpg" loading="lazy" alt="Photo by Himanshu Dewangan" class="h-full w-full object-cover object-center" />
-                            <span class="absolute left-0 top-0 rounded-br-lg bg-red-500 px-3 py-1.5 text-sm uppercase tracking-wider text-white">sale</span>
                         </div>
                     </div>
                     <!-- images - end -->
