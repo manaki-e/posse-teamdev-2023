@@ -47,10 +47,15 @@
         <div>
             <div>{{$product->title}}</div>
             <div>{{$product->point}}</div>
-            <img width="100" height="100" src=" {{asset('images/'.$product->productImages->first()->image_url)}}">
+            <a href="/items/{{$product->id}}">
+                <img width="100" height="100" src=" {{asset('images/'.$product->productImages->first()->image_url)}}">
+            </a>
         </div>
         @endforeach
     </div>
+
+
+
 </body>
 
 </html>

@@ -63,7 +63,9 @@ class ItemController extends Controller
      */
     public function show($id)
     {
-        //
+        $product = Product::withRelations()->findOrFail($id);
+        $product->description = $product->changeDescriptionReturnToBreakTag($product->description);
+        return view('backend_test.item', compact('product'));
     }
 
     /**

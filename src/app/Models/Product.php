@@ -69,6 +69,9 @@ class Product extends Model
     }
     public function scopeWithRelations($query)
     {
-        return $query->with('user')->with('request')->with('productImages')->with('productTags')->with('productLikes');
+        return $query->with('user')->with('request')->with('productImages')->with('productTags.tag')->withCount('productLikes')->with('productLikes');
+    }
+    public function changeDescriptionReturnToBreakTag($value){
+        return str_replace("\n","<br>",$value);
     }
 }
