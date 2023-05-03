@@ -21,6 +21,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/items', function () {
+return view('user.items.index');
+})->name('users.items');
+Route::get('/requests', function () {
+return view('user.requests.index');
+})->name('users.requests');
+Route::get('/events', function () {
+return view('user.events.index');
+})->name('users.events');
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
