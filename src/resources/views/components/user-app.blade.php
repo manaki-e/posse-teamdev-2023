@@ -26,7 +26,7 @@
 </head>
 <body class="user-bg-gray">
     <header class="text-gray-600 body-font mb-2 bg-white">
-        <x-header-top>{{ $remainning_point }}</x-header-top>
-        <x-header-bottom></x-header-bottom>
+        {{ $header_slot }}
     </header>
+    {{ $body_slot }}
 </body>
