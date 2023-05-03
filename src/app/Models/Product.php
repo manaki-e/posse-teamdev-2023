@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Product extends Model
 {
@@ -38,6 +39,10 @@ class Product extends Model
     {
         return $query->where('status', '!=', self::STATUS['pending']);
     }
+    public function scopeBelongsToLoginUser($query)
+    {
+        return $query->where('user_id', Auth::id());
+    }
     public function productDeals()
     {
         return $this->hasMany(ProductDealLog::class);
@@ -61,5 +66,9 @@ class Product extends Model
     public function productLikes()
     {
         return $this->hasMany(ProductLike::class);
+    }
+    public function scopeWithRelations($query)
+    {
+        return $query->with('user')->with('request')->with('productImages')->with('productTags')->with('productLikes');
     }
 }

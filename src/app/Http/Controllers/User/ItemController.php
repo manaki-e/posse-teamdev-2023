@@ -4,8 +4,10 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\Request as ModelsRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Tag;
 
 class ItemController extends Controller
 {
@@ -16,7 +18,14 @@ class ItemController extends Controller
      */
     public function index()
     {
-        return view('backend_test.items');
+        $japanese_product_statuses = Product::JAPANESE_STATUS;
+        unset($japanese_product_statuses[1]);
+        $product_tags = Tag::productTags()->get();
+        $products = Product::availableProducts()->withRelations()->paginate(8)->map(function ($product) use ($japanese_product_statuses) {
+            $product->japanese_status = $japanese_product_statuses[$product->status];
+            return $product;
+        });
+        return view('backend_test.items', compact('products', 'japanese_product_statuses', 'product_tags'));
     }
 
     /**
