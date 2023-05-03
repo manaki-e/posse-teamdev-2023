@@ -73,7 +73,7 @@ class AdminUserController extends Controller
         print_r($user_profile->earned_point);
         print_r($user_profile->distribution_point);
         print_r('<br>');
-        $held_events = Event::where('user_id', $id)->with('eventParticipants')->withSum('eventParticipants', 'point')->get();
+        $held_events = Event::where('user_id', $id)->with('participants')->withSum('participants', 'point')->get();
         print_r('主催イベント<br>');
         foreach ($held_events as $held_event) {
             print_r('タイトル->' . $held_event->title);
