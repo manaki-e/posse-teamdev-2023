@@ -38,7 +38,7 @@ class Product extends Model
     {
         return $query->where('status', '!=', self::STATUS['pending']);
     }
-    public function product_deals()
+    public function productDeals()
     {
         return $this->hasMany(ProductDealLog::class);
     }

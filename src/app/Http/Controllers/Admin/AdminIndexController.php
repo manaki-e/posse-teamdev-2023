@@ -12,10 +12,10 @@ class AdminIndexController extends Controller
 {
     public function histories()
     {
-        $event_participants = $this->event_participants();
-        $product_deals = $this->product_deals();
+        $event_participants = $this->eventParticipants();
+        $product_deals = $this->productDeals();
     }
-    public function product_deals()
+    public function productDeals()
     {
         //figmaには一画面8項目だったので、paginate(8)を追加
         //貸した人、商品名、借りた人、ポイント、借りた日時、返却日時
@@ -31,7 +31,7 @@ class AdminIndexController extends Controller
         }
         return $deal_log_with_products;
     }
-    public function event_participants()
+    public function eventParticipants()
     {
         //figmaには一画面8項目だったので、paginate(8)を追加
         //イベント名、参加者名、登録日時
