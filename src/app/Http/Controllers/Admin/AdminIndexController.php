@@ -44,7 +44,7 @@ class AdminIndexController extends Controller
         }
         return $event_participants;
     }
-    public function point_exchanges()
+    public function pointExchanges()
     {
         $done_point_exchanges = PointExchangeLog::with('user')->approved()->paginate(8, ['*'], 'done-page')->appends(['undone-page' => request('undone-page')]);
         print_r($_SERVER['REQUEST_URI'] . '<br>');
