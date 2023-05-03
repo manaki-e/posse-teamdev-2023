@@ -14,7 +14,7 @@ class PointExchangeLog extends Model
         'APPROVED' => 2,
         'REJECTED' => 3
     ];
-    const POINT_TYPE_ = PointType::EARNED_POINT_TYPE_ID;
+    const POINT_TYPE_ID = PointType::EARNED_POINT_TYPE_ID;
     public function user()
     {
         return $this->belongsTo(User::class);
