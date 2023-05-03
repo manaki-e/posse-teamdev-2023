@@ -44,21 +44,25 @@ class AdminIndexController extends Controller
         }
         return $event_participants;
     }
-    public function point_exchanges(){
-        $done_point_exchanges=PointExchangeLog::with('user')->approved()->get();
-        foreach($done_point_exchanges as $done_point_exchange){
-            print_r($done_point_exchange->user->name."\n");
-            print_r($done_point_exchange->point."\n");
-            print_r($done_point_exchange->created_at->format('Y年m月d日 H:i:s')."\n");
-            print_r($done_point_exchange->updated_at->format('Y年m月d日 H:i:s')."<br>");
+    public function point_exchanges()
+    {
+        $done_point_exchanges = PointExchangeLog::with('user')->approved()->paginate(8, ['*'], 'done-page')->appends(['undone-page' => request('undone-page')]);
+        print_r($_SERVER['REQUEST_URI'] . '<br>');
+        print_r('換金対応済み<br>');
+        foreach ($done_point_exchanges as $done_point_exchange) {
+            print_r($done_point_exchange->user->name . "\n");
+            print_r($done_point_exchange->point . "\n");
+            print_r($done_point_exchange->created_at->format('Y年m月d日 H:i:s') . "\n");
+            print_r($done_point_exchange->updated_at->format('Y年m月d日 H:i:s') . "<br>");
         }
-        $undone_point_exchanges=PointExchangeLog::with('user')->pending()->get();
-        foreach($undone_point_exchanges as $undone_point_exchange){
-            print_r($undone_point_exchange->user->name."\n");
-            print_r($undone_point_exchange->point."\n");
-            print_r($undone_point_exchange->created_at->format('Y年m月d日 H:i:s')."<br>");
+        print_r('換金未対応<br>');
+        $undone_point_exchanges = PointExchangeLog::with('user')->pending()->paginate(8, ['*'], 'undone-page')->appends(['done-page' => request('done-page')]);
+        foreach ($undone_point_exchanges as $undone_point_exchange) {
+            print_r($undone_point_exchange->user->name . "\n");
+            print_r($undone_point_exchange->point . "\n");
+            print_r($undone_point_exchange->created_at->format('Y年m月d日 H:i:s') . "<br>");
         }
         dd();
-        return view('admin.point-exchanges',compact('done_point_exchanges','undone_point_exchanges'));
+        return view('admin.point-exchanges', compact('done_point_exchanges', 'undone_point_exchanges'));
     }
 }
