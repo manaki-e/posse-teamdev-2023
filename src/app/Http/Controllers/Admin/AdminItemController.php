@@ -68,7 +68,7 @@ class AdminItemController extends Controller
      */
     public function show($id)
     {
-        $product = Product::with('user')->with('product_images')->with('request')->with('product_deals.user')->with('product_tags.tag')->withCount('product_likes')->findOrFail($id);
+        $product = Product::with('user')->with('productImages')->with('request')->with('productDeals.user')->with('productTags.tag')->withCount('productLikes')->findOrFail($id);
         $product->japanese_status = Product::JAPANESE_STATUS[$product->status];
         print_r('タイトル' . $product->title . '<br>');
         print_r('ステータス' . $product->japanese_status . '<br>');
@@ -76,11 +76,11 @@ class AdminItemController extends Controller
         print_r('いいね' . $product->product_likes_count . '<br>');
         print_r('説明' . $product->description . '<br>');
         print_r('タグ<br>');
-        foreach ($product->product_tags as $product_tag) {
+        foreach ($product->productTags as $product_tag) {
             print_r($product_tag->tag->name . '<br>');
         }
         print_r('貸出履歴<br>');
-        foreach ($product->product_deals as $product_deal) {
+        foreach ($product->productDeals as $product_deal) {
             print_r($product_deal->user->name . $product_deal->created_at->format('Y年m月d日 H:i:s') . '<br>');
         }
         print_r('出品者' . $product->user->name . '<br>');

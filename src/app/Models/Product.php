@@ -46,7 +46,7 @@ class Product extends Model
     {
         return $this->belongsTo(User::class);
     }
-    public function product_images()
+    public function productImages()
     {
         return $this->hasMany(ProductImage::class);
     }
@@ -54,11 +54,11 @@ class Product extends Model
     {
         return $this->belongsTo(Request::class);
     }
-    public function product_tags()
+    public function productTags()
     {
         return $this->hasMany(ProductTag::class);
     }
-    public function product_likes()
+    public function productLikes()
     {
         return $this->hasMany(ProductLike::class);
     }

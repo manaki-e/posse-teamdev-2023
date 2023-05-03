@@ -47,9 +47,9 @@ class ProductDealLogSeeder extends Seeder
         //usersテーブルのpointカラムを更新
         $product_deal_log_instance = new ProductDealLog();
         //すべてのアイテムを貸した人のearned_pointを増やす=>created_atとreturned_atの差分を求める例：1,2=>2ヵ月count(range(1,2))=2,returned_atがnullの場合はnow()を使う
-        $product_instance->availableProducts()->with('product_deals')->each(function ($product) {
+        $product_instance->availableProducts()->with('productDeals')->each(function ($product) {
             $month_sum_per_product = 0;
-            $product->deals->each(function ($product_deal_log) use (&$month_sum_per_product) {
+            $product->productDeals->each(function ($product_deal_log) use (&$month_sum_per_product) {
                 $timestamp_before = Carbon::parse($product_deal_log->created_at);
                 if (empty($product_deal_log->returned_at)) {
                     $timestamp_after = Carbon::now();
@@ -65,7 +65,7 @@ class ProductDealLogSeeder extends Seeder
         });
 
         //今月のアイテムを借りた人のdistribution_pointを減らす
-        $items_borrowed_this_month = $product_deal_log_instance->with('product')->borrowedThisMonth()->get()->groupBy('user_id');
+        $items_borrowed_this_month = $product_deal_log_instance->with('product')->borrowedThisMonth()->with('product')->get()->groupBy('user_id');
         $items_borrowed_this_month->each(function ($product_deal_log, $user_id) {
             $user_instance = User::findOrFail($user_id);
             $point_sum = $product_deal_log->sum(function ($product_deal_log) {
