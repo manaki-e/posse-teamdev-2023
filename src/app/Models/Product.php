@@ -38,12 +38,28 @@ class Product extends Model
     {
         return $query->where('status', '!=', self::STATUS['pending']);
     }
-    public function deals()
+    public function product_deals()
     {
         return $this->hasMany(ProductDealLog::class);
     }
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    public function product_images()
+    {
+        return $this->hasMany(ProductImage::class);
+    }
+    public function request()
+    {
+        return $this->belongsTo(Request::class);
+    }
+    public function product_tags()
+    {
+        return $this->hasMany(ProductTag::class);
+    }
+    public function product_likes()
+    {
+        return $this->hasMany(ProductLike::class);
     }
 }
