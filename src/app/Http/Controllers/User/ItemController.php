@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ItemController extends Controller
 {
@@ -14,7 +16,7 @@ class ItemController extends Controller
      */
     public function index()
     {
-        //
+        return view('backend_test.items');
     }
 
     /**
@@ -24,7 +26,7 @@ class ItemController extends Controller
      */
     public function create()
     {
-        //
+        return view('backend_test.items');
     }
 
     /**
@@ -35,15 +37,13 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-        //title,user_id,description,request_id(nullable)
-        $tmp_request=collect(['title'=>'タイトル','user_id'=>1,'description'=>'説明文','request_id'=>1]);
-        $request=$tmp_request;
-        $product_instance=new Product();
-        $product_instance->title=$request->title;
-        $product_instance->user_id=$request->user_id;
-        $product_instance->description=$request->description;
-        $product_instance->request_id=$request->request_id;
+        $product_instance = new Product();
+        $product_instance->title = $request->title;
+        $product_instance->user_id = Auth::id();
+        $product_instance->description = $request->description;
+        $product_instance->request_id = $request->request_id;
         $product_instance->save();
+        return view('backend_test.items');
     }
 
     /**
