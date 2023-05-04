@@ -8,6 +8,7 @@ use App\Models\ProductTag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Tag;
+
 class ItemController extends Controller
 {
     /**
@@ -34,8 +35,8 @@ class ItemController extends Controller
      */
     public function create()
     {
-        $product_tags=Tag::productTags()->get();
-        return view('backend_test.items',compact('product_tags'));
+        $product_tags = Tag::productTags()->get();
+        return view('backend_test.items', compact('product_tags'));
     }
 
     /**

@@ -13,7 +13,8 @@ class ProductTag extends Model
     {
         return $this->belongsTo(Tag::class);
     }
-    public function scopeBelongsToProduct($query,$product_id){
+    public function scopeBelongsToProduct($query, $product_id)
+    {
         return $query->where('product_id', $product_id);
     }
 }
