@@ -104,6 +104,10 @@ class ItemController extends Controller
         $this->addProductImages($images, $id);
         $this->deleteProductImages($request->delete_images);
         $this->updateProductTags($request->product_tags, $id);
+        $product_instance=Product::findOrFail($id);
+        $product_instance->title=$request->title;
+        $product_instance->description=$request->description;
+        $product_instance->save();
         return redirect()->back();
     }
 

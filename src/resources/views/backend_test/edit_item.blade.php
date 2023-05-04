@@ -9,7 +9,6 @@
 </head>
 
 <body>
-    <!-- アイテム編集 -->
     <form action="/items/{{$product->id}}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
@@ -22,6 +21,7 @@
         </label>
         @endforeach
         <div>
+            追加する画像を選択
             <input type="file" name="product_images[]" multiple>
         </div>
         <div>
