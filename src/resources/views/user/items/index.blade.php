@@ -17,11 +17,11 @@ $tags = ['PC', 'マウス', 'ディスプレイ', 'スマホ', 'ヘッドホン'
         <x-user-search-box>
             <x-user-search-tags>
                 <x-slot name="category_tags">
-                    @foreach ($tags as $tag)
-                    <div class="w-auto mx-1 border rounded border-gray-200 dark:border-gray-600">
+                    @foreach ($tags as $index => $tag)
+                    <div class="w-auto mx-1 border rounded border-gray-200">
                         <div class="flex items-center px-3">
-                            <input id="vue-checkbox-list" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                            <label for="vue-checkbox-list" class="w-full py-3 pl-1 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $tag }}</label>
+                            <input id="tag_{{ $index }}" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
+                            <label for="tag_{{ $index }}" class="w-full py-3 pl-1 text-sm font-medium text-gray-900">{{ $tag }}</label>
                         </div>
                     </div>
                     @endforeach
