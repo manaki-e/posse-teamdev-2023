@@ -1,9 +1,9 @@
 <x-admin-app>
     <x-slot name="title">
-        {{ __('ユーザー詳細') }}
+        {{ __('ユーザ詳細') }}
     </x-slot>
     <x-slot name="discription">
-        {{ __('特定のユーザーに関するテータ（個人情報・アイテム取引履歴・登録済みアイテム一覧・参加したイベント一覧・主催したイベント一覧）が表示されます。') }}
+        {{ __('特定のユーザに関するテータ（個人情報・アイテム取引履歴・登録済みアイテム一覧・参加したイベント一覧・主催したイベント一覧）が表示されます。') }}
     </x-slot>
 
     <div class="bg-white shadow rounded-lg md:p-6 w-full my-4">
@@ -30,7 +30,7 @@
         <div class="flex">
             <div>
                 <div class="w-36 h-36 mx-16 my-4">
-                    <img class="rounded-full overflow-hidden border-4 admin-border-green" src="{{ asset('images/sample_product_1.jpeg') }}" alt="ユーザー写真">
+                    <img class="rounded-full overflow-hidden border-4 admin-border-green" src="{{ asset('images/sample_product_1.jpeg') }}" alt="ユーザ写真">
                 </div>
             </div>
             <div>

@@ -135,7 +135,7 @@
                                                             </div>
                                                             <div class="flex-1">
                                                                 <h3 class="text-lg font-medium text-secondary-900">ポイント交換を完了しましたか？</h3>
-                                                                <div class="mt-2 text-sm text-secondary-500">対象のユーザーにAmazon Giftカードを受け渡し後に完了を押してください。交換完了後のキャンセルはできません。</div>
+                                                                <div class="mt-2 text-sm text-secondary-500">対象のユーザにAmazon Giftカードを受け渡し後に完了を押してください。交換完了後のキャンセルはできません。</div>
                                                             </div>
                                                         </div>
                                                         <div class="mt-6 flex justify-end gap-3">
