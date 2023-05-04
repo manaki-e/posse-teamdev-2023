@@ -30,8 +30,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::group(['prefix'=>'mypage','as'=>'mypage.'],function(){
-        Route::get('/events/organized',[MyPageController::class,'eventsOrganized'])->name('events.organized');
+    Route::group(['prefix' => 'mypage', 'as' => 'mypage.'], function () {
+        Route::get('/events/organized', [MyPageController::class, 'eventsOrganized'])->name('events.organized');
+        Route::get('/events/joined', [MyPageController::class, 'eventsJoined'])->name('events.joined');
     });
     Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'check.admin'], function () {
         Route::get('/dashboard', [AdminIndexController::class, 'index'])->name('dashboard');
