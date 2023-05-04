@@ -17,6 +17,9 @@ $events = ['React勉強会', '野球', 'サッカー', 'pythonで機械学習', 
     <x-slot name="body_slot">
         <x-user-search-box>
             <x-user-search-tags>
+                <x-slot name="category1">参加状況</x-slot>
+                <x-slot name="available">参加可能</x-slot>
+                <x-slot name="unavailable">参加不可</x-slot>
                 <x-slot name="category_tags">
                     @foreach ($tags as $index => $tag)
                     <div class="w-auto mx-1 border rounded border-gray-200 dark:border-gray-600">
