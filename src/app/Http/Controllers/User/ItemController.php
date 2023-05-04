@@ -4,13 +4,10 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
-use App\Models\ProductImage;
 use App\Models\ProductTag;
-use App\Models\Request as ModelsRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Tag;
-use Illuminate\Support\Facades\File;
 
 class ItemController extends Controller
 {
@@ -67,7 +64,7 @@ class ItemController extends Controller
     public function show($id)
     {
         $product = Product::withRelations()->findOrFail($id);
-        $product->japanese_status=Product::JAPANESE_STATUS[$product->status];
+        $product->japanese_status = Product::JAPANESE_STATUS[$product->status];
         $product->description = $product->changeDescriptionReturnToBreakTag($product->description);
         return view('backend_test.item', compact('product'));
     }
@@ -86,7 +83,7 @@ class ItemController extends Controller
         });
         $chosen_product_tags = ProductTag::where('product_id', $id)->get();
         $product = Product::withRelations()->findOrFail($id);
-        $product->japanese_product_status=Product::JAPANESE_STATUS[$product->status];
+        $product->japanese_product_status = Product::JAPANESE_STATUS[$product->status];
         foreach ($chosen_product_tags as $chosen_product_tag) {
             $tags->find($chosen_product_tag->tag_id)->is_chosen = true;
         }
@@ -103,10 +100,10 @@ class ItemController extends Controller
     public function update(Request $request, $id)
     {
         $images = $request->file('product_images');
-        $this->addProductImages($images, $id);
-        $this->deleteProductImages($request->delete_images);
-        $this->updateProductTags($request->product_tags, $id);
         $product_instance = Product::findOrFail($id);
+        $product_instance->addProductImages($images, $id);
+        $product_instance->deleteProductImages($request->delete_images);
+        $product_instance->updateProductTags($request->product_tags, $id);
         $product_instance->title = $request->title;
         $product_instance->description = $request->description;
         $product_instance->save();
@@ -125,56 +122,20 @@ class ItemController extends Controller
         //ここはたぶんマイページに遷移
         return redirect('/items');
     }
-    public function addProductImages($images, $product_id)
+    public function borrow($id)
     {
-        if (!empty($images)) {
-            foreach ($images as $image) {
-                $product_image_instance = new ProductImage();
-                $next_public_images_file_name = 'sample_product_' . (count(File::files(public_path('images'))) + 1) . '.jpeg';
-                $image->move(public_path('images'), $next_public_images_file_name);
-                $product_image_instance->product_id = $product_id;
-                $product_image_instance->image_url = $next_public_images_file_name;
-                $product_image_instance->save();
-            }
-        }
-        return;
-    }
-    public function deleteProductImages($product_image_id_array)
-    {
-        if (!empty($product_image_id_array)) {
-            foreach ($product_image_id_array as $product_image_id) {
-                $product_image_instance = ProductImage::findOrFail($product_image_id);
-                $product_image_instance->delete();
-            }
-        }
-        return;
-    }
-    public function updateProductTags($product_tag_id_array, $product_id)
-    {
-        //ロジックめんどいから全部削除して追加する
-        ProductTag::belongsToProduct($product_id)->delete();
-        if (!empty($product_tag_id_array)) {
-            foreach ($product_tag_id_array as $product_tag_id) {
-                $product_tags_instance = new ProductTag();
-                $product_tags_instance->product_id = $product_id;
-                $product_tags_instance->tag_id = $product_tag_id;
-                $product_tags_instance->save();
-            }
-        }
-        //idはテーブルのid,tag_idはタグのid
-        return;
-    }
-    public function borrow($id){
         $product_instance = Product::findOrFail($id);
         $product_instance->changeStatusToOccupied();
         return redirect()->back();
     }
-    public function return($id){
+    public function return($id)
+    {
         $product_instance = Product::findOrFail($id);
         $product_instance->changeStatusToAvailable();
         return redirect()->back();
     }
-    public function cancel($id){
+    public function cancel($id)
+    {
         $product_instance = Product::findOrFail($id);
         $product_instance->changeStatusToAvailable();
         return redirect()->back();

@@ -92,4 +92,43 @@ class Product extends Model
         $this->status = self::STATUS['occupied'];
         $this->save();
     }
+    public function addProductImages($images, $product_id)
+    {
+        if (!empty($images)) {
+            foreach ($images as $image) {
+                $product_image_instance = new ProductImage();
+                $next_public_images_file_name = 'sample_product_' . (count(File::files(public_path('images'))) + 1) . '.jpeg';
+                $image->move(public_path('images'), $next_public_images_file_name);
+                $product_image_instance->product_id = $product_id;
+                $product_image_instance->image_url = $next_public_images_file_name;
+                $product_image_instance->save();
+            }
+        }
+        return;
+    }
+    public function deleteProductImages($product_image_id_array)
+    {
+        if (!empty($product_image_id_array)) {
+            foreach ($product_image_id_array as $product_image_id) {
+                $product_image_instance = ProductImage::findOrFail($product_image_id);
+                $product_image_instance->delete();
+            }
+        }
+        return;
+    }
+    public function updateProductTags($product_tag_id_array, $product_id)
+    {
+        //ロジックめんどいから全部削除して追加する
+        ProductTag::belongsToProduct($product_id)->delete();
+        if (!empty($product_tag_id_array)) {
+            foreach ($product_tag_id_array as $product_tag_id) {
+                $product_tags_instance = new ProductTag();
+                $product_tags_instance->product_id = $product_id;
+                $product_tags_instance->tag_id = $product_tag_id;
+                $product_tags_instance->save();
+            }
+        }
+        //idはテーブルのid,tag_idはタグのid
+        return;
+    }
 }
