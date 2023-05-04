@@ -1,9 +1,9 @@
 <x-admin-app>
     <x-slot name="title">
-        {{ __('ユーザー一覧') }}
+        {{ __('ユーザ一覧') }}
     </x-slot>
     <x-slot name="discription">
-        {{ __('APのslackワークスペースに所属しており、メールアドレスが@anti-pattern.co.jpであるユーザーの一覧が表示されます') }}
+        {{ __('APのslackワークスペースに所属しており、メールアドレスが@anti-pattern.co.jpであるユーザの一覧が表示されます') }}
     </x-slot>
 
     <div class="bg-white shadow rounded-lg md:p-6 w-full">
@@ -12,7 +12,7 @@
                 <ul class="-mb-px flex items-center gap-4 text-sm font-medium">
                     <li>
                         <a @click="activeTab = 0" class="inline-flex cursor-pointer items-center gap-2 px-1 py-3 text-blue-500 hover:text-blue-500" :class="{'relative text-blue-500  after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-full after:bg-blue-500': activeTab === 0}">
-                            ユーザー一覧
+                            ユーザ一覧
                             <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-500">
                                 68
                             </span>
