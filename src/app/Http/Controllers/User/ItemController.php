@@ -79,16 +79,16 @@ class ItemController extends Controller
      */
     public function edit($id)
     {
-        $product_tags = Tag::productTags()->get()->map(function ($product_tag) {
-            $product_tag->is_chosen = false;
-            return $product_tag;
+        $tags = Tag::productTags()->get()->map(function ($tag) {
+            $tag->is_chosen = false;
+            return $tag;
         });
         $chosen_product_tags = ProductTag::where('product_id', $id)->get();
         $product = Product::withRelations()->findOrFail($id);
         foreach ($chosen_product_tags as $chosen_product_tag) {
-            $product_tags->find($chosen_product_tag->tag_id)->is_chosen = true;
+            $tags->find($chosen_product_tag->tag_id)->is_chosen = true;
         }
-        return view('backend_test.edit_item', compact('product', 'product_tags'));
+        return view('backend_test.edit_item', compact('product', 'tags'));
     }
 
     /**
@@ -101,10 +101,9 @@ class ItemController extends Controller
     public function update(Request $request, $id)
     {
         $images = $request->file('product_images');
-        $this->addProductImage($images, $id);
-        $this->deleteProductImage($request->delete_images);
-        // dd($request);
-        // dd();
+        $this->addProductImages($images, $id);
+        $this->deleteProductImages($request->delete_images);
+        $this->updateProductTags($request->product_tags, $id);
         return redirect()->back();
     }
 
@@ -118,26 +117,43 @@ class ItemController extends Controller
     {
         //
     }
-    public function addProductImage($images, $id)
+    public function addProductImages($images, $product_id)
     {
         if (!empty($images)) {
             foreach ($images as $image) {
                 $product_image_instance = new ProductImage();
                 $next_public_images_file_name = 'sample_product_' . (count(File::files(public_path('images'))) + 1) . '.jpeg';
                 $image->move(public_path('images'), $next_public_images_file_name);
-                $product_image_instance->product_id = $id;
+                $product_image_instance->product_id = $product_id;
                 $product_image_instance->image_url = $next_public_images_file_name;
                 $product_image_instance->save();
             }
         }
         return;
     }
-    public function deleteProductImage($product_image_ids)
+    public function deleteProductImages($product_image_id_array)
     {
-        foreach ($product_image_ids as $product_image_id) {
-            $product_image_instance = ProductImage::findOrFail($product_image_id);
-            $product_image_instance->delete();
+        if (!empty($product_image_id_array)) {
+            foreach ($product_image_id_array as $product_image_id) {
+                $product_image_instance = ProductImage::findOrFail($product_image_id);
+                $product_image_instance->delete();
+            }
         }
+        return;
+    }
+    public function updateProductTags($product_tag_id_array, $product_id)
+    {
+        //ロジックめんどいから全部削除して追加する
+        ProductTag::belongsToProduct($product_id)->delete();
+        if (!empty($product_tag_id_array)) {
+            foreach ($product_tag_id_array as $product_tag_id) {
+                $product_tags_instance = new ProductTag();
+                $product_tags_instance->product_id = $product_id;
+                $product_tags_instance->tag_id = $product_tag_id;
+                $product_tags_instance->save();
+            }
+        }
+        //idはテーブルのid,tag_idはタグのid
         return;
     }
 }

@@ -38,14 +38,14 @@
         </div>
         <div>
             タグ
-            @foreach($product_tags as $product_tag)
+            @foreach($tags as $tag)
             <label>
-                @if($product_tag->is_chosen===true)
-                <input type="checkbox" name="delete_product_tags" value="{{ $product_tag->id }}" checked>
+                @if($tag->is_chosen===true)
+                <input type="checkbox" name="product_tags[]" value="{{ $tag->id }}" checked>
                 @else
-                <input type="checkbox" name="delete_product_tags" value="{{ $product_tag->id }}">
+                <input type="checkbox" name="product_tags[]" value="{{ $tag->id }}">
                 @endif
-                {{ $product_tag->name }}
+                {{ $tag->name }}
             </label>
             @endforeach
         </div>
