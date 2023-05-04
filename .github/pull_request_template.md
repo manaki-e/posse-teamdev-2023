@@ -9,6 +9,7 @@
 - [ ] Reviewerを設定した
 - [ ] Assigneeに自分を設定した
 - [ ] Projectを設定した
+- [ ] milestoneを設定した
 - [ ] Developmentでイシューを選択した
 
 ## その他
