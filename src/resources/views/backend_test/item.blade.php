@@ -9,13 +9,14 @@
 </head>
 
 <body>
+    <!-- アイテム詳細 -->
     <div>
         @foreach($product->productImages as $product_image)
         <img width="100" height="100" src=" {{asset('images/'.$product_image->image_url)}}">
         @endforeach
-        <div>{{$product->title}}</div>
         <div>いいね{{$product->product_likes_count}}</div>
         <div>{{$product->point}}</div>
+        <div>{{$product->title}}</div>
         <div>{!! $product->description !!}</div>
         <div>
             @foreach($product->productTags as $product_tag)

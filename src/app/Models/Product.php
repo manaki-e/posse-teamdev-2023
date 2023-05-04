@@ -72,6 +72,6 @@ class Product extends Model
         return $query->with('user')->with('request')->with('productImages')->with('productTags.tag')->withCount('productLikes')->with('productLikes');
     }
     public function changeDescriptionReturnToBreakTag($value){
-        return str_replace("\n","<br>",$value);
+        return str_replace("\n","<br>",e($value));
     }
 }

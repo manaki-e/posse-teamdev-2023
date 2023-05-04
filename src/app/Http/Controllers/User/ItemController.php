@@ -4,10 +4,12 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\ProductTag;
 use App\Models\Request as ModelsRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Tag;
+use Illuminate\Support\Facades\File;
 
 class ItemController extends Controller
 {
@@ -76,7 +78,16 @@ class ItemController extends Controller
      */
     public function edit($id)
     {
-        //
+        $product_tags = Tag::productTags()->get()->map(function($product_tag){
+            $product_tag->is_chosen=false;
+            return $product_tag;
+        });
+        $chosen_product_tags=ProductTag::where('product_id',$id)->get();
+        $product = Product::withRelations()->findOrFail($id);
+        foreach($chosen_product_tags as $chosen_product_tag){
+            $product_tags->find($chosen_product_tag->tag_id)->is_chosen=true;
+        }
+        return view('backend_test.edit_item', compact('product', 'product_tags'));
     }
 
     /**
@@ -88,7 +99,15 @@ class ItemController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $images=$request->file('product_images');
+        if(!empty($images)) {
+            foreach ($images as $image) {
+                $next_public_images_file_name='sample_product_'.(count(File::files(public_path('images')))+1).'.jpeg';
+                $image->move(public_path('images'),$next_public_images_file_name);
+            }
+        }
+        dd(count(File::files(public_path('images'))));
+        // dd();
     }
 
     /**
