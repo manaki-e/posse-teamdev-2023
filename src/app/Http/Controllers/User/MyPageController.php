@@ -18,7 +18,7 @@ class MyPageController extends Controller
         // Authのid
         $auth_id = Auth::id();
         //Authのidに紐づいているテーブルを全部取得
-        $event_organizes = Event::with('participants')->where('user_id', '=', $auth_id)->get();
+        $event_organizes = Event::with('participants')->where('user_id', '=', $auth_id)->with('event')->get();
         foreach ($event_organizes as $event_organize) {
             print_r($event_organize->title . '<br>');
             print_r($event_organize->created_at . '<br>');
