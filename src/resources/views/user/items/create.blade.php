@@ -15,7 +15,6 @@ $tags = ['PC', 'マウス', 'ディスプレイ', 'スマホ', 'ヘッドホン'
             <x-slot name="title">アイテムの出品</x-slot>
             <x-slot name="button">出品する</x-slot>
             <section class="text-left w-2xl">
-
                 <div class="mx-auto mt-4 max-w-lg">
                     <label for="example5" class="mb-1 block text-sm font-medium text-gray-700">出品画像</label>
                     <label class="flex w-full cursor-pointer appearance-none items-center justify-center rounded-md border-2 border-dashed border-gray-200 p-6 transition-all hover:border-primary-300">
@@ -28,23 +27,21 @@ $tags = ['PC', 'マウス', 'ディスプレイ', 'スマホ', 'ヘッドホン'
                             <div class="text-gray-600"><a href="#" class="font-medium text-primary-500 hover:text-primary-700">クリックして追加</a> または ファイルをドロップ</div>
                             <p class="text-sm text-gray-500">SVG, PNG, JPG or GIF (max. 800x400px)</p>
                         </div>
-                        <input id="example5" type="file" class="sr-only" required/>
+                        <input id="example5" type="file" class="sr-only" required />
                     </label>
                 </div>
                 <section class="my-6">
                     <h3 class="mb-2 text-xl text-gray-600 font-extrabold border-b border-gray-500">アイテムの詳細</h3>
                     <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">カテゴリー</h4>
-                    <div class="flex overflow-x-scroll w-full max-w-lg text-sm font-medium text-gray-900 bg-white">
-                        <div class="flex">
-                            @foreach ($tags as $index => $tag)
-                            <div class="min-w-max mx-1 border rounded border-gray-200">
-                                <div class="flex items-center px-3">
-                                    <input id="tag_{{ $index }}" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
-                                    <label for="tag_{{ $index }}" class="w-auto py-3 pl-1 text-sm font-medium text-gray-900">{{ $tag }}</label>
-                                </div>
+                    <div class="w-full flex flex-wrap max-w-lg text-sm font-medium text-gray-900 bg-white">
+                        @foreach ($tags as $index => $tag)
+                        <div class="min-w-max m-1 border rounded border-gray-200">
+                            <div class="flex items-center px-3">
+                                <input id="tag_{{ $index }}" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
+                                <label for="tag_{{ $index }}" class="w-auto py-3 pl-1 text-sm font-medium text-gray-900">{{ $tag }}</label>
                             </div>
-                            @endforeach
                         </div>
+                        @endforeach
                     </div>
                     <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">アイテムの状態</h4>
                     <div class="mb-4">
@@ -63,16 +60,13 @@ $tags = ['PC', 'マウス', 'ディスプレイ', 'スマホ', 'ヘッドホン'
                     <h3 class="mb-2 text-xl text-gray-600 font-extrabold border-b border-gray-500">アイテム名と説明</h3>
                     <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">アイテム名</h4>
                     <div class="mx-auto">
-                        <input type="text" class="p-1 block w-full rounded-md border-gray-300 shadow-sm" required/>
+                        <input type="text" class="p-1 block w-full rounded-md border-gray-300 shadow-sm" required />
                     </div>
                     <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">アイテムの説明</h4>
                     <div class="mx-auto">
                         <textarea class="p-1 block w-full rounded-md border-gray-300 shadow-sm" rows="3" required></textarea>
                     </div>
                 </section>
-
-
-
             </section>
         </x-user-form>
     </x-slot>
