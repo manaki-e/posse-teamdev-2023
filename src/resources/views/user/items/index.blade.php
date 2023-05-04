@@ -16,6 +16,9 @@ $tags = ['PC', 'マウス', 'ディスプレイ', 'スマホ', 'ヘッドホン'
     <x-slot name="body_slot">
         <x-user-search-box>
             <x-user-search-tags>
+                <x-slot name="category1">利用状況</x-slot>
+                <x-slot name="available">利用可能</x-slot>
+                <x-slot name="unavailable">利用不可</x-slot>
                 <x-slot name="category_tags">
                     @foreach ($tags as $index => $tag)
                     <div class="w-auto mx-1 border rounded border-gray-200">
