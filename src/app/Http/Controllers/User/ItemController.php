@@ -8,7 +8,6 @@ use App\Models\ProductTag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Tag;
-
 class ItemController extends Controller
 {
     /**
@@ -35,7 +34,8 @@ class ItemController extends Controller
      */
     public function create()
     {
-        return view('backend_test.items');
+        $product_tags=Tag::productTags()->get();
+        return view('backend_test.items',compact('product_tags'));
     }
 
     /**
@@ -47,12 +47,15 @@ class ItemController extends Controller
     public function store(Request $request)
     {
         $product_instance = new Product();
+        $images = $request->file('product_images');
         $product_instance->title = $request->title;
         $product_instance->user_id = Auth::id();
         $product_instance->description = $request->description;
         $product_instance->request_id = $request->request_id;
         $product_instance->save();
-        return view('backend_test.items');
+        $product_instance->addProductImages($images, $product_instance->id);
+        $product_instance->updateProductTags($request->product_tags, $product_instance->id);
+        return redirect('/items');
     }
 
     /**

@@ -9,14 +9,6 @@
 </head>
 
 <body>
-    <form action="" method="POST">
-        @csrf
-        <div>アイテム登録フォーム</div>
-        <label>タイトル</label><input name='title'>
-        <label>説明</label><input name='description'>
-        <label>リクエストID</label><input name='request_id'>
-        <input type="submit">
-    </form>
     @foreach($not_pending_products as $product)
     <div style="display:flex;">
         <div>{{$product->title}}</div>

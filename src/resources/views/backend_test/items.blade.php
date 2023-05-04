@@ -9,12 +9,19 @@
 </head>
 
 <body>
-    <form action="" method="POST">
+    <form action="/items" method="POST" enctype="multipart/form-data">
         @csrf
         <div>アイテム登録フォーム</div>
         <label>タイトル</label><input name='title'>
         <label>説明</label><input name='description'>
         <label>リクエストID</label><input name='request_id'>
+        @foreach($product_tags as $product_tag)
+        <label>
+            <input name=" product_tags[]" type="checkbox" value="{{$product_tag->id}}">
+            {{ $product_tag->name }}
+        </label>
+        @endforeach
+        <input type="file" name="product_images[]" multiple>
         <input type="submit">
     </form>
     <div>絞り込み</div>
