@@ -36,19 +36,20 @@ $events = ['React勉強会', '野球', 'サッカー', 'pythonで機械学習', 
             <table class="w-full border-collapse bg-white text-left text-sm text-gray-500">
                 <thead class="bg-gray-50">
                     <tr>
+                        <th scope="col" class="px-6 py-4 font-medium text-gray-900">タイトル</th>
                         <th scope="col" class="px-6 py-4 font-medium text-gray-900">投稿日</th>
                         <th scope="col" class="px-6 py-4 font-medium text-gray-900">投稿者</th>
-                        <th scope="col" class="px-6 py-4 font-medium text-gray-900">タイトル</th>
                         <th scope="col" class="px-6 py-4 font-medium text-gray-900">タグ</th>
+                        <th scope="col" class="px-6 py-4 font-medium text-gray-900">予約数</th>
                         <th scope="col" class="px-6 py-4 font-medium text-gray-900">いいね</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100 border-t border-gray-100">
                     @foreach ($events as $event)
                     <tr class="hover:bg-gray-50">
+                        <th class="px-6 py-4 text-gray-700 text-lg">{{ $event }}</th>
                         <td class="px-6 py-4">2023年2月20日</td>
                         <td class="px-6 py-4">遠藤　愛期</td>
-                        <td class="px-6 py-4">{{ $event }}</td>
                         <td class="px-6 py-4">
                             <span class="inline-flex items-center gap-1 rounded-full bg-gray-50 px-2 py-1 text-xs font-semibold text-gray-600">
                                 勉強会
@@ -60,6 +61,7 @@ $events = ['React勉強会', '野球', 'サッカー', 'pythonで機械学習', 
                                 プログラミング
                             </span>
                         </td>
+                        <td class="px-6 py-4 text-lg text-center">10</td>
                         <td class="px-6 py-4 flex">
                             <button class="mt-1 text-gray-500">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
