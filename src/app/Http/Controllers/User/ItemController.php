@@ -24,7 +24,7 @@ class ItemController extends Controller
         $japanese_product_statuses = Product::JAPANESE_STATUS;
         unset($japanese_product_statuses[1]);
         $product_tags = Tag::productTags()->get();
-        $products = Product::availableProducts()->withRelations()->paginate(8)->map(function ($product) use ($japanese_product_statuses) {
+        $products = Product::approvedProducts()->withRelations()->paginate(8)->map(function ($product) use ($japanese_product_statuses) {
             $product->japanese_status = $japanese_product_statuses[$product->status];
             return $product;
         });
@@ -67,6 +67,7 @@ class ItemController extends Controller
     public function show($id)
     {
         $product = Product::withRelations()->findOrFail($id);
+        $product->japanese_status=Product::JAPANESE_STATUS[$product->status];
         $product->description = $product->changeDescriptionReturnToBreakTag($product->description);
         return view('backend_test.item', compact('product'));
     }
@@ -85,6 +86,7 @@ class ItemController extends Controller
         });
         $chosen_product_tags = ProductTag::where('product_id', $id)->get();
         $product = Product::withRelations()->findOrFail($id);
+        $product->japanese_product_status=Product::JAPANESE_STATUS[$product->status];
         foreach ($chosen_product_tags as $chosen_product_tag) {
             $tags->find($chosen_product_tag->tag_id)->is_chosen = true;
         }
@@ -104,9 +106,9 @@ class ItemController extends Controller
         $this->addProductImages($images, $id);
         $this->deleteProductImages($request->delete_images);
         $this->updateProductTags($request->product_tags, $id);
-        $product_instance=Product::findOrFail($id);
-        $product_instance->title=$request->title;
-        $product_instance->description=$request->description;
+        $product_instance = Product::findOrFail($id);
+        $product_instance->title = $request->title;
+        $product_instance->description = $request->description;
         $product_instance->save();
         return redirect()->back();
     }
@@ -119,7 +121,9 @@ class ItemController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Product::findOrFail($id)->delete();
+        //ここはたぶんマイページに遷移
+        return redirect('/items');
     }
     public function addProductImages($images, $product_id)
     {
@@ -159,5 +163,20 @@ class ItemController extends Controller
         }
         //idはテーブルのid,tag_idはタグのid
         return;
+    }
+    public function borrow($id){
+        $product_instance = Product::findOrFail($id);
+        $product_instance->changeStatusToOccupied();
+        return redirect()->back();
+    }
+    public function return($id){
+        $product_instance = Product::findOrFail($id);
+        $product_instance->changeStatusToAvailable();
+        return redirect()->back();
+    }
+    public function cancel($id){
+        $product_instance = Product::findOrFail($id);
+        $product_instance->changeStatusToAvailable();
+        return redirect()->back();
     }
 }

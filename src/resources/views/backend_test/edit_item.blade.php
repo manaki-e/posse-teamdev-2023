@@ -9,6 +9,7 @@
 </head>
 
 <body>
+    <!-- アイテム編集 -->
     <form action="/items/{{$product->id}}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
@@ -50,6 +51,20 @@
             @endforeach
         </div>
         <input type="submit">
+    </form>
+    <!-- アイテムステータス変更 -->
+    <div>{{$product->japanese_product_status}}</div>
+    <form action="{{route('items.borrow',['id'=>$product->id])}}" method="POST">
+        @csrf
+        <input type="submit" value="借りる">
+    </form>
+    <form action="{{route('items.cancel',['id'=>$product->id])}}" method="POST">
+        @csrf
+        <input type="submit" value="キャンセル">
+    </form>
+    <form action="{{route('items.return',['id'=>$product->id])}}" method="POST">
+        @csrf
+        <input type="submit" value="返す">
     </form>
 </body>
 

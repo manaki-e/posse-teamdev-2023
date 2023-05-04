@@ -31,6 +31,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('/items', ItemController::class);
+    Route::post('/items/{id}/borrow',[ItemController::class, 'borrow'])->name('items.borrow');
+    Route::post('/items/{id}/cancel',[ItemController::class, 'cancel'])->name('items.cancel');
+    Route::post('/items/{id}/return',[ItemController::class, 'return'])->name('items.return');
     Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'check.admin'], function () {
         Route::get('/dashboard', [AdminIndexController::class, 'index'])->name('dashboard');
         Route::get('/histories', [AdminIndexController::class, 'histories'])->name('histories');

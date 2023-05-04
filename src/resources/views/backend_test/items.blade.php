@@ -47,9 +47,9 @@
         <div>
             <div>{{$product->title}}</div>
             <div>{{$product->point}}</div>
-            <a href="/items/{{$product->id}}">
-                <img width="100" height="100" src=" {{asset('images/'.$product->productImages->first()->image_url)}}">
-            </a>
+            <img width="100" height="100" src=" {{asset('images/'.$product->productImages->first()->image_url)}}">
+            <a href="/items/{{$product->id}}">詳細</a>
+            <a href="/items/{{$product->id}}/edit">編集</a>
         </div>
         @endforeach
     </div>

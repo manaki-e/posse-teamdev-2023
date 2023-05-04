@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
     use HasFactory;
+    use softDeletes;
     const STATUS = [
         'pending' => 1,
         'available' => 2,
@@ -71,7 +73,23 @@ class Product extends Model
     {
         return $query->with('user')->with('request')->with('productImages')->with('productTags.tag')->withCount('productLikes')->with('productLikes');
     }
-    public function changeDescriptionReturnToBreakTag($value){
-        return str_replace("\n","<br>",e($value));
+    public function changeDescriptionReturnToBreakTag($value)
+    {
+        return str_replace("\n", "<br>", e($value));
+    }
+    public function changeStatusToPending()
+    {
+        $this->status = self::STATUS['pending'];
+        $this->save();
+    }
+    public function changeStatusToAvailable()
+    {
+        $this->status = self::STATUS['available'];
+        $this->save();
+    }
+    public function changeStatusToOccupied()
+    {
+        $this->status = self::STATUS['occupied'];
+        $this->save();
     }
 }
