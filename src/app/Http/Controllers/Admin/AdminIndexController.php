@@ -12,10 +12,10 @@ class AdminIndexController extends Controller
 {
     public function histories()
     {
-        $event_participants = $this->event_participants();
-        $product_deals = $this->product_deals();
+        $event_participants = $this->eventParticipants();
+        $product_deals = $this->productDeals();
     }
-    public function product_deals()
+    public function productDeals()
     {
         //figmaには一画面8項目だったので、paginate(8)を追加
         //貸した人、商品名、借りた人、ポイント、借りた日時、返却日時
@@ -31,7 +31,7 @@ class AdminIndexController extends Controller
         }
         return $deal_log_with_products;
     }
-    public function event_participants()
+    public function eventParticipants()
     {
         //figmaには一画面8項目だったので、paginate(8)を追加
         //イベント名、参加者名、登録日時
@@ -46,7 +46,7 @@ class AdminIndexController extends Controller
     }
     public function pointExchanges()
     {
-        $done_point_exchanges = PointExchangeLog::with('user')->approved()->paginate(8, ['*'], 'done-page')->appends(['undone-page' => request('undone-page')]);
+        $done_point_exchanges = PointExchangeLog::with('user')->approved()->paginate(8, ['*'], 'done_page')->appends(['undone_page' => request('undone_page')]);
         print_r($_SERVER['REQUEST_URI'] . '<br>');
         print_r('換金対応済み<br>');
         foreach ($done_point_exchanges as $done_point_exchange) {
@@ -56,7 +56,7 @@ class AdminIndexController extends Controller
             print_r($done_point_exchange->updated_at->format('Y年m月d日 H:i:s') . "<br>");
         }
         print_r('換金未対応<br>');
-        $undone_point_exchanges = PointExchangeLog::with('user')->pending()->paginate(8, ['*'], 'undone-page')->appends(['done-page' => request('done-page')]);
+        $undone_point_exchanges = PointExchangeLog::with('user')->pending()->paginate(8, ['*'], 'undone_page')->appends(['done_page' => request('done_page')]);
         foreach ($undone_point_exchanges as $undone_point_exchange) {
             print_r($undone_point_exchange->user->name . "\n");
             print_r($undone_point_exchange->point . "\n");

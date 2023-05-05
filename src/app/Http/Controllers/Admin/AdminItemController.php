@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\ProductTag;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 
 class AdminItemController extends Controller
@@ -16,27 +18,14 @@ class AdminItemController extends Controller
     public function index()
     {
         //登録済みアイテム一覧
-        $product_japanese_statuses = Product::JAPANESE_STATUS;
-        $not_pending_products = Product::approvedProducts()->with('user')->get()->map(function ($not_pending_product) use ($product_japanese_statuses) {
-            $not_pending_product->japanese_status = $product_japanese_statuses[$not_pending_product->status];
+        $japanese_product_statuses = Product::JAPANESE_STATUS;
+        $not_pending_products = Product::approvedProducts()->with('user')->paginate(8, ['*'], 'not_pending')->appends(['pending' => request('pending')])->map(function ($not_pending_product) use ($japanese_product_statuses) {
+            $not_pending_product->japanese_product_status = $japanese_product_statuses[$not_pending_product->status];
             return $not_pending_product;
         });
-        foreach ($not_pending_products as $not_pending_product) {
-            var_dump($not_pending_product->title);
-            var_dump($not_pending_product->point);
-            var_dump($not_pending_product->user->name);
-            var_dump($not_pending_product->japanese_status);
-            print_r('<br>');
-        }
         //登録申請対応待ちアイテム一覧
-        $pending_products = Product::pendingProducts()->with('user')->get();
-        foreach ($pending_products as $pending_product) {
-            var_dump($pending_product->title);
-            var_dump($pending_product->user->name);
-            var_dump($pending_product->created_at->format('Y年m月d日 H:i:s'));
-            print_r('<br>');
-        }
-        // return view('admin.item.index',compact('not_pending_products','pending_products'));
+        $pending_products = Product::pendingProducts()->with('user')->paginate(8, ['*'], 'pending')->appends(['not_pending' => request('not_pending')]);
+        return view('backend_test.admin_items', compact('not_pending_products', 'pending_products'));
     }
 
     /**
@@ -68,24 +57,9 @@ class AdminItemController extends Controller
      */
     public function show($id)
     {
-        $product = Product::with('user')->with('product_images')->with('request')->with('product_deals.user')->with('product_tags.tag')->withCount('product_likes')->findOrFail($id);
+        $product = Product::with('user')->with('productImages')->with('request')->with('productDeals.user')->with('productTags.tag')->withCount('productLikes')->findOrFail($id);
         $product->japanese_status = Product::JAPANESE_STATUS[$product->status];
-        print_r('タイトル' . $product->title . '<br>');
-        print_r('ステータス' . $product->japanese_status . '<br>');
-        print_r('ポイント' . $product->point . '<br>');
-        print_r('いいね' . $product->product_likes_count . '<br>');
-        print_r('説明' . $product->description . '<br>');
-        print_r('タグ<br>');
-        foreach ($product->product_tags as $product_tag) {
-            print_r($product_tag->tag->name . '<br>');
-        }
-        print_r('貸出履歴<br>');
-        foreach ($product->product_deals as $product_deal) {
-            print_r($product_deal->user->name . $product_deal->created_at->format('Y年m月d日 H:i:s') . '<br>');
-        }
-        print_r('出品者' . $product->user->name . '<br>');
-        dd($product);
-        return view('admin.item.show', compact('product'));
+        return view('backend_test.admin_item', compact('product'));
     }
 
     /**
@@ -96,7 +70,17 @@ class AdminItemController extends Controller
      */
     public function edit($id)
     {
-        //
+        $tags = Tag::productTags()->get()->map(function ($tag) {
+            $tag->is_chosen = false;
+            return $tag;
+        });
+        $chosen_product_tags = ProductTag::where('product_id', $id)->get();
+        $product = Product::withRelations()->findOrFail($id);
+        $product->japanese_product_status = Product::JAPANESE_STATUS[$product->status];
+        foreach ($chosen_product_tags as $chosen_product_tag) {
+            $tags->find($chosen_product_tag->tag_id)->is_chosen = true;
+        }
+        return view('backend_test.admin_edit_item', compact('product', 'tags'));
     }
 
     /**
@@ -108,7 +92,26 @@ class AdminItemController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $product_instance = Product::findOrFail($id);
+        switch ($request->form_type) {
+            case 'update_product':
+                $images = $request->file('product_images');
+                $product_instance->addProductImages($images, $id);
+                $product_instance->deleteProductImages($request->delete_images);
+                $product_instance->updateProductTags($request->product_tags, $id);
+                $product_instance->title = $request->title;
+                $product_instance->description = $request->description;
+                break;
+            case 'set_point_and_approve':
+                $product_instance->point = $request->point;
+                $product_instance->status = Product::STATUS['available'];
+                break;
+            case 'reset_point':
+                $product_instance->point = $request->point;
+                break;
+        }
+        $product_instance->save();
+        return redirect()->back();
     }
 
     /**
@@ -119,6 +122,7 @@ class AdminItemController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Product::findOrFail($id)->delete();
+        return redirect('/admin/items');
     }
 }

@@ -13,4 +13,12 @@ class Tag extends Model
     {
         return $this->where('request_type_id', $request_type_id)->pluck('id')->toArray();
     }
+    public function scopeProductTags($query)
+    {
+        return $query->where('request_type_id', Request::PRODUCT_REQUEST_TYPE_ID);
+    }
+    public function scopeEventTags($query)
+    {
+        return $query->where('request_type_id', Request::EVENT_REQUEST_TYPE_ID);
+    }
 }
