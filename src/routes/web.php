@@ -31,17 +31,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-  
     Route::resource('/items', ItemController::class);
-    Route::post('/items/{id}/borrow', [ItemController::class, 'borrow'])->name('items.borrow');
-    Route::post('/items/{id}/cancel', [ItemController::class, 'cancel'])->name('items.cancel');
-    Route::post('/items/{id}/return', [ItemController::class, 'return'])->name('items.return');
-  
+    Route::post('/items/{item}/borrow', [ItemController::class, 'borrow'])->name('items.borrow');
+    Route::post('/items/{item}/cancel', [ItemController::class, 'cancel'])->name('items.cancel');
+    Route::post('/items/{item}/return', [ItemController::class, 'return'])->name('items.return');
     Route::group(['prefix' => 'mypage', 'as' => 'mypage.'], function () {
         Route::get('/events/organized', [MyPageController::class, 'eventsOrganized'])->name('events.organized');
         Route::get('/events/joined', [MyPageController::class, 'eventsJoined'])->name('events.joined');
     });
-  
     Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'check.admin'], function () {
         Route::get('/dashboard', [AdminIndexController::class, 'index'])->name('dashboard');
         Route::get('/histories', [AdminIndexController::class, 'histories'])->name('histories');

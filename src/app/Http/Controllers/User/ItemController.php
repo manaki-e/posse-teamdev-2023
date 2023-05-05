@@ -126,21 +126,21 @@ class ItemController extends Controller
         //ここはたぶんマイページに遷移
         return redirect('/items');
     }
-    public function borrow($id)
+    public function borrow($item)
     {
-        $product_instance = Product::findOrFail($id);
+        $product_instance = Product::findOrFail($item);
         $product_instance->changeStatusToOccupied();
         return redirect()->back();
     }
-    public function return($id)
+    public function return($item)
     {
-        $product_instance = Product::findOrFail($id);
+        $product_instance = Product::findOrFail($item);
         $product_instance->changeStatusToAvailable();
         return redirect()->back();
     }
-    public function cancel($id)
+    public function cancel($item)
     {
-        $product_instance = Product::findOrFail($id);
+        $product_instance = Product::findOrFail($item);
         $product_instance->changeStatusToAvailable();
         return redirect()->back();
     }
