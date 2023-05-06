@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\ProductTag;
 use App\Models\Tag;
+
 use Illuminate\Http\Request;
 
 class AdminItemController extends Controller
@@ -19,13 +20,12 @@ class AdminItemController extends Controller
     {
         //登録済みアイテム一覧
         $japanese_product_statuses = Product::JAPANESE_STATUS;
-        $not_pending_products = Product::approvedProducts()->with('user')->paginate(8, ['*'], 'not_pending')->appends(['pending' => request('pending')])->map(function ($not_pending_product) use ($japanese_product_statuses) {
-            $not_pending_product->japanese_product_status = $japanese_product_statuses[$not_pending_product->status];
-            return $not_pending_product;
-        });
+        $not_pending_products = Product::approvedProducts()->with('user')->paginate(10, ['*'], 'not_pending')->appends(['pending' => request('pending')]);
+
         //登録申請対応待ちアイテム一覧
-        $pending_products = Product::pendingProducts()->with('user')->paginate(8, ['*'], 'pending')->appends(['not_pending' => request('not_pending')]);
-        return view('backend_test.admin_items', compact('not_pending_products', 'pending_products'));
+        $pending_products = Product::pendingProducts()->with('user')->paginate(5, ['*'], 'pending')->appends(['not_pending' => request('not_pending')]);
+
+        return view('admin.items.index', compact('not_pending_products', 'pending_products'));
     }
 
     /**
