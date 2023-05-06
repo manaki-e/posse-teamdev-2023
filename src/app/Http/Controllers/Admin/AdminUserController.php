@@ -18,20 +18,9 @@ class AdminUserController extends Controller
      */
     public function index()
     {
-        // 管理者含める場合
-        $users = User::with('department')->paginate(8);
-        $total_users = User::count();
-        //名前、email、部署、獲得ポイント、配布ポイント
-        print_r($total_users);
-        foreach ($users as $user) {
-            print_r($user->name);
-            print_r($user->email);
-            print_r($user->department->name);
-            print_r($user->earned_point);
-            print_r($user->distribution_point);
-            dd();
-        }
-        // return view('admin.user.index', compact('users','total_users'));
+        $users = User::with('department')->paginate(10);
+
+        return view('admin.users.index', compact('users'));
     }
 
     /**
