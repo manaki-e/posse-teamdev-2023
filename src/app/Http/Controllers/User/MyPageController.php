@@ -48,6 +48,8 @@ class MyPageController extends Controller
         $user = Auth::user();
         $earned_point = $user->earned_point;
         $distribution_point = $user->distribution_point;
+        print_r('換金可能' . $earned_point . '換金不可能' . $distribution_point);
+        dd();
         return view('user.mypage.points', compact('earned_point', 'distribution_point'));
     }
 }
