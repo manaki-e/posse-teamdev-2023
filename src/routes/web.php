@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\ItemController;
 use App\Http\Controllers\User\MyPageController;
+use App\Http\Controllers\User\PointExchangeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,15 +32,20 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
     Route::resource('/items', ItemController::class);
     Route::post('/items/{item}/borrow', [ItemController::class, 'borrow'])->name('items.borrow');
     Route::post('/items/{item}/cancel', [ItemController::class, 'cancel'])->name('items.cancel');
     Route::post('/items/{item}/return', [ItemController::class, 'return'])->name('items.return');
+
+    Route::patch('/point-exchanges/{id}', [PointExchangeController::class, 'updateApproved'])->name('point-exchanges.update-approved');
+
     Route::group(['prefix' => 'mypage', 'as' => 'mypage.'], function () {
         Route::get('/points', [MyPageController::class, 'points'])->name('points');
         Route::get('/events/organized', [MyPageController::class, 'eventsOrganized'])->name('events.organized');
         Route::get('/events/joined', [MyPageController::class, 'eventsJoined'])->name('events.joined');
     });
+
     Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'check.admin'], function () {
         Route::get('/dashboard', [AdminIndexController::class, 'index'])->name('dashboard');
         Route::get('/histories', [AdminIndexController::class, 'histories'])->name('histories');
