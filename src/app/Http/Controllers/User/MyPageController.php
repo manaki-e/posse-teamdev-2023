@@ -52,4 +52,13 @@ class MyPageController extends Controller
         dd();
         return view('user.mypage.points', compact('earned_point', 'distribution_point'));
     }
+    public function profile()
+    {
+        $user = Auth::user();
+        $icon = $user->icon;
+        $description = $user->description;
+        print_r('アイコンファイル名' . $icon . '自己紹介' . $description);
+        dd();
+        return view('user.mypage.profile', compact('icon', 'description'));
+    }
 }
