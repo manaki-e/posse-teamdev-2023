@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/items/{item}/cancel', [ItemController::class, 'cancel'])->name('items.cancel');
     Route::post('/items/{item}/return', [ItemController::class, 'return'])->name('items.return');
     Route::group(['prefix' => 'mypage', 'as' => 'mypage.'], function () {
+        Route::get('/requests', [MyPageController::class, 'requests'])->name('requests');
         Route::get('/points', [MyPageController::class, 'points'])->name('points');
         Route::get('/point/history', [MyPageController::class, 'pointHistory'])->name('point.history');
         Route::get('/profile', [MyPageController::class, 'profile'])->name('profile');

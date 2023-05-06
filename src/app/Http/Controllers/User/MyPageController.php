@@ -125,4 +125,14 @@ class MyPageController extends Controller
         dd('配布ポイントの変動', $distribution_point_logs, '獲得ポイントの変動', $earned_point_logs);
         return view('user.mypage.point_history', compact('earned_point_logs', 'distribution_point_logs'));
     }
+    public function requests()
+    {
+        $user = Auth::user();
+        $requests = $user->requests()->with('requestTags.tag')->get()->map(function ($request) {
+            $request->type = $request->getRequestType($request->type_id);
+            return $request;
+        });
+        dd($requests);
+        return view('user.mypage.requests', compact('requests'));
+    }
 }
