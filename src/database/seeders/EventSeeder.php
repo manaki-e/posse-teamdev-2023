@@ -33,7 +33,9 @@ class EventSeeder extends Seeder
                 'location' => $faker->randomElement(['オンライン', $faker->address]),
                 'slack_channel' => $this->channelId(),
                 'completed_at' => $date,
-                'request_id' => $faker->randomElement([null, $faker->randomElement($request_ids)])
+                'created_at' => now(),
+                'request_id' => $faker->randomElement([null, $faker->randomElement($request_ids)]),
+                'deleted_at' => $faker->randomElement([null, now()])
             ];
         }
         DB::table('events')->insert($events_array);

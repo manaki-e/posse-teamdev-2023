@@ -47,9 +47,9 @@ class ProductDealLogSeeder extends Seeder
         //usersテーブルのpointカラムを更新
         $product_deal_log_instance = new ProductDealLog();
         //すべてのアイテムを貸した人のearned_pointを増やす=>created_atとreturned_atの差分を求める例：1,2=>2ヵ月count(range(1,2))=2,returned_atがnullの場合はnow()を使う
-        $product_instance->availableProducts()->with('productDeals')->each(function ($product) {
+        $product_instance->availableProducts()->with('productDealLogs')->each(function ($product) {
             $month_sum_per_product = 0;
-            $product->productDeals->each(function ($product_deal_log) use (&$month_sum_per_product) {
+            $product->productDealLogs->each(function ($product_deal_log) use (&$month_sum_per_product) {
                 $timestamp_before = Carbon::parse($product_deal_log->created_at);
                 if (empty($product_deal_log->returned_at)) {
                     $timestamp_after = Carbon::now();

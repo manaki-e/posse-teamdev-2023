@@ -24,6 +24,7 @@ return new class extends Migration
             $table->timestamp('completed_at');
             $table->foreignId('request_id')->nullable()->constrained('requests');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
