@@ -8,11 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class RequestTag extends Model
 {
     use HasFactory;
-    protected $table='request_tag';
-    public function request(){
+    protected $table = 'request_tag';
+    public function request()
+    {
         return $this->belongsTo(Request::class);
     }
-    public function tag(){
+    public function tag()
+    {
         return $this->belongsTo(Tag::class);
     }
 }

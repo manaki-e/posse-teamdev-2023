@@ -68,41 +68,67 @@ class MyPageController extends Controller
         //消費と獲得に分ける
         //内容：カテゴリ（イベント、アイテム、換金）、内容（イベント名、アイテム名、換金）、日時、ポイント
         //消費=>product_deal_logsとevent_participant_logsを結合
+        //消費はキャンセル関係なくポイントが減るためwithTrashed()
         $user = Auth::user();
-        $distribution_product_deal_logs = $user->productDealLogs()->with('product')->get()->map(function ($product_deal_log) {
+        $distribution_product_deal_logs = ProductDealLog::withTrashed()->where('user_id', $user->id)->with(['product' => function ($query) {
+            $query->withTrashed();
+        }])->get()->map(function ($product_deal_log) {
             return [
                 'category' => 'アイテム借入',
                 'name' => $product_deal_log->product->title,
-                'created_at' => $product_deal_log->created_at->format('Y/m/d'),
+                'created_at' => $product_deal_log->created_at,
                 'point' => -$product_deal_log->product->point,
             ];
         });
-        $distribution_event_participant_logs = $user->eventParticipantLogs()->with('event')->get()->map(function ($event_participant_log) {
+        $distribution_event_participant_logs = EventParticipantLog::withTrashed()->where('user_id', $user->id)->with(['event' => function ($query) {
+            $query->withTrashed();
+        }])->get()->map(function ($event_participant_log) {
             return [
                 'category' => 'イベント参加',
                 'name' => $event_participant_log->event->title,
-                'created_at' => $event_participant_log->created_at->format('Y/m/d'),
+                'created_at' => $event_participant_log->created_at,
                 'point' => -$event_participant_log->point,
             ];
         });
         //バグ発生対策
         $distribution_event_participant_logs = collect($distribution_event_participant_logs);
         $distribution_product_deal_logs = collect($distribution_product_deal_logs);
-        $distribution_point_logs = $distribution_product_deal_logs->merge($distribution_event_participant_logs)->sortByDesc('created_at');
-        //獲得=>point_exchange_logsとevents->withsum()とproduct_deal_logsを結合
-        $earned_point_exchange_logs = $user->pointExchangeLogs()->where('point_exchange_logs.status', PointExchangeLog::STATUS['APPROVED'])->get()->map(function ($point_exchange_log) {
-            return [
-                'category' => '換金',
-                'name' => '換金',
-                'created_at' => $point_exchange_log->created_at->format('Y/m/d'),
-                'point' => -$point_exchange_log->point,
-            ];
+        $distribution_point_logs = $distribution_product_deal_logs->merge($distribution_event_participant_logs)->sortByDesc('created_at')->map(function ($distribution_point_log) {
+            $distribution_point_log['created_at'] = $distribution_point_log['created_at']->format('Y-m-d');
+            return $distribution_point_log;
         });
-        $earned_event_logs = $user->events()->withSum('participants', 'point')->get()->map(function ($event) {
+        //獲得=>point_exchange_logsとevents->withsum()とproduct_deal_logsを結合
+        $point_exchange_rejected_status = PointExchangeLog::STATUS['REJECTED'];
+        $earned_point_exchange_logs = PointExchangeLog::where('user_id', $user->id)->get()->map(function ($point_exchange_log) use ($point_exchange_rejected_status) {
+            if ($point_exchange_log->status == $point_exchange_rejected_status) {
+                //却下=申請のときに減って、却下のときに増える
+                $tmp_array[] = [
+                    'category' => '換金',
+                    'name' => '申請',
+                    'created_at' => $point_exchange_log->created_at,
+                    'point' => -$point_exchange_log->point,
+                ];
+                $tmp_array[] = [
+                    'category' => '換金',
+                    'name' => '申請却下',
+                    'created_at' => $point_exchange_log->created_at,
+                    'point' => +$point_exchange_log->point,
+                ];
+            } else {
+                $tmp_array[] = [
+                    'category' => '換金',
+                    'name' => '申請',
+                    'created_at' => $point_exchange_log->created_at,
+                    'point' => -$point_exchange_log->point,
+                ];
+            }
+            return $tmp_array;
+        })->flatten(1);
+        $earned_event_logs = Event::where('user_id', $user->id)->withSum('participants', 'point')->get()->map(function ($event) {
             return [
                 'category' => 'イベント主催',
                 'name' => $event->title,
-                'created_at' => $event->completed_at->format('Y/m/d'),
+                'created_at' => $event->completed_at,
                 'point' => $event->participants_sum_point,
             ];
         });
@@ -115,7 +141,7 @@ class MyPageController extends Controller
             return [
                 'category' => 'アイテム貸出',
                 'name' => $product_deal_log->product->title,
-                'created_at' => $product_deal_log->created_at->format('Y/m/d'),
+                'created_at' => $product_deal_log->created_at,
                 'point' => $product_deal_log->product->point,
             ];
         });
@@ -123,7 +149,10 @@ class MyPageController extends Controller
         $earned_event_logs = collect($earned_event_logs);
         $earned_product_deal_logs = collect($earned_product_deal_logs);
         $earned_point_exchange_logs = collect($earned_point_exchange_logs);
-        $earned_point_logs = $earned_point_exchange_logs->merge($earned_event_logs)->merge($earned_product_deal_logs)->sortByDesc('created_at');
+        $earned_point_logs = $earned_point_exchange_logs->merge($earned_event_logs)->merge($earned_product_deal_logs)->sortByDesc('created_at')->map(function ($earned_point_log) {
+            $earned_point_log['created_at'] = $earned_point_log['created_at']->format('Y-m-d');
+            return $earned_point_log;
+        });
         dd('配布ポイントの変動', $distribution_point_logs, '獲得ポイントの変動', $earned_point_logs);
         return view('user.mypage.point_history', compact('earned_point_logs', 'distribution_point_logs'));
     }
