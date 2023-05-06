@@ -45,7 +45,7 @@
                                 @foreach ( $done_point_exchanges as $done_point_exchange )
                                 <tr class="hover:bg-gray-50">
                                     <th class="px-6 py-4">
-                                        <a href="/admin/users/{{ $done_point_exchange -> user -> user_id }}" class="hover:text-blue-700">{{ $done_point_exchange -> user -> name }}</a>
+                                        <a href="/admin/users/{{ $done_point_exchange -> user -> user_id }}" class="border-b border-blue-600 hover:text-blue-700">{{ $done_point_exchange -> user -> name }}</a>
                                     </th>
                                     <td class="px-6 py-4 text-right">{{ $done_point_exchange -> point }} pt</td>
                                     <td class="px-6 py-4 text-right">
@@ -77,7 +77,7 @@
                                 @foreach ( $undone_point_exchanges as $undone_point_exchange )
                                 <tr class="hover:bg-gray-50">
                                     <th class="px-6 py-4">
-                                        <a href="/admin/users/{{ $undone_point_exchange -> user -> user_id }}<" class="hover:text-blue-700">{{ $undone_point_exchange -> user -> name }}</a>
+                                        <a href="/admin/users/{{ $undone_point_exchange -> user -> user_id }}" class="border-b border-blue-600 hover:text-blue-700">{{ $undone_point_exchange -> user -> name }}</a>
                                     </th>
                                     <td class="px-6 py-4 text-right">{{ $undone_point_exchange -> point }} pt</td>
                                     <td class="px-6 py-4 text-right">
