@@ -135,4 +135,11 @@ class MyPageController extends Controller
         dd($requests);
         return view('user.mypage.requests', compact('requests'));
     }
+    public function deals()
+    {
+        $user = Auth::user();
+        $product_deal_logs = $user->productDealLogs()->with('product.user', 'product.productImages')->get();
+        dd($product_deal_logs);
+        return view('user.mypage.deals', compact('product_deal_logs'));
+    }
 }
