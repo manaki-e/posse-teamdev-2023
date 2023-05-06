@@ -142,4 +142,15 @@ class MyPageController extends Controller
         dd($product_deal_logs);
         return view('user.mypage.deals', compact('product_deal_logs'));
     }
+    public function items()
+    {
+        $user = Auth::user();
+        $available_products = $user->products()->availableProducts()->with('productImages')->get();
+        $occupied_products = $user->products()->occupiedProducts()->with('productImages')->with('productDealLogs.user', function ($query) {
+            //一番最後のレコード==今借りてる人
+            $query->latest()->take(1);
+        })->get();
+        dd($occupied_products);
+        return view('user.mypage.items', compact('available_products', 'occupied_products'));
+    }
 }
