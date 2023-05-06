@@ -8,10 +8,6 @@
 
     <div class="bg-white shadow rounded-lg md:p-6 w-full">
         <div x-data="{ activeTab: {{ request()->query('activeTab', 0) }} }">
-            <script>
-                Alpine.store('activeTab', "{{ request()->query('activeTab ', 0) }}");
-                Alpine.start();
-            </script>
             <div class="border-b border-b-gray-100">
                 <ul class="-mb-px flex items-center gap-4 text-sm font-medium">
                     <li>
