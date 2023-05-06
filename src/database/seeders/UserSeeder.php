@@ -24,7 +24,9 @@ class UserSeeder extends Seeder
             [
                 'name' => '管理者1',
                 'email' => 'manaki.endou@anti-pattern.co.jp',
+                'description' => '管理者です',
                 'password' => Hash::make('password'),
+                'icon' => 'admin_icon_1.jpeg',
                 'created_at' => now(),
                 'updated_at' => now(),
                 'slack' => $this->slackUserId(),
@@ -34,7 +36,9 @@ class UserSeeder extends Seeder
             [
                 'name' => '管理者2',
                 'email' => 'manaki_nhk@keio.jp',
+                'description' => '管理者です',
                 'password' => Hash::make('password'),
+                'icon' => 'admin_icon_2.jpeg',
                 'created_at' => now(),
                 'updated_at' => now(),
                 'slack' => $this->slackUserId(),
@@ -47,7 +51,9 @@ class UserSeeder extends Seeder
             $users_array[] = [
                 'name' => $unique_user_name,
                 'email' => 'user' . $i . '@anti-pattern.co.jp',
+                'description' => 'ユーザーです',
                 'password' => Hash::make('password'),
+                'icon' => 'user_icon_' . $i . '.jpeg',
                 'created_at' => now(),
                 'updated_at' => now(),
                 'slack' => 'U' . $this->slackUserId(),
