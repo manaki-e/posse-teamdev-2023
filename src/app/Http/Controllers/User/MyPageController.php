@@ -43,4 +43,11 @@ class MyPageController extends Controller
             print_r($event_join->user->name . '<br>');
         }
     }
+    public function points()
+    {
+        $user = Auth::user();
+        $earned_point = $user->earned_point;
+        $distribution_point = $user->distribution_point;
+        return view('user.mypage.points', compact('earned_point', 'distribution_point'));
+    }
 }
