@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ProductDealLog extends Model
 {
     use HasFactory;
+    use softDeletes;
     protected $dates = ['created_at', 'updated_at', 'returned_at', 'deleted_at'];
 
     public function product()

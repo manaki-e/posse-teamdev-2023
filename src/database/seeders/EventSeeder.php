@@ -25,6 +25,13 @@ class EventSeeder extends Seeder
         for ($i = 1; $i <= 10; $i++) {
             $user_id = $faker->randomElement($user_ids);
             $date = $faker->dateTimeBetween('today', '+1 month');
+            $completed_at=$faker->randomElement([$date,null]);
+            //削除する=キャンセルする=>completed_at=null
+            if($completed_at===null){
+                $deleted_at=now();
+            }else{
+                $deleted_at=null;
+            }
             $events_array[] = [
                 'user_id' => $user_id,
                 'title' => 'イベント' . $i,
@@ -32,10 +39,10 @@ class EventSeeder extends Seeder
                 'date' => $faker->randomElement([null, $date]),
                 'location' => $faker->randomElement(['オンライン', $faker->address]),
                 'slack_channel' => $this->channelId(),
-                'completed_at' => $date,
+                'completed_at' => $completed_at,
                 'created_at' => now(),
                 'request_id' => $faker->randomElement([null, $faker->randomElement($request_ids)]),
-                'deleted_at' => $faker->randomElement([null, now()])
+                'deleted_at' => $deleted_at
             ];
         }
         DB::table('events')->insert($events_array);

@@ -90,7 +90,6 @@ class MyPageController extends Controller
         $distribution_product_deal_logs = collect($distribution_product_deal_logs);
         $distribution_point_logs = $distribution_product_deal_logs->merge($distribution_event_participant_logs)->sortByDesc('created_at');
         //獲得=>point_exchange_logsとevents->withsum()とproduct_deal_logsを結合
-        //換金申請が承認されるタイミングでポイントが減る設計
         $earned_point_exchange_logs = $user->pointExchangeLogs()->where('point_exchange_logs.status', PointExchangeLog::STATUS['APPROVED'])->get()->map(function ($point_exchange_log) {
             return [
                 'category' => '換金',
@@ -107,8 +106,11 @@ class MyPageController extends Controller
                 'point' => $event->participants_sum_point,
             ];
         });
-        $earned_product_deal_logs = ProductDealLog::with('product')->whereHas('product', function ($query) use ($user) {
-            $query->where('user_id', $user->id);
+        //productが削除されてもポイントの変動は残る、product_deal_logが削除＝キャンセルされた場合はポイントの変動も削除
+        $earned_product_deal_logs = ProductDealLog::with(['product' => function ($query) {
+            $query->withTrashed();
+        }])->whereHas('product', function ($query) use ($user) {
+            $query->where('user_id', $user->id)->withTrashed();
         })->get()->map(function ($product_deal_log) {
             return [
                 'category' => 'アイテム貸出',
