@@ -68,15 +68,21 @@
                                         !!}
                                     </td>
                                     <td class="flex justify-end gap-4 px-6 py-4 font-medium">
-                                        <a href="/admin/items/{{ $not_pending_product -> id }}">
-                                            <x-admin-button-detail></x-admin-button-detail>
-                                        </a>
-                                        <a href="/admin/items/{{ $not_pending_product -> id }}/edit">
-                                            <x-admin-button-edit>ポイント再設定</x-admin-button-edit>
-                                        </a>
-                                        <a href="#">
-                                            <x-admin-button-delete></x-admin-button-delete>
-                                        </a>
+                                        <x-admin-button-detail href="{{ route('admin.items.show', ['item' =>  $not_pending_product -> id]) }}"></x-admin-button-detail>
+                                        <x-admin-button-edit action="">
+                                            <x-slot name="content">
+                                                ポイント再設定
+                                            </x-slot>
+                                            <x-slot name="modal_title">
+                                                ポイント再設定
+                                            </x-slot>
+                                            <x-slot name="modal_description">
+                                                ポイントを再設定すると、アイテムのポイントが変更されます。
+                                                <br>
+                                                貸出中のアイテムのポイントを編集すると、来月の貸出より新しいポイントが適用されます。
+                                            </x-slot>
+                                        </x-admin-button-edit>
+                                        <x-admin-button-delete action="{{ route('admin.items.destroy', ['item' =>  $not_pending_product -> id]) }}"></x-admin-button-delete>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -109,15 +115,19 @@
                                         {{ date( 'Y年m月d日 H時i分s秒', strtotime( $pending_product -> created_at ) ) }}
                                     </td>
                                     <td class="flex justify-end gap-4 px-6 py-4 font-medium">
-                                        <a href="#">
-                                            <x-admin-button-detail></x-admin-button-detail>
-                                        </a>
-                                        <a href="#">
-                                            <x-admin-button-edit>ポイント設定して承認</x-admin-button-edit>
-                                        </a>
-                                        <a href="#">
-                                            <x-admin-button-delete></x-admin-button-delete>
-                                        </a>
+                                        <x-admin-button-detail href="{{ route('admin.items.show', ['item' =>  $pending_product -> id]) }}"></x-admin-button-detail>
+                                        <x-admin-button-edit action="">
+                                            <x-slot name="content">
+                                                ポイントを設定して承認する
+                                            </x-slot>
+                                            <x-slot name="modal_title">
+                                                ポイントを設定して承認する
+                                            </x-slot>
+                                            <x-slot name="modal_description">
+                                                ポイントを設定すると、アイテムが登録され、誰でも借りることができるようになります。また、ポイントはいつでも変更することができます。
+                                            </x-slot>
+                                        </x-admin-button-edit>
+                                        <x-admin-button-delete action="{{ route('admin.items.destroy', ['item' =>  $pending_product -> id]) }}"></x-admin-button-delete>
                                     </td>
                                 </tr>
                                 @endforeach

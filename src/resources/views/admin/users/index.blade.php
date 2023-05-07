@@ -55,8 +55,8 @@
                                     <td class="px-6 py-4 text-right">{{ $user -> distribution_point }} pt</td>
                                     <td class="px-6 py-4">
                                         <div class="flex justify-end gap-4">
-                                            <a href="/admin/users/{{ $user -> id }}"><x-admin-button-detail></x-admin-button-detail></a>
-                                            <a href="#"><x-admin-button-delete></x-admin-button-delete></a>
+                                            <x-admin-button-detail href="/admin/users/{{ $user -> id }}"></x-admin-button-detail>
+                                            <x-admin-button-delete action="/admin/users/{{ $user -> id }}"></x-admin-button-delete>
                                         </div>
                                     </td>
                                 </tr>

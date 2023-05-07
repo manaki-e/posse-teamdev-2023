@@ -120,8 +120,20 @@
                             </p>
                         </li>
                         <li class="flex items-center gap-4 pl-4 mt-4">
-                            <x-admin-button-edit>ポイント再設定</x-admin-button-edit>
-                            <x-admin-button-delete></x-admin-button-delete>
+                            <x-admin-button-edit action="">
+                                <x-slot name="content">
+                                    ポイント再設定
+                                </x-slot>
+                                <x-slot name="modal_title">
+                                    ポイント再設定
+                                </x-slot>
+                                <x-slot name="modal_description">
+                                    ポイントを再設定すると、アイテムのポイントが変更されます。
+                                    <br>
+                                    貸出中のアイテムのポイントを編集すると、来月の貸出より新しいポイントが適用されます。
+                                </x-slot>
+                            </x-admin-button-edit>
+                            <x-admin-button-delete action="{{ route('admin.items.destroy', ['item' =>  $product -> id]) }}"></x-admin-button-delete>
                         </li>
                     </ul>
                 </div>
@@ -143,7 +155,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="py-3">
+            <div class=" py-3">
                 <div :class="{ '!block': activeTab === 0 }" x-show.transition.in.opacity.duration.600="activeTab === 0" class="hidden">
                     <div class="overflow-hidden rounded-lg border border-gray-200 shadow-md my-4">
                         <table class="w-full border-collapse bg-white text-left text-sm text-gray-500">
@@ -152,7 +164,6 @@
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">借用者氏名</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">貸出日時</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">返却日時</th>
-                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-100 border-t border-gray-100">
@@ -168,9 +179,6 @@
                                         {{ $deal -> returned_at
                                         ? date( 'Y年m月d日 H時i分s秒', strtotime( $deal -> returned_at ) )
                                         : '未返却' }}
-                                    </td>
-                                    <td class="flex justify-end gap-4 px-6 py-4 font-medium">
-                                        <a href="#"><x-admin-button-detail></x-admin-button-detail></a>
                                     </td>
                                 </tr>
                                 @endforeach
