@@ -21,6 +21,10 @@ class Event extends Model
     {
         return $this->hasMany(EventParticipantLog::class)->whereNull('deleted_at');
     }
+    public function eventTags()
+    {
+        return $this->hasMany(EventTag::class);
+    }
     public function scopeCompletedEvents($query)
     {
         return $query->whereNotNull('completed_at');

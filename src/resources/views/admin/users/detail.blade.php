@@ -30,6 +30,7 @@
         <div class="flex">
             <div>
                 <div class="w-36 h-36 mx-16 my-4">
+                    <!-- 後ほど編集する -->
                     <img class="rounded-full overflow-hidden border-4 admin-border-green" src="{{ asset('images/sample_product_1.jpeg') }}" alt="ユーザ写真">
                 </div>
             </div>
@@ -63,6 +64,7 @@
                 <div class="p-4 w-1/4">
                     <x-admin-point>
                         <x-slot name="point">
+                            <!-- 後ほど編集する -->
                             {{ __('2960') }}
                         </x-slot>
                         <x-slot name="discription">
@@ -73,6 +75,7 @@
                 <div class="p-4 w-1/4">
                     <x-admin-point>
                         <x-slot name="point">
+                            <!-- 後ほど編集する -->
                             {{ __('20700') }}
                         </x-slot>
                         <x-slot name="discription">
@@ -128,7 +131,7 @@
                         <a @click="activeTab = 2" class="inline-flex cursor-pointer items-center gap-2 px-1 py-3 text-blue-500 hover:text-blue-500" :class="{'relative text-blue-500  after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-full after:bg-blue-500': activeTab === 2}">
                             参加したイベント
                             <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-500">
-                                11
+                                {{ $joined_event_logs -> total() }}
                             </span>
                         </a>
                     </li>
@@ -136,7 +139,7 @@
                         <a @click="activeTab = 3" class="inline-flex cursor-pointer items-center gap-2 px-1 py-3 text-blue-500 hover:text-blue-500" :class="{'relative text-blue-500  after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-full after:bg-blue-500': activeTab === 3}">
                             主催したイベント
                             <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-500">
-                                2
+                                {{ $held_events -> total() }}
                             </span>
                         </a>
                     </li>
@@ -144,14 +147,13 @@
                         <a @click="activeTab = 4" class="inline-flex cursor-pointer items-center gap-2 px-1 py-3 text-blue-500 hover:text-blue-500" :class="{'relative text-blue-500  after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-full after:bg-blue-500': activeTab === 4}">
                             投稿したリクエスト
                             <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-500">
-                                2
+                                {{ $requests -> total() }}
                             </span>
                         </a>
                     </li>
                 </ul>
             </div>
             <div class="py-3">
-                <!-- 完成 -->
                 <div :class="{ '!block': activeTab === 0 }" x-show.transition.in.opacity.duration.600="activeTab === 0" class="hidden">
                     <div class="overflow-hidden rounded-lg border border-gray-200 shadow-md my-4">
                         <table class="w-full border-collapse bg-white text-left text-sm text-gray-500">
@@ -171,10 +173,10 @@
                                     <th class="px-6 py-4 font-medium text-gray-900">{{ $product_deal_log -> product -> title }}</th>
                                     <td class="px-6 py-4 text-right">{{ $product_deal_log -> product -> point }} pt</td>
                                     <td class="px-6 py-4">
-                                        <a href="#" class="hover:text-blue-700">{{ $product_deal_log -> product -> user -> name }}</a>
+                                        <a href="{{ route('admin.users.show', ['user' => $product_deal_log -> product -> user -> id]) }}" class="border-b border-blue-600 hover:text-blue-700">{{ $product_deal_log -> product -> user -> name }}</a>
                                     </td>
                                     <td class="px-6 py-4">
-                                        <a href="#" class="hover:text-blue-700">{{ $product_deal_log -> user -> name }}</a>
+                                        <a href="{{ route('admin.users.show', ['user' => $product_deal_log -> user -> id]) }}" class="border-b border-blue-600 hover:text-blue-700">{{ $product_deal_log -> user -> name }}</a>
                                     </td>
                                     <td class="px-6 py-4 text-right">
                                         {{ date( 'Y年m月d日 H時i分s秒', strtotime( $product_deal_log -> created_at ) ) }}
@@ -192,7 +194,6 @@
 
                     {{ $product_deal_logs->withPath(url('/admin/users/'.$user.'?activeTab=0'))->links() }}
                 </div>
-                <!-- 完成 -->
                 <div :class="{ '!block': activeTab === 1 }" x-show.transition.in.opacity.duration.600="activeTab === 1" class="hidden">
                     <div class="overflow-hidden rounded-lg border border-gray-200 shadow-md my-4">
                         <table class="w-full border-collapse bg-white text-left text-sm text-gray-500">
@@ -222,25 +223,15 @@
                                         {{ $product -> product_likes_count }}
                                     </td>
                                     <td class="px-6 py-4 text-center">
-                                        {!! $product -> status === 3
-                                        ?
-                                        '<span class="inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-1 text-xs font-semibold text-red-600">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-3 w-3">
-                                                <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
-                                            </svg>
-                                            貸出中
-                                        </span>'
-                                        :
-                                        '<span class="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-600">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-3 w-3">
-                                                <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
-                                            </svg>
-                                            貸出可能
-                                        </span>'
-                                        !!}
+                                        @if ( $product -> status === 3 )
+                                        <x-admin-status-red>貸出中</x-admin-status-red>
+                                        @else
+                                        <x-admin-status-green>貸出可能</x-admin-status-green>
+                                        @endif
                                     </td>
                                     <td class="flex justify-end gap-4 px-6 py-4 font-medium">
                                         <x-admin-button-detail href="{{ route('admin.items.show', ['item' =>  $product -> id]) }}"></x-admin-button-detail>
+                                        <!-- 後ほど編集する -->
                                         <x-admin-button-edit action="">
                                             <x-slot name="content">
                                                 ポイント再設定
@@ -273,54 +264,36 @@
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">カテゴリー</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">参加状況</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">開催日時</th>
-                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">参加人数</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">支払いポイント</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-100 border-t border-gray-100">
-                                @foreach ([0, 1, 2] as $item)
+                                @foreach ( $joined_event_logs as $event_log )
                                 <tr class="hover:bg-gray-50">
-                                    <th class="px-6 py-4 font-medium text-gray-900">TypeScript勉強会</th>
+                                    <th class="px-6 py-4 font-medium text-gray-900">{{ $event_log -> event -> title }}</th>
                                     <td class="px-6 py-4">
-                                        <x-admin-status-basic>勉強会</x-admin-status-basic>
-                                        <x-admin-status-basic>オンライン</x-admin-status-basic>
+                                        @foreach ( $event_log -> event -> eventTags as $event_log_tag )
+                                        <x-admin-status-basic>{{ $event_log_tag -> tag -> name }}</x-admin-status-basic>
+                                        @endforeach
                                     </td>
                                     <td class="px-6 py-4">
+                                        @if ( $event_log -> deleted_at )
+                                        <x-admin-status-red>キャンセル済み</x-admin-status-red>
+                                        @else
                                         <x-admin-status-green>参加</x-admin-status-green>
+                                        @endif
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        2023年4月30日 13:99:00
+                                        {{ $event_log -> event -> date
+                                        ? date( 'Y年m月d日 H時i分s秒', strtotime( $event_log -> event -> date ) )
+                                        : '未定' }}
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        8 人
-                                    </td>
-                                    <td class="px-6 py-4 text-right">
-                                        400 pt
+                                        {{ $event_log -> point }} pt
                                     </td>
                                     <td class="flex justify-end gap-4 px-6 py-4 font-medium">
-                                        <x-admin-button-detail href="#"></x-admin-button-detail>
-                                    </td>
-                                </tr>
-                                <tr class="hover:bg-gray-50">
-                                    <th class="px-6 py-4 font-medium text-gray-900">運動会</th>
-                                    <td class="px-6 py-4">
-                                        <x-admin-status-basic>オフライン</x-admin-status-basic>
-                                        <x-admin-status-basic>全体イベント</x-admin-status-basic>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <x-admin-status-red>キャンセル</x-admin-status-red>
-                                    </td>
-                                    <td class="px-6 py-4 text-right">
-                                        2023年4月30日 13:99:00
-                                    </td>
-                                    <td class="px-6 py-4 text-right">
-                                        8 人
-                                    </td>
-                                    <td class="px-6 py-4 text-right">
-                                        400 pt
-                                    </td>
-                                    <td class="flex justify-end gap-4 px-6 py-4 font-medium">
+                                        <!-- 後ほど修正する -->
                                         <x-admin-button-detail href="#"></x-admin-button-detail>
                                     </td>
                                 </tr>
@@ -328,6 +301,8 @@
                             </tbody>
                         </table>
                     </div>
+
+                    {{ $joined_event_logs->withPath(url('/admin/users/'.$user.'?activeTab=2'))->links() }}
                 </div>
                 <div :class="{ '!block': activeTab === 3 }" x-show.transition.in.opacity.duration.600="activeTab === 3" class="hidden">
                     <div class="overflow-hidden rounded-lg border border-gray-200 shadow-md my-4">
@@ -348,44 +323,35 @@
                                 <tr class="hover:bg-gray-50">
                                     <th class="px-6 py-4 font-medium text-gray-900">{{ $event -> title }}</th>
                                     <td class="px-6 py-4">
-                                        <x-admin-status-basic>勉強会</x-admin-status-basic>
-                                        <x-admin-status-basic>オンライン</x-admin-status-basic>
+                                        @foreach ( $event -> eventTags as $event_tag )
+                                        <x-admin-status-basic>{{ $event_tag -> tag -> name }}</x-admin-status-basic>
+                                        @endforeach
                                     </td>
                                     <td class="px-6 py-4 text-center">
+                                        @if ( $event -> deleted_at )
+                                        <x-admin-status-red>開催キャンセル</x-admin-status-red>
+                                        @elseif ( $event -> completed_at )
+                                        <x-admin-status-basic>開催終了</x-admin-status-basic>
+                                        @else
                                         <x-admin-status-green>開催前</x-admin-status-green>
+                                        @endif
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        {{ date( 'Y年m月d日 H時i分s秒', strtotime( $event -> date ) ) }}
+                                        {{ $event -> date
+                                        ? date( 'Y年m月d日 H時i分s秒', strtotime( $event -> date ) )
+                                        : '未定' }}
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        8 人
+                                        {{ $event -> participants_count }} 人
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        {{ $event -> event_participants_sum_point }} pt
+                                        {{ $event -> participants_sum_point
+                                        ? $event -> participants_sum_point
+                                        : 0 }}
+                                        pt
                                     </td>
                                     <td class="flex justify-end gap-4 px-6 py-4 font-medium">
-                                        <x-admin-button-detail href="#"></x-admin-button-detail>
-                                    </td>
-                                </tr>
-                                <tr class="hover:bg-gray-50">
-                                    <th class="px-6 py-4 font-medium text-gray-900">React勉強会</th>
-                                    <td class="px-6 py-4">
-                                        <x-admin-status-basic>勉強会</x-admin-status-basic>
-                                        <x-admin-status-basic>オンライン</x-admin-status-basic>
-                                    </td>
-                                    <td class="px-6 py-4 text-center">
-                                        <x-admin-status-red>開催終了</x-admin-status-red>
-                                    </td>
-                                    <td class="px-6 py-4 text-right">
-                                        2023年4月30日 13:99:00
-                                    </td>
-                                    <td class="px-6 py-4 text-right">
-                                        8 人
-                                    </td>
-                                    <td class="px-6 py-4 text-right">
-                                        2000 pt
-                                    </td>
-                                    <td class="flex justify-end gap-4 px-6 py-4 font-medium">
+                                        <!-- 後ほど修正する -->
                                         <x-admin-button-detail href="#"></x-admin-button-detail>
                                     </td>
                                 </tr>
@@ -393,6 +359,8 @@
                             </tbody>
                         </table>
                     </div>
+
+                    {{ $held_events->withPath(url('/admin/users/'.$user.'?activeTab=3'))->links() }}
                 </div>
                 <div :class="{ '!block': activeTab === 4 }" x-show.transition.in.opacity.duration.600="activeTab === 4" class="hidden">
                     <div class="overflow-hidden rounded-lg border border-gray-200 shadow-md my-4">
@@ -406,37 +374,30 @@
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-100 border-t border-gray-100">
-                                @foreach ([0, 1, 2] as $item)
+                                @foreach ( $requests as $request )
                                 <tr class="hover:bg-gray-50">
-                                    <th class="px-6 py-4 font-medium text-gray-900">ディスプレイが欲しい</th>
+                                    <th class="px-6 py-4 font-medium text-gray-900">{{ $request -> title }}</th>
                                     <td class="px-6 py-4 text-center">
-                                        <x-admin-status-red>未解決</x-admin-status-red>
+                                        @if ( $request -> completed_at )
+                                        <x-admin-status-red>解決済み</x-admin-status-red>
+                                        @else
+                                        <x-admin-status-green>未解決</x-admin-status-green>
+                                        @endif
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        2023年4月30日 13:99:00
+                                        {{ date( 'Y年m月d日 H時i分s秒', strtotime( $request -> created_at ) ) }}
                                     </td>
                                     <td class="flex justify-end gap-4 px-6 py-4 font-medium">
-                                        <a href="#">
-                                            <x-admin-button-detail></x-admin-button-detail>
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr class="hover:bg-gray-50">
-                                    <th class="px-6 py-4 font-medium text-gray-900">Laravelの勉強会を開いてほしい</th>
-                                    <td class="px-6 py-4 text-center">
-                                        <x-admin-status-green>解決済み</x-admin-status-green>
-                                    </td>
-                                    <td class="px-6 py-4 text-right">
-                                        2023年5月1日 12:99:00
-                                    </td>
-                                    <td class="flex justify-end gap-4 px-6 py-4 font-medium">
-                                        <x-admin-button-detail href="#"></x-admin-button-detail>
+                                        <!-- 後ほど修正する -->
+                                        <x-admin-button-detail></x-admin-button-detail>
                                     </td>
                                 </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
+
+                    {{ $requests->withPath(url('/admin/users/'.$user.'?activeTab=4'))->links() }}
                 </div>
             </div>
         </div>
