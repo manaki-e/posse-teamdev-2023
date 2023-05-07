@@ -57,7 +57,7 @@
                 <div>
                     <ul class="flex gap-1">
                         @foreach ( $product -> productImages as $product_image )
-                        <li class="aspect-square border border-black">
+                        <li class="w-1/4 aspect-square border border-black">
                             <img src="{{ asset('images/'.$product_image->image_url) }}" alt="アイテム写真">
                         </li>
                         @endforeach
@@ -68,7 +68,11 @@
                 <div class="my-4">
                     <div class="flex justify-between w-full">
                         <p class="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">{{ $product -> title }}</p>
-                        <x-admin-status-green>貸出可</x-admin-status-green>
+                        @if ($product -> status === 3)
+                        <x-admin-status-red>貸出中</x-admin-status-red>
+                        @elseif ($product -> status === 2)
+                        <x-admin-status-green>貸出可能</x-admin-status-green>
+                        @endif
                     </div>
                     <div class="h-1 w-40 bg-indigo-500 rounded"></div>
                     <div class="mt-2">
@@ -104,7 +108,8 @@
                         <li class="flex items-center gap-4 pl-4">
                             <p class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold capitalize">リクエストの紐付け:</p>
                             <p class="block antialiased font-sans text-sm leading-normal font-normal text-gray-500">
-                                {!! ( $product -> request -> id )
+                                <!-- 後ほど修正する -->
+                                {!! ( $product -> request )
                                 ? 'あり <a href="#" class="hover:text-blue-700 border-b border-blue-800">（ここを押すと紐づけられたリクエストの詳細に飛びます）</a>'
                                 : 'なし' !!}
                             </p>
@@ -116,10 +121,11 @@
                         <li class="flex items-center gap-4 pl-4">
                             <p class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold capitalize">貸出者:</p>
                             <p class="block antialiased font-sans text-sm leading-normal font-normal text-gray-500">
-                                <a href="#" class="hover:text-blue-700 border-b border-blue-600">{{ $product -> user -> name }}</a>
+                                <a href="{{ route('admin.users.show', ['user' => $product -> user -> id]) }}" class="hover:text-blue-700 border-b border-blue-600">{{ $product -> user -> name }}</a>
                             </p>
                         </li>
                         <li class="flex items-center gap-4 pl-4 mt-4">
+                            <!-- 後ほど修正する -->
                             <x-admin-button-edit action="">
                                 <x-slot name="content">
                                     ポイント再設定
@@ -170,7 +176,7 @@
                                 @foreach ( $product_deals as $deal )
                                 <tr class="hover:bg-gray-50">
                                     <td class="px-6 py-4">
-                                        <a href="#" class="hover:text-blue-700">{{ $deal -> user -> name }}</a>
+                                        <a href="{{ route('admin.users.show', ['user' => $deal -> user -> id]) }}" class="hover:text-blue-700 border-b border-blue-600">{{ $deal -> user -> name }}</a>
                                     </td>
                                     <td class="px-6 py-4 text-right">
                                         {{ date( 'Y年m月d日 H時i分s秒', strtotime( $deal -> created_at ) ) }}
