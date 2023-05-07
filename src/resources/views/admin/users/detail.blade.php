@@ -30,7 +30,7 @@
         <div class="flex">
             <div>
                 <div class="w-36 h-36 mx-16 my-4">
-                    <!-- 後ほど編集する -->
+                    <!-- 後ほど修正する -->
                     <img class="rounded-full overflow-hidden border-4 admin-border-green" src="{{ asset('images/sample_product_1.jpeg') }}" alt="ユーザ写真">
                 </div>
             </div>
@@ -64,7 +64,7 @@
                 <div class="p-4 w-1/4">
                     <x-admin-point>
                         <x-slot name="point">
-                            <!-- 後ほど編集する -->
+                            <!-- 後ほど修正する -->
                             {{ __('2960') }}
                         </x-slot>
                         <x-slot name="discription">
@@ -75,7 +75,7 @@
                 <div class="p-4 w-1/4">
                     <x-admin-point>
                         <x-slot name="point">
-                            <!-- 後ほど編集する -->
+                            <!-- 後ほど修正する -->
                             {{ __('20700') }}
                         </x-slot>
                         <x-slot name="discription">
@@ -231,7 +231,7 @@
                                     </td>
                                     <td class="flex justify-end gap-4 px-6 py-4 font-medium">
                                         <x-admin-button-detail href="{{ route('admin.items.show', ['item' =>  $product -> id]) }}"></x-admin-button-detail>
-                                        <!-- 後ほど編集する -->
+                                        <!-- 後ほど修正する -->
                                         <x-admin-button-edit action="">
                                             <x-slot name="content">
                                                 ポイント再設定
