@@ -47,28 +47,18 @@
                                     <th class="px-6 py-4 font-medium text-gray-900">{{ $not_pending_product -> title }}</th>
                                     <td class="px-6 py-4 text-right">{{ $not_pending_product -> point }} pt</td>
                                     <td class="px-6 py-4">
-                                        <a href="/admin/users/{{ $not_pending_product -> user_id }}" class="border-b border-blue-600 hover:text-blue-700"> {{ $not_pending_product -> user -> name }}</a>
+                                        <a href="{{ route('admin.users.show', ['user' => $not_pending_product -> user -> id]) }}" class="border-b border-blue-600 hover:text-blue-700">{{ $not_pending_product -> user -> name }}</a>
                                     </td>
                                     <td class="px-6 py-4 text-center">
-                                        {!! $not_pending_product -> status === "occupied"
-                                        ?
-                                        '<span class="inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-1 text-xs font-semibold text-red-600">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-3 w-3">
-                                                <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
-                                            </svg>
-                                            貸出中
-                                        </span>'
-                                        :
-                                        '<span class="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-600">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-3 w-3">
-                                                <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
-                                            </svg>
-                                            貸出可能
-                                        </span>'
-                                        !!}
+                                        @if ($not_pending_product -> status === 3)
+                                        <x-admin-status-red>貸出中</x-admin-status-red>
+                                        @elseif ($not_pending_product -> status === 2)
+                                        <x-admin-status-green>貸出可能</x-admin-status-green>
+                                        @endif
                                     </td>
                                     <td class="flex justify-end gap-4 px-6 py-4 font-medium">
                                         <x-admin-button-detail href="{{ route('admin.items.show', ['item' =>  $not_pending_product -> id]) }}"></x-admin-button-detail>
+                                        <!-- 後ほど修正する -->
                                         <x-admin-button-edit action="">
                                             <x-slot name="content">
                                                 ポイント再設定
@@ -109,13 +99,14 @@
                                 <tr class="hover:bg-gray-50">
                                     <th class="px-6 py-4 font-medium text-gray-900">{{ $pending_product -> title }}</th>
                                     <td class="px-6 py-4">
-                                        <a href="#" class="hover:text-blue-700">{{ $pending_product -> user -> name }}</a>
+                                        <a href="{{ route('admin.users.show', ['user' => $pending_product -> user -> id]) }}" class="border-b border-blue-600 hover:text-blue-700">{{ $pending_product -> user -> name }}</a>
                                     </td>
                                     <td class=" px-6 py-4">
                                         {{ date( 'Y年m月d日 H時i分s秒', strtotime( $pending_product -> created_at ) ) }}
                                     </td>
                                     <td class="flex justify-end gap-4 px-6 py-4 font-medium">
                                         <x-admin-button-detail href="{{ route('admin.items.show', ['item' =>  $pending_product -> id]) }}"></x-admin-button-detail>
+                                        <!-- 後ほど修正する -->
                                         <x-admin-button-edit action="">
                                             <x-slot name="content">
                                                 ポイントを設定して承認する
