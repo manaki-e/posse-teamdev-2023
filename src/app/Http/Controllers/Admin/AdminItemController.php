@@ -52,12 +52,12 @@ class AdminItemController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $item
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($item)
     {
-        $product = Product::with('user')->with('productImages')->with('request')->with('productDeals.user')->with('productTags.tag')->withCount('productLikes')->findOrFail($id);
+        $product = Product::with('user')->with('productImages')->with('request')->with('productDeals.user')->with('productTags.tag')->withCount('productLikes')->findOrFail($item);
         $product->japanese_status = Product::JAPANESE_STATUS[$product->status];
         return view('backend_test.admin_item', compact('product'));
     }
@@ -65,17 +65,17 @@ class AdminItemController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $item
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($item)
     {
         $tags = Tag::productTags()->get()->map(function ($tag) {
             $tag->is_chosen = false;
             return $tag;
         });
-        $chosen_product_tags = ProductTag::where('product_id', $id)->get();
-        $product = Product::withRelations()->findOrFail($id);
+        $chosen_product_tags = ProductTag::where('product_id', $item)->get();
+        $product = Product::withRelations()->findOrFail($item);
         $product->japanese_product_status = Product::JAPANESE_STATUS[$product->status];
         foreach ($chosen_product_tags as $chosen_product_tag) {
             $tags->find($chosen_product_tag->tag_id)->is_chosen = true;
@@ -87,18 +87,18 @@ class AdminItemController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int  $item
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $item)
     {
-        $product_instance = Product::findOrFail($id);
+        $product_instance = Product::findOrFail($item);
         switch ($request->form_type) {
             case 'update_product':
                 $images = $request->file('product_images');
-                $product_instance->addProductImages($images, $id);
+                $product_instance->addProductImages($images, $item);
                 $product_instance->deleteProductImages($request->delete_images);
-                $product_instance->updateProductTags($request->product_tags, $id);
+                $product_instance->updateProductTags($request->product_tags, $item);
                 $product_instance->title = $request->title;
                 $product_instance->description = $request->description;
                 break;
@@ -117,12 +117,12 @@ class AdminItemController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int  $item
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($item)
     {
-        Product::findOrFail($id)->delete();
+        Product::findOrFail($item)->delete();
         return redirect('/admin/items');
     }
 }
