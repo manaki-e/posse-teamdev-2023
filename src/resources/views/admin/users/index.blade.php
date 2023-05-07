@@ -26,11 +26,12 @@
                         <table class="w-full border-collapse bg-white text-left text-sm text-gray-500 ">
                             <thead class="bg-gray-50">
                                 <tr>
+                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">氏名</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">メールアドレス</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">所属部署</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">獲得 pt</th>
-                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">利用 pt</th>
+                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">残り利用 pt</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
                                 </tr>
                             </thead>
@@ -45,18 +46,16 @@
                                             : '<span class="absolute right-0 bottom-0 h-2 w-2 rounded-full bg-pink-400 ring ring-white"></span>'
                                             !!}
                                         </div>
-                                        <div class="text-sm flex-center">
-                                            <div class="font-medium text-gray-700">{{ $user -> name }}</div>
-                                        </div>
                                     </th>
+                                    <td class="px-6 py-4">{{ $user -> name }}</td>
                                     <td class="px-6 py-4">{{ $user -> email }}</td>
                                     <td class="px-6 py-4">{{ $user -> department -> name }}</td>
                                     <td class="px-6 py-4 text-right">{{ $user -> earned_point }} pt</td>
                                     <td class="px-6 py-4 text-right">{{ $user -> distribution_point }} pt</td>
                                     <td class="px-6 py-4">
                                         <div class="flex justify-end gap-4">
-                                            <x-admin-button-detail href="/admin/users/{{ $user -> id }}"></x-admin-button-detail>
-                                            <x-admin-button-delete action="/admin/users/{{ $user -> id }}"></x-admin-button-delete>
+                                            <x-admin-button-detail href="{{ route('admin.users', ['user' =>  $user -> id]) }}"></x-admin-button-detail>
+                                            <x-admin-button-delete action="{{ route('admin.users', ['user' =>  $user -> id]) }}"></x-admin-button-delete>
                                         </div>
                                     </td>
                                 </tr>
