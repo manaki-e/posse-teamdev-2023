@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\ProductDealLog;
 use App\Models\ProductTag;
 use App\Models\Tag;
 
@@ -57,9 +58,12 @@ class AdminItemController extends Controller
      */
     public function show($item)
     {
-        $product = Product::with('user')->with('productImages')->with('request')->with('productDeals.user')->with('productTags.tag')->withCount('productLikes')->findOrFail($item);
+        $product = Product::with('user')->with('productImages')->with('request')->with('productTags.tag')->withCount('productLikes')->findOrFail($item);
         $product->japanese_status = Product::JAPANESE_STATUS[$product->status];
-        return view('backend_test.admin_item', compact('product'));
+        
+        $product_deals = ProductDealLog::with('user')->where('product_id', $item)->paginate(10);
+
+        return view('admin.items.detail', compact('product', 'product_deals'));
     }
 
     /**
