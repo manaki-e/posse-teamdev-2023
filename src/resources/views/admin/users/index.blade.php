@@ -54,8 +54,8 @@
                                     <td class="px-6 py-4 text-right">{{ $user -> distribution_point }} pt</td>
                                     <td class="px-6 py-4">
                                         <div class="flex justify-end gap-4">
-                                            <x-admin-button-detail href="{{ route('admin.users', ['user' =>  $user -> id]) }}"></x-admin-button-detail>
-                                            <x-admin-button-delete action="{{ route('admin.users', ['user' =>  $user -> id]) }}"></x-admin-button-delete>
+                                            <x-admin-button-detail href="{{ route('admin.users.show', ['user' =>  $user -> id]) }}"></x-admin-button-detail>
+                                            <x-admin-button-delete action="{{ route('admin.users.destroy', ['user' =>  $user -> id]) }}"></x-admin-button-delete>
                                         </div>
                                     </td>
                                 </tr>
