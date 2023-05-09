@@ -22,15 +22,21 @@ class EventSeeder extends Seeder
         $faker = Faker::create('ja_JP');
         $user_ids = User::getUserIds();
         $request_ids = Request::getRequestIds();
-        for ($i = 1; $i <= 10; $i++) {
+        for ($i = 1; $i <= 30; $i++) {
             $user_id = $faker->randomElement($user_ids);
             $date = $faker->dateTimeBetween('today', '+1 month');
-            $completed_at=$faker->randomElement([$date,null]);
-            //削除する=キャンセルする=>completed_at=null
-            if($completed_at===null){
-                $deleted_at=now();
-            }else{
-                $deleted_at=null;
+            if ($i <= 10) {
+                //開催済み
+                $completed_at = $date;
+                $deleted_at = null;
+            } elseif ($i <= 20) {
+                //キャンセル済み
+                $completed_at = null;
+                $deleted_at = now();
+            } else {
+                //募集中
+                $completed_at = null;
+                $deleted_at = null;
             }
             $events_array[] = [
                 'user_id' => $user_id,

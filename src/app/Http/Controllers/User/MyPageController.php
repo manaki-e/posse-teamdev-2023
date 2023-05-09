@@ -57,11 +57,9 @@ class MyPageController extends Controller
     public function profile()
     {
         $user = Auth::user();
-        $icon = $user->icon;
-        $description = $user->description;
         print_r('アイコンファイル名' . $icon . '自己紹介' . $description);
         dd();
-        return view('user.mypage.profile', compact('icon', 'description'));
+        return view('user.mypage.profile', compact('user'));
     }
     public function pointHistory()
     {
