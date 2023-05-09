@@ -46,7 +46,7 @@ class Product extends Model
     {
         return $query->where('user_id', Auth::id());
     }
-    public function productDeals()
+    public function productDealLogs()
     {
         return $this->hasMany(ProductDealLog::class);
     }

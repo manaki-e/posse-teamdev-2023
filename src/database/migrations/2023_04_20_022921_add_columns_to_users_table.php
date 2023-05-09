@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->integer('earned_point')->default(0);
+            $table->string('icon');
             $table->integer('distribution_point')->default(5000);
             $table->boolean('is_admin')->default(0);
             $table->string('slack');

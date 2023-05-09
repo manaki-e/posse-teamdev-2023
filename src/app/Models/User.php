@@ -49,4 +49,28 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Department::class);
     }
+    public function events()
+    {
+        return $this->hasMany(Event::class);
+    }
+    public function eventParticipantLogs()
+    {
+        return $this->hasMany(EventParticipantLog::class);
+    }
+    public function ProductDealLogs()
+    {
+        return $this->hasMany(ProductDealLog::class);
+    }
+    public function PointExchangeLogs()
+    {
+        return $this->hasMany(PointExchangeLog::class);
+    }
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+    public function requests()
+    {
+        return $this->hasMany(Request::class);
+    }
 }

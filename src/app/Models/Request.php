@@ -22,4 +22,16 @@ class Request extends Model
     {
         return $this->belongsTo(Event::class);
     }
+    public function getRequestType($id)
+    {
+        if ($id == self::PRODUCT_REQUEST_TYPE_ID) {
+            return 'アイテム';
+        } else {
+            return 'イベント';
+        }
+    }
+    public function requestTags()
+    {
+        return $this->hasMany(RequestTag::class);
+    }
 }

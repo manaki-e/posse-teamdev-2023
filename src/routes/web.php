@@ -41,7 +41,12 @@ Route::middleware('auth')->group(function () {
     Route::put('/point-exchanges/{id}', [PointExchangeController::class, 'updateApproved'])->name('point-exchanges.update-approved');
 
     Route::group(['prefix' => 'mypage', 'as' => 'mypage.'], function () {
+        Route::get('/items', [MyPageController::class, 'items'])->name('items');
+        Route::get('/deals', [MyPageController::class, 'deals'])->name('deals');
+        Route::get('/requests', [MyPageController::class, 'requests'])->name('requests');
         Route::get('/points', [MyPageController::class, 'points'])->name('points');
+        Route::get('/point/history', [MyPageController::class, 'pointHistory'])->name('point.history');
+        Route::get('/profile', [MyPageController::class, 'profile'])->name('profile');
         Route::get('/events/organized', [MyPageController::class, 'eventsOrganized'])->name('events.organized');
         Route::get('/events/joined', [MyPageController::class, 'eventsJoined'])->name('events.joined');
     });
