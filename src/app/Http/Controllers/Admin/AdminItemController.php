@@ -57,7 +57,7 @@ class AdminItemController extends Controller
      */
     public function show($id)
     {
-        $product = Product::with('user')->with('productImages')->with('request')->with('productDeals.user')->with('productTags.tag')->withCount('productLikes')->findOrFail($id);
+        $product = Product::with('user')->with('productImages')->with('request')->with('productDealLogs.user')->with('productTags.tag')->withCount('productLikes')->findOrFail($id);
         $product->japanese_status = Product::JAPANESE_STATUS[$product->status];
         return view('backend_test.admin_item', compact('product'));
     }

@@ -13,9 +13,9 @@ class AdminIndexController extends Controller
     public function histories()
     {
         $event_participants = $this->eventParticipants();
-        $product_deals = $this->productDeals();
+        $product_deals = $this->productDealLogs();
     }
-    public function productDeals()
+    public function productDealLogs()
     {
         //figmaには一画面8項目だったので、paginate(8)を追加
         //貸した人、商品名、借りた人、ポイント、借りた日時、返却日時

@@ -32,7 +32,8 @@ class ProductSeeder extends Seeder
                 'status' => $status['pending'],
                 'request_id' => $faker->randomElement($request_ids),
                 'user_id' => $faker->randomElement($user_ids),
-                'created_at' => now()
+                'created_at' => now(),
+                'deleted_at'=>$faker->randomElement([null,now()])
             ];
         }
         //利用中、利用可能アイテム
@@ -44,7 +45,8 @@ class ProductSeeder extends Seeder
                 'status' => $status['available'],
                 'request_id' => $faker->randomElement($request_ids),
                 'user_id' => $faker->randomElement($user_ids),
-                'created_at' => now()
+                'created_at' => now(),
+                'deleted_at' => $faker->randomElement([null, now()])
             ];
         }
         //利用中アイテム
@@ -56,7 +58,8 @@ class ProductSeeder extends Seeder
                 'status' => $status['occupied'],
                 'request_id' => $faker->randomElement([null, $faker->randomElement($request_ids)]),
                 'user_id' => $faker->randomElement($user_ids),
-                'created_at' => now()
+                'created_at' => now(),
+                'deleted_at' => $faker->randomElement([null, now()])
             ];
         }
         DB::table('products')->insert($products_array);
