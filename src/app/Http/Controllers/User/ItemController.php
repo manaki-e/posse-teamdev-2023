@@ -154,7 +154,7 @@ class ItemController extends Controller
     public function return($item)
     {
         $product_instance = Product::findOrFail($item);
-        $product_deal_log_instance= $product_instance->productDealLogs->last();
+        $product_deal_log_instance = $product_instance->productDealLogs->last();
         // product_deal_logのreturned_at変更
         $product_deal_log_instance->changeReturnedAtToNow();
         // productのステータス変更
