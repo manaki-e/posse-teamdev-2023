@@ -151,4 +151,8 @@ class Product extends Model
         $product_deal_log_instance->save();
         return;
     }
+    public function productBelongsToLoginUser()
+    {
+        return $this->user_id === Auth::id();
+    }
 }

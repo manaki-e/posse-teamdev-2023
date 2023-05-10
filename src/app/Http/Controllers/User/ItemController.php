@@ -71,10 +71,10 @@ class ItemController extends Controller
         $product->japanese_status = Product::JAPANESE_STATUS[$product->status];
         $product->description = $product->changeDescriptionReturnToBreakTag($product->description);
         // このproduct_idをもつproduct_deal_logの最後のレコードのuser_idがログインユーザーの場合表示
-        $latest_product_deal_log = $product->productDealLogs()->latest()->first();
-        $login_user_can_borrow_this_product = $product->status === Product::STATUS['available'] && $product->user_id !== Auth::id();
-        $login_borrower_can_cancel_or_receive_this_product = $product->status === Product::STATUS['delivering'] && $latest_product_deal_log->user_id === Auth::id();
-        $login_lender_can_return_this_product = $product->status === Product::STATUS['occupied'] && $product->user_id === Auth::id();
+        $last_product_deal_log = $product->productDealLogs->last();
+        $login_user_can_borrow_this_product = $product->status === Product::STATUS['available'] && !$product->productBelongsToLoginUser();
+        $login_borrower_can_cancel_or_receive_this_product = $product->status === Product::STATUS['delivering'] && $last_product_deal_log->user_id === Auth::id();
+        $login_lender_can_return_this_product = $product->status === Product::STATUS['occupied'] && $product->productBelongsToLoginUser();
         return view('backend_test.item', compact('product', 'login_borrower_can_cancel_or_receive_this_product', 'login_lender_can_return_this_product', 'login_user_can_borrow_this_product'));
     }
 
@@ -154,7 +154,12 @@ class ItemController extends Controller
     public function return($item)
     {
         $product_instance = Product::findOrFail($item);
+        $product_deal_log_instance= $product_instance->productDealLogs->last();
+        // product_deal_logのreturned_at変更
+        $product_deal_log_instance->changeReturnedAtToNow();
+        // productのステータス変更
         $product_instance->changeStatusToAvailable();
+        // 処理が終わった後redirect back
         return redirect()->back();
     }
     public function cancel($item)
