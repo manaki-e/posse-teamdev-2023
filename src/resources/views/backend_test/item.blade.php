@@ -31,20 +31,20 @@
             アイテム削除フォーム
             <input type="submit" value="削除">
         </form>
-        @if($product->japanese_status==='貸出可能'&&!$product_belongs_to_login_user)
+        @if($login_user_can_borrow_this_product)
         <form action="{{ route('items.borrow',['item'=>$product->id]) }}" method="POST">
             @csrf
             <input type="submit" value="借りる">
         </form>
         @endif
-        @if($login_user_borrowing_this_product)
+        @if($login_borrower_can_cancel_this_product)
         キャンセルフォーム
         <form action="{{ route('items.cancel',['item'=>$product->id]) }}" method="POST">
             @csrf
             <input type="submit" value="キャンセル">
         </form>
         @endif
-        @if($login_user_lending_this_product)
+        @if($login_lender_can_return_this_product)
         返却フォーム
         <form action="{{ route('items.return',['item'=>$product->id]) }}" method="POST">
             @csrf
