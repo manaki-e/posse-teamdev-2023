@@ -23,12 +23,12 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             [
                 'name' => '管理者1',
-                'email' => 'manaki.endou@anti-pattern.co.jp',
+                'email' => 'manaki@anti-pattern.co.jp',
                 'password' => Hash::make('password'),
                 'icon' => 'admin_icon_1.jpeg',
                 'created_at' => now(),
                 'updated_at' => now(),
-                'slack' => $this->slackUserId(),
+                'slackID' => $this->slackUserId(),
                 'is_admin' => 1,
                 'department_id' => 1,
             ],
@@ -39,7 +39,7 @@ class UserSeeder extends Seeder
                 'icon' => 'admin_icon_2.jpeg',
                 'created_at' => now(),
                 'updated_at' => now(),
-                'slack' => $this->slackUserId(),
+                'slackID' => $this->slackUserId(),
                 'is_admin' => 1,
                 'department_id' => 1,
             ]
@@ -53,7 +53,7 @@ class UserSeeder extends Seeder
                 'icon' => 'user_icon_' . $i . '.jpeg',
                 'created_at' => now(),
                 'updated_at' => now(),
-                'slack' => 'U' . $this->slackUserId(),
+                'slackID' => 'U' . $this->slackUserId(),
                 'department_id' => $faker->randomElement(Department::getDepartmentIds()),
             ];
         }

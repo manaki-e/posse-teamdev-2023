@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('icon');
             $table->integer('distribution_point')->default(5000);
             $table->boolean('is_admin')->default(0);
-            $table->string('slack');
-            $table->foreignId('department_id')->constrained('departments');
+            $table->string('slackID');
+            $table->foreignId('department_id')->nullable()->constrained('departments');
             $table->softDeletes();
         });
         // slackからユーザー一斉に追加する機能実装するときはここに書く想定
