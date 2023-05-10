@@ -34,4 +34,9 @@ class ProductDealLog extends Model
             $query->where('user_id', $user_id);
         });
     }
+    public function changeReturnedAtToNow()
+    {
+        $this->returned_at = now();
+        $this->save();
+    }
 }

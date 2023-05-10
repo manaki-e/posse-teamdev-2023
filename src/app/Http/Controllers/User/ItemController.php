@@ -70,22 +70,13 @@ class ItemController extends Controller
         $product = Product::withRelations()->findOrFail($id);
         $product->japanese_status = Product::JAPANESE_STATUS[$product->status];
         $product->description = $product->changeDescriptionReturnToBreakTag($product->description);
-        //アイテムがログインユーザーのものかどうか
-        $product_belongs_to_login_user = $product->user_id === Auth::id();
         // このproduct_idをもつproduct_deal_logの最後のレコードのuser_idがログインユーザーの場合表示
         $latest_product_deal_log = $product->productDealLogs()->latest()->first();
-        if ($latest_product_deal_log->user_id === Auth::id()) {
-            $login_user_borrowing_this_product = true;
-        } else {
-            $login_user_borrowing_this_product = false;
-        }
+        $login_user_can_borrow_this_product = $product->status === Product::STATUS['available'] && $product->user_id !== Auth::id();
+        $login_borrower_can_cancel_this_product = $product->status === Product::STATUS['delivering'] && $latest_product_deal_log->user_id === Auth::id();
         // このproduct_idをもつproduct_deal_logの最後のレコードのreturned_atがnullかつproductのuser_idがログインユーザーの場合表示
-        if (empty($latest_product_deal_log->returned_at) && $product->user_id === Auth::id()) {
-            $login_user_lending_this_product = true;
-        } else {
-            $login_user_lending_this_product = false;
-        }
-        return view('backend_test.item', compact('product', 'login_user_borrowing_this_product', 'login_user_lending_this_product', 'product_belongs_to_login_user'));
+        $login_lender_can_return_this_product = $product->status === Product::STATUS['occupied'] && $product->user_id === Auth::id();
+        return view('backend_test.item', compact('product', 'login_borrower_can_cancel_this_product', 'login_lender_can_return_this_product', 'login_user_can_borrow_this_product'));
     }
 
     /**
@@ -151,11 +142,9 @@ class ItemController extends Controller
             return redirect()->back()->withErrors(['not_enough_points' => '消費ポイントが足りません']);
         }
         // 借りた人のポイント減る
-        $borrower_user_instance->distribution_point -= $product_instance->point;
-        $borrower_user_instance->save();
+        $borrower_user_instance->changeDistributionPoint(-$product_instance->point);
         // 貸した人のポイント増える
-        $lender_user_instance->earned_point += $product_instance->point;
-        $lender_user_instance->save();
+        $lender_user_instance->changeEarnedPoint($product_instance->point);
         // product_deal_log増える
         $product_instance->addProductDealLog($item, $borrower_user_instance->id);
         // productのステータス変更
@@ -172,7 +161,16 @@ class ItemController extends Controller
     public function cancel($item)
     {
         $product_instance = Product::findOrFail($item);
+        $product_deal_log_instance = $product_instance->productDealLogs->last();
+        $lender_user_instance = $product_instance->user;
+        // 貸した人のポイント減る
+        $lender_user_instance->changeEarnedPoint(-$product_instance->point);
+        // 借りた人のポイント変動なし
+        // productのステータス変更
         $product_instance->changeStatusToAvailable();
+        // product_deal_logのreturned_at変更
+        $product_deal_log_instance->changeReturnedAtToNow();
+        // 処理が終わった後redirect back
         return redirect()->back();
     }
 }
