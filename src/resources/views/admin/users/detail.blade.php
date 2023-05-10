@@ -7,10 +7,10 @@
     </x-slot>
 
     <div class="bg-white shadow rounded-lg md:p-6 w-full my-4">
-        <nav class="flex mx-auto max-w-screen-xl px-4 md:px-8" aria-label="Breadcrumb">
+        <nav class="flex mx-auto max-w-screen-xl" aria-label="Breadcrumb">
             <ol class="inline-flex items-center space-x-1 md:space-x-3">
                 <li class="inline-flex items-center">
-                    <a href="{{ route('admin.users.index') }}" class="inline-flex items-center text-lg text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+                    <a href="{{ route('admin.users.index') }}" class="inline-flex items-center text-base text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
                         </svg>
@@ -22,25 +22,25 @@
                         <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
                         </svg>
-                        <span class="ml-1 text-lg text-gray-500 md:ml-2 dark:text-gray-400">ユーザ詳細</span>
+                        <span class="ml-1 text-base text-gray-500 md:ml-2 dark:text-gray-400">ユーザ詳細</span>
                     </div>
                 </li>
             </ol>
         </nav>
-        <div class="flex">
-            <div>
-                <div class="w-36 h-36 mx-16 my-4">
+        <div class="flex gap-16 pt-4">
+            <div class="pl-4">
+                <div class="w-24 h-24">
                     <!-- 後ほど修正する -->
-                    <img class="rounded-full overflow-hidden border-4 admin-border-green" src="{{ asset('images/sample_product_1.jpeg') }}" alt="ユーザ写真">
+                    <img class="rounded-full overflow-hidden" src="{{ asset('images/sample_product_1.jpeg') }}" alt="ユーザ写真">
                 </div>
             </div>
             <div>
-                <div class="my-4">
-                    <p class="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">{{ $user_data -> name }}</p>
-                    <div class="h-1 w-40 bg-indigo-500 rounded"></div>
+                <div class="mb-4">
+                    <p class="sm:text-3xl text-xl font-medium title-font mb-2 text-gray-900">{{ $user_data -> name }}</p>
+                    <div class="h-0.5 w-full bg-blue-300 rounded"></div>
                 </div>
                 <div>
-                    <ul class="flex flex-col gap-2 p-0">
+                    <ul class="flex flex-col gap-4 p-0">
                         <li class="flex items-center gap-4 pl-4">
                             <p class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold capitalize">Email:</p>
                             <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-500">{{ $user_data -> email }}</p>
@@ -56,52 +56,50 @@
                             </p>
                         </li>
                     </ul>
-                </div>
-            </div>
-        </div>
-        <div class="">
-            <div class="flex flex-wrap -m-4 text-center">
-                <div class="p-4 w-1/4">
-                    <x-admin-point>
-                        <x-slot name="point">
-                            <!-- 後ほど修正する -->
-                            {{ __('2960') }}
-                        </x-slot>
-                        <x-slot name="discription">
-                            {{ __('累計獲得ポイント') }}
-                        </x-slot>
-                    </x-admin-point>
-                </div>
-                <div class="p-4 w-1/4">
-                    <x-admin-point>
-                        <x-slot name="point">
-                            <!-- 後ほど修正する -->
-                            {{ __('20700') }}
-                        </x-slot>
-                        <x-slot name="discription">
-                            {{ __('累計消費ポイント') }}
-                        </x-slot>
-                    </x-admin-point>
-                </div>
-                <div class="p-4 w-1/4">
-                    <x-admin-point>
-                        <x-slot name="point">
-                            {{ $user_data -> earned_point }}
-                        </x-slot>
-                        <x-slot name="discription">
-                            {{ __('今月獲得ポイント') }}
-                        </x-slot>
-                    </x-admin-point>
-                </div>
-                <div class="p-4 w-1/4">
-                    <x-admin-point>
-                        <x-slot name="point">
-                            {{ 5000 - $user_data -> distribution_point }}
-                        </x-slot>
-                        <x-slot name="discription">
-                            {{ __('今月消費ポイント') }}
-                        </x-slot>
-                    </x-admin-point>
+                    <div class="flex flex-wrap text-center">
+                        <div class="p-4 w-1/4">
+                            <x-admin-point>
+                                <x-slot name="point">
+                                    <!-- 後ほど修正する -->
+                                    {{ __('2960') }}
+                                </x-slot>
+                                <x-slot name="discription">
+                                    {{ __('累計獲得ポイント') }}
+                                </x-slot>
+                            </x-admin-point>
+                        </div>
+                        <div class="p-4 w-1/4">
+                            <x-admin-point>
+                                <x-slot name="point">
+                                    <!-- 後ほど修正する -->
+                                    {{ __('20700') }}
+                                </x-slot>
+                                <x-slot name="discription">
+                                    {{ __('累計消費ポイント') }}
+                                </x-slot>
+                            </x-admin-point>
+                        </div>
+                        <div class="p-4 w-1/4">
+                            <x-admin-point>
+                                <x-slot name="point">
+                                    {{ $user_data -> earned_point }}
+                                </x-slot>
+                                <x-slot name="discription">
+                                    {{ __('今月獲得ポイント') }}
+                                </x-slot>
+                            </x-admin-point>
+                        </div>
+                        <div class="p-4 w-1/4">
+                            <x-admin-point>
+                                <x-slot name="point">
+                                    {{ 5000 - $user_data -> distribution_point }}
+                                </x-slot>
+                                <x-slot name="discription">
+                                    {{ __('今月消費ポイント') }}
+                                </x-slot>
+                            </x-admin-point>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
