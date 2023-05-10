@@ -15,12 +15,14 @@ class Product extends Model
     const STATUS = [
         'pending' => 1,
         'available' => 2,
-        'occupied' => 3
+        'occupied' => 3,
+        'delivering' => 4
     ];
     const JAPANESE_STATUS = [
         1 => '承認待ち',
         2 => '貸出可能',
-        3 => '貸出中'
+        3 => '貸出中',
+        4 => '配送中'
     ];
     public function scopeGetProductIds($query)
     {
@@ -37,6 +39,10 @@ class Product extends Model
     public function scopeOccupiedProducts($query)
     {
         return $query->where('status', self::STATUS['occupied']);
+    }
+    public function scopeDeliveringProducts($query)
+    {
+        return $query->where('status', self::STATUS['delivering']);
     }
     public function scopeApprovedProducts($query)
     {
@@ -93,6 +99,11 @@ class Product extends Model
         $this->status = self::STATUS['occupied'];
         $this->save();
     }
+    public function changeStatusToDelivering()
+    {
+        $this->status = self::STATUS['delivering'];
+        $this->save();
+    }
     public function addProductImages($images, $product_id)
     {
         if (!empty($images)) {
@@ -130,6 +141,14 @@ class Product extends Model
             }
         }
         //idはテーブルのid,tag_idはタグのid
+        return;
+    }
+    public function addProductDealLog($product_id, $user_id)
+    {
+        $product_deal_log_instance = new ProductDealLog();
+        $product_deal_log_instance->product_id = $product_id;
+        $product_deal_log_instance->user_id = $user_id;
+        $product_deal_log_instance->save();
         return;
     }
 }
