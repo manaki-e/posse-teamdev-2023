@@ -37,11 +37,15 @@
             <input type="submit" value="借りる">
         </form>
         @endif
-        @if($login_borrower_can_cancel_this_product)
+        @if($login_borrower_can_cancel_or_receive_this_product)
         キャンセルフォーム
         <form action="{{ route('items.cancel',['item'=>$product->id]) }}" method="POST">
             @csrf
             <input type="submit" value="キャンセル">
+        </form>
+        <form action="{{ route('items.receive',['item'=>$product->id]) }}" method="POST">
+            @csrf
+            <input type="submit" value="受け取る">
         </form>
         @endif
         @if($login_lender_can_return_this_product)
