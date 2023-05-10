@@ -37,7 +37,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/items/{item}/borrow', [ItemController::class, 'borrow'])->name('items.borrow');
     Route::post('/items/{item}/cancel', [ItemController::class, 'cancel'])->name('items.cancel');
     Route::post('/items/{item}/return', [ItemController::class, 'return'])->name('items.return');
-    
+    Route::post('/items/{item}/receive', [ItemController::class, 'receive'])->name('items.receive');
+
     Route::put('/point-exchanges/{id}', [PointExchangeController::class, 'updateApproved'])->name('point-exchanges.update-approved');
 
     Route::group(['prefix' => 'mypage', 'as' => 'mypage.'], function () {

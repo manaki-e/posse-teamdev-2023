@@ -73,10 +73,9 @@ class ItemController extends Controller
         // このproduct_idをもつproduct_deal_logの最後のレコードのuser_idがログインユーザーの場合表示
         $latest_product_deal_log = $product->productDealLogs()->latest()->first();
         $login_user_can_borrow_this_product = $product->status === Product::STATUS['available'] && $product->user_id !== Auth::id();
-        $login_borrower_can_cancel_this_product = $product->status === Product::STATUS['delivering'] && $latest_product_deal_log->user_id === Auth::id();
-        // このproduct_idをもつproduct_deal_logの最後のレコードのreturned_atがnullかつproductのuser_idがログインユーザーの場合表示
+        $login_borrower_can_cancel_or_receive_this_product = $product->status === Product::STATUS['delivering'] && $latest_product_deal_log->user_id === Auth::id();
         $login_lender_can_return_this_product = $product->status === Product::STATUS['occupied'] && $product->user_id === Auth::id();
-        return view('backend_test.item', compact('product', 'login_borrower_can_cancel_this_product', 'login_lender_can_return_this_product', 'login_user_can_borrow_this_product'));
+        return view('backend_test.item', compact('product', 'login_borrower_can_cancel_or_receive_this_product', 'login_lender_can_return_this_product', 'login_user_can_borrow_this_product'));
     }
 
     /**
@@ -171,6 +170,14 @@ class ItemController extends Controller
         // product_deal_logのreturned_at変更
         $product_deal_log_instance->changeReturnedAtToNow();
         // 処理が終わった後redirect back
+        return redirect()->back();
+    }
+    public function receive($item)
+    {
+        //productのステータス変更
+        $product_instance = Product::findOrFail($item);
+        $product_instance->changeStatusToOccupied();
+        //処理が終わった後redirect back
         return redirect()->back();
     }
 }
