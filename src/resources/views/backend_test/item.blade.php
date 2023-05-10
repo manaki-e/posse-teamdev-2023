@@ -11,9 +11,11 @@
 <body>
     <!-- アイテム詳細 -->
     <div>
+        <a href="{{ route('items.index') }}">アイテム一覧</a>
         @foreach($product->productImages as $product_image)
         <img width="100" height="100" src=" {{asset('images/'.$product_image->image_url)}}">
         @endforeach
+        <div>所持ポイント{{ $user->distribution_point }}</div>
         <div>いいね{{$product->product_likes_count}}</div>
         <div>ステータス{{$product->japanese_status}}</div>
         <div>{{$product->point}}</div>
@@ -31,6 +33,11 @@
             アイテム削除フォーム
             <input type="submit" value="削除">
         </form>
+        @if ($errors->has('not_enough_points'))
+        <div class="alert alert-danger">
+            {{ $errors->first('not_enough_points') }}
+        </div>
+        @endif
         @if($login_user_can_borrow_this_product)
         <form action="{{ route('items.borrow',['item'=>$product->id]) }}" method="POST">
             @csrf
@@ -38,7 +45,6 @@
         </form>
         @endif
         @if($login_borrower_can_cancel_or_receive_this_product)
-        キャンセルフォーム
         <form action="{{ route('items.cancel',['item'=>$product->id]) }}" method="POST">
             @csrf
             <input type="submit" value="キャンセル">
@@ -49,7 +55,6 @@
         </form>
         @endif
         @if($login_lender_can_return_this_product)
-        返却フォーム
         <form action="{{ route('items.return',['item'=>$product->id]) }}" method="POST">
             @csrf
             <input type="submit" value="返却">

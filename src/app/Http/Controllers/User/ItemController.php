@@ -67,6 +67,8 @@ class ItemController extends Controller
      */
     public function show($id)
     {
+        //ユーザーのdistribution_pointを取得＝＞後で消す
+        $user = Auth::user();
         $product = Product::withRelations()->findOrFail($id);
         $product->japanese_status = Product::JAPANESE_STATUS[$product->status];
         $product->description = $product->changeDescriptionReturnToBreakTag($product->description);
@@ -75,7 +77,7 @@ class ItemController extends Controller
         $login_user_can_borrow_this_product = $product->status === Product::STATUS['available'] && !$product->productBelongsToLoginUser();
         $login_borrower_can_cancel_or_receive_this_product = $product->status === Product::STATUS['delivering'] && $last_product_deal_log->user_id === Auth::id();
         $login_lender_can_return_this_product = $product->status === Product::STATUS['occupied'] && $product->productBelongsToLoginUser();
-        return view('backend_test.item', compact('product', 'login_borrower_can_cancel_or_receive_this_product', 'login_lender_can_return_this_product', 'login_user_can_borrow_this_product'));
+        return view('backend_test.item', compact('product', 'login_borrower_can_cancel_or_receive_this_product', 'login_lender_can_return_this_product', 'login_user_can_borrow_this_product','user'));
     }
 
     /**
