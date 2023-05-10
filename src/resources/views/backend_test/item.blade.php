@@ -15,7 +15,6 @@
         @foreach($product->productImages as $product_image)
         <img width="100" height="100" src=" {{asset('images/'.$product_image->image_url)}}">
         @endforeach
-        <div>所持ポイント{{ $user->distribution_point }}</div>
         <div>いいね{{$product->product_likes_count}}</div>
         <div>ステータス{{$product->japanese_status}}</div>
         <div>{{$product->point}}</div>
