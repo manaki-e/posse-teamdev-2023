@@ -14,6 +14,14 @@ class Request extends Model
     {
         return self::pluck('id')->toArray();
     }
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
+    public function event()
+    {
+        return $this->belongsTo(Event::class);
+    }
     public function getRequestType($id)
     {
         if ($id == self::PRODUCT_REQUEST_TYPE_ID) {
