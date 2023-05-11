@@ -26,7 +26,7 @@
     <div>isLiked{{$event->isLiked}}</div>
     <div>isParticipated{{$event->isParticipated}}</div>
     <!-- 主催者 -->
-    @if($user->id=== $event->user_id)
+    @if($user->id=== $event->user_id&&$event->completed_at===null)
     <form action="{{ route('events.destroy',['event'=>$event->id]) }}" method="POST">
         @csrf
         @method('DELETE')
