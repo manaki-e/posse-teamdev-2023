@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminIndexController;
 use App\Http\Controllers\Admin\AdminItemController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\User\EventController;
 use App\Http\Controllers\User\ItemController;
 use App\Http\Controllers\User\MyPageController;
 use App\Http\Controllers\User\PointExchangeController;
@@ -40,6 +41,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/items/{item}/receive', [ItemController::class, 'receive'])->name('items.receive');
 
     Route::put('/point-exchanges/{id}', [PointExchangeController::class, 'updateApproved'])->name('point-exchanges.update-approved');
+
+    Route::resource('/events',EventController::class);
 
     Route::group(['prefix' => 'mypage', 'as' => 'mypage.'], function () {
         Route::get('/items', [MyPageController::class, 'items'])->name('items');

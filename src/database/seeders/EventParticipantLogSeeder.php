@@ -40,10 +40,10 @@ class EventParticipantLogSeeder extends Seeder
         DB::table('event_participant_logs')->insert($event_participants_array);
         //usersテーブルのpointカラムを更新
         //過去の開催された全てのイベント分のポイントを開催者に足す
-        $all_completed_events = $events->completedEvents()->with('participants')->get();
+        $all_completed_events = $events->completedEvents()->with('eventParticipants')->get();
         $all_completed_events->each(function ($event) {
             $point_sum = 0;
-            $event->participants->each(function ($participant) use (&$point_sum) {
+            $event->eventParticipants->each(function ($participant) use (&$point_sum) {
                 $point_sum += $participant->point;
             });
             if ($point_sum !== 0) {
