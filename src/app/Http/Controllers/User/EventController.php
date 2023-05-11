@@ -57,7 +57,11 @@ class EventController extends Controller
      */
     public function show($id)
     {
-        //
+        $event = Event::withCount(['eventParticipants', 'eventLikes'])->with(['user', 'eventParticipants.user', 'eventTags.tag', 'eventLikes.user'])->findOrFail($id);
+        $event->isLiked = $event->eventLikes->contains('user_id', Auth::id());
+        $event->isParticipated = $event->eventParticipants->contains('user_id', Auth::id());
+        dd($event);
+        // return view('user.events.show', compact('event'));
     }
 
     /**
