@@ -42,7 +42,8 @@ Route::middleware('auth')->group(function () {
 
     Route::put('/point-exchanges/{id}', [PointExchangeController::class, 'updateApproved'])->name('point-exchanges.update-approved');
 
-    Route::resource('/events',EventController::class);
+    Route::resource('/events', EventController::class);
+    Route::post('/events/{event}/held', [EventController::class, 'held'])->name('events.held');
 
     Route::group(['prefix' => 'mypage', 'as' => 'mypage.'], function () {
         Route::get('/items', [MyPageController::class, 'items'])->name('items');

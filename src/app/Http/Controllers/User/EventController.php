@@ -25,7 +25,7 @@ class EventController extends Controller
             return $event;
         });
         $tags = Tag::eventTags()->get();
-        return view('user.events.index', compact('events', 'tags'));
+        return view('backend_test.events', compact('events', 'tags'));
     }
 
     /**
@@ -57,11 +57,12 @@ class EventController extends Controller
      */
     public function show($id)
     {
+        $user=Auth::user();
         $event = Event::withCount(['eventParticipants', 'eventLikes'])->with(['user', 'eventParticipants.user', 'eventTags.tag', 'eventLikes.user'])->findOrFail($id);
         $event->isLiked = $event->eventLikes->contains('user_id', Auth::id());
         $event->isParticipated = $event->eventParticipants->contains('user_id', Auth::id());
-        dd($event);
-        // return view('user.events.show', compact('event'));
+        // dd($event);
+        return view('backend_test.event', compact('event','user'));
     }
 
     /**
@@ -95,6 +96,8 @@ class EventController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $event=Event::findOrFail($id);
+        $event->delete();
+        return redirect()->route('events.index');
     }
 }
