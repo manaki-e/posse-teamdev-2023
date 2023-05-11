@@ -9,6 +9,12 @@
 </head>
 
 <body>
+    @if ($errors->has('not_enough_point'))
+    <div class="alert alert-danger">
+        {{ $errors->first('not_enough_point') }}
+    </div>
+    @endif
+    <div>所持消費ポイント{{$user->distribution_point}}</div>
     <div>id{{$event->id}}</div>
     <div>user_id{{$event->user_id}}</div>
     <div>title{{$event->title}}</div>
@@ -30,12 +36,29 @@
     <form action="{{ route('events.destroy',['event'=>$event->id]) }}" method="POST">
         @csrf
         @method('DELETE')
-        <input type="submit" value="キャンセル">
+        <input type="submit" value="開催キャンセル">
     </form>
     <form action="{{ route('events.held',['event'=>$event->id]) }}" method="POST">
         @csrf
         <input type="submit" value="開催済み">
     </form>
+    @endif
+    <!-- 参加者 -->
+    @if($user->id!== $event->user_id&&$event->completed_at===null)
+    @if($event->isParticipated===false)
+    <!-- 参加する -->
+    <form action="{{ route('events.participate',['event'=>$event->id]) }}" method="POST">
+        @csrf
+        <input name="point">
+        <input type="submit" value="参加する">
+    </form>
+    @else
+    <!-- 参加キャンセル -->
+    <form action="{{ route('events.cancel',['event'=>$event->id]) }}" method="POST">
+        @csrf
+        <input type="submit" value="参加キャンセル">
+    </form>
+    @endif
     @endif
 </body>
 

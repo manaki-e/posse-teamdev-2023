@@ -44,6 +44,8 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('/events', EventController::class);
     Route::post('/events/{event}/held', [EventController::class, 'held'])->name('events.held');
+    Route::post('/events/{event}/participate', [EventController::class, 'participate'])->name('events.participate');
+    Route::post('/events/{event}/cancel', [EventController::class, 'cancel'])->name('events.cancel');
 
     Route::group(['prefix' => 'mypage', 'as' => 'mypage.'], function () {
         Route::get('/items', [MyPageController::class, 'items'])->name('items');

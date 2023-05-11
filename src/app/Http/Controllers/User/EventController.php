@@ -115,4 +115,27 @@ class EventController extends Controller
         //リダイレクト先は未確定
         return redirect()->route('events.show', $event);
     }
+    public function cancel($event){
+        $event_participant_log = EventParticipantLog::where('event_id', $event)->where('user_id', Auth::id())->first();
+        $event_participant_log->delete();
+        return redirect()->back();
+    }
+    public function participate(Request $request,$event){
+        $user = Auth::user();
+        //ポイント足りるかチェック
+        if($user->distribution_point<$request->point){
+            return redirect()->back()->withErrors(['not_enough_point'=>'ポイントが足りません']);
+        }
+        // 提示したポイント差し引かれる
+        $user->distribution_point -= $request->point;
+        $user->save();
+        // event_participantsにレコード追加
+        $event_participant_log = new EventParticipantLog();
+        $event_participant_log->event_id = $event;
+        $event_participant_log->user_id = $user->id;
+        $event_participant_log->point = $request->point;
+        $event_participant_log->save();
+        // 処理後redirect back
+        return redirect()->back();
+    }
 }
