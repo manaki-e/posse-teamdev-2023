@@ -50,13 +50,13 @@
         </form>
         <form action="{{ route('items.receive',['item'=>$product->id]) }}" method="POST">
             @csrf
-            <input type="submit" value="受け取る">
+            <input type="submit" value="受取完了">
         </form>
         @endif
         @if($login_lender_can_return_this_product)
         <form action="{{ route('items.return',['item'=>$product->id]) }}" method="POST">
             @csrf
-            <input type="submit" value="返却">
+            <input type="submit" value="返却完了">
         </form>
         @endif
     </div>
