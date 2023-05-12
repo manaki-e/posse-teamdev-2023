@@ -17,10 +17,16 @@
     <div>所持消費ポイント{{$user->distribution_point}}</div>
     <div>id{{$event->id}}</div>
     <div>user_id{{$event->user_id}}</div>
-    <div>title{{$event->title}}</div>
-    <div>description{{$event->description}}</div>
-    <div>date{{$event->date}}</div>
-    <div>location{{$event->location}}</div>
+    <form action="{{ route('events.update',['event'=>$event->id]) }}" method="POST">
+        @csrf
+        @method('PUT')
+        <!-- 編集できる項目これで大丈夫？ -->
+        <input name="title" value="{{$event->title}}">
+        <textarea cols="50" rows="4" name="description">{{ $event->description }}</textarea>
+        <input type="datetime-local" name="date" value="{{$event->date}}">
+        <input name="location" value="{{$event->location}}">
+        <input type="submit" value="編集する">
+    </form>
     <div>slack_channel{{$event->slack_channel}}</div>
     <div>completed_at{{$event->completed_at}}</div>
     <div>request_id{{$event->request_id}}</div>
@@ -33,10 +39,9 @@
     <div>isParticipated{{$event->isParticipated}}</div>
     <!-- 主催者 -->
     @if($user->id=== $event->user_id&&$event->completed_at===null)
-    <form action="{{ route('events.destroy',['event'=>$event->id]) }}" method="POST">
+    <form action=" {{ route('events.destroy',['event'=>$event->id]) }}" method="POST">
         @csrf
-        @method('DELETE')
-        <input type="submit" value="開催キャンセル">
+        @method(' DELETE') <input type="submit" value="開催キャンセル">
     </form>
     <form action="{{ route('events.held',['event'=>$event->id]) }}" method="POST">
         @csrf

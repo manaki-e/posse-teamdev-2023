@@ -85,7 +85,10 @@ class EventController extends Controller
      */
     public function update(Request $request, $event)
     {
-        //
+        $form_data=$request->all();
+        foreach($form_data as $key=>$value){
+            dd($key);
+        }
     }
 
     /**
