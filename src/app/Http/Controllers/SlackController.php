@@ -11,6 +11,14 @@ use App\Models\Department;
 
 class SlackController extends Controller
 {
+
+    private $token;
+
+    public function __construct()
+    {
+        $this->token = env('SLACK_TOKEN');
+    }
+
     public function createUsers(Request $request)
     {
         $client = new Client();
@@ -22,7 +30,7 @@ class SlackController extends Controller
             try {
                 $response = $client->request('GET', 'https://slack.com/api/users.list', [
                     'headers' => [
-                        'Authorization' => 'Bearer ' . env('SLACK_TOKEN'),
+                        'Authorization' => 'Bearer ' . $this->token,
                         'Content-type' => 'application/json'
                     ]
                 ]);
