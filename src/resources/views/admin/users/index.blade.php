@@ -26,19 +26,19 @@
                         <table class="w-full border-collapse bg-white text-left text-sm text-gray-500 ">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
-                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900">氏名</th>
-                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900">メールアドレス</th>
-                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900">所属部署</th>
-                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">獲得 pt</th>
-                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">残り利用 pt</th>
-                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
+                                    <th scope="col" class="px-4 py-4 font-medium text-gray-900"></th>
+                                    <th scope="col" class="px-4 py-4 font-medium text-gray-900">氏名</th>
+                                    <th scope="col" class="px-4 py-4 font-medium text-gray-900">メールアドレス</th>
+                                    <th scope="col" class="px-4 py-4 font-medium text-gray-900">所属部署</th>
+                                    <th scope="col" class="px-4 py-4 font-medium text-gray-900 text-right">獲得 pt</th>
+                                    <th scope="col" class="px-4 py-4 font-medium text-gray-900 text-right">残り利用 pt</th>
+                                    <th scope="col" class="px-4 py-4 font-medium text-gray-900"></th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-100 border-t border-gray-100">
                                 @foreach ($users as $user)
                                 <tr class="hover:bg-gray-50">
-                                    <th class="flex gap-3 px-6 py-4 font-normal text-gray-900">
+                                    <th class="flex gap-3 px-4 py-4 font-normal text-gray-900">
                                         <div class="relative h-10 w-10">
                                             <img class="h-full w-full rounded-full object-cover object-center" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
                                             {!! $user -> is_admin === 0
@@ -47,12 +47,12 @@
                                             !!}
                                         </div>
                                     </th>
-                                    <td class="px-6 py-4">{{ $user -> name }}</td>
-                                    <td class="px-6 py-4">{{ $user -> email }}</td>
-                                    <td class="px-6 py-4">{{ $user -> department -> name }}</td>
-                                    <td class="px-6 py-4 text-right">{{ $user -> earned_point }} pt</td>
-                                    <td class="px-6 py-4 text-right">{{ $user -> distribution_point }} pt</td>
-                                    <td class="px-6 py-4">
+                                    <td class="px-4 py-4">{{ $user -> name }}</td>
+                                    <td class="px-4 py-4">{{ $user -> email }}</td>
+                                    <td class="px-4 py-4">{{ $user -> department ? $user -> department -> name : '' }}</td>
+                                    <td class="px-4 py-4 text-right">{{ $user -> earned_point }} pt</td>
+                                    <td class="px-4 py-4 text-right">{{ $user -> distribution_point }} pt</td>
+                                    <td class="px-4 py-4">
                                         <div class="flex justify-end gap-4">
                                             <x-admin-button-detail href="{{ route('admin.users.show', ['user' =>  $user -> id]) }}"></x-admin-button-detail>
                                             <x-admin-button-delete action="{{ route('admin.users.destroy', ['user' =>  $user -> id]) }}"></x-admin-button-delete>
