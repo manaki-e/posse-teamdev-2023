@@ -62,5 +62,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/slack/users', [SlackController::class, 'createUsers'])->name('slack.users');
+Route::get('/slack/notification', [SlackController::class, 'sendNotification'])->name('slack.notification');
+Route::get('/slack/channel', [SlackController::class, 'createChannel'])->name('slack.channel');
 
 require __DIR__ . '/auth.php';
