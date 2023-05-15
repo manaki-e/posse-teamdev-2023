@@ -12,9 +12,14 @@ use App\Models\Department;
 
 class SlackController extends Controller
 {
-
+    /**
+     * @var string $token Slackのトークン
+     */
     private $token;
 
+    /**
+     * SlackController constructor.
+     */
     public function __construct()
     {
         $this->token = env('SLACK_TOKEN');
@@ -32,6 +37,7 @@ class SlackController extends Controller
         $retryDelay = 1; // 待機時間（秒）
         $response = null;
         $attempts = 0;
+
         do {
             try {
                 $response = $client->request('GET', 'https://slack.com/api/users.list', [
