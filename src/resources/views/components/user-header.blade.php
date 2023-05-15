@@ -1,5 +1,5 @@
 <!--
-    引数は色、アプリ名、各ポイント、ユーザーのアイコン、アカウントページ、マイページへのリンク
+    引数は色、アプリ名、ボタン名、各ポイント、ユーザーのアイコン、アカウントページ、マイページへのリンク
     textColorとbgColorには以下の色を指定する
         Product Share : text-blue-400 / bg-blue-400
         Event : text-pink-600 / bg-pink-600
@@ -18,7 +18,7 @@
         </div>
         <div class="flex">
             <a href="#" {{ $attributes->merge(['class' => 'rounded-lg w-40 mx-3 my-1 px-8 py-2 shadow-md text-center text-sm text-white transition-all hover:shadow-lg hover:opacity-75 '.$bgColor]) }}>
-                新規作成
+                {{ $button_text }}
             </a>
             <div x-data="{ tooltip: false }" x-on:mouseover="tooltip = true" x-on:mouseleave="tooltip = false" class="w-24 h-12 mx-2 cursor-pointer relative">
                 <div class="flex justify-between items-center">
