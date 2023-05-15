@@ -39,3 +39,14 @@
     align-items: center;
     justify-content: center;
 }
+
+.font-patua {
+    font-family: 'Patua One', cursive;
+}
+
+.text-peer-request {
+    color: #C0C81E;
+}
+.bg-peer-request {
+    background-color: #C0C81E;
+}
