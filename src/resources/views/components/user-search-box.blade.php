@@ -5,13 +5,15 @@
         Event : text-pink-600 / bg-pink-600
         Request : text-peer-request / bg-peer-request
 -->
-<div class="mx-auto max-w-5xl">
+<div class="">
     <div class="rounded-lg border border-gray-200 bg-white shadow-sm">
         <details class="group rounded-lg" open>
-            <summary {{ $attributes->merge(['class' => 'flex cursor-pointer group list-none items-center justify-between shadow-md p-4 text-lg text-white font-medium '.$bgColor]) }}>
+            <summary
+                {{ $attributes->merge(['class' => 'flex h-10 rounded text-xs cursor-pointer group list-none items-center justify-between shadow-md p-4 text-white font-bold '.$bgColor]) }}>
                 絞り込み
                 <div class="text-secondary-500">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="block h-5 w-5 transition-all duration-300 group-open:rotate-180">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="block h-5 w-5 transition-all duration-300 group-open:rotate-180">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                     </svg>
                 </div>
