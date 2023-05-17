@@ -67,11 +67,10 @@ class MyPageController extends Controller
         //消費=>product_deal_logsとevent_participant_logsを結合
         //消費はキャンセル関係なくポイントが減るためwithTrashed()
         $user = Auth::user();
-        $distribution_product_deal_logs = ProductDealLog::withTrashed()->where('user_id', $user->id)->with(['product' => function ($query) {
+        $distribution_product_deal_logs = ProductDealLog::where('user_id', $user->id)->with(['product' => function ($query) {
             $query->withTrashed();
         }])->get()->map(function ($product_deal_log) {
             return [
-                'category' => 'アイテム借入',
                 'name' => $product_deal_log->product->title,
                 'created_at' => $product_deal_log->created_at,
                 'point' => -$product_deal_log->product->point,
@@ -81,7 +80,6 @@ class MyPageController extends Controller
             $query->withTrashed();
         }])->get()->map(function ($event_participant_log) {
             return [
-                'category' => 'イベント参加',
                 'name' => $event_participant_log->event->title,
                 'created_at' => $event_participant_log->created_at,
                 'point' => -$event_participant_log->point,
@@ -100,20 +98,17 @@ class MyPageController extends Controller
             if ($point_exchange_log->status == $point_exchange_rejected_status) {
                 //却下=申請のときに減って、却下のときに増える
                 $tmp_array[] = [
-                    'category' => '換金',
                     'name' => '申請',
                     'created_at' => $point_exchange_log->created_at,
                     'point' => -$point_exchange_log->point,
                 ];
                 $tmp_array[] = [
-                    'category' => '換金',
                     'name' => '申請却下',
                     'created_at' => $point_exchange_log->created_at,
                     'point' => +$point_exchange_log->point,
                 ];
             } else {
                 $tmp_array[] = [
-                    'category' => '換金',
                     'name' => '申請',
                     'created_at' => $point_exchange_log->created_at,
                     'point' => -$point_exchange_log->point,
@@ -123,20 +118,18 @@ class MyPageController extends Controller
         })->flatten(1);
         $earned_event_logs = Event::where('user_id', $user->id)->withSum('participants', 'point')->get()->map(function ($event) {
             return [
-                'category' => 'イベント主催',
                 'name' => $event->title,
                 'created_at' => $event->completed_at,
                 'point' => $event->participants_sum_point,
             ];
         });
         //productが削除されてもポイントの変動は残る、product_deal_logが削除＝キャンセルされた場合はポイントの変動も削除
-        $earned_product_deal_logs = ProductDealLog::with(['product' => function ($query) {
+        $earned_product_deal_logs = ProductDealLog::notCanceled()->with(['product' => function ($query) {
             $query->withTrashed();
         }])->whereHas('product', function ($query) use ($user) {
             $query->where('user_id', $user->id)->withTrashed();
         })->get()->map(function ($product_deal_log) {
             return [
-                'category' => 'アイテム貸出',
                 'name' => $product_deal_log->product->title,
                 'created_at' => $product_deal_log->created_at,
                 'point' => $product_deal_log->product->point,

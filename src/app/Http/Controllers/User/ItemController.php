@@ -70,7 +70,12 @@ class ItemController extends Controller
         $product = Product::withRelations()->findOrFail($id);
         $product->japanese_status = Product::JAPANESE_STATUS[$product->status];
         $product->description = $product->changeDescriptionReturnToBreakTag($product->description);
-        return view('backend_test.item', compact('product'));
+        // このproduct_idをもつproduct_deal_logの最後のレコードのuser_idがログインユーザーの場合表示
+        $last_product_deal_log = $product->productDealLogs->last();
+        $login_user_can_borrow_this_product = $product->status === Product::STATUS['available'] && !$product->productBelongsToLoginUser();
+        $login_borrower_can_cancel_or_receive_this_product = $product->status === Product::STATUS['delivering'] && $last_product_deal_log->user_id === Auth::id();
+        $login_lender_can_return_this_product = $product->status === Product::STATUS['occupied'] && $product->productBelongsToLoginUser();
+        return view('backend_test.item', compact('product', 'login_borrower_can_cancel_or_receive_this_product', 'login_lender_can_return_this_product', 'login_user_can_borrow_this_product'));
     }
 
     /**
@@ -128,20 +133,56 @@ class ItemController extends Controller
     }
     public function borrow($item)
     {
+        $borrower_user_instance = Auth::user();
         $product_instance = Product::findOrFail($item);
-        $product_instance->changeStatusToOccupied();
+        $lender_user_instance = $product_instance->user;
+        // ポイント足りるか確認
+        if ($borrower_user_instance->distribution_point < $product_instance->point) {
+            return redirect()->back()->withErrors(['not_enough_points' => '消費ポイントが足りません']);
+        }
+        // 借りた人のポイント減る
+        $borrower_user_instance->changeDistributionPoint(-$product_instance->point);
+        // 貸した人のポイント増える
+        $lender_user_instance->changeEarnedPoint($product_instance->point);
+        // product_deal_log増える
+        $product_instance->addProductDealLog($item, $borrower_user_instance->id);
+        // productのステータス変更
+        $product_instance->changeStatusToDelivering();
+        // 処理が終わった後redirect back
         return redirect()->back();
     }
     public function return($item)
     {
         $product_instance = Product::findOrFail($item);
+        $product_deal_log_instance = $product_instance->productDealLogs->last();
+        // product_deal_logのreturned_at変更
+        $product_deal_log_instance->changeReturnedAtToNow();
+        // productのステータス変更
         $product_instance->changeStatusToAvailable();
+        // 処理が終わった後redirect back
         return redirect()->back();
     }
     public function cancel($item)
     {
         $product_instance = Product::findOrFail($item);
+        $product_deal_log_instance = $product_instance->productDealLogs->last();
+        $lender_user_instance = $product_instance->user;
+        // 貸した人のポイント減る
+        $lender_user_instance->changeEarnedPoint(-$product_instance->point);
+        // 借りた人のポイント変動なし
+        // productのステータス変更
         $product_instance->changeStatusToAvailable();
+        // product_deal_logのcanceled_at変更
+        $product_deal_log_instance->changeCanceledAtToNow();
+        // 処理が終わった後redirect back
+        return redirect()->back();
+    }
+    public function receive($item)
+    {
+        //productのステータス変更
+        $product_instance = Product::findOrFail($item);
+        $product_instance->changeStatusToOccupied();
+        //処理が終わった後redirect back
         return redirect()->back();
     }
 }
