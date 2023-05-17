@@ -12,9 +12,7 @@ class PointExchangeLog extends Model
     const STATUS = [
         'PENDING' => 1,
         'APPROVED' => 2,
-        'REJECTED' => 3
     ];
-    const POINT_TYPE_ID = PointType::EARNED_POINT_TYPE_ID;
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -26,13 +24,5 @@ class PointExchangeLog extends Model
     public function scopeApproved($query)
     {
         return $query->where('status', self::STATUS['APPROVED']);
-    }
-    public function scopeRejected($query)
-    {
-        return $query->where('status', self::STATUS['REJECTED']);
-    }
-    public function scopeNotRejected($query)
-    {
-        return $query->where('status', '!=', self::STATUS['REJECTED']);
     }
 }
