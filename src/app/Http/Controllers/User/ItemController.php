@@ -172,8 +172,8 @@ class ItemController extends Controller
         // 借りた人のポイント変動なし
         // productのステータス変更
         $product_instance->changeStatusToAvailable();
-        // product_deal_logのreturned_at変更
-        $product_deal_log_instance->changeReturnedAtToNow();
+        // product_deal_logのcanceled_at変更
+        $product_deal_log_instance->changeCanceledAtToNow();
         // 処理が終わった後redirect back
         return redirect()->back();
     }

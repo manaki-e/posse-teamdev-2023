@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained('products');
             $table->foreignId('user_id')->constrained('users');
             $table->timestamp('returned_at')->default(null)->nullable();
+            $table->timestamp('canceled_at')->default(null)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
