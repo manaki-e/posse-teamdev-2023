@@ -97,9 +97,20 @@ class EventController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($event)
+    public function edit($id)
     {
-        //
+        $event = Event::findOrFail($id);
+        //checkbox用にすべてのevent_tagsを取得
+        $event_tags = Tag::EventTags()->get()->map(function ($event_tag) {
+            $event_tag->is_selected = false;
+            return $event_tag;
+        });
+        //所持するevent_tagsのis_selectedをtrueにする
+        $chosen_event_tags = EventTag::where('event_id', $id)->get()->map(function ($chosen_event_tag) use ($event_tags) {
+            $event_tags->find($chosen_event_tag->tag_id)->is_chosen = true;
+            return $chosen_event_tag;
+        });
+        return view('backend_test.edit_event', compact('event', 'event_tags'));
     }
 
     /**
@@ -109,12 +120,31 @@ class EventController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $event)
+    public function update(Request $request, $id)
     {
-        $form_data = $request->all();
-        foreach ($form_data as $key => $value) {
-            dd($key);
+        $user = Auth::user();
+        $event = Event::with('eventTags.tag')->findOrFail($id);
+        //ログインユーザーのイベントか確認
+        if ($user->id !== $event->user_id) {
+            return redirect()->back()->withErrors(['not_event_organizer' => 'あなたは主催者ではないです']);
         }
+        //イベント更新
+        $event->title = $request->title;
+        $event->description = $request->description;
+        $event->date = $request->date;
+        $event->location = $request->location;
+        $event->save();
+        //event_tags更新
+        //まずはevent_tagsをすべて削除
+        EventTag::where('event_id', $id)->delete();
+        //event_tags追加
+        foreach ($request->tags as $tag_id) {
+            $event_tag = new EventTag();
+            $event_tag->event_id = $id;
+            $event_tag->tag_id = $tag_id;
+            $event_tag->save();
+        }
+        return redirect()->back();
     }
 
     /**

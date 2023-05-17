@@ -17,16 +17,10 @@
     <div>所持消費ポイント{{$user->distribution_point}}</div>
     <div>id{{$event->id}}</div>
     <div>user_id{{$event->user_id}}</div>
-    <form action="{{ route('events.update',['event'=>$event->id]) }}" method="POST">
-        @csrf
-        @method('PUT')
-        <!-- 編集できる項目これで大丈夫？ -->
-        <input name="title" value="{{$event->title}}">
-        <textarea cols="50" rows="4" name="description">{{ $event->description }}</textarea>
-        <input type="datetime-local" name="date" value="{{$event->date}}">
-        <input name="location" value="{{$event->location}}">
-        <input type="submit" value="編集する">
-    </form>
+    <div>title{{$event->title}}</div>
+    <div>description{{$event->description}}</div>
+    <div>date{{$event->date}}</div>
+    <div>location{{$event->location}}</div>
     <div>slack_channel{{$event->slack_channel}}</div>
     <div>completed_at{{$event->completed_at}}</div>
     <div>request_id{{$event->request_id}}</div>
