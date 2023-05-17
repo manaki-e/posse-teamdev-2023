@@ -34,7 +34,7 @@ class ProductDealLog extends Model
             $query->where('user_id', $user_id);
         });
     }
-    public function scopeNotCanceled()
+    public function scopeNotCanceled($query)
     {
         return $query->whereNull('canceled_at');
     }

@@ -93,30 +93,14 @@ class MyPageController extends Controller
             return $distribution_point_log;
         });
         //獲得=>point_exchange_logsとevents->withsum()とproduct_deal_logsを結合
-        $point_exchange_rejected_status = PointExchangeLog::STATUS['REJECTED'];
-        $earned_point_exchange_logs = PointExchangeLog::where('user_id', $user->id)->get()->map(function ($point_exchange_log) use ($point_exchange_rejected_status) {
-            if ($point_exchange_log->status == $point_exchange_rejected_status) {
-                //却下=申請のときに減って、却下のときに増える
-                $tmp_array[] = [
-                    'name' => '申請',
-                    'created_at' => $point_exchange_log->created_at,
-                    'point' => -$point_exchange_log->point,
-                ];
-                $tmp_array[] = [
-                    'name' => '申請却下',
-                    'created_at' => $point_exchange_log->created_at,
-                    'point' => +$point_exchange_log->point,
-                ];
-            } else {
-                $tmp_array[] = [
-                    'name' => '申請',
-                    'created_at' => $point_exchange_log->created_at,
-                    'point' => -$point_exchange_log->point,
-                ];
-            }
-            return $tmp_array;
-        })->flatten(1);
-        $earned_event_logs = Event::where('user_id', $user->id)->withSum('participants', 'point')->get()->map(function ($event) {
+        $earned_point_exchange_logs = PointExchangeLog::where('user_id', $user->id)->get()->map(function ($point_exchange_log) {
+            return [
+                'name' => '換金申請',
+                'created_at' => $point_exchange_log->created_at,
+                'point' => -$point_exchange_log->point,
+            ];
+        });
+        $earned_event_logs = Event::where('user_id', $user->id)->where('completed_at', '!=', null)->withSum('participants', 'point')->get()->map(function ($event) {
             return [
                 'name' => $event->title,
                 'created_at' => $event->completed_at,
