@@ -87,7 +87,13 @@ class EventController extends Controller
         $user = Auth::user();
         $event = Event::withCount(['eventParticipants', 'eventLikes'])->with(['user', 'eventParticipants.user', 'eventTags.tag', 'eventLikes.user'])->findOrFail($id);
         $event->isLiked = $event->eventLikes->contains('user_id', Auth::id());
-        $event->isParticipated = $event->eventParticipants->contains('user_id', Auth::id());
+        $login_user_event_participant_instance = $event->eventParticipants->where('user_id', Auth::id())->where('canceled_at', null)->first();
+        //nullの場合はキャンセル済みまたはそもそも参加予約したことない
+        if (empty($login_user_event_participant_instance)) {
+            $event->isParticipated = false;
+        } else {
+            $event->isParticipated = true;
+        }
         return view('backend_test.event', compact('event', 'user'));
     }
 
@@ -176,16 +182,20 @@ class EventController extends Controller
     }
     public function cancel($event)
     {
-        // ポイントは戻ってこない
-        // event_participantsから削除
-        $event_participant_log = EventParticipantLog::where('event_id', $event)->where('user_id', Auth::id())->first();
-        $event_participant_log->delete();
+        // canceled_atを入力
+        $event_participant_log = EventParticipantLog::where('event_id', $event)->where('user_id', Auth::id())->where('canceled_at', null)->first();
+        $event_participant_log->canceled_at = now();
+        $event_participant_log->save();
         // 処理後redirect back
         return redirect()->back();
     }
     public function participate(Request $request, $event)
     {
         $user = Auth::user();
+        //ポイント入力チェック
+        $request->validate([
+            'point' => 'required',
+        ]);
         //ポイント足りるかチェック
         if ($user->distribution_point < $request->point) {
             return redirect()->back()->withErrors(['not_enough_point' => 'ポイントが足りません']);

@@ -9,11 +9,11 @@
 </head>
 
 <body>
-    @if ($errors->has('not_enough_point'))
+    @foreach ($errors->all() as $error)
     <div class="alert alert-danger">
-        {{ $errors->first('not_enough_point') }}
+        {{ $error }}
     </div>
-    @endif
+    @endforeach
     <div>所持消費ポイント{{$user->distribution_point}}</div>
     <div>id{{$event->id}}</div>
     <div>user_id{{$event->user_id}}</div>
