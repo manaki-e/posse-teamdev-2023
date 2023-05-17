@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\ItemController;
 use App\Http\Controllers\User\MyPageController;
+use App\Http\Controllers\User\PointExchangeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,6 +36,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/items/{item}/borrow', [ItemController::class, 'borrow'])->name('items.borrow');
     Route::post('/items/{item}/cancel', [ItemController::class, 'cancel'])->name('items.cancel');
     Route::post('/items/{item}/return', [ItemController::class, 'return'])->name('items.return');
+    Route::resource('/point-exchange', PointExchangeController::class);
+
     Route::group(['prefix' => 'mypage', 'as' => 'mypage.'], function () {
         Route::get('/items', [MyPageController::class, 'items'])->name('items');
         Route::get('/deals', [MyPageController::class, 'deals'])->name('deals');
