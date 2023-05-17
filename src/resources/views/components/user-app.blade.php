@@ -34,8 +34,8 @@
     </style>
 </head>
 
-<body class="user-bg-gray font-sans">
-    <header class="text-gray-600 bg-white">
+<body class="user-bg-gray font-sans text-gray-500">
+    <header class="bg-white">
         {{ $header_slot }}
     </header>
     {{ $body_slot }}
