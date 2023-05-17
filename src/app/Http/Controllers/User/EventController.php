@@ -5,6 +5,8 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\EventParticipantLog;
+use App\Models\EventTag;
+use App\Models\Request as ModelsRequest;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -36,7 +38,11 @@ class EventController extends Controller
      */
     public function create()
     {
-        //
+        //未完了のリクエストを取得
+        $requests = ModelsRequest::where('completed_at', '!=', null)->get();
+        //イベントタグ一覧を取得
+        $tags = Tag::eventTags()->get();
+        return view('backend_test.add_event', compact('requests', 'tags'));
     }
 
     /**
@@ -47,7 +53,27 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //events追加
+        $event = new Event();
+        $event->user_id = Auth::id();
+        $event->title = $request->title;
+        $event->description = $request->description;
+        $event->date = $request->date;
+        $event->location = $request->location;
+        $event->request_id = $request->request_id;
+        //ここにslackchannel自動生成の処理を書く。今は仮置き
+        $event->slack_channel = 'test';
+        $event->save();
+        //event_tags追加
+        foreach ($request->tags as $tag_id) {
+            $event_tag = new EventTag();
+            $event_tag->event_id = $event->id;
+            $event_tag->tag_id = $tag_id;
+            $event_tag->save();
+        }
+        //作ったイベント詳細にとぶor redirect back
+        // return redirect()->back();
+        return redirect()->route('events.show', $event->id);
     }
 
     /**
@@ -85,8 +111,8 @@ class EventController extends Controller
      */
     public function update(Request $request, $event)
     {
-        $form_data=$request->all();
-        foreach($form_data as $key=>$value){
+        $form_data = $request->all();
+        foreach ($form_data as $key => $value) {
             dd($key);
         }
     }
@@ -137,6 +163,7 @@ class EventController extends Controller
         // 提示したポイント差し引かれる
         $user->distribution_point -= $request->point;
         $user->save();
+        //専用slackチャンネルに招待される＝＞slackの実装できたらやる
         // event_participantsにレコード追加
         $event_participant_log = new EventParticipantLog();
         $event_participant_log->event_id = $event;
