@@ -11,7 +11,7 @@ class PointExchangeLog extends Model
     const MULTIPLE_OF = 500;
     const STATUS = [
         'PENDING' => 1,
-        'APPROVED' => 2,
+        'APPROVED' => 2
     ];
     public function user()
     {
