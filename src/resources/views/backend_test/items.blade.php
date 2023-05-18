@@ -54,6 +54,7 @@
         <div>
             <div>{{$product->title}}</div>
             <div>{{$product->point}}</div>
+            <div>{{$product->japanese_status}}</div>
             <img width="100" height="100" src=" {{asset('images/'.$product->productImages->first()->image_url)}}">
             <a href="/items/{{$product->id}}">詳細</a>
             <a href="/items/{{$product->id}}/edit">編集</a>
