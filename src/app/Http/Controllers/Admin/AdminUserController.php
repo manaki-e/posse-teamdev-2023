@@ -25,9 +25,9 @@ class AdminUserController extends Controller
      */
     public function index()
     {
-        $users = User::with('department')->paginate(10);
+        $users = User::with('department')->orderBy('email', 'asc')->paginate(10, ['*'], 'users')->appends(['slack_users' => request('slack_users')]);
 
-        $unauthenticated_users = SlackUser::unauthenticated()->paginate(10);
+        $unauthenticated_users = SlackUser::unauthenticated()->orderBy('email', 'asc')->paginate(10, ['*'], 'slack_users')->appends(['users' => request('users')]);
 
         return view('admin.users.index', compact('users', 'unauthenticated_users'));
     }
@@ -120,6 +120,8 @@ class AdminUserController extends Controller
      */
     public function destroy($user)
     {
-        //
+        User::findOrFail($user)->delete();
+
+        return Redirect::route('admin.users.index');
     }
 }
