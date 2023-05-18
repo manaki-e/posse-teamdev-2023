@@ -58,10 +58,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/point-exchanges', [AdminIndexController::class, 'pointExchanges'])->name('point-exchanges');
         Route::resource('/users', AdminUserController::class);
         Route::resource('/items', AdminItemController::class);
+        Route::get('/slack/users', [SlackController::class, 'createUsers'])->name('slack.users');
     });
 });
 
-Route::get('/slack/users', [SlackController::class, 'createUsers'])->name('slack.users');
 Route::get('/slack/notification', [SlackController::class, 'sendNotification'])->name('slack.notification');
 Route::get('/slack/channel', [SlackController::class, 'createChannel'])->name('slack.channel');
 

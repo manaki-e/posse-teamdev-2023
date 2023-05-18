@@ -71,6 +71,9 @@
                                                 <br>
                                                 貸出中のアイテムのポイントを編集すると、来月の貸出より新しいポイントが適用されます。
                                             </x-slot>
+                                            <x-slot name="form_slot">
+                                                <div>form_slotに挿入するコンテンツ</div>
+                                            </x-slot>
                                         </x-admin-button-edit>
                                         <x-admin-button-delete action="{{ route('admin.items.destroy', ['item' =>  $not_pending_product -> id]) }}"></x-admin-button-delete>
                                     </td>
@@ -116,6 +119,9 @@
                                             </x-slot>
                                             <x-slot name="modal_description">
                                                 ポイントを設定すると、アイテムが登録され、誰でも借りることができるようになります。また、ポイントはいつでも変更することができます。
+                                            </x-slot>
+                                            <x-slot name="form_slot">
+                                                <div>form_slotに挿入するコンテンツ</div>
                                             </x-slot>
                                         </x-admin-button-edit>
                                         <x-admin-button-delete action="{{ route('admin.items.destroy', ['item' =>  $pending_product -> id]) }}"></x-admin-button-delete>

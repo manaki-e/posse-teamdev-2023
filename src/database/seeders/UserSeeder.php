@@ -23,6 +23,7 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             [
                 'name' => '管理者1',
+                'display_name' => '管理者',
                 'email' => 'manaki@anti-pattern.co.jp',
                 'password' => Hash::make('password'),
                 'icon' => 'admin_icon_1.jpeg',
@@ -34,6 +35,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'name' => '管理者2',
+                'display_name' => '管理者',
                 'email' => 'manaki_nhk@keio.jp',
                 'password' => Hash::make('password'),
                 'icon' => 'admin_icon_2.jpeg',
@@ -48,6 +50,7 @@ class UserSeeder extends Seeder
             $unique_user_name = $this->unique_name($faker);
             $users_array[] = [
                 'name' => $unique_user_name,
+                'display_name' => $unique_user_name,
                 'email' => 'user' . $i . '@anti-pattern.co.jp',
                 'password' => Hash::make('password'),
                 'icon' => 'user_icon_' . $i . '.jpeg',

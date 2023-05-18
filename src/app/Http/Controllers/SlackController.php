@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SlackUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Redirect;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use App\Models\User;
@@ -47,7 +49,7 @@ class SlackController extends Controller
                 ]);
                 $users = json_decode($response->getBody())->members;
                 foreach ($users as $user) {
-                    if (isset($user->profile->email)) {
+                    if (isset($user->profile->email) && !SlackUser::where('email', $user->profile->email)->exists()) {
                         DB::table('slack_users')->insert([
                             [
                                 'name' => $user->profile->real_name,
@@ -76,6 +78,8 @@ class SlackController extends Controller
                 }
             }
         } while ($response === null);
+
+        return Redirect::route('admin.users.index');
     }
 
     /**
