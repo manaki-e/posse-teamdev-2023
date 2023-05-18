@@ -109,9 +109,12 @@ class AdminUserController extends Controller
      */
     public function update(Request $request, $user)
     {
+        // 管理者権限に変更する
         $user_instance = User::findOrFail($user);
         $user_instance->is_admin = 1;
         $user_instance->save();
+
+        // 後ほどここでチャンネルへ招待するメソッドを呼び出す
 
         return Redirect::route('admin.users.index');
     }
