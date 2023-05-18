@@ -28,4 +28,24 @@ class ProductDealLog extends Model
     {
         return $query->whereYear('created_at', now()->year)->whereMonth('created_at', now()->month);
     }
+    public function scopeUserInvolved($query, $user_id)
+    {
+        return $query->where('user_id', $user_id)->with('product.user')->orwhereHas('product', function ($query) use ($user_id) {
+            $query->where('user_id', $user_id);
+        });
+    }
+    public function scopeNotCanceled($query)
+    {
+        return $query->whereNull('canceled_at');
+    }
+    public function changeReturnedAtToNow()
+    {
+        $this->returned_at = now();
+        $this->save();
+    }
+    public function changeCanceledAtToNow()
+    {
+        $this->canceled_at = now();
+        $this->save();
+    }
 }

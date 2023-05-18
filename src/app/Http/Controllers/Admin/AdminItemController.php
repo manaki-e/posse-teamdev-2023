@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\ProductDealLog;
 use App\Models\ProductTag;
 use App\Models\Tag;
+
 use Illuminate\Http\Request;
 
 class AdminItemController extends Controller
@@ -19,13 +21,12 @@ class AdminItemController extends Controller
     {
         //登録済みアイテム一覧
         $japanese_product_statuses = Product::JAPANESE_STATUS;
-        $not_pending_products = Product::approvedProducts()->with('user')->paginate(8, ['*'], 'not_pending')->appends(['pending' => request('pending')])->map(function ($not_pending_product) use ($japanese_product_statuses) {
-            $not_pending_product->japanese_product_status = $japanese_product_statuses[$not_pending_product->status];
-            return $not_pending_product;
-        });
+        $not_pending_products = Product::approvedProducts()->with('user')->paginate(10, ['*'], 'not_pending')->appends(['pending' => request('pending')]);
+
         //登録申請対応待ちアイテム一覧
-        $pending_products = Product::pendingProducts()->with('user')->paginate(8, ['*'], 'pending')->appends(['not_pending' => request('not_pending')]);
-        return view('backend_test.admin_items', compact('not_pending_products', 'pending_products'));
+        $pending_products = Product::pendingProducts()->with('user')->paginate(5, ['*'], 'pending')->appends(['not_pending' => request('not_pending')]);
+
+        return view('admin.items.index', compact('not_pending_products', 'pending_products'));
     }
 
     /**
@@ -52,30 +53,33 @@ class AdminItemController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $item
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($item)
     {
-        $product = Product::with('user')->with('productImages')->with('request')->with('productDealLogs.user')->with('productTags.tag')->withCount('productLikes')->findOrFail($id);
+        $product = Product::with('user')->with('productImages')->with('request')->with('productTags.tag')->withCount('productLikes')->findOrFail($item);
         $product->japanese_status = Product::JAPANESE_STATUS[$product->status];
-        return view('backend_test.admin_item', compact('product'));
+        
+        $product_deals = ProductDealLog::with('user')->where('product_id', $item)->paginate(10);
+
+        return view('admin.items.detail', compact('product', 'product_deals'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $item
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($item)
     {
         $tags = Tag::productTags()->get()->map(function ($tag) {
             $tag->is_chosen = false;
             return $tag;
         });
-        $chosen_product_tags = ProductTag::where('product_id', $id)->get();
-        $product = Product::withRelations()->findOrFail($id);
+        $chosen_product_tags = ProductTag::where('product_id', $item)->get();
+        $product = Product::withRelations()->findOrFail($item);
         $product->japanese_product_status = Product::JAPANESE_STATUS[$product->status];
         foreach ($chosen_product_tags as $chosen_product_tag) {
             $tags->find($chosen_product_tag->tag_id)->is_chosen = true;
@@ -87,18 +91,18 @@ class AdminItemController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int  $item
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $item)
     {
-        $product_instance = Product::findOrFail($id);
+        $product_instance = Product::findOrFail($item);
         switch ($request->form_type) {
             case 'update_product':
                 $images = $request->file('product_images');
-                $product_instance->addProductImages($images, $id);
+                $product_instance->addProductImages($images, $item);
                 $product_instance->deleteProductImages($request->delete_images);
-                $product_instance->updateProductTags($request->product_tags, $id);
+                $product_instance->updateProductTags($request->product_tags, $item);
                 $product_instance->title = $request->title;
                 $product_instance->description = $request->description;
                 break;
@@ -117,12 +121,12 @@ class AdminItemController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int  $item
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($item)
     {
-        Product::findOrFail($id)->delete();
+        Product::findOrFail($item)->delete();
         return redirect('/admin/items');
     }
 }

@@ -73,4 +73,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Request::class);
     }
+    public function changeEarnedPoint($earned_point)
+    {
+        $this->earned_point += $earned_point;
+        $this->save();
+    }
+    public function changeDistributionPoint($distribution_point)
+    {
+        $this->distribution_point += $distribution_point;
+        $this->save();
+    }
 }

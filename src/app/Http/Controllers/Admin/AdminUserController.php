@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\EventParticipantLog;
 use App\Models\Product;
+use App\Models\ProductDealLog;
+use App\Models\Request as AppRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -18,20 +20,9 @@ class AdminUserController extends Controller
      */
     public function index()
     {
-        // 管理者含める場合
-        $users = User::with('department')->paginate(8);
-        $total_users = User::count();
-        //名前、email、部署、獲得ポイント、配布ポイント
-        print_r($total_users);
-        foreach ($users as $user) {
-            print_r($user->name);
-            print_r($user->email);
-            print_r($user->department->name);
-            print_r($user->earned_point);
-            print_r($user->distribution_point);
-            dd();
-        }
-        // return view('admin.user.index', compact('users','total_users'));
+        $users = User::with('department')->paginate(10);
+
+        return view('admin.users.index', compact('users'));
     }
 
     /**
@@ -58,67 +49,28 @@ class AdminUserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $user
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($user)
     {
-        $user_profile = User::with('department')->findOrFail($id);
-        $product_japanese_status = Product::JAPANESE_STATUS;
-        print_r('ユーザー詳細<br>');
-        print_r($user_profile->name);
-        print_r($user_profile->email);
-        print_r($user_profile->slack);
-        print_r($user_profile->department->name);
-        print_r($user_profile->earned_point);
-        print_r($user_profile->distribution_point);
-        print_r('<br>');
-        $held_events = Event::where('user_id', $id)->with('participants')->withSum('participants', 'point')->get();
-        print_r('主催イベント<br>');
-        foreach ($held_events as $held_event) {
-            print_r('タイトル->' . $held_event->title);
-            foreach ($held_event->eventParticipants as $event_participant) {
-                print_r('名前->' . $event_participant->user->name);
-            }
-            print_r('ポイント合計->' . $held_event->event_participants_sum_point);
-            print_r('日時->' . $held_event->date->format('Y年m月d日 H時i分s秒'));
-            print_r('<br>');
-        }
-        print_r('参加イベント<br>');
-        $joined_events = EventParticipantLog::where('user_id', $id)->with('event')->get();
-        foreach ($joined_events as $joined_event) {
-            print_r('タイトル->' . $joined_event->event->title);
-            print_r('ポイント->' . $joined_event->point);
-            print_r('日時->' . $joined_event->event->date->format('Y年m月d日 H時i分s秒'));
-            print_r('<br>');
-        }
-        $approved_products = Product::approvedProducts()->where('user_id', $id)->with('deals.user')->get()->map(function ($approved_product) use ($product_japanese_status) {
-            $approved_product->japanese_status = $product_japanese_status[$approved_product->status];
-            if ($approved_product->japanese_status === '貸出中') {
-                $approved_product->currently_borrowing_user = $approved_product->deals->last()->user->name;
-            } else {
-                $approved_product->currently_borrowing_user = null;
-            }
-            return $approved_product;
-        });
-        print_r('登録済みアイテム一覧<br>');
-        foreach ($approved_products as $approved_product) {
-            print_r('タイトル->' . $approved_product->title);
-            print_r('ポイント->' . $approved_product->point);
-            print_r('ステータス->' . $approved_product->japanese_status);
-            print_r('現在借りてる人' . $approved_product->currently_borrowing_user);
-            print_r('<br>');
-        }
-        dd();
+        $user_data = User::with('department')->findOrFail($user);
+        $product_deal_logs = ProductDealLog::UserInvolved($user)->with('user')->paginate(10);
+        $products = Product::approvedProducts()->where('user_id', $user)->with('productTags.tag')->withCount('productLikes')->paginate(10);
+        $joined_event_logs = EventParticipantLog::where('user_id', $user)->with('event.eventTags.tag')->paginate(10);
+        $held_events = Event::where('user_id', $user)->with('participants')->withSum('participants', 'point')->withCount('participants')->paginate(10);
+        $requests = AppRequest::where('user_id', $user)->with('product')->with('event')->paginate(10);
+
+        return view('admin.users.detail', compact('user', 'user_data', 'product_deal_logs', 'products', 'joined_event_logs', 'held_events', 'requests'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($user)
     {
         //
     }
@@ -127,10 +79,10 @@ class AdminUserController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $user)
     {
         //
     }
@@ -138,10 +90,10 @@ class AdminUserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($user)
     {
         //
     }
