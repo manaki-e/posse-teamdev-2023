@@ -43,8 +43,6 @@
                                     <th scope="col" class="px-4 py-4 font-medium text-gray-900">氏名</th>
                                     <th scope="col" class="px-4 py-4 font-medium text-gray-900">メールアドレス</th>
                                     <th scope="col" class="px-4 py-4 font-medium text-gray-900">所属部署</th>
-                                    <th scope="col" class="px-4 py-4 font-medium text-gray-900 text-right">獲得 pt</th>
-                                    <th scope="col" class="px-4 py-4 font-medium text-gray-900 text-right">残り利用 pt</th>
                                     <th scope="col" class="px-4 py-4 font-medium text-gray-900"></th>
                                 </tr>
                             </thead>
@@ -63,11 +61,24 @@
                                     <td class="px-4 py-4">{{ $user -> name }}</td>
                                     <td class="px-4 py-4">{{ $user -> email }}</td>
                                     <td class="px-4 py-4">{{ $user -> department ? $user -> department -> name : '' }}</td>
-                                    <td class="px-4 py-4 text-right">{{ $user -> earned_point }} pt</td>
-                                    <td class="px-4 py-4 text-right">{{ $user -> distribution_point }} pt</td>
                                     <td class="px-4 py-4">
                                         <div class="flex justify-end gap-4">
                                             <x-admin-button-detail href="{{ route('admin.users.show', ['user' =>  $user -> id]) }}"></x-admin-button-detail>
+                                            <x-admin-button-edit action="{{ route('admin.users.update', ['user' =>  $user -> id]) }}">
+                                                <x-slot name="content">
+                                                    管理者に変更
+                                                </x-slot>
+                                                <x-slot name="modal_title">
+                                                    {{ $user -> name }}を管理者に変更しますか？
+                                                </x-slot>
+                                                <x-slot name="modal_description">
+                                                    対象のユーザをPeerPerkの管理者として新たに登録します。
+                                                </x-slot>
+                                                <x-slot name="method">
+                                                    @method('PUT')
+                                                </x-slot>
+                                                <x-slot name="form_slot"></x-slot>
+                                            </x-admin-button-edit>
                                             <x-admin-button-delete action="{{ route('admin.users.destroy', ['user' =>  $user -> id]) }}"></x-admin-button-delete>
                                         </div>
                                     </td>

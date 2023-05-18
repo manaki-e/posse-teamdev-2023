@@ -109,7 +109,11 @@ class AdminUserController extends Controller
      */
     public function update(Request $request, $user)
     {
-        //
+        $user_instance = User::findOrFail($user);
+        $user_instance->is_admin = 1;
+        $user_instance->save();
+
+        return Redirect::route('admin.users.index');
     }
 
     /**
