@@ -19,7 +19,7 @@
 }
 
 .user-bg-gray {
-    background-color: #F3F3F3;
+    background-color: #F7FAFC;
 }
 
 .user-tab-text-green {
@@ -49,4 +49,7 @@
 }
 .bg-peer-request {
     background-color: #C0C81E;
+}
+.border-peer-request {
+    border-color: #C0C81E;
 }
