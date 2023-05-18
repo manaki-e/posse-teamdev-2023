@@ -5,7 +5,7 @@ $tags = ['PC', 'マウス', 'ディスプレイ', 'スマホ', 'ヘッドホン'
 // 貸し出し可能か判定
 $available = 0; //可能:1 , 不可:0
 
-$unavailable_tag = $available ? '' : '<span class="absolute left-0 top-0 rounded-br-lg bg-red-500 px-3 py-1.5 text-sm uppercase tracking-wider text-white">貸し出し中</span>';
+$unavailable_tag = $available ? '' : '<span class="absolute left-0 top-0 rounded-br-lg bg-red-500 px-3 py-1.5 text-sm uppercase tracking-wider text-white">貸出中</span>';
 
 ?>
 
