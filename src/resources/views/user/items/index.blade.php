@@ -1,6 +1,11 @@
 <?php
 
-$tags = ['PC', 'マウス', 'ディスプレイ', 'スマホ', 'ヘッドホン']
+$tags = ['PC', 'マウス', 'ディスプレイ', 'スマホ', 'ヘッドホン'];
+
+// 貸し出し可能か判定
+$available = 0; //可能:1 , 不可:0
+
+$unavailable_tag = $available ? '' : '<span class="absolute left-0 top-0 rounded-br-lg bg-red-500 px-3 py-1.5 text-sm uppercase tracking-wider text-white">貸出中</span>';
 
 ?>
 
@@ -44,6 +49,7 @@ $tags = ['PC', 'マウス', 'ディスプレイ', 'スマホ', 'ヘッドホン'
                                         <div class="block relative h-48 rounded overflow-hidden">
                                             <img alt="ecommerce" class="object-cover object-center w-full h-full block"
                                                 src="https://images.unsplash.com/photo-1532198528077-0d9e4ca9bb40?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1694&q=80">
+                                            {{!! $unavailable_tag !!}}
                                         </div>
                                         <div class="p-4">
                                             <h2 class="text-gray-900 title-font text-lg font-medium">MacBook Air</h2>

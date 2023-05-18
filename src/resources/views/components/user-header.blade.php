@@ -91,7 +91,7 @@
                         x-transition:leave="transition ease-in duration-75"
                         x-transition:leave-start="transform opacity-100 scale-100">
                         <!-- icon -->
-                        <div class="w-8 -h-8 rounded-full overflow-hidden border-2 dark:border-white border-gray-900">
+                        <div class="w-8 h-8 rounded-full overflow-hidden border-2 dark:border-white border-gray-900">
                             <img src="https://images.unsplash.com/photo-1610397095767-84a5b4736cbd?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80"
                                 alt="" class="w-8 h-8 object-cover">
                         </div>
