@@ -1,6 +1,11 @@
 <?php
 
-$tags = ['PC', 'マウス', 'ディスプレイ', 'スマホ', 'ヘッドホン']
+$tags = ['PC', 'マウス', 'ディスプレイ', 'スマホ', 'ヘッドホン'];
+
+// 貸し出し可能か判定
+$available = 0; //可能:1 , 不可:0
+
+$unavailable_tag = $available ? '' : '<span class="absolute left-0 top-0 rounded-br-lg bg-red-500 px-3 py-1.5 text-sm uppercase tracking-wider text-white">貸し出し中</span>';
 
 ?>
 
@@ -24,10 +29,8 @@ $tags = ['PC', 'マウス', 'ディスプレイ', 'スマホ', 'ヘッドホン'
                             @foreach ($tags as $index => $tag)
                             <div class="w-auto mx-1 border rounded border-gray-200">
                                 <div class="flex items-center px-3">
-                                    <input id="tag_{{ $index }}" type="checkbox" value=""
-                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
-                                    <label for="tag_{{ $index }}"
-                                        class="w-full py-3 pl-1 text-sm font-medium text-gray-900">{{ $tag }}</label>
+                                    <input id="tag_{{ $index }}" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
+                                    <label for="tag_{{ $index }}" class="w-full py-3 pl-1 text-sm font-medium text-gray-900">{{ $tag }}</label>
                                 </div>
                             </div>
                             @endforeach
@@ -42,8 +45,8 @@ $tags = ['PC', 'マウス', 'ディスプレイ', 'スマホ', 'ヘッドホン'
                                 <a href="#">
                                     <div class="m-2 bg-white shadow-md">
                                         <div class="block relative h-48 rounded overflow-hidden">
-                                            <img alt="ecommerce" class="object-cover object-center w-full h-full block"
-                                                src="https://images.unsplash.com/photo-1532198528077-0d9e4ca9bb40?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1694&q=80">
+                                            <img alt="ecommerce" class="object-cover object-center w-full h-full block" src="https://images.unsplash.com/photo-1532198528077-0d9e4ca9bb40?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1694&q=80">
+                                            {{!! $unavailable_tag !!}}
                                         </div>
                                         <div class="p-4">
                                             <h2 class="text-gray-900 title-font text-lg font-medium">MacBook Air</h2>
@@ -55,11 +58,8 @@ $tags = ['PC', 'マウス', 'ディスプレイ', 'スマホ', 'ヘッドホン'
                                                 <p class="mt-1">600 pt</p>
                                                 <div class="flex relative">
                                                     <button class="mt-1 text-gray-500">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                            class="w-6 h-6">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
                                                         </svg>
                                                     </button>
                                                     <div class="mt-3">
