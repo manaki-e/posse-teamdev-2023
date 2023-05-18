@@ -44,7 +44,7 @@ $imgs = [
                         <div class="">
                             <div class="grid gap-8 grid-cols-2">
                                 <!-- images - start -->
-                                <div>
+                                <div class="md:py-8">
                                     <div class="flex gap-2" x-data="{ activeImage: 0 }">
                                         <div class="w-1/4">
                                             <ul class="flex flex-col gap-1">
@@ -107,7 +107,7 @@ $imgs = [
                                         </span>
                                     </div>
                                     <x-user-register-button textColor="text-blue-400" borderColor=" border-blue-400">
-                                        <x-slot name="button">レンタルする</x-slot>
+                                        <x-slot name="button">借りる</x-slot>
                                     </x-user-register-button>
 
                                     <h3 class="text-xl mb-1 pb-1 dark:text-white border-b">アイテムの説明
@@ -120,7 +120,7 @@ $imgs = [
                                     <h3 class="text-xl mb-1 pb-1 dark:text-white border-b">アイテムの状態
                                     </h3>
                                     <p class="mb-4 text-base text-gray-500">傷なし</p>
-                                    <h3 class="text-xl mb-1 pb-1 dark:text-white border-b">タグ</h3>
+                                    <h3 class="text-xl mb-1 pb-1 dark:text-white border-b">カテゴリ</h3>
                                     <div class="mb-4">
                                         <span class="inline-flex items-center gap-1 rounded-full border border-gray-300 bg-gray-50 px-2 py-1 text-xs font-semibold text-gray-400">
                                             PC
