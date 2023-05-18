@@ -9,7 +9,9 @@
 </head>
 
 <body>
-    <div></div>
+    <div>
+        {{$user->earned_point}}
+    </div>
     <form action="{{route('point-exchange.store')}}" method="post">
         @csrf
         <label for="name">換金ポイント</label>

@@ -26,15 +26,9 @@ class PointExchangeController extends Controller
      */
     public function create()
     {
-        $user_id = Auth::id();
         $user = Auth::user();
-        $point_exchange_logs = $user->pointExchangeLogs()
-            ->where('user_id', $user_id)
-            ->where('status', 1)
-            ->select('point', 'user_id', 'created_at', 'status')
-            ->get();
 
-        return view('backend_test.point-exchange', compact('point_exchange_logs'));
+        return view('backend_test.point-exchange', compact('user'));
     }
 
 
