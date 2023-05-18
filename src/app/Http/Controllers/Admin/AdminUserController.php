@@ -68,7 +68,7 @@ class AdminUserController extends Controller
         $user_instance->created_at = now();
         $user_instance->save();
 
-        return Redirect::route('admin.users.index');
+        return Redirect::route('admin.users.index')->with(['flush.message' => '交換完了処理が正しく行われました', 'flush.alert_type' => 'success']);
     }
 
     /**
@@ -116,7 +116,7 @@ class AdminUserController extends Controller
 
         // 後ほどここでチャンネルへ招待するメソッドを呼び出す
 
-        return Redirect::route('admin.users.index');
+        return Redirect::route('admin.users.index')->with(['flush.message' => '管理者権限の付与が正しく行われました', 'flush.alert_type' => 'success']);
     }
 
     /**
@@ -128,7 +128,8 @@ class AdminUserController extends Controller
     public function destroy($user)
     {
         User::findOrFail($user)->delete();
+        // ユーザテーブルに紐づく各テーブルのデータも削除する
 
-        return Redirect::route('admin.users.index');
+        return Redirect::route('admin.users.index')->with(['flush.message' => 'ユーザ削除が正しく行われました', 'flush.alert_type' => 'success']);
     }
 }

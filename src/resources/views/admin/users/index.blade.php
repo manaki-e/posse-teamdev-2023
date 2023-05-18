@@ -79,7 +79,14 @@
                                                 </x-slot>
                                                 <x-slot name="form_slot"></x-slot>
                                             </x-admin-button-edit>
-                                            <x-admin-button-delete action="{{ route('admin.users.destroy', ['user' =>  $user -> id]) }}"></x-admin-button-delete>
+                                            <x-admin-button-delete action="{{ route('admin.users.destroy', ['user' =>  $user -> id]) }}">
+                                                <x-slot name="modal_title">
+                                                    {{ $user -> name }}を削除しますか？
+                                                </x-slot>
+                                                <x-slot name="modal_description">
+                                                    対象のユーザをPeerPerkのユーザから削除します。ここで削除されたユーザはslackに所属している限り、再度登録することができます。
+                                                </x-slot>
+                                            </x-admin-button-delete>
                                         </div>
                                     </td>
                                 </tr>
