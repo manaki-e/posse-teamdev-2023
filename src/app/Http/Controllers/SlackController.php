@@ -4,11 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
-use App\Models\Department;
+use App\Models\User;
 
 class SlackController extends Controller
 {
@@ -48,25 +47,19 @@ class SlackController extends Controller
                 ]);
                 $users = json_decode($response->getBody())->members;
                 foreach ($users as $user) {
-                    if (empty($user->profile->title)) {
-                        $department_id = null;
-                    } else {
-                        $department = Department::firstOrCreate(['name' => $user->profile->title]);
-                        $department_id = $department->id;
+                    if (isset($user->profile->email)) {
+                        DB::table('slack_users')->insert([
+                            [
+                                'name' => $user->profile->real_name,
+                                'display_name' => $user->profile->display_name,
+                                'email' => $user->profile->email,
+                                'icon' => $user->profile->image_512,
+                                'slackID' => $user->id,
+                                'department_name' => $user->profile->title,
+                                'created_at' => now(),
+                            ]
+                        ]);
                     }
-
-                    DB::table('users')->insert([
-                        [
-                            'name' => $user->real_name,
-                            'email' => $user->name . '@anti-pattern.co.jp',
-                            'password' => Hash::make('password'),
-                            'icon' => $user->profile->image_48,
-                            'slackID' => $user->id,
-                            'is_admin' => 0,
-                            'department_id' => $department_id,
-                            'created_at' => now(),
-                        ]
-                    ]);
                 }
             } catch (RequestException $e) {
                 if ($e->getResponse()->getStatusCode() == 429) { // レート制限エラー
@@ -165,6 +158,17 @@ class SlackController extends Controller
 
         // チャンネルに招待する
         $response->throw();
+    }
+
+    public function getUserSlackIds($user, $dbConfig)
+    {
+        // ユーザテーブルから必要な情報を取得し、ユーザIDをキー、slackIDを値とする連想配列に変換する
+        $user_slack_map = User::whereIn('id', $user)->pluck('slackID', 'id')->toArray();
+
+        // $user配列に含まれる各ユーザのIDに対応するslackIDを取得する
+        $user_slack_ids = array_values(array_intersect_key($user_slack_map, array_flip($user)));
+
+        return $user_slack_ids;
     }
 }
 
