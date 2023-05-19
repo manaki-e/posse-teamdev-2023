@@ -11,7 +11,7 @@
             <div class="container flex mx-auto gap-4">
                 <div class="bg-white shadow rounded-lg md:p-6 w-1/4">
                     <nav>
-                        <ul class="mb-3">
+                        <ul class="mb-3 border-b border-gray-300">
                             <li class="border-slate-100 text-peer-perk rounded-t-1 group relative flex w-full items-center border-b border-solid pb-3 text-left font-semibold text-dark-500 transition-all ease-in">
                                 <span>Peer Perk</span>
                             </li>
@@ -31,7 +31,7 @@
                                 </x-nav-link>
                             </li>
                         </ul>
-                        <ul class="mb-3">
+                        <ul class="mb-3 border-b border-gray-300">
                             <li class="border-slate-100 text-blue-400 rounded-t-1 group relative flex w-full items-center border-b border-solid pb-3 text-left font-semibold text-dark-500 transition-all ease-in">
                                 <span>Peer Product Share</span>
                             </li>
@@ -61,7 +61,7 @@
                                 </x-nav-link>
                             </li>
                         </ul>
-                        <ul class="mb-3">
+                        <ul class="mb-3 border-b border-gray-300">
                             <li class="border-slate-100 text-pink-400 rounded-t-1 group relative flex w-full items-center border-b border-solid pb-3 text-left font-semibold text-dark-500 transition-all ease-in">
                                 <span>Peer Event</span>
                             </li>
@@ -81,7 +81,7 @@
                                 </x-nav-link>
                             </li>
                         </ul>
-                        <ul class="mb-3">
+                        <ul class="mb-3 border-b border-gray-300">
                             <li class="border-slate-100 text-peer-request rounded-t-1 group relative flex w-full items-center border-b border-solid pb-3 text-left font-semibold text-dark-500 transition-all ease-in">
                                 <span>Peer Request</span>
                             </li>
