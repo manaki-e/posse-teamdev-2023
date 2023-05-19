@@ -94,6 +94,8 @@
                                             <x-slot name="modal_description">
                                                 対象のユーザにAmazon Giftカードを受け渡し後に完了を押してください。交換完了後のキャンセルはできません。
                                             </x-slot>
+                                            <x-slot name="method">@method('PUT')</x-slot>
+                                            <x-slot name="form_slot"></x-slot>
                                         </x-admin-button-edit>
                                     </td>
                                 </tr>
