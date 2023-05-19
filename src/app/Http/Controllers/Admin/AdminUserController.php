@@ -83,7 +83,7 @@ class AdminUserController extends Controller
         $product_deal_logs = ProductDealLog::UserInvolved($user)->with('user')->paginate(10);
         $products = Product::approvedProducts()->where('user_id', $user)->with('productTags.tag')->withCount('productLikes')->paginate(10);
         $joined_event_logs = EventParticipantLog::where('user_id', $user)->with('event.eventTags.tag')->paginate(10);
-        $held_events = Event::where('user_id', $user)->with('participants')->withSum('participants', 'point')->withCount('participants')->paginate(10);
+        $held_events = Event::where('user_id', $user)->with('eventParticipants')->withSum('participants', 'point')->withCount('participants')->paginate(10);
         $requests = AppRequest::where('user_id', $user)->with('product')->with('event')->paginate(10);
 
         return view('admin.users.detail', compact('user', 'user_data', 'product_deal_logs', 'products', 'joined_event_logs', 'held_events', 'requests'));
