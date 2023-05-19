@@ -5,10 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\ProductDealLog;
-use App\Models\ProductTag;
-use App\Models\Tag;
-
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class AdminItemController extends Controller
 {
@@ -60,7 +58,7 @@ class AdminItemController extends Controller
     {
         $product = Product::with('user')->with('productImages')->with('request')->with('productTags.tag')->withCount('productLikes')->findOrFail($item);
         $product->japanese_status = Product::JAPANESE_STATUS[$product->status];
-        
+
         $product_deals = ProductDealLog::with('user')->where('product_id', $item)->paginate(10);
 
         return view('admin.items.detail', compact('product', 'product_deals'));
@@ -74,17 +72,7 @@ class AdminItemController extends Controller
      */
     public function edit($item)
     {
-        $tags = Tag::productTags()->get()->map(function ($tag) {
-            $tag->is_chosen = false;
-            return $tag;
-        });
-        $chosen_product_tags = ProductTag::where('product_id', $item)->get();
-        $product = Product::withRelations()->findOrFail($item);
-        $product->japanese_product_status = Product::JAPANESE_STATUS[$product->status];
-        foreach ($chosen_product_tags as $chosen_product_tag) {
-            $tags->find($chosen_product_tag->tag_id)->is_chosen = true;
-        }
-        return view('backend_test.admin_edit_item', compact('product', 'tags'));
+        //
     }
 
     /**
@@ -96,26 +84,14 @@ class AdminItemController extends Controller
      */
     public function update(Request $request, $item)
     {
-        $product_instance = Product::findOrFail($item);
-        switch ($request->form_type) {
-            case 'update_product':
-                $images = $request->file('product_images');
-                $product_instance->addProductImages($images, $item);
-                $product_instance->deleteProductImages($request->delete_images);
-                $product_instance->updateProductTags($request->product_tags, $item);
-                $product_instance->title = $request->title;
-                $product_instance->description = $request->description;
-                break;
-            case 'set_point_and_approve':
-                $product_instance->point = $request->point;
-                $product_instance->status = Product::STATUS['available'];
-                break;
-            case 'reset_point':
-                $product_instance->point = $request->point;
-                break;
+        $product = Product::findOrFail($item);
+        $product->point = $request->point;
+        if ($product->status == 1) {
+            $product->status = 2;
         }
-        $product_instance->save();
-        return redirect()->back();
+        $product->save();
+
+        return Redirect::route('admin.items.index')->with(['flush.message' => 'アイテムのポイント設定が正しく行われました', 'flush.alert_type' => 'success']);
     }
 
     /**
@@ -126,7 +102,12 @@ class AdminItemController extends Controller
      */
     public function destroy($item)
     {
-        Product::findOrFail($item)->delete();
-        return redirect('/admin/items');
+        $product = Product::findOrFail($item);
+        if ($product->status == 3) {
+            return Redirect::route('admin.items.index')->with(['flush.message' => '貸出中のアイテムは削除できません', 'flush.alert_type' => 'error']);
+        }
+        $product->delete();
+
+        return Redirect::route('admin.items.index')->with(['flush.message' => 'アイテムが正しく削除されました', 'flush.alert_type' => 'success']);
     }
 }
