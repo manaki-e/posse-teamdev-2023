@@ -15,17 +15,21 @@ class Event extends Model
     {
         return self::pluck('id')->toArray();
     }
-    public function allParticipants()
+    public function eventParticipants()
     {
         return $this->hasMany(EventParticipantLog::class);
-    }
-    public function participants()
-    {
-        return $this->hasMany(EventParticipantLog::class)->whereNull('deleted_at');
     }
     public function eventTags()
     {
         return $this->hasMany(EventTag::class);
+    }
+    public function eventLikes()
+    {
+        return $this->hasMany(EventLike::class);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
     public function scopeCompletedEvents($query)
     {
