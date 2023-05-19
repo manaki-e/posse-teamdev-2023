@@ -18,7 +18,7 @@ $tags = ['PC', 'マウス', 'ディスプレイ', 'スマホ', 'ヘッドホン'
                     <x-slot name="title">アイテムの出品</x-slot>
                     <section class="text-left w-full flex gap-8">
                         <div class="w-1/2">
-                            <div class="mx-auto">
+                            <div class="mx-auto mt-6">
                                 <label for="example5" class="mb-1 block text-sm font-medium text-gray-700">出品画像</label>
                                 <label class="flex w-full cursor-pointer appearance-none items-center justify-center rounded-md border-2 border-dashed border-gray-200 p-6 transition-all hover:border-primary-300">
                                     <div class="space-y-1 text-center">
@@ -30,7 +30,7 @@ $tags = ['PC', 'マウス', 'ディスプレイ', 'スマホ', 'ヘッドホン'
                                         <div class="text-gray-600"><a href="#" class="font-medium text-primary-500 hover:text-primary-700">クリックして追加</a> または ファイルをドロップ</div>
                                         <p class="text-sm text-gray-500">SVG, PNG, JPG or GIF (max. 800x400px)</p>
                                     </div>
-                                    <input id="example5" type="file" class="sr-only" required />
+                                    <input id="file" type="file" class="sr-only" multiple required />
                                 </label>
                             </div>
                             <section class="my-6">
