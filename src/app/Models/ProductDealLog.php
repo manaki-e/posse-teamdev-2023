@@ -34,4 +34,18 @@ class ProductDealLog extends Model
             $query->where('user_id', $user_id);
         });
     }
+    public function scopeNotCanceled($query)
+    {
+        return $query->whereNull('canceled_at');
+    }
+    public function changeReturnedAtToNow()
+    {
+        $this->returned_at = now();
+        $this->save();
+    }
+    public function changeCanceledAtToNow()
+    {
+        $this->canceled_at = now();
+        $this->save();
+    }
 }

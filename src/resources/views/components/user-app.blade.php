@@ -17,15 +17,25 @@
     <!-- Tailwind -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css?family=Karla:400,700&display=swap');
+    @import url('https://fonts.googleapis.com/css?family=Karla:400,700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&family=Patua+One&display=swap');
 
-        .font-family-karla {
-            font-family: karla;
-        }
+    .font-family-karla {
+        font-family: karla;
+    }
+
+    .font-sans {
+        font-family: 'Noto Sans JP', sans-serif;
+    }
+
+    .font-patua {
+        font-family: 'Patua One', cursive;
+    }
     </style>
 </head>
-<body class="user-bg-gray">
-    <header class="text-gray-600 body-font mb-2 bg-white">
+
+<body class="user-bg-gray font-sans text-gray-500">
+    <header class="bg-white">
         {{ $header_slot }}
     </header>
     {{ $body_slot }}

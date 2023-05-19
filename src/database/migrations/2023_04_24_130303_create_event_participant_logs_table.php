@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('event_id')->constrained('events');
             $table->integer('point');
+            $table->timestamp('canceled_at')->default(null)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
