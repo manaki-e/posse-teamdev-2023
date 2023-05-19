@@ -19,7 +19,7 @@
                     </li>
                     <li>
                         <a @click="activeTab = 2" class="inline-flex cursor-pointer items-center gap-2 px-1 py-3 text-blue-500 hover:text-blue-500" :class="{'relative text-blue-500  after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-full after:bg-blue-500': activeTab === 2}">
-                            貸出申請中
+                            登録申請中
                         </a>
                     </li>
                 </ul>
@@ -27,12 +27,12 @@
             <div>
                 <div :class="{ '!block': activeTab === 0 }" x-show.transition.in.opacity.duration.600="activeTab === 0" class="hidden">
                     <ul class="border-b border-gray-300">
-                        @foreach ($products as $product)
+                        @foreach ($lendable_products as $product)
                         <li>
                             <x-mypage-list>
                                 <x-slot:image_url>{{ $product -> productImages[0] -> image_url }}</x-slot:image_url>
                                 <x-slot:title>{{ $product -> title }}</x-slot:title>
-                                <x-slot:point>{{ $product -> point }}</x-slot:point>
+                                <x-slot:point>{{ empty( $product -> point ) ? '未設定' : $product->point .' pt'}}</x-slot:point>
                                 <x-slot:likes>{{ count($product -> productLikes) }}</x-slot:likes>
                                 <x-slot:tag>
                                     @foreach ($product->productTags as $tag)
@@ -47,12 +47,42 @@
                 <div :class="{ '!block': activeTab === 1 }" x-show.transition.in.opacity.duration.600="activeTab === 1" class="hidden">
                     <ul class="border-b border-gray-300">
                         <li>
+                            @foreach ($borrowed_products as $product)
+                        <li>
+                            <x-mypage-list>
+                                <x-slot:image_url>{{ $product -> productImages[0] -> image_url }}</x-slot:image_url>
+                                <x-slot:title>{{ $product -> title }}</x-slot:title>
+                                <x-slot:point>{{ empty( $product -> point ) ? '未設定' : $product->point .' pt'}}</x-slot:point>
+                                <x-slot:likes>{{ count($product -> productLikes) }}</x-slot:likes>
+                                <x-slot:tag>
+                                    @foreach ($product->productTags as $tag)
+                                    <x-user-tag>{{ $tag->tag->name }}</x-user-tag>
+                                    @endforeach
+                                </x-slot:tag>
+                            </x-mypage-list>
+                        </li>
+                        @endforeach
                         </li>
                     </ul>
                 </div>
                 <div :class="{ '!block': activeTab === 2 }" x-show.transition.in.opacity.duration.600="activeTab === 2" class="hidden">
                     <ul class="border-b border-gray-300">
                         <li>
+                            @foreach ($applying_products as $product)
+                        <li>
+                            <x-mypage-list>
+                                <x-slot:image_url>{{ $product -> productImages[0] -> image_url }}</x-slot:image_url>
+                                <x-slot:title>{{ $product -> title }}</x-slot:title>
+                                <x-slot:point>{{ empty( $product -> point ) ? 'ポイント未設定' : $product->point .' pt'}}</x-slot:point>
+                                <x-slot:likes>{{ count($product -> productLikes) }}</x-slot:likes>
+                                <x-slot:tag>
+                                    @foreach ($product->productTags as $tag)
+                                    <x-user-tag>{{ $tag->tag->name }}</x-user-tag>
+                                    @endforeach
+                                </x-slot:tag>
+                            </x-mypage-list>
+                        </li>
+                        @endforeach
                         </li>
                     </ul>
                 </div>

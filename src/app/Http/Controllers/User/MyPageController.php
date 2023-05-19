@@ -164,10 +164,16 @@ class MyPageController extends Controller
     {
         $user = Auth::user();
         $products = Product::where('user_id', $user->id)->with('productImages')->with('productLikes')->with('productTags.tag')->get();
+        $lendable_products = $products->filter(function ($product) {
+            return $product->status == Product::STATUS['available'];
+        });
+        $borrowed_products = $products->filter(function ($product) {
+            return $product->status == Product::STATUS['occupied'];
+        });
+        $applying_products = $products->filter(function ($product) {
+            return $product->status == Product::STATUS['pending'];
+        });
 
-        // echo $products[1]->productTags;
-        // dd($products[1]);
-
-        return view('user.mypage.items-listed', compact('products'));
+        return view('user.mypage.items-listed', compact('lendable_products', 'borrowed_products', 'applying_products'));
     }
 }
