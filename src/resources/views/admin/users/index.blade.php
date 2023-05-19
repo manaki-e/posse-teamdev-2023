@@ -65,6 +65,7 @@
                                         <div class="flex justify-end gap-4">
                                             <x-admin-button-detail href="{{ route('admin.users.show', ['user' =>  $user -> id]) }}"></x-admin-button-detail>
                                             <x-admin-button-edit action="{{ route('admin.users.update', ['user' =>  $user -> id]) }}">
+                                                @if ($user -> is_admin === 0)
                                                 <x-slot name="content">
                                                     管理者に変更
                                                 </x-slot>
@@ -72,8 +73,19 @@
                                                     {{ $user -> name }}を管理者に変更しますか？
                                                 </x-slot>
                                                 <x-slot name="modal_description">
-                                                    対象のユーザをPeerPerkの管理者として新たに登録します。
+                                                    対象のユーザをPeerPerkの管理者に変更します。管理者に変更されたユーザは、slackの管理者チャンネルに追加されます。
                                                 </x-slot>
+                                                @elseif ($user -> is_admin === 1)
+                                                <x-slot name="content">
+                                                    一般ユーザに変更
+                                                </x-slot>
+                                                <x-slot name="modal_title">
+                                                    {{ $user -> name }}を一般ユーザに変更しますか？
+                                                </x-slot>
+                                                <x-slot name="modal_description">
+                                                    対象のユーザをPeerPerkの一般ユーザに変更します。一般ユーザに変更されたユーザは、slackの管理者チャンネルから削除されます。
+                                                </x-slot>
+                                                @endif
                                                 <x-slot name="method">
                                                     @method('PUT')
                                                 </x-slot>

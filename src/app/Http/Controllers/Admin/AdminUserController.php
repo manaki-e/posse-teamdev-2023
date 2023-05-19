@@ -111,7 +111,11 @@ class AdminUserController extends Controller
     {
         // 管理者権限に変更する
         $user_instance = User::findOrFail($user);
-        $user_instance->is_admin = 1;
+        if ($user_instance->is_admin === 1) {
+            $user_instance->is_admin = 0;
+        } elseif ($user_instance->is_admin === 0) {
+            $user_instance->is_admin = 1;
+        }
         $user_instance->save();
 
         // 後ほどここでチャンネルへ招待するメソッドを呼び出す
