@@ -1,7 +1,7 @@
 <a {{ $attributes->merge(['class' => 'cursor-pointer flex justify-between items-center border-t border-gray-300 py-3 px-6 text-sm hover:bg-gray-100 hover:text-gray-700 transition-all ease-in']) }}>
     <div class="flex gap-2">
         <div>
-            <img class="w-auto h-24" src="https://images.unsplash.com/photo-1499696010180-025ef6e1a8f9?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=1470&amp;q=80" alt="">
+            <img class="w-28 h-24 object-contain" src="{{ asset('images/'.$image_url) }}" alt="Product Image">
         </div>
         <div class="flex flex-col gap-2">
             <p>{{ $title }}</p>

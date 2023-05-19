@@ -24,51 +24,24 @@
                     </li>
                 </ul>
             </div>
-            <div class="py-3">
+            <div>
                 <div :class="{ '!block': activeTab === 0 }" x-show.transition.in.opacity.duration.600="activeTab === 0" class="hidden">
                     <ul class="border-b border-gray-300">
+                        @foreach ($products as $product)
                         <li>
                             <x-mypage-list>
-                                <x-slot:title>共通テスト 英語(リーディング) 対策問題集 FinalSpurt 40</x-slot:title>
-                                <x-slot:point>800</x-slot:point>
-                                <x-slot:likes>14</x-slot:likes>
+                                <x-slot:image_url>{{ $product -> productImages[0] -> image_url }}</x-slot:image_url>
+                                <x-slot:title>{{ $product -> title }}</x-slot:title>
+                                <x-slot:point>{{ $product -> point }}</x-slot:point>
+                                <x-slot:likes>{{ count($product -> productLikes) }}</x-slot:likes>
                                 <x-slot:tag>
-                                    @foreach (['英語', 'リーディング', '共通テスト'] as $tag)
-                                    <li>
-                                        <x-user-tag>{{ $tag }}</x-user-tag>
-                                    </li>
+                                    @foreach ($product->productTags as $tag)
+                                    <x-user-tag>{{ $tag->tag->name }}</x-user-tag>
                                     @endforeach
                                 </x-slot:tag>
                             </x-mypage-list>
                         </li>
-                        <li>
-                            <x-mypage-list>
-                                <x-slot:title>共通テスト 英語(リーディング) 対策問題集 FinalSpurt 40</x-slot:title>
-                                <x-slot:point>800</x-slot:point>
-                                <x-slot:likes>14</x-slot:likes>
-                                <x-slot:tag>
-                                    @foreach (['英語', 'リーディング', '共通テスト'] as $tag)
-                                    <li>
-                                        <x-user-tag>{{ $tag }}</x-user-tag>
-                                    </li>
-                                    @endforeach
-                                </x-slot:tag>
-                            </x-mypage-list>
-                        </li>
-                        <li>
-                            <x-mypage-list>
-                                <x-slot:title>共通テスト 英語(リーディング) 対策問題集 FinalSpurt 40</x-slot:title>
-                                <x-slot:point>800</x-slot:point>
-                                <x-slot:likes>14</x-slot:likes>
-                                <x-slot:tag>
-                                    @foreach (['英語', 'リーディング', '共通テスト'] as $tag)
-                                    <li>
-                                        <x-user-tag>{{ $tag }}</x-user-tag>
-                                    </li>
-                                    @endforeach
-                                </x-slot:tag>
-                            </x-mypage-list>
-                        </li>
+                        @endforeach
                     </ul>
                 </div>
                 <div :class="{ '!block': activeTab === 1 }" x-show.transition.in.opacity.duration.600="activeTab === 1" class="hidden">

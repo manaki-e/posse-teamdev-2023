@@ -8,6 +8,7 @@ use App\Models\EventParticipantLog;
 use App\Models\Event_participants;
 use App\Http\Controllers\Controller;
 use App\Models\PointExchangeLog;
+use App\Models\Product;
 use App\Models\ProductDealLog;
 use Illuminate\Http\Request;
 
@@ -157,5 +158,16 @@ class MyPageController extends Controller
         })->get();
         dd($occupied_products);
         return view('user.mypage.items', compact('available_products', 'occupied_products'));
+    }
+
+    public function itemsListed()
+    {
+        $user = Auth::user();
+        $products = Product::where('user_id', $user->id)->with('productImages')->with('productLikes')->with('productTags.tag')->get();
+
+        // echo $products[1]->productTags;
+        // dd($products[1]);
+
+        return view('user.mypage.items-listed', compact('products'));
     }
 }
