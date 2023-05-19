@@ -19,19 +19,19 @@
 }
 
 .user-bg-gray {
-    background-color: #F7FAFC;
+    background-color: #f7fafc;
 }
 
 .user-tab-text-green {
-    color: #36B1BF;
+    color: #36b1bf;
 }
 
 .user-tab-bg-green {
-    background-color: #36B1BF;
+    background-color: #36b1bf;
 }
 
 .user-border-green {
-    border-color: #36B1BF;
+    border-color: #36b1bf;
 }
 
 .flex-center {
@@ -41,15 +41,40 @@
 }
 
 .font-patua {
-    font-family: 'Patua One', cursive;
+    font-family: "Patua One", cursive;
 }
 
 .text-peer-request {
-    color: #C0C81E;
+    color: #c0c81e;
 }
+
 .bg-peer-request {
-    background-color: #C0C81E;
+    background-color: #c0c81e;
 }
+
 .border-peer-request {
-    border-color: #C0C81E;
+    border-color: #c0c81e;
+}
+.text-peer-request {
+    color: #c0c81e;
+}
+
+.bg-peer-request {
+    background-color: #c0c81e;
+}
+
+.border-peer-request {
+    border-color: #c0c81e;
+}
+
+.text-peer-perk {
+    color: #079292;
+}
+
+.bg-peer-perk {
+    background-color: #079292;
+}
+
+.border-peer-perk {
+    border-color: #079292;
 }
