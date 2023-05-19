@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\AdminItemController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SlackController;
+use App\Http\Controllers\User\EventController;
 use App\Http\Controllers\User\ItemController;
 use App\Http\Controllers\User\MyPageController;
 use App\Http\Controllers\User\PointExchangeController;
@@ -42,6 +43,11 @@ Route::middleware('auth')->group(function () {
     Route::resource('/point-exchange', PointExchangeController::class);
 
     Route::put('/point-exchanges/{id}', [PointExchangeController::class, 'updateApproved'])->name('point-exchanges.update-approved');
+
+    Route::resource('/events', EventController::class);
+    Route::post('/events/{event}/held', [EventController::class, 'held'])->name('events.held');
+    Route::post('/events/{event}/participate', [EventController::class, 'participate'])->name('events.participate');
+    Route::post('/events/{event}/cancel', [EventController::class, 'cancel'])->name('events.cancel');
 
     Route::group(['prefix' => 'mypage', 'as' => 'mypage.'], function () {
         Route::get('/items', [MyPageController::class, 'items'])->name('items');

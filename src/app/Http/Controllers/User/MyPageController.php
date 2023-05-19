@@ -20,15 +20,15 @@ class MyPageController extends Controller
         // Authのid
         $auth_id = Auth::id();
         //Authのidに紐づいているテーブルを全部取得
-        $event_organizes = Event::with('participants')->where('user_id', '=', $auth_id)->with('event')->get();
+        $event_organizes = Event::with('eventParticipants')->where('user_id', '=', $auth_id)->with('event')->get();
         foreach ($event_organizes as $event_organize) {
             print_r($event_organize->title . '<br>');
             print_r($event_organize->created_at . '<br>');
             print_r($event_organize->completed_at . '<br>');
         }
-        $earned_points = Event::where('user_id', $auth_id)->with('participants')->withSum('participants', 'point')->get();
+        $earned_points = Event::where('user_id', $auth_id)->with('eventParticipants')->withSum('participants', 'point')->get();
         foreach ($earned_points as $earned_point) {
-            print_r($earned_point->participants_sum_point);
+            print_r($earned_point->eventParticipants_sum_point);
         }
         dd();
         // return view();
@@ -104,7 +104,7 @@ class MyPageController extends Controller
             return [
                 'name' => $event->title,
                 'created_at' => $event->completed_at,
-                'point' => $event->participants_sum_point,
+                'point' => $event->eventParticipants_sum_point,
             ];
         });
         //productが削除されてもポイントの変動は残る、product_deal_logが削除＝キャンセルされた場合はポイントの変動も削除
