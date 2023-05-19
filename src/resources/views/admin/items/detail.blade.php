@@ -127,24 +127,63 @@
                             </p>
                         </li>
                         <li class="flex items-center gap-4 pl-4 mt-4">
-                            <!-- 後ほど修正する -->
-                            <x-admin-button-edit action="">
+                            @if ($product -> status === 1)
+                            <x-admin-button-edit action="{{ route('admin.items.update', ['item' =>  $product -> id]) }}">
+                                <x-slot name="content">
+                                    ポイントを設定して承認する
+                                </x-slot>
+                                <x-slot name="modal_title">
+                                    ポイントを設定して承認する
+                                </x-slot>
+                                <x-slot name="modal_description">
+                                    ポイントを設定すると、アイテムが登録され、誰でも借りることができるようになります。また、ポイントはいつでも変更することができます。
+                                </x-slot>
+                                <x-slot name="method">
+                                    @method('PUT')
+                                </x-slot>
+                                <x-slot name="form_slot">
+                                    <div class="mb-4">
+                                        <div class="relative flex gap-4">
+                                            <label for="point" class="leading-7 text-sm text-gray-600 flex-center">Point:</label>
+                                            <input type="text" id="point" name="point" class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                        </div>
+                                    </div>
+                                </x-slot>
+                            </x-admin-button-edit>
+                            @else
+                            <x-admin-button-edit action="{{ route('admin.items.update', ['item' =>  $product -> id]) }}">
                                 <x-slot name="content">
                                     ポイント再設定
                                 </x-slot>
                                 <x-slot name="modal_title">
-                                    ポイント再設定
+                                    ポイント再設定を行いますか？
                                 </x-slot>
                                 <x-slot name="modal_description">
                                     ポイントを再設定すると、アイテムのポイントが変更されます。
                                     <br>
                                     貸出中のアイテムのポイントを編集すると、来月の貸出より新しいポイントが適用されます。
                                 </x-slot>
+                                <x-slot name="method">
+                                    @method('PUT')
+                                </x-slot>
                                 <x-slot name="form_slot">
-                                    <div>form_slotに挿入するコンテンツ</div>
+                                    <div class="mb-4">
+                                        <div class="relative flex gap-4">
+                                            <label for="point" class="leading-7 text-sm text-gray-600 flex-center">Point:</label>
+                                            <input type="text" id="point" name="point" value="{{ $product -> point }}" class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                        </div>
+                                    </div>
                                 </x-slot>
                             </x-admin-button-edit>
-                            <x-admin-button-delete action="{{ route('admin.items.destroy', ['item' =>  $product -> id]) }}"></x-admin-button-delete>
+                            @endif
+                            <x-admin-button-delete action="{{ route('admin.items.destroy', ['item' =>  $product -> id]) }}">
+                                <x-slot name="modal_title">
+                                    {{ $product -> title }}を削除しますか？
+                                </x-slot>
+                                <x-slot name="modal_description">
+                                    対象のユーザをPeerPerkのユーザから削除します。ここで削除されたユーザはslackに所属している限り、再度登録することができます。
+                                </x-slot>
+                            </x-admin-button-delete>
                         </li>
                     </ul>
                 </div>
