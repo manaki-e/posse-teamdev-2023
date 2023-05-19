@@ -3,7 +3,7 @@
         {{ __('ユーザ一覧') }}
     </x-slot>
     <x-slot name="discription">
-        {{ __('APのslackワークスペースに所属しており、メールアドレスが@anti-pattern.co.jpであるユーザの一覧が表示されます') }}
+        {{ __('PeerPerkに登録されているユーザの一覧が表示されます。また、slackワークスペースに所属しているユーザをPeerPerkユーザに登録することもできます。') }}
     </x-slot>
 
     <div class="bg-white shadow rounded-lg md:p-6 w-full">
