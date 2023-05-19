@@ -107,6 +107,7 @@ class AdminItemController extends Controller
             return Redirect::route('admin.items.index')->with(['flush.message' => '貸出中のアイテムは削除できません', 'flush.alert_type' => 'error']);
         }
         $product->delete();
+        // アイテムテーブルに紐づく各テーブルのデータも削除する
 
         return Redirect::route('admin.items.index')->with(['flush.message' => 'アイテムが正しく削除されました', 'flush.alert_type' => 'success']);
     }
