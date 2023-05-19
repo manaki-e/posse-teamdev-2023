@@ -48,6 +48,10 @@ class Product extends Model
     {
         return $query->where('status', '!=', self::STATUS['pending']);
     }
+    public function scopeOccupiedAndDeliveringProducts($query)
+    {
+        return $query->where('status', self::STATUS['occupied'])->orWhere('status', self::STATUS['delivering']);
+    }
     public function scopeBelongsToLoginUser($query)
     {
         return $query->where('user_id', Auth::id());

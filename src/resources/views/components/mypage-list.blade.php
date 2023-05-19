@@ -1,4 +1,4 @@
-<a {{ $attributes->merge(['class' => 'cursor-pointer flex justify-between items-center border-t border-gray-300 py-3 px-6 text-sm hover:bg-gray-100 hover:text-gray-700 transition-all ease-in']) }}>
+<div {{ $attributes->merge(['class' => 'flex justify-between items-center border-t border-gray-300 py-3 px-6 text-sm']) }}>
     <div class="flex gap-2">
         <div>
             <img class="w-28 h-24 object-contain" src="{{ asset('images/'.$image_url) }}" alt="Product Image">
@@ -15,9 +15,7 @@
             <ul class="flex flex-wrap gap-2">{{ $tag }}</ul>
         </div>
     </div>
-    <div class="w-8 h-8">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-        </svg>
+    <div class="flex-center">
+        {{ $button }}
     </div>
-</a>
+</div>

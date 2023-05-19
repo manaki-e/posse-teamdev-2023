@@ -39,6 +39,18 @@
                                     <x-user-tag>{{ $tag->tag->name }}</x-user-tag>
                                     @endforeach
                                 </x-slot:tag>
+                                <x-slot:button>
+                                    <x-mypage-button-detail href="{{ route('items.show', ['item' =>  $product -> id]) }}"></x-mypage-button-detail>
+                                    <x-mypage-button-edit href="{{ route('items.edit', ['item' =>  $product -> id]) }}"></x-mypage-button-edit>
+                                    <x-mypage-button-delete action="{{ route('items.destroy', ['item' =>  $product -> id]) }}">
+                                        <x-slot name="modal_title">
+                                            {{ $product -> title }}を削除しますか？
+                                        </x-slot>
+                                        <x-slot name="modal_description">
+                                            対象のアイテムを削除します。一度削除すると復元できません。
+                                        </x-slot>
+                                    </x-mypage-button-delete>
+                                </x-slot:button>
                             </x-mypage-list>
                         </li>
                         @endforeach
@@ -59,6 +71,38 @@
                                     <x-user-tag>{{ $tag->tag->name }}</x-user-tag>
                                     @endforeach
                                 </x-slot:tag>
+                                <x-slot:button>
+                                    <x-mypage-button-detail href="{{ route('items.show', ['item' =>  $product -> id]) }}"></x-mypage-button-detail>
+                                    @if ($product -> status === \App\Models\Product::STATUS['delivering'])
+                                    <x-mypage-button-status href="{{ route('items.cancel', ['item' =>  $product -> id]) }}">
+                                        <x-slot name="content">
+                                            貸出キャンセル
+                                        </x-slot>
+                                        <x-slot name="modal_title">
+                                            アイテムの貸出をキャンセルする
+                                        </x-slot>
+                                        <x-slot name="modal_description">
+                                            この操作はアイテムを配送する前に行ってください。貸出をキャンセルすると、アイテムの貸出がキャンセルされ、貸出可の状態になります。
+                                        </x-slot>
+                                        <x-slot name="method"></x-slot>
+                                        <x-slot name="form_slot"></x-slot>
+                                    </x-mypage-button-status>
+                                    @elseif ($product -> status === \App\Models\Product::STATUS['occupied'])
+                                    <x-mypage-button-status href="{{ route('items.return', ['item' =>  $product -> id]) }}">
+                                        <x-slot name="content">
+                                            受取完了
+                                        </x-slot>
+                                        <x-slot name="modal_title">
+                                            貸出したアイテムの受取完了
+                                        </x-slot>
+                                        <x-slot name="modal_description">
+                                            この操作はアイテムを受取した後に行ってください。受取完了すると、アイテムの貸出が完了し、貸出可の状態になります。
+                                        </x-slot>
+                                        <x-slot name="method"></x-slot>
+                                        <x-slot name="form_slot"></x-slot>
+                                    </x-mypage-button-status>
+                                    @endif
+                                </x-slot:button>
                             </x-mypage-list>
                         </li>
                         @endforeach
@@ -80,6 +124,18 @@
                                     <x-user-tag>{{ $tag->tag->name }}</x-user-tag>
                                     @endforeach
                                 </x-slot:tag>
+                                <x-slot:button>
+                                    <x-mypage-button-detail href="{{ route('items.show', ['item' =>  $product -> id]) }}"></x-mypage-button-detail>
+                                    <x-mypage-button-edit href="{{ route('items.edit', ['item' =>  $product -> id]) }}"></x-mypage-button-edit>
+                                    <x-mypage-button-delete action="{{ route('items.destroy', ['item' =>  $product -> id]) }}">
+                                        <x-slot name="modal_title">
+                                            {{ $product -> title }}を削除しますか？
+                                        </x-slot>
+                                        <x-slot name="modal_description">
+                                            対象のアイテムを削除します。一度削除すると復元できません。
+                                        </x-slot>
+                                    </x-mypage-button-delete>
+                                </x-slot:button>
                             </x-mypage-list>
                         </li>
                         @endforeach
