@@ -19,8 +19,8 @@ $tags = ['PC', 'マウス', 'ディスプレイ', 'スマホ', 'ヘッドホン'
                     <section class="text-left w-full flex gap-8">
                         <div class="w-1/2">
                             <div class="mx-auto mt-6">
-                                <label for="example5" class="mb-1 block text-sm font-medium text-gray-700">出品画像</label>
-                                <label class="flex w-full cursor-pointer appearance-none items-center justify-center rounded-md border-2 border-dashed border-gray-200 p-6 transition-all hover:border-primary-300">
+                                <label for="file" class="mb-1 block text-sm font-medium text-gray-700">出品画像</label>
+                                <label class="relative flex w-full cursor-pointer appearance-none items-center justify-center rounded-md border-2 border-dashed border-gray-200 p-6 transition-all hover:border-gray-300 overflow-x-scroll">
                                     <div class="space-y-1 text-center">
                                         <div class="mx-auto inline-flex h-10 w-10 items-center justify-center rounded-full bg-gray-100">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6 text-gray-500">
@@ -30,7 +30,8 @@ $tags = ['PC', 'マウス', 'ディスプレイ', 'スマホ', 'ヘッドホン'
                                         <div class="text-gray-600"><a href="#" class="font-medium text-primary-500 hover:text-primary-700">クリックして追加</a> または ファイルをドロップ</div>
                                         <p class="text-sm text-gray-500">SVG, PNG, JPG or GIF (max. 800x400px)</p>
                                     </div>
-                                    <input id="file" type="file" class="sr-only" multiple required />
+                                    <input id="file" type="file" name="file[]" class="sr-only" multiple required onchange="preview(this)" />
+                                    <div class="preview-area "></div>
                                 </label>
                             </div>
                             <section class="my-6">
@@ -93,3 +94,32 @@ $tags = ['PC', 'マウス', 'ディスプレイ', 'スマホ', 'ヘッドホン'
         </x-user-side-navi>
     </x-slot>
 </x-user-app>
+<style>
+    .preview-area {
+        width: 100%;
+        height: 100%;
+        /* background-color: brown; */
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: flex;
+        overflow-x: scroll;
+    }
+
+    .preview-area img {
+        height: 100%;
+        padding: 0 1rem;
+        object-fit: contain;
+        background-color: white;
+        border: 0.5px solid gray;
+    }
+</style>
+<script>
+    function preview(elem, output = '') {
+        Array.from(elem.files).map((file) => {
+            const blobUrl = window.URL.createObjectURL(file)
+            output += `<img src=${blobUrl}>`
+        })
+        elem.nextElementSibling.innerHTML = output
+    }
+</script>
