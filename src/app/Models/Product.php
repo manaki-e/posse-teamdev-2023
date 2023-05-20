@@ -28,6 +28,10 @@ class Product extends Model
     {
         return $query->pluck('id')->toArray();
     }
+    public function scopeGetProductIdsAndPoints($query)
+    {
+        return $query->get(['point', 'id']);
+    }
     public function scopePendingProducts($query)
     {
         return $query->where('status', self::STATUS['pending']);
