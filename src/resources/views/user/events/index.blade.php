@@ -35,7 +35,8 @@ $events = ['React勉強会', '野球', 'サッカー', 'pythonで機械学習', 
                 </x-user-search-box>
                 <div class="mx-auto max-w-5xl my-4">
                     <div class="mx-auto grid grid-cols-2 gap-4">
-                        @for ($i = 0; $i < 5; $i++) <div x-data="{ open: false }" class="col-span-1">
+                        @for ($i = 0; $i < 5; $i++)
+                        <div x-data="{ open: false }" class="col-span-1">
                             <div class="rounded-lg border border-gray-200 bg-white shadow-sm">
                                 <div class="rounded-lg text-xs shadow-md p-4 pb-1 text-gray-500 bg-white">
                                     <section>
@@ -74,12 +75,12 @@ $events = ['React勉強会', '野球', 'サッカー', 'pythonで機械学習', 
                                                     <div x-cloak x-show.transition.origin.top="tooltip" class="absolute w-20">山田太郎</div>
                                                 </div>
                                                 @endfor
-                                                <div class="z-30 flex bg-gray-200 h-8 w-8 items-center justify-center overflow-hidden rounded-full ring ring-white">
-                                                    <button id="" class="h-full w-full inline-flex items-center justify-center rounded-full text-gray-700 shadow-sm align-middle">
-                                                        <span class="leading-none">9+</span>
-                                                    </button>
-                                                </div>
+                                            <div class="z-30 flex bg-gray-200 h-8 w-8 items-center justify-center overflow-hidden rounded-full ring ring-white">
+                                                <button id="" class="h-full w-full inline-flex items-center justify-center rounded-full text-gray-700 shadow-sm align-middle">
+                                                    <span class="leading-none">9+</span>
+                                                </button>
                                             </div>
+                                        </div>
                                         <!-- いいね -->
                                         <div class="likes absolute top-0 right-0">
                                             <div class="flex relative">
@@ -93,77 +94,73 @@ $events = ['React勉強会', '野球', 'サッカー', 'pythonで機械学習', 
                                                 </div>
                                             </div>
                                         </div>
-                                </div>
-                                </section>
-                                <!-- 概要 -->
-                                <div x-show="open" x-cloak>
-                                    <div class="w-full text-sm text-gray-800 mb-4">
-                                        <p class="pl-1 mb-1 border-l-2 border-pink-600">概要</p>
-                                        <p class="text-gray-500"> 私は場合けっしてその安心院に従ってののためで被せるたない。
-                                            やはり今が逡巡学はとうとうその学習だろざるかもを信ずるば行くだのも講演きまっででて、なぜにはできでなないん。</p>
-                                    </div>
-                                    <!-- モーダル -->
-                                    <div x-data="{ modelOpen: false }">
-                                        <div @click="modelOpen =!modelOpen" class="flex items-center justify-center px-3">
-                                            <x-user-register-button textColor="text-pink-600" bgColor="bg-white" borderColor="border-pink-600">
-                                                <x-slot name="button">予約する</x-slot>
-                                            </x-user-register-button>
+                                    </section>
+                                    <!-- 概要 -->
+                                    <div x-show="open" x-cloak>
+                                        <div class="w-full text-sm text-gray-800 mb-4">
+                                            <p class="pl-1 mb-1 border-l-2 border-pink-600">概要</p>
+                                            <p class="text-gray-500"> 私は場合けっしてその安心院に従ってののためで被せるたない。
+                                                やはり今が逡巡学はとうとうその学習だろざるかもを信ずるば行くだのも講演きまっででて、なぜにはできでなないん。</p>
                                         </div>
+                                        <!-- モーダル -->
+                                        <div x-data="{ modelOpen: false }">
+                                            <div @click="modelOpen =!modelOpen" class="flex items-center justify-center px-3">
+                                                <x-user-register-button textColor="text-pink-600" bgColor="bg-white" borderColor="border-pink-600">
+                                                    <x-slot name="button">予約する</x-slot>
+                                                </x-user-register-button>
+                                            </div>
 
-                                        <div x-show="modelOpen" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-                                            <div class="flex items-end justify-center min-h-screen px-4 text-center md:items-center sm:block sm:p-0">
-                                                <div x-cloak @click="modelOpen = false" x-show="modelOpen" x-transition:enter="transition ease-out duration-300 transform" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200 transform" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-40" aria-hidden="true"></div>
+                                            <div x-show="modelOpen" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                                                <div class="flex items-end justify-center min-h-screen px-4 text-center md:items-center sm:block sm:p-0">
+                                                    <div x-cloak @click="modelOpen = false" x-show="modelOpen" x-transition:enter="transition ease-out duration-300 transform" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200 transform" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-40" aria-hidden="true"></div>
 
-                                                <div x-cloak x-show="modelOpen" x-transition:enter="transition ease-out duration-300 transform" x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" x-transition:leave="transition ease-in duration-200 transform" x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" class="inline-block w-full max-w-xl p-8 my-40 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl 2xl:max-w-2xl">
-                                                    <div class="flex items-center justify-between space-x-4">
-                                                        <h1 class="text-xl font-semibold text-gray-800 pl-2 border-l-4 border-pink-600">参加予約</h1>
-                                                        <button @click="modelOpen = false" class="text-gray-600 focus:outline-none hover:text-gray-700">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                            </svg>
-                                                        </button>
+                                                    <div x-cloak x-show="modelOpen" x-transition:enter="transition ease-out duration-300 transform" x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" x-transition:leave="transition ease-in duration-200 transform" x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" class="inline-block w-full max-w-xl p-8 my-40 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl 2xl:max-w-2xl">
+                                                        <div class="flex items-center justify-between space-x-4">
+                                                            <h1 class="text-xl font-semibold text-gray-800 pl-2 border-l-4 border-pink-600">参加予約</h1>
+                                                            <button @click="modelOpen = false" class="text-gray-600 focus:outline-none hover:text-gray-700">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                                </svg>
+                                                            </button>
+                                                        </div>
+                                                        <p class="mt-2 text-sm text-gray-500 ">
+                                                            主催者に支払うポイントを設定してください
+                                                        </p>
+                                                        <form class="mt-5">
+                                                            <div>
+                                                                <label class="block text-sm text-gray-700 capitalize dark:text-gray-200">参加ポイント</label>
+                                                                <input type="number" step="10" min="0" max="500" class="block w-full px-3 py-2 mt-2 text-gray-600 placeholder-gray-400 bg-white border border-gray-200 rounded-md" required />
+                                                                <p class="ml-2 text-xs text-gray-500 ">
+                                                                    ポイントの上限は 500 pt
+                                                                </p>
+                                                            </div>
+                                                            <div class="mt-6">
+                                                                <x-user-register-button textColor="text-white" bgColor="bg-pink-600" borderColor="border-pink-600">
+                                                                    <x-slot name="button">予約する</x-slot>
+                                                                </x-user-register-button>
+                                                            </div>
+                                                        </form>
                                                     </div>
-                                                    <p class="mt-2 text-sm text-gray-500 ">
-                                                        主催者に支払うポイントを設定してください
-                                                    </p>
-                                                    <form class="mt-5">
-                                                        <div>
-                                                            <label class="block text-sm text-gray-700 capitalize dark:text-gray-200">参加ポイント</label>
-                                                            <input type="number" step="10" min="0" max="500" class="block w-full px-3 py-2 mt-2 text-gray-600 placeholder-gray-400 bg-white border border-gray-200 rounded-md" required />
-                                                            <p class="ml-2 text-xs text-gray-500 ">
-                                                                ポイントの上限は 500 pt
-                                                            </p>
-                                                        </div>
-                                                        <div class="mt-6">
-                                                            <x-user-register-button textColor="text-white" bgColor="bg-pink-600" borderColor="border-pink-600">
-                                                                <x-slot name="button">予約する</x-slot>
-                                                            </x-user-register-button>
-                                                        </div>
-                                                    </form>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div @click="open=!open" class="mb-1 flex justify-center cursor-pointer rounded-md hover:bg-gray-50">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="block h-5 w-5 transform " :class="{ 'rotate-180' : open }">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                                    </svg>
+                                    <div @click="open=!open" class="mb-1 flex justify-center cursor-pointer rounded-md hover:bg-gray-50">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="block h-5 w-5 transform " :class="{ 'rotate-180' : open }">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                                        </svg>
+                                    </div>
                                 </div>
                             </div>
+                        </div>
+                        @endfor
                     </div>
                 </div>
-                @endfor
-            </div>
-            </div>
             </div>
         </x-user-side-navi>
     </x-slot>
 </x-user-app>
 <style>
-    /* * div {
-        border: 1px solid red;
-    } */
     [x-cloak] {
         display: none;
     }
