@@ -10,7 +10,7 @@ $events = ['React勉強会', '野球', 'サッカー', 'pythonで機械学習', 
     <x-slot name="header_slot">
         <x-user-header textColor="text-pink-600" bgColor="bg-pink-600">
             <x-slot:app_name>Peer Event</x-slot:app_name>
-            <x-slot:button_text>アイテム登録</x-slot:button_text>
+            <x-slot:button_text>イベント登録</x-slot:button_text>
         </x-user-header>
     </x-slot>
     <x-slot name="body_slot">
