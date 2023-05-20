@@ -22,9 +22,8 @@
             </a>
         </div>
         <div class="flex">
-            <a href="#"
-                {{ $attributes->merge(['class' => 'rounded-lg w-40 mx-3 my-1 px-8 py-2 shadow-md text-center text-sm text-white transition-all hover:shadow-lg hover:opacity-75 '.$bgColor]) }}>
-                {{ $button_text }}
+            <a href="#" {{ $button_text ?? 'hidden' }} {{ $attributes->merge(['class' => 'rounded-lg w-40 mx-3 my-1 px-7 py-2 shadow-md text-center text-sm text-white transition-all hover:shadow-lg hover:opacity-75 '.$bgColor]) }}>
+                {{ $button_text ?? '' }}
             </a>
             <div x-data="{ tooltip: false }" x-on:mouseover="tooltip = true" x-on:mouseleave="tooltip = false"
                 class="w-24 h-12 mx-2 cursor-pointer relative">
@@ -38,7 +37,7 @@
                             stroke="black" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
 
-                    <p class="text-black">580 pt</p>
+                    <p class="text-black">{{ $earned_point }} pt</p>
                 </div>
                 <hr class="border-black dark:border-gray-700">
                 <div class="flex justify-between items-center">
@@ -50,7 +49,7 @@
                             d="M7.99935 7.9987C8.35297 7.9987 8.69211 8.13917 8.94216 8.38922C9.19221 8.63927 9.33268 8.97841 9.33268 9.33203C9.33268 9.68565 9.19221 10.0248 8.94216 10.2748C8.69211 10.5249 8.35297 10.6654 7.99935 10.6654H6.66602V5.33203H7.99935C8.35297 5.33203 8.69211 5.47251 8.94216 5.72256C9.19221 5.9726 9.33268 6.31174 9.33268 6.66536C9.33268 7.01899 9.19221 7.35812 8.94216 7.60817C8.69211 7.85822 8.35297 7.9987 7.99935 7.9987ZM7.99935 7.9987H6.66602"
                             stroke="black" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
-                    <p class="text-black">5000 pt</p>
+                    <p class="text-black">{{ $distribution_point }} pt</p>
                 </div>
 
                 <div x-cloak x-show.transition.origin.top="tooltip"

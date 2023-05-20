@@ -58,6 +58,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/profile', [MyPageController::class, 'profile'])->name('profile');
         Route::get('/events/organized', [MyPageController::class, 'eventsOrganized'])->name('events.organized');
         Route::get('/events/joined', [MyPageController::class, 'eventsJoined'])->name('events.joined');
+        Route::get('/items/listed', [MyPageController::class, 'itemsListed'])->name('items.listed');
     });
 
     Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'check.admin'], function () {

@@ -5,11 +5,10 @@ namespace App\Http\Controllers\User;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Event;
 use App\Models\EventParticipantLog;
-use App\Models\Event_participants;
 use App\Http\Controllers\Controller;
 use App\Models\PointExchangeLog;
+use App\Models\Product;
 use App\Models\ProductDealLog;
-use Illuminate\Http\Request;
 
 //#82-主催したイベント情報
 class MyPageController extends Controller
@@ -26,9 +25,9 @@ class MyPageController extends Controller
             print_r($event_organize->created_at . '<br>');
             print_r($event_organize->completed_at . '<br>');
         }
-        $earned_points = Event::where('user_id', $auth_id)->with('eventParticipants')->withSum('participants', 'point')->get();
+        $earned_points = Event::where('user_id', $auth_id)->with('eventParticipants')->withSum('eventParticipants', 'point')->get();
         foreach ($earned_points as $earned_point) {
-            print_r($earned_point->eventParticipants_sum_point);
+            print_r($earned_point->event_participants_sum_point);
         }
         dd();
         // return view();
@@ -73,7 +72,7 @@ class MyPageController extends Controller
             return [
                 'name' => $product_deal_log->product->title,
                 'created_at' => $product_deal_log->created_at,
-                'point' => -$product_deal_log->product->point,
+                'point' => -$product_deal_log->point,
             ];
         });
         $distribution_event_participant_logs = EventParticipantLog::withTrashed()->where('user_id', $user->id)->with(['event' => function ($query) {
@@ -100,11 +99,11 @@ class MyPageController extends Controller
                 'point' => -$point_exchange_log->point,
             ];
         });
-        $earned_event_logs = Event::where('user_id', $user->id)->where('completed_at', '!=', null)->withSum('participants', 'point')->get()->map(function ($event) {
+        $earned_event_logs = Event::where('user_id', $user->id)->where('completed_at', '!=', null)->withSum('eventParticipants', 'point')->get()->map(function ($event) {
             return [
                 'name' => $event->title,
                 'created_at' => $event->completed_at,
-                'point' => $event->eventParticipants_sum_point,
+                'point' => $event->event_participants_sum_point,
             ];
         });
         //productが削除されてもポイントの変動は残る、product_deal_logが削除＝キャンセルされた場合はポイントの変動も削除
@@ -116,7 +115,7 @@ class MyPageController extends Controller
             return [
                 'name' => $product_deal_log->product->title,
                 'created_at' => $product_deal_log->created_at,
-                'point' => $product_deal_log->product->point,
+                'point' => $product_deal_log->point,
             ];
         });
         //バグ発生対策
@@ -157,5 +156,32 @@ class MyPageController extends Controller
         })->get();
         dd($occupied_products);
         return view('user.mypage.items', compact('available_products', 'occupied_products'));
+    }
+
+    public function itemsListed()
+    {
+        $user = Auth::user();
+        $lendable_products = Product::where('user_id', $user->id)
+            ->availableProducts()
+            ->with('productImages')
+            ->with('productLikes')
+            ->with('productTags.tag')
+            ->get();
+
+        $borrowed_products = Product::where('user_id', $user->id)
+            ->occupiedAndDeliveringProducts()
+            ->with('productImages')
+            ->with('productLikes')
+            ->with('productTags.tag')
+            ->get();
+
+        $applying_products = Product::where('user_id', $user->id)
+            ->pendingProducts()
+            ->with('productImages')
+            ->with('productLikes')
+            ->with('productTags.tag')
+            ->get();
+
+        return view('user.mypage.items-listed', compact('lendable_products', 'borrowed_products', 'applying_products'));
     }
 }

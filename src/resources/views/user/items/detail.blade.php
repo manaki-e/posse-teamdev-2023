@@ -18,6 +18,8 @@ $unavailable_tag = $available ? '' : '<span class="absolute left-0 top-0 rounded
         <x-user-header textColor="text-blue-400" bgColor="bg-blue-400">
             <x-slot:app_name>Peer Product Share</x-slot:app_name>
             <x-slot:button_text>アイテム登録</x-slot:button_text>
+            <x-slot:earned_point>580</x-slot:earned_point>
+            <x-slot:distribution_point>5000</x-slot:distribution_point>
         </x-user-header>
     </x-slot>
     <x-slot name="body_slot">
@@ -122,52 +124,52 @@ $unavailable_tag = $available ? '' : '<span class="absolute left-0 top-0 rounded
                                     <x-slot name="button">借りる</x-slot>
                                 </x-user-register-button>
                                 @endif
-                                    <h3 class="text-xl mb-1 pb-1 dark:text-white border-b">アイテムの説明
-                                    </h3>
-                                    <p class="mb-4 text-base text-gray-500">
-                                        3年前に買ったmacbookairですが、ほとんど使用せず眠っていました。<br>
-                                        Intel Core i5 1.6GHz<br>
-                                        8GB<br>
-                                    </p>
-                                    <h3 class="text-xl mb-1 pb-1 dark:text-white border-b">アイテムの状態
-                                    </h3>
-                                    <p class="mb-4 text-base text-gray-500">傷なし</p>
-                                    <h3 class="text-xl mb-1 pb-1 dark:text-white border-b">カテゴリ</h3>
-                                    <div class="mb-4">
-                                        <span class="inline-flex items-center gap-1 rounded-full border border-gray-300 bg-gray-50 px-2 py-1 text-xs font-semibold text-gray-400">
-                                            PC
-                                        </span>
-                                        <span class="inline-flex items-center gap-1 rounded-full border border-gray-300 bg-gray-50 px-2 py-1 text-xs font-semibold text-gray-400">
-                                            デバイス
-                                        </span>
-                                        <span class="inline-flex items-center gap-1 rounded-full border border-gray-300 bg-gray-50 px-2 py-1 text-xs font-semibold text-gray-400">
-                                            利用不可
-                                        </span>
-                                    </div>
-                                    <h3 class="text-xl mb-1 pb-1 dark:text-white border-b">出品者</h3>
+                                <h3 class="text-xl mb-1 pb-1 dark:text-white border-b">アイテムの説明
+                                </h3>
+                                <p class="mb-4 text-base text-gray-500">
+                                    3年前に買ったmacbookairですが、ほとんど使用せず眠っていました。<br>
+                                    Intel Core i5 1.6GHz<br>
+                                    8GB<br>
+                                </p>
+                                <h3 class="text-xl mb-1 pb-1 dark:text-white border-b">アイテムの状態
+                                </h3>
+                                <p class="mb-4 text-base text-gray-500">傷なし</p>
+                                <h3 class="text-xl mb-1 pb-1 dark:text-white border-b">カテゴリ</h3>
+                                <div class="mb-4">
+                                    <span class="inline-flex items-center gap-1 rounded-full border border-gray-300 bg-gray-50 px-2 py-1 text-xs font-semibold text-gray-400">
+                                        PC
+                                    </span>
+                                    <span class="inline-flex items-center gap-1 rounded-full border border-gray-300 bg-gray-50 px-2 py-1 text-xs font-semibold text-gray-400">
+                                        デバイス
+                                    </span>
+                                    <span class="inline-flex items-center gap-1 rounded-full border border-gray-300 bg-gray-50 px-2 py-1 text-xs font-semibold text-gray-400">
+                                        利用不可
+                                    </span>
+                                </div>
+                                <h3 class="text-xl mb-1 pb-1 dark:text-white border-b">出品者</h3>
 
-                                    <a href="#" class="divide-y divide-gray-200 dark:divide-gray-700">
-                                        <div class="sm:pb-4">
-                                            <div class="flex items-center space-x-4 rounded hover:bg-gray-200">
-                                                <div class="flex-shrink-0 pl-1">
-                                                    <img class="w-8 h-8 rounded-full" src="https://images.unsplash.com/photo-1552058544-f2b08422138a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxNTgwfDB8MXxzZWFyY2h8NXx8cGVyc29ufGVufDB8fHx8MTY4MzAzMzA2OA&ixlib=rb-4.0.3&q=80&w=400" alt="Neil image">
-                                                </div>
-                                                <div class="flex-1 min-w-0">
-                                                    <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                                                        五十嵐　佳貴
-                                                    </p>
-                                                    <p class="text-sm text-gray-500 truncate dark:text-gray-400">
-                                                        email
-                                                    </p>
-                                                </div>
-                                                <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                                                    </svg>
-                                                </div>
+                                <a href="#" class="divide-y divide-gray-200 dark:divide-gray-700">
+                                    <div class="sm:pb-4">
+                                        <div class="flex items-center space-x-4 rounded hover:bg-gray-200">
+                                            <div class="flex-shrink-0 pl-1">
+                                                <img class="w-8 h-8 rounded-full" src="https://images.unsplash.com/photo-1552058544-f2b08422138a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxNTgwfDB8MXxzZWFyY2h8NXx8cGVyc29ufGVufDB8fHx8MTY4MzAzMzA2OA&ixlib=rb-4.0.3&q=80&w=400" alt="Neil image">
+                                            </div>
+                                            <div class="flex-1 min-w-0">
+                                                <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                                    五十嵐　佳貴
+                                                </p>
+                                                <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                                    email
+                                                </p>
+                                            </div>
+                                            <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                                                </svg>
                                             </div>
                                         </div>
-                                    </a>
+                                    </div>
+                                </a>
                             </div>
                             <!-- content - end -->
                         </div>
