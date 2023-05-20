@@ -26,9 +26,9 @@ class MyPageController extends Controller
             print_r($event_organize->created_at . '<br>');
             print_r($event_organize->completed_at . '<br>');
         }
-        $earned_points = Event::where('user_id', $auth_id)->with('eventParticipants')->withSum('participants', 'point')->get();
+        $earned_points = Event::where('user_id', $auth_id)->with('eventParticipants')->withSum('eventParticipants', 'point')->get();
         foreach ($earned_points as $earned_point) {
-            print_r($earned_point->eventParticipants_sum_point);
+            print_r($earned_point->event_participants_sum_point);
         }
         dd();
         // return view();
@@ -100,11 +100,11 @@ class MyPageController extends Controller
                 'point' => -$point_exchange_log->point,
             ];
         });
-        $earned_event_logs = Event::where('user_id', $user->id)->where('completed_at', '!=', null)->withSum('participants', 'point')->get()->map(function ($event) {
+        $earned_event_logs = Event::where('user_id', $user->id)->where('completed_at', '!=', null)->withSum('eventParticipants', 'point')->get()->map(function ($event) {
             return [
                 'name' => $event->title,
                 'created_at' => $event->completed_at,
-                'point' => $event->eventParticipants_sum_point,
+                'point' => $event->event_participants_sum_point,
             ];
         });
         //productが削除されてもポイントの変動は残る、product_deal_logが削除＝キャンセルされた場合はポイントの変動も削除
