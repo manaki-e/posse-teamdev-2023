@@ -57,11 +57,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(EventParticipantLog::class);
     }
-    public function ProductDealLogs()
+    public function productDealLogs()
     {
         return $this->hasMany(ProductDealLog::class);
     }
-    public function PointExchangeLogs()
+    public function pointExchangeLogs()
     {
         return $this->hasMany(PointExchangeLog::class);
     }

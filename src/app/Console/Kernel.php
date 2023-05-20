@@ -17,8 +17,10 @@ class Kernel extends ConsoleKernel
     {
         //テスト用に毎分実行
         $schedule->command('command:reset_distribution_point')->everyMinute();
+        $schedule->command('command:subtract_product_point')->everyMinute();
         //毎月1日に実行
         // $schedule->command('command:reset_distribution_point')->monthly();
+        // $schedule->command('command:subtract_product_point')->monthly();
     }
 
     /**

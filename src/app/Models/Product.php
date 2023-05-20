@@ -153,6 +153,16 @@ class Product extends Model
         $product_deal_log_instance->product_id = $product_id;
         $product_deal_log_instance->user_id = $user_id;
         $product_deal_log_instance->point = $point;
+        //ログインユーザーが前回このproductを借りたときのレコードを取得
+        $user_product_last_product_deal_log = ProductDealLog::where('user_id',$user_id)->where('product_id', $product_id)->latest()->first();
+        if ($user_product_last_product_deal_log && !$user_product_last_product_deal_log->returned_at && !$user_product_last_product_deal_log->canceled_at) {
+            //前回借りたときにcancelしてないかつreturnしてないなら連続借りとして扱う
+            $product_deal_log_instance->start_of_streak_id = $user_product_last_product_deal_log->start_of_streak_id;
+        } else {
+            //連続取引ではない場合はstart_of_streak_idにこのレコードのidを入れる
+            $last_product_deal_log_id = $product_deal_log_instance->latest('id')->value('id');
+            $product_deal_log_instance->start_of_streak_id = $last_product_deal_log_id + 1;
+        }
         $product_deal_log_instance->save();
         return;
     }
