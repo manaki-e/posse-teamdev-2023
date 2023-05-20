@@ -11,6 +11,8 @@ $events = ['React勉強会', '野球', 'サッカー', 'pythonで機械学習', 
         <x-user-header textColor="text-pink-600" bgColor="bg-pink-600">
             <x-slot:app_name>Peer Event</x-slot:app_name>
             <x-slot:button_text>イベント登録</x-slot:button_text>
+            <x-slot:earned_point>580</x-slot:earned_point>
+            <x-slot:distribution_point>5000</x-slot:distribution_point>
         </x-user-header>
     </x-slot>
     <x-slot name="body_slot">
@@ -35,8 +37,7 @@ $events = ['React勉強会', '野球', 'サッカー', 'pythonで機械学習', 
                 </x-user-search-box>
                 <div class="mx-auto max-w-5xl my-4">
                     <div class="mx-auto grid grid-cols-2 gap-4">
-                        @for ($i = 0; $i < 5; $i++)
-                        <div x-data="{ open: false }" class="col-span-1">
+                        @for ($i = 0; $i < 5; $i++) <div x-data="{ open: false }" class="col-span-1">
                             <div class="rounded-lg border border-gray-200 bg-white shadow-sm">
                                 <div class="rounded-lg text-xs shadow-md p-4 pb-1 text-gray-500 bg-white">
                                     <section>
@@ -69,15 +70,14 @@ $events = ['React勉強会', '野球', 'サッカー', 'pythonで機械学習', 
                                             </div>
                                             <!-- ユーザーアイコン -->
                                             <div class="w-1/2 flex items-end justify-end -space-x-1">
-                                                @for ($j = 0; $j < 5; $j++)
-                                                <div x-data="{ tooltip: false }" x-on:mouseover="tooltip = true" x-on:mouseleave="tooltip = false" class="h-8 w-8 relative">
+                                                @for ($j = 0; $j < 5; $j++) <div x-data="{ tooltip: false }" x-on:mouseover="tooltip = true" x-on:mouseleave="tooltip = false" class="h-8 w-8 relative">
                                                     <img class="h-full w-full rounded-full object-cover object-center ring ring-white" src="https://images.unsplash.com/photo-1645378999013-95abebf5f3c1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
                                                     <div x-cloak x-show.transition.origin.top="tooltip" class="absolute w-20">山田太郎</div>
-                                                </div>
-                                                @endfor
+                                            </div>
+                                            @endfor
                                             <div class="z-30 flex bg-gray-200 h-8 w-8 items-center justify-center overflow-hidden rounded-full ring ring-white">
                                                 <button id="" class="h-full w-full inline-flex items-center justify-center rounded-full text-gray-700 shadow-sm align-middle">
-                                                    <span class="leading-none">9+</span>
+                                                    <span class="leading-none">•••</span>
                                                 </button>
                                             </div>
                                         </div>
@@ -152,10 +152,10 @@ $events = ['React勉強会', '野球', 'サッカー', 'pythonで機械学習', 
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        @endfor
                     </div>
+                    @endfor
                 </div>
+            </div>
             </div>
         </x-user-side-navi>
     </x-slot>
