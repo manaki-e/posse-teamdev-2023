@@ -73,7 +73,7 @@ class MyPageController extends Controller
             return [
                 'name' => $product_deal_log->product->title,
                 'created_at' => $product_deal_log->created_at,
-                'point' => -$product_deal_log->product->point,
+                'point' => -$product_deal_log->point,
             ];
         });
         $distribution_event_participant_logs = EventParticipantLog::withTrashed()->where('user_id', $user->id)->with(['event' => function ($query) {
@@ -116,7 +116,7 @@ class MyPageController extends Controller
             return [
                 'name' => $product_deal_log->product->title,
                 'created_at' => $product_deal_log->created_at,
-                'point' => $product_deal_log->product->point,
+                'point' => $product_deal_log->point,
             ];
         });
         //バグ発生対策
