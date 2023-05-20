@@ -9,21 +9,21 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 
-class SubtractProductPoint extends Command
+class SubtractProductPointAndSendSlackNotification extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'command:subtract_product_point';
+    protected $signature = 'command:subtract_product_point_and_send_slack_notification';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = '定期ポイント引き出し';
+    protected $description = '定期ポイント引き出しとslack通知';
 
     /**
      * Execute the console command.
@@ -59,11 +59,13 @@ class SubtractProductPoint extends Command
                 $product_deal_log->point = $product->point;
                 $product_deal_log->start_of_streak_id = $last_of_product_deal_log_grouped_by_start_of_streak_id->start_of_streak_id;
                 $product_deal_log->save();
+                //！！！ここにまなきがslack通知の処理を書く！！！
                 return;
             }
         });
         //laravel.logに記録
         Log::info('定期ポイント引き出し完了');
+        // Log::info('slack通知完了');
         return Command::SUCCESS;
     }
 }
