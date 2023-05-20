@@ -8,8 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class EventLike extends Model
 {
-    use HasFactory;
-    use softDeletes;
+    use HasFactory, SoftDeletes;
     public function user()
     {
         return $this->belongsTo(User::class);

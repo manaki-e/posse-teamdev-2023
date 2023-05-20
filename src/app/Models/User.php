@@ -2,15 +2,15 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
     /**
      * The attributes that are mass assignable.
      *
@@ -40,6 +40,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public static function booted()
+    {
+        static::deleted(function ($user) {
+            $user->eventLikes()->delete();
+        });
+    }
     public static function getUserIds()
     {
         return self::pluck('id')->toArray();
@@ -51,6 +57,10 @@ class User extends Authenticatable
     public function events()
     {
         return $this->hasMany(Event::class);
+    }
+    public function eventLikes()
+    {
+        return $this->hasMany(EventLike::class);
     }
     public function eventParticipantLogs()
     {
