@@ -22,7 +22,7 @@
             </a>
         </div>
         <div class="flex">
-            <a href="#" {{ $button_text ?? 'hidden' }} {{ $attributes->merge(['class' => 'rounded-lg w-40 mx-3 my-1 px-8 py-2 shadow-md text-center text-sm text-white transition-all hover:shadow-lg hover:opacity-75 '.$bgColor]) }}>
+            <a href="#" {{ $button_text ?? 'hidden' }} {{ $attributes->merge(['class' => 'rounded-lg w-40 mx-3 my-1 px-7 py-2 shadow-md text-center text-sm text-white transition-all hover:shadow-lg hover:opacity-75 '.$bgColor]) }}>
                 {{ $button_text ?? '' }}
             </a>
             <div x-data="{ tooltip: false }" x-on:mouseover="tooltip = true" x-on:mouseleave="tooltip = false"
