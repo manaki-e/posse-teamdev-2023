@@ -9,6 +9,8 @@ $tags = ['勉強会', 'スポーツ', '娯楽', 'プログラミング', 'React'
         <x-user-header textColor="text-pink-600" bgColor="bg-pink-600">
             <x-slot:app_name>Peer Event</x-slot:app_name>
             <x-slot:button_text>イベント登録</x-slot:button_text>
+            <x-slot:earned_point>580</x-slot:earned_point>
+            <x-slot:distribution_point>5000</x-slot:distribution_point>
         </x-user-header>
     </x-slot>
     <x-slot name="body_slot">
