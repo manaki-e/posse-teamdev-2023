@@ -28,6 +28,10 @@ class Product extends Model
     {
         return $query->pluck('id')->toArray();
     }
+    public function scopeGetProductIdsAndPoints($query)
+    {
+        return $query->get(['point', 'id']);
+    }
     public function scopePendingProducts($query)
     {
         return $query->where('status', self::STATUS['pending']);
@@ -147,11 +151,12 @@ class Product extends Model
         //idはテーブルのid,tag_idはタグのid
         return;
     }
-    public function addProductDealLog($product_id, $user_id)
+    public function addProductDealLog($product_id, $user_id, $point)
     {
         $product_deal_log_instance = new ProductDealLog();
         $product_deal_log_instance->product_id = $product_id;
         $product_deal_log_instance->user_id = $user_id;
+        $product_deal_log_instance->point = $point;
         $product_deal_log_instance->save();
         return;
     }
