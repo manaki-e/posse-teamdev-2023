@@ -66,15 +66,26 @@ class MyPageController extends Controller
         //内容：カテゴリ（イベント、アイテム、換金）、内容（イベント名、アイテム名、換金）、日時、ポイント
         //消費=>product_deal_logsとevent_participant_logsを結合
         //消費はキャンセル関係なくポイントが減るためwithTrashed()
+        $unchargeable_month_count = ProductDealLog::UNCHARGEABLE_MONTH_COUNT;
         $user = Auth::user();
-        $distribution_product_deal_logs = ProductDealLog::where('user_id', $user->id)->with(['product' => function ($query) {
+        $distribution_product_deal_logs = ProductDealLog::where('user_id', $user->id)->chargeable()->with(['product' => function ($query) {
             $query->withTrashed();
-        }])->get()->map(function ($product_deal_log) {
-            return [
-                'name' => $product_deal_log->product->title,
-                'created_at' => $product_deal_log->created_at,
-                'point' => -$product_deal_log->point,
-            ];
+        }])->get()->map(function ($product_deal_log) use ($unchargeable_month_count) {
+            if ($product_deal_log->month_count === $unchargeable_month_count - 1) {
+                //借りた最初の月
+                return [
+                    'name' => $product_deal_log->product->title,
+                    'created_at' => $product_deal_log->created_at,
+                    'point' => -$product_deal_log->point,
+                ];
+            } else {
+                //借りた最初の月と差し引き不可能な月以外
+                return [
+                    'name' => $product_deal_log->product->title . ($product_deal_log->created_at->subMonth()->format('(n月分)')),
+                    'created_at' => $product_deal_log->created_at,
+                    'point' => -$product_deal_log->point,
+                ];
+            }
         });
         $distribution_event_participant_logs = EventParticipantLog::withTrashed()->where('user_id', $user->id)->with(['event' => function ($query) {
             $query->withTrashed();
@@ -108,7 +119,7 @@ class MyPageController extends Controller
             ];
         });
         //productが削除されてもポイントの変動は残る、product_deal_logが削除＝キャンセルされた場合はポイントの変動も削除
-        $earned_product_deal_logs = ProductDealLog::notCanceled()->with(['product' => function ($query) {
+        $earned_product_deal_logs = ProductDealLog::notCanceled()->chargeable()->with(['product' => function ($query) {
             $query->withTrashed();
         }])->whereHas('product', function ($query) use ($user) {
             $query->where('user_id', $user->id)->withTrashed();

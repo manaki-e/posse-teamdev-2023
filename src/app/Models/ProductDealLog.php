@@ -11,7 +11,7 @@ class ProductDealLog extends Model
     use HasFactory;
     use softDeletes;
     protected $dates = ['created_at', 'updated_at', 'returned_at', 'deleted_at'];
-
+    const UNCHARGEABLE_MONTH_COUNT = 1;
     public function product()
     {
         return $this->belongsTo(Product::class);
@@ -47,5 +47,9 @@ class ProductDealLog extends Model
     {
         $this->canceled_at = now();
         $this->save();
+    }
+    public function scopeChargeable($query)
+    {
+        return $query->where('month_count', '!=', self::UNCHARGEABLE_MONTH_COUNT);
     }
 }

@@ -26,30 +26,26 @@ class ProductDealLogSeeder extends Seeder
         $user_ids = User::getUserIds();
         //返却済み
         //ポイントの変動とステータスの変動考えるのめんどくさいから先月返したことにする
-        $loop_count = 1;
-        $last_product_deal_log_id = ProductDealLog::latest('id')->value('id');
         foreach ($products as $product) {
             $product_deals_array[] = [
                 'product_id' => $product->id,
                 'point' => $product->point,
-                'start_of_streak_id' => $last_product_deal_log_id + $loop_count,
+                'month_count' => 0,
                 'user_id' => $faker->randomElement($user_ids),
                 'created_at' => Carbon::now()->subMonths(2),
                 'returned_at' => Carbon::now()->subMonth(2)
             ];
-            $loop_count++;
         }
         //利用中
         foreach ($products as $product) {
             $product_deals_array[] = [
                 'product_id' => $product->id,
                 'point' => $product->point,
-                'start_of_streak_id' => $last_product_deal_log_id + $loop_count,
+                'month_count' => 0,
                 'user_id' => $faker->randomElement($user_ids),
                 'created_at' => Carbon::now(),
                 'returned_at' => null
             ];
-            $loop_count++;
         }
         DB::table('product_deal_logs')->insert($product_deals_array);
         //usersテーブルのpointカラムを更新
