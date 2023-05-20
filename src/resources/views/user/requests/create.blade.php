@@ -10,6 +10,8 @@ $event_tags = ['勉強会', 'スポーツ', '娯楽'];
         <x-user-header textColor="text-peer-request" bgColor="bg-peer-request">
             <x-slot:app_name>Peer Request</x-slot:app_name>
             <x-slot:button_text>リクエスト登録</x-slot:button_text>
+            <x-slot:earned_point>580</x-slot:earned_point>
+            <x-slot:distribution_point>5000</x-slot:distribution_point>
         </x-user-header>
     </x-slot>
     <x-slot name="body_slot">
