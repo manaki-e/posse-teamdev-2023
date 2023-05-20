@@ -44,7 +44,13 @@ class User extends Authenticatable
     public static function booted()
     {
         static::deleted(function ($user) {
+            $user->events()->delete();
             $user->eventLikes()->delete();
+            $user->eventParticipantLogs()->delete();
+            $user->productDealLogs()->delete();
+            $user->pointExchangeLogs()->delete();
+            $user->products()->delete();
+            $user->requests()->delete();
         });
     }
     public static function getUserIds()

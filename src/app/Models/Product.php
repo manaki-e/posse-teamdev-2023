@@ -10,8 +10,7 @@ use Illuminate\Support\Facades\File;
 
 class Product extends Model
 {
-    use HasFactory;
-    use softDeletes;
+    use HasFactory, softDeletes;
     const STATUS = [
         'pending' => 1,
         'available' => 2,
@@ -24,6 +23,15 @@ class Product extends Model
         3 => '貸出中',
         4 => '配送中'
     ];
+    public static function booted()
+    {
+        static::deleted(function ($product) {
+            $product->productImages()->delete();
+            $product->productTags()->delete();
+            $product->productLikes()->delete();
+            $product->productDealLogs()->delete();
+        });
+    }
     public function scopeGetProductIds($query)
     {
         return $query->pluck('id')->toArray();

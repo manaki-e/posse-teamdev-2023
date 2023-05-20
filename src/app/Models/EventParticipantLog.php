@@ -8,8 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class EventParticipantLog extends Model
 {
-    use HasFactory;
-    use softDeletes;
+    use HasFactory, SoftDeletes;
     public function event()
     {
         return $this->belongsTo(Event::class);

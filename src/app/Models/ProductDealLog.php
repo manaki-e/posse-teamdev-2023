@@ -8,8 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ProductDealLog extends Model
 {
-    use HasFactory;
-    use softDeletes;
+    use HasFactory, SoftDeletes;
     protected $dates = ['created_at', 'updated_at', 'returned_at', 'deleted_at'];
     const UNCHARGEABLE_MONTH_COUNT = 1;
     public function product()
