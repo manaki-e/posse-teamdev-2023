@@ -10,7 +10,8 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable;
+    public $timestamps = true;
     /**
      * The attributes that are mass assignable.
      *
@@ -66,11 +67,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(EventParticipantLog::class);
     }
-    public function ProductDealLogs()
+    public function productDealLogs()
     {
         return $this->hasMany(ProductDealLog::class);
     }
-    public function PointExchangeLogs()
+    public function pointExchangeLogs()
     {
         return $this->hasMany(PointExchangeLog::class);
     }
