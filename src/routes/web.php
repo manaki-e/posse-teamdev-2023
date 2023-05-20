@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('user.events.create');
+    return view('welcome');
 });
 
 Route::get('/dashboard', function () {
