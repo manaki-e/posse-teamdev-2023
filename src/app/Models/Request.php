@@ -14,6 +14,7 @@ class Request extends Model
     public static function booted()
     {
         static::deleted(function ($request) {
+            $request->requestLikes()->delete();
             $request->requestTags()->delete();
         });
     }
@@ -28,6 +29,10 @@ class Request extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+    public function requestLikes()
+    {
+        return $this->hasMany(RequestLike::class);
     }
     public function requestTags()
     {

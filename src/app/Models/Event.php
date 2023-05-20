@@ -11,6 +11,14 @@ class Event extends Model
     use HasFactory;
     use softDeletes;
     protected $dates = ['created_at', 'updated_at', 'date', 'deleted_at', 'completed_at'];
+    public static function booted()
+    {
+        static::deleted(function ($event) {
+            $event->eventParticipants()->delete();
+            $event->eventTags()->delete();
+            $event->eventLikes()->delete();
+        });
+    }
     public static function getEventIds()
     {
         return self::pluck('id')->toArray();

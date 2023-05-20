@@ -50,7 +50,9 @@ class User extends Authenticatable
             $user->productDealLogs()->delete();
             $user->pointExchangeLogs()->delete();
             $user->products()->delete();
+            $user->productLikes()->delete();
             $user->requests()->delete();
+            $user->requestLikes()->delete();
         });
     }
     public static function getUserIds()
@@ -85,9 +87,17 @@ class User extends Authenticatable
     {
         return $this->hasMany(Product::class);
     }
+    public function productLikes()
+    {
+        return $this->hasMany(ProductLike::class);
+    }
     public function requests()
     {
         return $this->hasMany(Request::class);
+    }
+    public function requestLikes()
+    {
+        return $this->hasMany(RequestLike::class);
     }
     public function changeEarnedPoint($earned_point)
     {
