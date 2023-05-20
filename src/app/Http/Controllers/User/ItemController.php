@@ -8,6 +8,7 @@ use App\Models\ProductTag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Tag;
+use App\Models\User;
 
 class ItemController extends Controller
 {
@@ -68,6 +69,8 @@ class ItemController extends Controller
     public function show($id)
     {
         $product = Product::withRelations()->findOrFail($id);
+        //Productモデルからuser_idを取得して、そのユーザーのemailを取得
+        $product->email = User::findOrFail($product->user_id)->email;
         $product->japanese_status = Product::JAPANESE_STATUS[$product->status];
         $product->description = $product->changeDescriptionReturnToBreakTag($product->description);
         // このproduct_idをもつproduct_deal_logの最後のレコードのuser_idがログインユーザーの場合表示
@@ -75,7 +78,7 @@ class ItemController extends Controller
         $login_user_can_borrow_this_product = $product->status === Product::STATUS['available'] && !$product->productBelongsToLoginUser();
         $login_borrower_can_cancel_or_receive_this_product = $product->status === Product::STATUS['delivering'] && $last_product_deal_log->user_id === Auth::id();
         $login_lender_can_return_this_product = $product->status === Product::STATUS['occupied'] && $product->productBelongsToLoginUser();
-        return view('backend_test.item', compact('product', 'login_borrower_can_cancel_or_receive_this_product', 'login_lender_can_return_this_product', 'login_user_can_borrow_this_product'));
+        return view('user.items.detail', compact('product', 'login_borrower_can_cancel_or_receive_this_product', 'login_lender_can_return_this_product', 'login_user_can_borrow_this_product'));
     }
 
     /**
