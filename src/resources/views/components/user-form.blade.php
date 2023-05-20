@@ -4,7 +4,7 @@
 @php
 $method = strtoupper($method);
 @endphp
-<div class="container mx-auto relative flex flex-col rounded-xl bg-white text-gray-700 shadow-none">
+<div class="mx-auto max-w-5xl relative flex flex-col rounded-xl bg-white text-gray-700 shadow-none">
     <div class="absolute top-5 left-5">
         <button class="rounded-md text-gray-600 px-4 py-2" onClick="history.back();">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" class="w-6 h-6">
@@ -12,7 +12,7 @@ $method = strtoupper($method);
             </svg>
         </button>
     </div>
-    <div class="mx-auto max-w-xl">
+    <div class="w-full mx-auto px-16 py-8">
         <form {{ $attributes->merge(['method' => $method === 'GET' ? 'GET' : 'POST']) }} class="text-center mt-8">
             @if ($method !== 'GET')
             @csrf
@@ -22,15 +22,10 @@ $method = strtoupper($method);
             @method($method)
             @endif
 
-            <h2 class="block font-sans text-4xl font-bold text-gray-600">
+            <h2 class="mx-auto font-sans text-2xl font-bold text-gray-600">
                 {{ $title }}
             </h2>
             {{ $slot }}
-            <x-user-register-button>
-                <x-slot name="button">
-                    {{ $button }}
-                </x-slot>
-            </x-user-register-button>
         </form>
     </div>
 </div>

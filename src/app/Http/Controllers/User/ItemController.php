@@ -145,7 +145,7 @@ class ItemController extends Controller
         // 貸した人のポイント増える
         $lender_user_instance->changeEarnedPoint($product_instance->point);
         // product_deal_log増える
-        $product_instance->addProductDealLog($item, $borrower_user_instance->id);
+        $product_instance->addProductDealLog($item, $borrower_user_instance->id, $product_instance->point);
         // productのステータス変更
         $product_instance->changeStatusToDelivering();
         // 処理が終わった後redirect back
@@ -165,10 +165,11 @@ class ItemController extends Controller
     public function cancel($item)
     {
         $product_instance = Product::findOrFail($item);
+        //最後のユーザーのproduct_deal_logレコードが今借りてるやつ
         $product_deal_log_instance = $product_instance->productDealLogs->last();
         $lender_user_instance = $product_instance->user;
         // 貸した人のポイント減る
-        $lender_user_instance->changeEarnedPoint(-$product_instance->point);
+        $lender_user_instance->changeEarnedPoint(-$product_deal_log_instance->point);
         // 借りた人のポイント変動なし
         // productのステータス変更
         $product_instance->changeStatusToAvailable();
