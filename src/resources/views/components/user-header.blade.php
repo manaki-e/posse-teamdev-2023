@@ -39,7 +39,7 @@
 
                     <p class="text-black">{{ $earned_point }} pt</p>
                 </div>
-                <hr class="border-black dark:border-gray-700">
+                <hr class="border-black">
                 <div class="flex justify-between items-center">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -81,7 +81,7 @@
             </div>
             <!-- component -->
             <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"></script>
-            <div class="flex justify-center items-center dark:bg-gray-500">
+            <div class="flex justify-center items-center">
                 <div x-data="{ open: false }" class="flex justify-center items-center">
                     <div @click="open = !open"
                         class="relative w-12 h-12 cursor-pointer flex justify-center items-center"
@@ -90,7 +90,7 @@
                         x-transition:leave="transition ease-in duration-75"
                         x-transition:leave-start="transform opacity-100 scale-100">
                         <!-- icon -->
-                        <div class="w-8 h-8 rounded-full overflow-hidden border-2 dark:border-white border-gray-900">
+                        <div class="w-8 h-8 rounded-full overflow-hidden border-2 border-gray-900">
                             <img src="https://images.unsplash.com/photo-1610397095767-84a5b4736cbd?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80"
                                 alt="" class="w-8 h-8 object-cover">
                         </div>
@@ -101,8 +101,8 @@
                             x-transition:leave="transition ease-in duration-75"
                             x-transition:leave-start="transform opacity-100 scale-100"
                             x-transition:leave-end="transform opacity-0 scale-95"
-                            class="absolute right-0 top-full w-48 py-3 dark:bg-gray-800 bg-white rounded-lg shadow border dark:border-transparent mt-5">
-                            <ul class="dark:text-white">
+                            class="absolute right-0 top-full w-48 py-3  bg-white rounded-lg shadow border mt-5">
+                            <ul>
                                 <li class="px-5 py-3 font-medium hover:bg-gray-100">
                                     <a href="#" class="flex items-center transform transition-colors duration-200">
                                         <div class="mr-3">
@@ -131,7 +131,7 @@
                                         マイページ
                                     </a>
                                 </li>
-                                <hr class="dark:border-gray-700">
+                                <hr>
                                 <li class="px-5 py-3 font-medium hover:bg-gray-100">
                                     <a href="#" class="flex items-center transform transition-colors duration-200">
                                         <div class="mr-3 text-red-600">
