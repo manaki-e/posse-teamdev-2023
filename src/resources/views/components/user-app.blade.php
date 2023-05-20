@@ -34,7 +34,7 @@
     </style>
 </head>
 
-<body class="user-bg-gray font-sans text-gray-500">
+<body class="user-bg-gray font-sans text-gray-600">
     <header class="bg-white">
         {{ $header_slot }}
     </header>
