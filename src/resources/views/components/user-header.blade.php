@@ -73,7 +73,7 @@
                             x-transition:leave="transition ease-in duration-75"
                             x-transition:leave-start="transform opacity-100 scale-100"
                             x-transition:leave-end="transform opacity-0 scale-95"
-                            class="absolute right-0 top-full w-48 py-3  bg-white rounded-lg shadow border mt-5">
+                            class="absolute right-0 top-full w-48 py-3 bg-white rounded-lg shadow border mt-5">
                             <ul>
                                 <li class="px-5 py-3 font-medium hover:bg-gray-100">
                                     <a href="#" class="flex items-center transform transition-colors duration-200">
