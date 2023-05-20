@@ -19,7 +19,7 @@ $tags = ['PC', 'マウス', 'ディスプレイ', 'スマホ', 'ヘッドホン'
                     <section class="text-left w-full flex gap-8">
                         <div class="w-1/2">
                             <div class="mx-auto mt-6">
-                                <label for="file" class="mb-1 block text-sm font-medium text-gray-700">出品画像</label>
+                                <label for="file" class="mb-1 block text-sm font-medium text-gray-700">出品画像<span class="text-red-600">*</span></label>
                                 <label class="relative flex w-full cursor-pointer appearance-none items-center justify-center rounded-md border-2 border-dashed border-gray-200 p-6 transition-all hover:border-gray-300 overflow-x-scroll">
                                     <div class="space-y-1 text-center">
                                         <div class="mx-auto inline-flex h-10 w-10 items-center justify-center rounded-full bg-gray-100">
@@ -47,7 +47,7 @@ $tags = ['PC', 'マウス', 'ディスプレイ', 'スマホ', 'ヘッドホン'
                                     </div>
                                     @endforeach
                                 </div>
-                                <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">アイテムの状態</h4>
+                                <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">アイテムの状態<span class="text-red-600">*</span></h4>
                                 <div class="mb-4 border border-gray-300 rounded-md">
                                     <select id="example1" class="p-1 block w-full rounded-md border-gray-300 shadow-sm text-lg text-gray-500" required>
                                         <option value="">選択してください</option>
@@ -64,17 +64,17 @@ $tags = ['PC', 'マウス', 'ディスプレイ', 'スマホ', 'ヘッドホン'
 
                         <section class="my-6 w-1/2">
                             <h3 class="mb-2 text-xl text-gray-600 font-extrabold border-b border-gray-500">アイテム名と説明</h3>
-                            <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">アイテム名</h4>
+                            <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">アイテム名<span class="text-red-600">*</span></h4>
                             <div class="mx-auto">
                                 <input type="text" class="p-1 block w-full rounded-md border border-gray-300" required />
                             </div>
                             <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">アイテムの説明</h4>
                             <div class="mx-auto">
-                                <textarea class="p-1 block w-full rounded-md border border-gray-300" rows="3" required></textarea>
+                                <textarea class="p-1 block w-full rounded-md border border-gray-300" rows="3"></textarea>
                             </div>
                             <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">関連するリクエスト</h4>
                             <div class="mb-4 border border-gray-300 rounded-md">
-                                <select id="example1" class="p-1 block w-full rounded-md border-gray-300 shadow-sm text-lg text-gray-500" required>
+                                <select id="example1" class="p-1 block w-full rounded-md border-gray-300 shadow-sm text-lg text-gray-500">
                                     <option value="">なし</option>
                                     <option value="">リクエスト1</option>
                                     <option value="">リクエスト2</option>
