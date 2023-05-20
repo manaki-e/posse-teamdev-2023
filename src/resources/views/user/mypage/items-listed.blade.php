@@ -8,17 +8,17 @@
             <div class="border-b border-b-gray-100">
                 <ul class="-mb-px flex items-center gap-4 text-sm font-medium">
                     <li>
-                        <a @click="activeTab = 0" class="inline-flex cursor-pointer items-center gap-2 px-1 py-3 text-blue-500 hover:text-blue-500" :class="{'relative text-blue-500  after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-full after:bg-blue-500': activeTab === 0}">
+                        <a @click="activeTab = 0" class="inline-flex cursor-pointer items-center gap-2 px-1 py-3 text-blue-400 hover:text-blue-400" :class="{'relative text-blue-400  after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-full after:bg-blue-400': activeTab === 0}">
                             出品中
                         </a>
                     </li>
                     <li>
-                        <a @click="activeTab = 1" class="inline-flex cursor-pointer items-center gap-2 px-1 py-3 text-blue-500 hover:text-blue-500" :class="{'relative text-blue-500  after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-full after:bg-blue-500': activeTab === 1}">
+                        <a @click="activeTab = 1" class="inline-flex cursor-pointer items-center gap-2 px-1 py-3 text-blue-400 hover:text-blue-400" :class="{'relative text-blue-400  after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-full after:bg-blue-400': activeTab === 1}">
                             貸出中
                         </a>
                     </li>
                     <li>
-                        <a @click="activeTab = 2" class="inline-flex cursor-pointer items-center gap-2 px-1 py-3 text-blue-500 hover:text-blue-500" :class="{'relative text-blue-500  after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-full after:bg-blue-500': activeTab === 2}">
+                        <a @click="activeTab = 2" class="inline-flex cursor-pointer items-center gap-2 px-1 py-3 text-blue-400 hover:text-blue-400" :class="{'relative text-blue-400  after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-full after:bg-blue-400': activeTab === 2}">
                             登録申請中
                         </a>
                     </li>
