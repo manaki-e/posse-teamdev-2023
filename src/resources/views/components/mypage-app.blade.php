@@ -8,7 +8,7 @@
     </x-slot>
     <x-slot name="body_slot">
         <x-user-side-navi>
-            <div class="container flex mx-auto gap-4">
+            <div class="container flex mx-auto gap-4 font-patua">
                 <div class="bg-white shadow rounded-lg md:p-6 w-1/4">
                     <nav>
                         <ul class="mb-3 border-b border-gray-300">
