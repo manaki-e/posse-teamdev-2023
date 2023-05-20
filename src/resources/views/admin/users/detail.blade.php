@@ -47,7 +47,7 @@
                         </li>
                         <li class="flex items-center gap-4 pl-4">
                             <p class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold capitalize">所属部署:</p>
-                            <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-500">{{ $user_data -> department -> name }}</p>
+                            <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-500">{{ $user_data -> department ? $user_data -> department -> name : '' }}</p>
                         </li>
                         <li class="flex items-center gap-4 pl-4">
                             <p class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold capitalize">Role:</p>
@@ -241,6 +241,9 @@
                                                 ポイントを再設定すると、アイテムのポイントが変更されます。
                                                 <br>
                                                 貸出中のアイテムのポイントを編集すると、来月の貸出より新しいポイントが適用されます。
+                                            </x-slot>
+                                            <x-slot name="form_slot">
+                                                <div>form_slotに挿入するコンテンツ</div>
                                             </x-slot>
                                         </x-admin-button-edit>
                                         <x-admin-button-delete action="{{ route('admin.items.destroy', ['item' =>  $product -> id]) }}"></x-admin-button-delete>

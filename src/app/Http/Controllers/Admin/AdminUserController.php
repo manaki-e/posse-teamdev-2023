@@ -3,13 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Department;
 use App\Models\Event;
 use App\Models\EventParticipantLog;
 use App\Models\Product;
 use App\Models\ProductDealLog;
 use App\Models\Request as AppRequest;
+use App\Models\SlackUser;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Str;
 
 class AdminUserController extends Controller
 {
@@ -20,9 +25,11 @@ class AdminUserController extends Controller
      */
     public function index()
     {
-        $users = User::with('department')->paginate(10);
+        $users = User::with('department')->orderBy('email', 'asc')->paginate(10, ['*'], 'users')->appends(['slack_users' => request('slack_users')]);
 
-        return view('admin.users.index', compact('users'));
+        $unauthenticated_users = SlackUser::unauthenticated()->orderBy('email', 'asc')->paginate(10, ['*'], 'slack_users')->appends(['users' => request('users')]);
+
+        return view('admin.users.index', compact('users', 'unauthenticated_users'));
     }
 
     /**
@@ -43,7 +50,25 @@ class AdminUserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if (empty($request->department_name)) {
+            $department_id = null;
+        } else {
+            $department = Department::firstOrCreate(['name' => $request->department_name]);
+            $department_id = $department->id;
+        }
+        $user_instance = new User();
+        $user_instance->name = $request->name;
+        $user_instance->display_name = $request->display_name;
+        $user_instance->email = $request->email;
+        $user_instance->password = Hash::make(Str::random(10));
+        $user_instance->icon = $request->icon;
+        $user_instance->slackID = $request->slackID;
+        $user_instance->is_admin = 0;
+        $user_instance->department_id = $department_id;
+        $user_instance->created_at = now();
+        $user_instance->save();
+
+        return Redirect::route('admin.users.index')->with(['flush.message' => '交換完了処理が正しく行われました', 'flush.alert_type' => 'success']);
     }
 
     /**
@@ -84,7 +109,18 @@ class AdminUserController extends Controller
      */
     public function update(Request $request, $user)
     {
-        //
+        // 管理者権限に変更する
+        $user_instance = User::findOrFail($user);
+        if ($user_instance->is_admin === 1) {
+            $user_instance->is_admin = 0;
+        } elseif ($user_instance->is_admin === 0) {
+            $user_instance->is_admin = 1;
+        }
+        $user_instance->save();
+
+        // 後ほどここでチャンネルへ招待するメソッドを呼び出す
+
+        return Redirect::route('admin.users.index')->with(['flush.message' => '管理者権限の付与が正しく行われました', 'flush.alert_type' => 'success']);
     }
 
     /**
@@ -95,6 +131,9 @@ class AdminUserController extends Controller
      */
     public function destroy($user)
     {
-        //
+        User::findOrFail($user)->delete();
+        // ユーザテーブルに紐づく各テーブルのデータも削除する
+
+        return Redirect::route('admin.users.index')->with(['flush.message' => 'ユーザ削除が正しく行われました', 'flush.alert_type' => 'success']);
     }
 }

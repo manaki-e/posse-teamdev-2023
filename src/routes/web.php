@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminIndexController;
 use App\Http\Controllers\Admin\AdminItemController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SlackController;
 use App\Http\Controllers\User\EventController;
 use App\Http\Controllers\User\ItemController;
 use App\Http\Controllers\User\MyPageController;
@@ -57,15 +58,19 @@ Route::middleware('auth')->group(function () {
         Route::get('/profile', [MyPageController::class, 'profile'])->name('profile');
         Route::get('/events/organized', [MyPageController::class, 'eventsOrganized'])->name('events.organized');
         Route::get('/events/joined', [MyPageController::class, 'eventsJoined'])->name('events.joined');
+        Route::get('/items/listed', [MyPageController::class, 'itemsListed'])->name('items.listed');
     });
 
     Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'check.admin'], function () {
-        Route::get('/dashboard', [AdminIndexController::class, 'index'])->name('dashboard');
         Route::get('/histories', [AdminIndexController::class, 'histories'])->name('histories');
         Route::get('/point-exchanges', [AdminIndexController::class, 'pointExchanges'])->name('point-exchanges');
         Route::resource('/users', AdminUserController::class);
         Route::resource('/items', AdminItemController::class);
+        Route::get('/slack/users', [SlackController::class, 'createUsers'])->name('slack.users');
     });
 });
+
+Route::get('/slack/notification', [SlackController::class, 'sendNotification'])->name('slack.notification');
+Route::get('/slack/channel', [SlackController::class, 'createChannel'])->name('slack.channel');
 
 require __DIR__ . '/auth.php';
