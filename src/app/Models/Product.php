@@ -24,6 +24,14 @@ class Product extends Model
         3 => '貸出中',
         4 => '配送中'
     ];
+    const CONDITION = [
+        1 => '新品・未使用',
+        2 => '未使用に近い',
+        3 => '目立った傷や汚れなし',
+        4 => 'やや傷や汚れあり',
+        5 => '傷や汚れあり',
+        6 => '全体的に状態が悪い'
+    ];
     public function scopeGetProductIds($query)
     {
         return $query->pluck('id')->toArray();
