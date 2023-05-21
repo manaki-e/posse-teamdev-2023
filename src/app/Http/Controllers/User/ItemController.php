@@ -72,7 +72,7 @@ class ItemController extends Controller
         //Productモデルからuser_idを取得して、そのユーザーのemailを取得
         $product->email = User::findOrFail($product->user_id)->email;
         $product->japanese_status = Product::JAPANESE_STATUS[$product->status];
-        $product->japanese_condition=Product::CONDITION[$product->condition];
+        $product->japanese_condition = Product::CONDITION[$product->condition];
         $product->description = $product->changeDescriptionReturnToBreakTag($product->description);
         // このproduct_idをもつproduct_deal_logの最後のレコードのuser_idがログインユーザーの場合表示
         $last_product_deal_log = $product->productDealLogs->last();
