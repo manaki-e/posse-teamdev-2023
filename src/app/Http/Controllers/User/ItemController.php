@@ -145,7 +145,7 @@ class ItemController extends Controller
         // 貸した人のポイント増える
         $lender_user_instance->changeEarnedPoint($product_instance->point);
         // product_deal_log増える
-        $product_instance->addProductDealLog($item, $borrower_user_instance->id, $product_instance->point);
+        $product_instance->addProductDealLog($item, $borrower_user_instance->id, $product_instance->point, 0);
         // productのステータス変更
         $product_instance->changeStatusToDelivering();
         // 処理が終わった後redirect back
