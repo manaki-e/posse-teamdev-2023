@@ -16,11 +16,11 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         //テスト用に毎分実行
-        $schedule->command('command:reset_distribution_point')->everyMinute();
-        $schedule->command('command:subtract_product_point_and_send_slack_notification')->everyMinute();
+        // $schedule->command('command:reset_distribution_point')->everyMinute();
+        // $schedule->command('command:subtract_product_point_and_send_slack_notification')->everyMinute();
         //毎月1日に実行
-        // $schedule->command('command:reset_distribution_point')->monthly();
-        // $schedule->command('command:subtract_product_point_and_send_slack_notification')->monthly();
+        $schedule->command('command:reset_distribution_point')->monthly();
+        $schedule->command('command:subtract_product_point_and_send_slack_notification')->monthly();
     }
 
     /**
