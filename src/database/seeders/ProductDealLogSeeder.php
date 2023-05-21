@@ -30,9 +30,10 @@ class ProductDealLogSeeder extends Seeder
             $product_deals_array[] = [
                 'product_id' => $product->id,
                 'point' => $product->point,
+                'month_count' => 0,
                 'user_id' => $faker->randomElement($user_ids),
                 'created_at' => Carbon::now()->subMonths(2),
-                'returned_at' => Carbon::now()->subMonth()
+                'returned_at' => Carbon::now()->subMonth(2)
             ];
         }
         //利用中
@@ -40,6 +41,7 @@ class ProductDealLogSeeder extends Seeder
             $product_deals_array[] = [
                 'product_id' => $product->id,
                 'point' => $product->point,
+                'month_count' => 0,
                 'user_id' => $faker->randomElement($user_ids),
                 'created_at' => Carbon::now(),
                 'returned_at' => null

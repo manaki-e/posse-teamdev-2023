@@ -26,6 +26,10 @@ RUN apt-get update && \
 
 RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
 RUN apt-get install -y nodejs
+# Install cron
+RUN apt-get update && apt-get -y install cron vim
+ENV EDITOR=/usr/bin/vim
+
 
 COPY ./usr/local/etc/php/php.ini /usr/local/etc/php/php.ini
 
