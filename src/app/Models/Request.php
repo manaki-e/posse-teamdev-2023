@@ -34,4 +34,8 @@ class Request extends Model
     {
         return $this->hasMany(RequestTag::class);
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

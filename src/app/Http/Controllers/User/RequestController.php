@@ -18,7 +18,16 @@ class RequestController extends Controller
      */
     public function index()
     {
-        //
+        $event_request_type_id = ModelsRequest::EVENT_REQUEST_TYPE_ID;
+        $product_request_type_id = ModelsRequest::PRODUCT_REQUEST_TYPE_ID;
+        $app = [
+            $product_request_type_id => ['color' => 'text-blue-400', 'name' => 'Peer Product Share'],
+            $event_request_type_id => ['color' => 'text-pink-600', 'name' => 'Peer Event']
+        ];
+        $product_tags = Tag::where('request_type_id', $product_request_type_id)->get();
+        $event_tags = Tag::where('request_type_id', $event_request_type_id)->get();
+        $requests = ModelsRequest::with(['user', 'requestTags.tag'])->get();
+        return view('user.requests.index', compact('requests', 'product_tags', 'event_tags', 'app'));
     }
 
     /**
