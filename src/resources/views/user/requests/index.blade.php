@@ -3,6 +3,7 @@
         <x-user-header textColor="text-green-400" bgColor="bg-green-400">
             <x-slot:app_name>Peer Request</x-slot:app_name>
             <x-slot:button_text>リクエスト登録</x-slot:button_text>
+            <x-slot:button_link>{{ route('requests.create') }}</x-slot:button_link>
             <x-slot:earned_point>{{Auth::user()->earned_point}}</x-slot:earned_point>
             <x-slot:distribution_point>{{Auth::user()->distribution_point}}</x-slot:distribution_point>
         </x-user-header>
