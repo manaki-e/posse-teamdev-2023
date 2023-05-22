@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Request extends Model
 {
     use HasFactory;
+    use SoftDeletes;
     const PRODUCT_REQUEST_TYPE_ID = 1;
     const EVENT_REQUEST_TYPE_ID = 2;
     public static function getRequestIds()
