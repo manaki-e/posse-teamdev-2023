@@ -1,3 +1,13 @@
+<?php
+
+namespace App\Http\Controllers\User;
+
+use Illuminate\Support\Facades\Auth;
+
+//userのログイン情報を$user_infoに格納
+$user_info = Auth::user();
+
+?>
 <!--
     引数は色、アプリ名、ボタン名、各ポイント、ユーザーのアイコン、アカウントページ、マイページへのリンク
     textColorとbgColorには以下の色を指定する
@@ -27,7 +37,7 @@
                         <path d="M6.66602 10.6654V5.33203H8.33268C8.77471 5.33203 9.19863 5.50763 9.51119 5.82019C9.82375 6.13275 9.99935 6.55667 9.99935 6.9987C9.99935 7.44073 9.82375 7.86465 9.51119 8.17721C9.19863 8.48977 8.77471 8.66536 8.33268 8.66536H6.66602" stroke="black" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
 
-                    <p class="text-black">{{ $earned_point }} pt</p>
+                    <p class="text-black">{{ $user_info->earned_point }} pt</p>
                 </div>
                 <hr class="border-black">
                 <div class="flex justify-between items-center">
@@ -35,7 +45,7 @@
                         <path d="M2 8C2 8.78793 2.15519 9.56815 2.45672 10.2961C2.75825 11.0241 3.20021 11.6855 3.75736 12.2426C4.31451 12.7998 4.97595 13.2417 5.7039 13.5433C6.43185 13.8448 7.21207 14 8 14C8.78793 14 9.56815 13.8448 10.2961 13.5433C11.0241 13.2417 11.6855 12.7998 12.2426 12.2426C12.7998 11.6855 13.2417 11.0241 13.5433 10.2961C13.8448 9.56815 14 8.78793 14 8C14 7.21207 13.8448 6.43185 13.5433 5.7039C13.2417 4.97595 12.7998 4.31451 12.2426 3.75736C11.6855 3.20021 11.0241 2.75825 10.2961 2.45672C9.56815 2.15519 8.78793 2 8 2C7.21207 2 6.43185 2.15519 5.7039 2.45672C4.97595 2.75825 4.31451 3.20021 3.75736 3.75736C3.20021 4.31451 2.75825 4.97595 2.45672 5.7039C2.15519 6.43185 2 7.21207 2 8Z" stroke="black" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round" />
                         <path d="M7.99935 7.9987C8.35297 7.9987 8.69211 8.13917 8.94216 8.38922C9.19221 8.63927 9.33268 8.97841 9.33268 9.33203C9.33268 9.68565 9.19221 10.0248 8.94216 10.2748C8.69211 10.5249 8.35297 10.6654 7.99935 10.6654H6.66602V5.33203H7.99935C8.35297 5.33203 8.69211 5.47251 8.94216 5.72256C9.19221 5.9726 9.33268 6.31174 9.33268 6.66536C9.33268 7.01899 9.19221 7.35812 8.94216 7.60817C8.69211 7.85822 8.35297 7.9987 7.99935 7.9987ZM7.99935 7.9987H6.66602" stroke="black" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
-                    <p class="text-black">{{ $distribution_point }} pt</p>
+                    <p class="text-black">{{ $user_info->distribution_point }} pt</p>
                 </div>
 
                 <div x-cloak x-show.transition.origin.top="tooltip" class="absolute w-32 top-14 z-10 p-2 text-sm leading-tight text-white bg-black bg-opacity-40 rounded-lg shadow-lg animate-none">
@@ -63,17 +73,10 @@
                     <div @click="open = !open" class="relative w-12 h-12 cursor-pointer flex justify-center items-center" :class="{'transform transition duration-300 ': open}" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100">
                         <!-- icon -->
                         <div class="w-8 h-8 rounded-full overflow-hidden border-2 border-gray-900">
-                            <img src="https://images.unsplash.com/photo-1610397095767-84a5b4736cbd?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80"
-                                alt="" class="w-8 h-8 object-cover">
+                            <img src="{{asset('images/'.$user_info->icon)}}" alt="icon" class="w-8 h-8 object-cover">
                         </div>
                         <!-- pannel -->
-                        <div x-show="open" x-transition:enter="transition ease-out duration-100"
-                            x-transition:enter-start="transform opacity-0 scale-95"
-                            x-transition:enter-end="transform opacity-100 scale-100"
-                            x-transition:leave="transition ease-in duration-75"
-                            x-transition:leave-start="transform opacity-100 scale-100"
-                            x-transition:leave-end="transform opacity-0 scale-95"
-                            class="absolute right-0 top-full w-48 py-3 bg-white rounded-lg shadow border mt-5">
+                        <div x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="absolute right-0 top-full w-48 py-3 bg-white rounded-lg shadow border mt-5">
                             <ul>
                                 <li class="px-5 py-3 font-medium hover:bg-gray-100">
                                     <a href="#" class="flex items-center transform transition-colors duration-200">
