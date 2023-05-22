@@ -100,7 +100,35 @@ class RequestController extends Controller
      */
     public function edit($id)
     {
-        //
+        $event_request_type_id = ModelsRequest::EVENT_REQUEST_TYPE_ID;
+        $product_request_type_id = ModelsRequest::PRODUCT_REQUEST_TYPE_ID;
+        $event_tags = Tag::where('request_type_id', $event_request_type_id)->get()->map(function($tag){
+            $tag->checked = false;
+            return $tag;
+        });
+        $product_tags = Tag::where('request_type_id', $product_request_type_id)->get()->map(function($tag){
+            $tag->checked = false;
+            return $tag;
+        });
+        $request=ModelsRequest::with(['requestTags.tag'])->find($id);
+        if($request->type_id===$event_request_type_id){
+            $request->requestTags->map(function($request_tag) use($event_tags){
+                $event_tags->map(function($event_tag) use($request_tag){
+                    if($event_tag->id===$request_tag->tag_id){
+                        $event_tag->checked = true;
+                    }
+                });
+            });
+        }else{
+            $request->requestTags->map(function($request_tag) use($product_tags){
+                $product_tags->map(function($product_tag) use($request_tag){
+                    if($product_tag->id===$request_tag->tag_id){
+                        $product_tag->checked = true;
+                    }
+                });
+            });
+        }
+        return view('backend_test.edit_request',compact('request','event_tags','product_tags','event_request_type_id','product_request_type_id'));
     }
 
     /**
@@ -112,7 +140,32 @@ class RequestController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //request_tagテーブルのレコードを削除
+        RequestTag::where('request_id', $id)->delete();
+        //requestテーブルのレコードを更新
+        $request_instance = ModelsRequest::find($id);
+        $request_instance->title = $request->title;
+        $request_instance->description = $request->description;
+        $request_instance->type_id = $request->type_id;
+        $request_instance->user_id = Auth::id();
+        $request_instance->save();
+        //request_tagテーブルのレコードを追加
+        if($request->type_id===ModelsRequest::EVENT_REQUEST_TYPE_ID){
+            foreach($request->event_tags as $tag_id){
+                RequestTag::create([
+                    'request_id' => $request_instance->id,
+                    'tag_id' => $tag_id
+                ]);
+            }
+        }else{
+            foreach($request->product_tags as $tag_id){
+                RequestTag::create([
+                    'request_id' => $request_instance->id,
+                    'tag_id' => $tag_id
+                ]);
+            }
+        }
+        return redirect()->back();
     }
 
     /**
