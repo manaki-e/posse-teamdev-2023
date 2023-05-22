@@ -9,6 +9,10 @@ class RequestTag extends Model
 {
     use HasFactory;
     protected $table = 'request_tag';
+    protected $fillable = [
+        'request_id',
+        'tag_id',
+    ];
     public function request()
     {
         return $this->belongsTo(Request::class);

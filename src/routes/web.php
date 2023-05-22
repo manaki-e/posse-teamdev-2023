@@ -9,6 +9,7 @@ use App\Http\Controllers\User\EventController;
 use App\Http\Controllers\User\ItemController;
 use App\Http\Controllers\User\MyPageController;
 use App\Http\Controllers\User\PointExchangeController;
+use App\Http\Controllers\User\RequestController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,6 +42,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/items/{item}/return', [ItemController::class, 'return'])->name('items.return');
     Route::post('/items/{item}/receive', [ItemController::class, 'receive'])->name('items.receive');
     Route::resource('/point-exchange', PointExchangeController::class);
+
+    Route::resource('/requests',RequestController::class);
 
     Route::put('/point-exchanges/{id}', [PointExchangeController::class, 'updateApproved'])->name('point-exchanges.update-approved');
 
