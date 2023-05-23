@@ -67,6 +67,7 @@ class ItemController extends Controller
         $product_instance->user_id = Auth::id();
         $product_instance->description = $request->description;
         $product_instance->request_id = $request->request_id;
+        $product_instance->condition = $request->condition;
         $product_instance->save();
         $product_instance->addProductImages($images, $product_instance->id);
         $product_instance->updateProductTags($request->product_tags, $product_instance->id);

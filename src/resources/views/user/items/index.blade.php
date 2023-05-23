@@ -3,8 +3,9 @@
         <x-user-header textColor="text-blue-400" bgColor="bg-blue-400">
             <x-slot:app_name>Peer Product Share</x-slot:app_name>
             <x-slot:button_text>アイテム登録</x-slot:button_text>
-            <x-slot:earned_point>580</x-slot:earned_point>
-            <x-slot:distribution_point>5000</x-slot:distribution_point>
+            <x-slot:button_link>{{ route('items.create') }}</x-slot:button_link>
+            <x-slot:earned_point>{{Auth::user()->earned_point}}</x-slot:earned_point>
+            <x-slot:distribution_point>{{Auth::user()->distribution_point}}</x-slot:distribution_point>
         </x-user-header>
     </x-slot>
     <x-slot name="body_slot">
