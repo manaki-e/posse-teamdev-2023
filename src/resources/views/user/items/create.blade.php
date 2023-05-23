@@ -9,7 +9,7 @@
     <x-slot name="body_slot">
         <x-user-side-navi>
             <div class="w-full mx-auto">
-                <x-user-form method="POST" action="{{ route('items.store') }}">
+                <x-user-form method="POST" action="{{ route('items.store') }}" enctype="multipart/form-data">
                     <x-slot name="title">アイテムの出品</x-slot>
                     <section class="text-left w-full flex gap-8">
                         <div class="w-1/2">
@@ -32,8 +32,8 @@
                                             または ファイルをドロップ</div>
                                         <p class="text-sm text-gray-500">SVG, PNG, JPG or GIF (max. 800x400px)</p>
                                     </div>
-                                    <input id="file" type="file" name="product_images[]" class="sr-only" multiple required
-                                        onchange="preview(this)" />
+                                    <input id="file" type="file" name="product_images[]" class="sr-only" multiple
+                                        required onchange="preview(this)" />
                                     <div class="preview-area "></div>
                                 </label>
                             </div>
@@ -45,7 +45,8 @@
                                     @foreach ($product_tags as $index => $tag)
                                     <div class="min-w-max m-1 border rounded border-gray-200">
                                         <div class="flex items-center px-3">
-                                            <input id="tag_{{ $index }}" type="checkbox" value="{{ $tag->id }}" name="product_tags[]"
+                                            <input id="tag_{{ $index }}" type="checkbox" value="{{ $tag->id }}"
+                                                name="product_tags[]"
                                                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
                                             <label for="tag_{{ $index }}"
                                                 class="w-auto py-3 pl-1 text-sm font-medium text-gray-900">{{ $tag->name }}</label>
@@ -59,7 +60,7 @@
                                     <select name="condition" id="example1"
                                         class="p-1 block w-full rounded-md border-gray-300 shadow-sm text-lg text-gray-500"
                                         required>
-                                        <option >選択してください</option>
+                                        <option>選択してください</option>
                                         <option value="1">新品・未使用</option>
                                         <option value="2">未使用に近い</option>
                                         <option value="3">目立った傷や汚れなし</option>
@@ -76,8 +77,8 @@
                             <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">アイテム名<span
                                     class="text-red-600">*</span></h4>
                             <div class="mx-auto">
-                                <input name="title" type="text" class="p-1 block w-full rounded-md border border-gray-300"
-                                    required />
+                                <input name="title" type="text"
+                                    class="p-1 block w-full rounded-md border border-gray-300" required />
                             </div>
                             <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">アイテムの説明</h4>
                             <div class="mx-auto">
