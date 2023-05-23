@@ -8,21 +8,31 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Request extends Model
 {
-    use HasFactory;
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
     const PRODUCT_REQUEST_TYPE_ID = 1;
     const EVENT_REQUEST_TYPE_ID = 2;
+    public static function booted()
+    {
+        static::deleted(function ($request) {
+            $request->requestLikes()->delete();
+            $request->requestTags()->delete();
+        });
+    }
     public static function getRequestIds()
     {
         return self::pluck('id')->toArray();
+    }
+    public function event()
+    {
+        return $this->belongsTo(Event::class);
     }
     public function product()
     {
         return $this->belongsTo(Product::class);
     }
-    public function event()
+    public function requestLikes()
     {
-        return $this->belongsTo(Event::class);
+        return $this->hasMany(RequestLike::class);
     }
     public function getRequestType($id)
     {

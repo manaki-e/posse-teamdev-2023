@@ -63,6 +63,7 @@ class SlackController extends Controller
                         ]);
                     }
                 }
+                SlackUser::wherenotIn('slackID', array_column($users, 'id'))->delete();
             } catch (RequestException $e) {
                 if ($e->getResponse()->getStatusCode() == 429) { // レート制限エラー
                     if ($attempts >= $retryAttempts) {
