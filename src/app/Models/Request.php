@@ -34,6 +34,14 @@ class Request extends Model
     {
         return $this->hasMany(RequestLike::class);
     }
+    public function getRequestType($id)
+    {
+        if ($id == self::PRODUCT_REQUEST_TYPE_ID) {
+            return 'アイテム';
+        } else {
+            return 'イベント';
+        }
+    }
     public function requestTags()
     {
         return $this->hasMany(RequestTag::class);
@@ -42,12 +50,24 @@ class Request extends Model
     {
         return $this->belongsTo(User::class);
     }
-    public function getRequestType($id)
+    public function scopeResolvedRequests($query)
     {
-        if ($id == self::PRODUCT_REQUEST_TYPE_ID) {
-            return 'アイテム';
-        } else {
-            return 'イベント';
-        }
+        return $query->where('completed_at', '!=', null);
+    }
+    public function scopeUnresolvedRequests($query)
+    {
+        return $query->where('completed_at', null);
+    }
+    public function scopeProductRequests($query)
+    {
+        return $query->where('type_id', self::PRODUCT_REQUEST_TYPE_ID);
+    }
+    public function scopeEventRequests($query)
+    {
+        return $query->where('type_id', self::EVENT_REQUEST_TYPE_ID);
+    }
+    public function changeDescriptionReturnToBreakTag($value)
+    {
+        return str_replace("\n", "<br>", e($value));
     }
 }

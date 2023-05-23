@@ -9,6 +9,7 @@ use App\Http\Controllers\User\EventController;
 use App\Http\Controllers\User\ItemController;
 use App\Http\Controllers\User\MyPageController;
 use App\Http\Controllers\User\PointExchangeController;
+use App\Http\Controllers\User\RequestController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -40,7 +41,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/items/{item}/cancel', [ItemController::class, 'cancel'])->name('items.cancel');
     Route::post('/items/{item}/return', [ItemController::class, 'return'])->name('items.return');
     Route::post('/items/{item}/receive', [ItemController::class, 'receive'])->name('items.receive');
+    Route::get('/items/create/{chosen_request_id}', [ItemController::class, 'createWithRequest'])->name('items.create-with-request');
     Route::resource('/point-exchange', PointExchangeController::class);
+
+    Route::resource('/requests',RequestController::class);
 
     Route::put('/point-exchanges/{id}', [PointExchangeController::class, 'updateApproved'])->name('point-exchanges.update-approved');
 
@@ -48,6 +52,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/events/{event}/held', [EventController::class, 'held'])->name('events.held');
     Route::post('/events/{event}/participate', [EventController::class, 'participate'])->name('events.participate');
     Route::post('/events/{event}/cancel', [EventController::class, 'cancel'])->name('events.cancel');
+    Route::get('/events/create/{chosen_request_id}', [EventController::class, 'createWithRequest'])->name('events.create-with-request');
 
     Route::group(['prefix' => 'mypage', 'as' => 'mypage.'], function () {
         Route::get('/items', [MyPageController::class, 'items'])->name('items');

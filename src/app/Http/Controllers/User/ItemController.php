@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\ProductTag;
+use App\Models\Request as ModelsRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Tag;
@@ -37,7 +38,8 @@ class ItemController extends Controller
     public function create()
     {
         $product_tags = Tag::productTags()->get();
-        return view('backend_test.items', compact('product_tags'));
+        $requests = ModelsRequest::unresolvedRequests()->productRequests()->get();
+        return view('user.items.create', compact('product_tags', 'requests'));
     }
 
     /**
@@ -187,5 +189,11 @@ class ItemController extends Controller
         $product_instance->changeStatusToOccupied();
         //処理が終わった後redirect back
         return redirect()->back();
+    }
+    public function createWithRequest($chosen_request_id)
+    {
+        $product_tags = Tag::productTags()->get();
+        $requests = ModelsRequest::unresolvedRequests()->productRequests()->get();
+        return view('user.items.create', compact('chosen_request_id', 'product_tags', 'requests'));
     }
 }
