@@ -27,6 +27,11 @@ $user_info = Auth::user();
             </a>
         </div>
         <div class="flex">
+            @if(Auth::user()->is_admin == 1)
+            <a href="{{ route('admin.items.index') }}" class="rounded-lg w-40 mx-3 my-1 px-7 py-2 shadow-md text-center text-sm admin-text-green border admin-border-green transition-all hover:shadow-lg hover:opacity-75 ">
+                管理者画面へ
+            </a>
+            @endif
             <a href="#" {{ $button_text ?? 'hidden' }} {{ $attributes->merge(['class' => 'rounded-lg w-40 mx-3 my-1 px-7 py-2 shadow-md text-center text-sm text-white transition-all hover:shadow-lg hover:opacity-75 '.$bgColor]) }}>
                 {{ $button_text ?? '' }}
             </a>
