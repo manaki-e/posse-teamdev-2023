@@ -150,7 +150,7 @@ class ItemController extends Controller
         // productのステータス変更
         $product_instance->changeStatusToDelivering();
         // 処理が終わった後redirect back
-        return redirect()->back()->with(['flush.message' => 'レンタルが完了しました。以後、アイテムのオーナーとslackで連絡をお取りください。', 'flush.alert_type' => 'success']);
+        return redirect()->route('items.index')->with(['flush.message' => 'レンタルが完了しました。以後、アイテムのオーナーとslackで連絡をお取りください。', 'flush.alert_type' => 'success']);
     }
     public function return($item)
     {
