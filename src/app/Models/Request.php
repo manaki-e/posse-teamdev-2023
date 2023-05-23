@@ -34,4 +34,12 @@ class Request extends Model
     {
         return $this->hasMany(RequestTag::class);
     }
+    public function scopeResolvedRequests()
+    {
+        return $this->where('completed_at', '!=', null);
+    }
+    public function scopeUnresolvedRequests()
+    {
+        return $this->where('completed_at', null);
+    }
 }

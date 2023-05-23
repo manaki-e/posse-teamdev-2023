@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\PointExchangeLog;
 use App\Models\Product;
 use App\Models\ProductDealLog;
+use App\Models\Request;
 
 //#82-主催したイベント情報
 class MyPageController extends Controller
@@ -194,5 +195,43 @@ class MyPageController extends Controller
             ->get();
 
         return view('user.mypage.items-listed', compact('lendable_products', 'borrowed_products', 'applying_products'));
+    }
+
+    public function requestsPosted()
+    {
+        $user = Auth::user();
+        $resolved_requests = Request::where('user_id', $user->id)
+            ->resolvedRequests()
+            // ->with('requestLikes')
+            ->with('requestTags.tag')
+            ->get()
+            ->each(function ($request) {
+                $request->type = $request->getRequestType($request->type_id);
+            });
+
+        $unresolved_requests = Request::where('user_id', $user->id)
+            ->unresolvedRequests()
+            // ->with('requestLikes')
+            ->with('requestTags.tag')
+            ->get()
+            ->each(function ($request) {
+                $request->type = $request->getRequestType($request->type_id);
+            });
+
+        return view('user.mypage.requests-posted', compact('resolved_requests', 'unresolved_requests'));
+    }
+
+    public function requestsLiked()
+    {
+        $user = Auth::user();
+        // $liked_requests = Request::where('user_id', $user->id)
+        //     ->unresolvedRequests()
+        //     // ->with('requestLikes')
+        //     ->with('requestTags.tag')
+        //     ->get()
+        //     ->each(function ($request) {
+        //         $request->type = $request->getRequestType($request->type_id);
+        //     });
+        return view('user.mypage.requests-liked', compact('liked_requests'));
     }
 }

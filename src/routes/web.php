@@ -59,6 +59,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/events/organized', [MyPageController::class, 'eventsOrganized'])->name('events.organized');
         Route::get('/events/joined', [MyPageController::class, 'eventsJoined'])->name('events.joined');
         Route::get('/items/listed', [MyPageController::class, 'itemsListed'])->name('items.listed');
+        Route::get('/requests/posted', [MyPageController::class, 'requestsPosted'])->name('requests.posted');
+        Route::get('/requests/liked', [MyPageController::class, 'requestsLiked'])->name('requests.liked');
     });
 
     Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'check.admin'], function () {

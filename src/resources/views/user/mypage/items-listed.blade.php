@@ -29,7 +29,7 @@
                     <ul class="border-b border-gray-300">
                         @foreach ($lendable_products as $product)
                         <li>
-                            <x-mypage-list>
+                            <x-mypage-item-list>
                                 <x-slot:image_url>{{ $product -> productImages[0] -> image_url }}</x-slot:image_url>
                                 <x-slot:title>{{ $product -> title }}</x-slot:title>
                                 <x-slot:point>{{ empty( $product -> point ) ? '未設定' : $product->point .' pt'}}</x-slot:point>
@@ -51,7 +51,7 @@
                                         </x-slot>
                                     </x-mypage-button-delete>
                                 </x-slot:button>
-                            </x-mypage-list>
+                            </x-mypage-item-list>
                         </li>
                         @endforeach
                     </ul>
@@ -61,7 +61,7 @@
                         <li>
                             @foreach ($borrowed_products as $product)
                         <li>
-                            <x-mypage-list>
+                            <x-mypage-item-list>
                                 <x-slot:image_url>{{ $product -> productImages[0] -> image_url }}</x-slot:image_url>
                                 <x-slot:title>{{ $product -> title }}</x-slot:title>
                                 <x-slot:point>{{ empty( $product -> point ) ? '未設定' : $product->point .' pt'}}</x-slot:point>
@@ -103,7 +103,7 @@
                                     </x-mypage-button-status>
                                     @endif
                                 </x-slot:button>
-                            </x-mypage-list>
+                            </x-mypage-item-list>
                         </li>
                         @endforeach
                         </li>
@@ -114,7 +114,7 @@
                         <li>
                             @foreach ($applying_products as $product)
                         <li>
-                            <x-mypage-list>
+                            <x-mypage-item-list>
                                 <x-slot:image_url>{{ $product -> productImages[0] -> image_url }}</x-slot:image_url>
                                 <x-slot:title>{{ $product -> title }}</x-slot:title>
                                 <x-slot:point>{{ empty( $product -> point ) ? 'ポイント未設定' : $product->point .' pt'}}</x-slot:point>
@@ -136,7 +136,7 @@
                                         </x-slot>
                                     </x-mypage-button-delete>
                                 </x-slot:button>
-                            </x-mypage-list>
+                            </x-mypage-item-list>
                         </li>
                         @endforeach
                         </li>

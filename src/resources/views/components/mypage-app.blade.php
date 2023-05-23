@@ -8,8 +8,8 @@
     </x-slot>
     <x-slot name="body_slot">
         <x-user-side-navi>
-            <div class="container flex mx-auto gap-4 font-patua">
-                <div class="bg-white shadow rounded-lg md:p-6 w-1/4">
+            <div class="container flex items-start mx-auto gap-4 font-patua">
+                <aside class="bg-white shadow rounded-lg md:p-6 w-1/4">
                     <nav>
                         <ul class="mb-3 border-b border-gray-300">
                             <li class="border-slate-100 text-peer-perk rounded-t-1 group relative flex w-full items-center border-b border-solid pb-3 text-left font-semibold text-dark-500 transition-all ease-in">
@@ -86,7 +86,7 @@
                                 <span>Peer Request</span>
                             </li>
                             <li>
-                                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                                <x-nav-link :href="route('mypage.requests.posted')" :active="request()->routeIs('mypage.requests.posted')">
                                     {{ __('投稿したリクエスト') }}
                                 </x-nav-link>
                             </li>
@@ -97,7 +97,7 @@
                             </li>
                         </ul>
                     </nav>
-                </div>
+                </aside>
                 <div class="bg-white shadow rounded-lg md:p-6 w-3/4">
                     <x-mypage-title>{{ $title }}</x-mypage-title>
                     {{ $slot }}
