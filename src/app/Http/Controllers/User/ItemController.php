@@ -48,9 +48,10 @@ class ItemController extends Controller
      */
     public function create()
     {
+        $conditions = Product::CONDITION;
         $product_tags = Tag::productTags()->get();
         $requests = ModelsRequest::unresolvedRequests()->productRequests()->get();
-        return view('user.items.create', compact('product_tags', 'requests'));
+        return view('user.items.create', compact('product_tags', 'requests', 'conditions'));
     }
 
     /**

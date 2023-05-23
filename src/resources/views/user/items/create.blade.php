@@ -60,13 +60,9 @@
                                     <select name="condition" id="example1"
                                         class="p-1 block w-full rounded-md border-gray-300 shadow-sm text-lg text-gray-500"
                                         required>
-                                        <option>選択してください</option>
-                                        <option value="1">新品・未使用</option>
-                                        <option value="2">未使用に近い</option>
-                                        <option value="3">目立った傷や汚れなし</option>
-                                        <option value="4">やや傷や汚れあり</option>
-                                        <option value="5">傷や汚れあり</option>
-                                        <option value="6">全体的に状態が悪い</option>
+                                        @foreach($conditions as $key => $condition)
+                                        <option value="{{ $key }}">{{ $condition }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </section>
