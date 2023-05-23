@@ -50,20 +50,20 @@ class Request extends Model
     {
         return $this->belongsTo(User::class);
     }
-    public function scopeResolvedRequests()
+    public function scopeResolvedRequests($query)
     {
-        return $this->where('completed_at', '!=', null);
+        return $query->where('completed_at', '!=', null);
     }
-    public function scopeUnresolvedRequests()
+    public function scopeUnresolvedRequests($query)
     {
-        return $this->where('completed_at', null);
+        return $query->where('completed_at', null);
     }
-    public function scopeProductRequests()
+    public function scopeProductRequests($query)
     {
-        return $this->where('type_id', self::PRODUCT_REQUEST_TYPE_ID);
+        return $query->where('type_id', self::PRODUCT_REQUEST_TYPE_ID);
     }
-    public function scopeEventRequests()
+    public function scopeEventRequests($query)
     {
-        return $this->where('type_id', self::EVENT_REQUEST_TYPE_ID);
+        return $query->where('type_id', self::EVENT_REQUEST_TYPE_ID);
     }
 }
