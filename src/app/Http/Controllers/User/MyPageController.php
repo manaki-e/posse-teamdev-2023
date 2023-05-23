@@ -5,11 +5,10 @@ namespace App\Http\Controllers\User;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Event;
 use App\Models\EventParticipantLog;
-use App\Models\Event_participants;
 use App\Http\Controllers\Controller;
 use App\Models\PointExchangeLog;
+use App\Models\Product;
 use App\Models\ProductDealLog;
-use Illuminate\Http\Request;
 
 //#82-主催したイベント情報
 class MyPageController extends Controller
@@ -168,5 +167,32 @@ class MyPageController extends Controller
         })->get();
         dd($occupied_products);
         return view('user.mypage.items', compact('available_products', 'occupied_products'));
+    }
+
+    public function itemsListed()
+    {
+        $user = Auth::user();
+        $lendable_products = Product::where('user_id', $user->id)
+            ->availableProducts()
+            ->with('productImages')
+            ->with('productLikes')
+            ->with('productTags.tag')
+            ->get();
+
+        $borrowed_products = Product::where('user_id', $user->id)
+            ->occupiedAndDeliveringProducts()
+            ->with('productImages')
+            ->with('productLikes')
+            ->with('productTags.tag')
+            ->get();
+
+        $applying_products = Product::where('user_id', $user->id)
+            ->pendingProducts()
+            ->with('productImages')
+            ->with('productLikes')
+            ->with('productTags.tag')
+            ->get();
+
+        return view('user.mypage.items-listed', compact('lendable_products', 'borrowed_products', 'applying_products'));
     }
 }

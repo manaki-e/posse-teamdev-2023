@@ -31,13 +31,9 @@ class ResetDistributionPoint extends Command
     public function handle()
     {
         //配布ポイントの設定値を取得
-        $distribution_point_setting = Setting::pluck('monthly_distribution_point')->first();
+        $distribution_point_setting = Setting::value('monthly_distribution_point');
         //全てのユーザーの配布ポイントを設定値に更新
-        User::all()->map(function ($user) use ($distribution_point_setting) {
-            $user->distribution_point = $distribution_point_setting;
-            $user->save();
-            return $user;
-        });
+        User::query()->update(['distribution_point' => $distribution_point_setting]);
         //laravel.logに記録
         Log::info('定期ポイント配布完了');
         return Command::SUCCESS;

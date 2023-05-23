@@ -38,6 +38,14 @@ class Product extends Model
             $product->productDealLogs()->delete();
         });
     }
+    const CONDITION = [
+        1 => '新品・未使用',
+        2 => '未使用に近い',
+        3 => '目立った傷や汚れなし',
+        4 => 'やや傷や汚れあり',
+        5 => '傷や汚れあり',
+        6 => '全体的に状態が悪い'
+    ];
     public function scopeGetProductIds($query)
     {
         return $query->pluck('id')->toArray();
@@ -65,6 +73,10 @@ class Product extends Model
     public function scopeApprovedProducts($query)
     {
         return $query->where('status', '!=', self::STATUS['pending']);
+    }
+    public function scopeOccupiedAndDeliveringProducts($query)
+    {
+        return $query->where('status', self::STATUS['occupied'])->orWhere('status', self::STATUS['delivering']);
     }
     public function scopeBelongsToLoginUser($query)
     {
@@ -161,22 +173,13 @@ class Product extends Model
         //idはテーブルのid,tag_idはタグのid
         return;
     }
-    public function addProductDealLog($product_id, $user_id, $point)
+    public function addProductDealLog($product_id, $user_id, $point, $month_count)
     {
         $product_deal_log_instance = new ProductDealLog();
         $product_deal_log_instance->product_id = $product_id;
         $product_deal_log_instance->user_id = $user_id;
         $product_deal_log_instance->point = $point;
-        //ログインユーザーが前回このproductを借りたときのレコードを取得
-        $user_product_last_product_deal_log = ProductDealLog::where('user_id',$user_id)->where('product_id', $product_id)->latest()->first();
-        if ($user_product_last_product_deal_log && !$user_product_last_product_deal_log->returned_at && !$user_product_last_product_deal_log->canceled_at) {
-            //前回借りたときにcancelしてないかつreturnしてないなら連続借りとして扱う
-            $product_deal_log_instance->start_of_streak_id = $user_product_last_product_deal_log->start_of_streak_id;
-        } else {
-            //連続取引ではない場合はstart_of_streak_idにこのレコードのidを入れる
-            $last_product_deal_log_id = $product_deal_log_instance->latest('id')->value('id');
-            $product_deal_log_instance->start_of_streak_id = $last_product_deal_log_id + 1;
-        }
+        $product_deal_log_instance->month_count = $month_count;
         $product_deal_log_instance->save();
         return;
     }

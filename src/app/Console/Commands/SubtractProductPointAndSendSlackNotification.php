@@ -32,6 +32,7 @@ class SubtractProductPointAndSendSlackNotification extends Command
      */
     public function handle()
     {
+        $unchargeable_month_count = ProductDealLog::UNCHARGEABLE_MONTH_COUNT;
         ProductDealLog::with(['user', 'product'])->get()->groupBy('product_id')->map(function ($product_deal_log_grouped_by_product_id) use ($unchargeable_month_count) {
             //productごとにグループしてその最後のレコードを取得
             $last_of_product_deal_log_grouped_by_product_id = $product_deal_log_grouped_by_product_id->last();
@@ -42,24 +43,19 @@ class SubtractProductPointAndSendSlackNotification extends Command
                 //user_idとproduct_idを元にuserとproductを取得
                 $user = User::find($last_of_product_deal_log_grouped_by_product_id->user_id);
                 $product = Product::find($last_of_product_deal_log_grouped_by_product_id->product_id);
-                //差引不可能なmonth_count以外の場合は引く
                 if ($last_of_product_deal_log_grouped_by_product_id->month_count + 1 != $unchargeable_month_count) {
-                    $user->distribution_point -= $product->point;
-                    $user->save();
+                    //差引不可能なmonth_count以外の場合は引く
+                    $user->changeDistributionPoint(-$product->point);
+                    // 貸した人はポイント増える
+                    $product->user->changeEarnedPoint($product->point);
                 }
                 //product_deal_log新しく作る
-                $product_deal_log = new ProductDealLog();
-                $product_deal_log->user_id = $user->id;
-                $product_deal_log->product_id = $product->id;
-                //1をいれるときpointカラムには0いれる＝＞まなきの承認あり
-                $month_count = $last_of_product_deal_log_grouped_by_product_id->month_count + 1;
-                if ($month_count === $unchargeable_month_count) {
-                    $product_deal_log->point = 0;
+                //month_countにunchargeable_month_countをいれるときpointカラムには0いれる
+                if ($last_of_product_deal_log_grouped_by_product_id->month_count + 1 === $unchargeable_month_count) {
+                    $product->addProductDealLog($product->id, $user->id, 0, $last_of_product_deal_log_grouped_by_product_id->month_count + 1);
                 } else {
-                    $product_deal_log->point = $product->point;
+                    $product->addProductDealLog($product->id, $user->id, $product->point, $last_of_product_deal_log_grouped_by_product_id->month_count + 1);
                 }
-                $product_deal_log->month_count = $month_count;
-                $product_deal_log->save();
                 //！！！ここにまなきがslack通知の処理を書く！！！
                 return;
             }
