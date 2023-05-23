@@ -39,7 +39,7 @@ class EventController extends Controller
     public function create()
     {
         //未完了のリクエストを取得
-        $requests = ModelsRequest::where('completed_at', '!=', null)->get();
+        $requests = ModelsRequest::unresolvedRequests()->eventRequests()->get();
         //イベントタグ一覧を取得
         $tags = Tag::eventTags()->get();
         return view('backend_test.add_event', compact('requests', 'tags'));
@@ -212,5 +212,13 @@ class EventController extends Controller
         $event_participant_log->save();
         // 処理後redirect back
         return redirect()->back();
+    }
+    public function createWithRequest($chosen_request_id)
+    {
+        //未完了のリクエストを取得
+        $requests = ModelsRequest::unresolvedRequests()->eventRequests()->get();
+        //イベントタグ一覧を取得
+        $tags = Tag::eventTags()->get();
+        return view('user.events.create', compact('requests', 'tags', 'chosen_request_id'));
     }
 }

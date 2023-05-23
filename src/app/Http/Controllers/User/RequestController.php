@@ -28,7 +28,7 @@ class RequestController extends Controller
         $product_tags = Tag::where('request_type_id', $product_request_type_id)->get();
         $event_tags = Tag::where('request_type_id', $event_request_type_id)->get();
         $requests = ModelsRequest::with(['user', 'requestTags.tag'])->orderBy('created_at','desc')->get();
-        return view('user.requests.index', compact('requests', 'product_tags', 'event_tags', 'app'));
+        return view('user.requests.index', compact('requests', 'product_tags', 'event_tags', 'app', 'event_request_type_id', 'product_request_type_id'));
     }
 
     /**

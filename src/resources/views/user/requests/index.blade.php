@@ -192,15 +192,17 @@
                                                             </div>
                                                         </div>
                                                         <div class="mt-6">
-                                                            <a href="#">
+                                                            <a @if($request->type_id===$product_request_type_id)
+                                                                href="{{ route('items.create-with-request',$request->id) }}"
+                                                                @else
+                                                                href="{{ route('events.create-with-request',$request->id) }}"
+                                                                @endif>
                                                                 <x-user-register-button textColor="text-white"
                                                                     bgColor="bg-peer-request"
                                                                     borderColor="border-peer-request">
-                                                                    <a href="{{route('requests.create')}}">
-                                                                        <x-slot name="button">
-                                                                            次へ
-                                                                        </x-slot>
-                                                                    </a>
+                                                                    <x-slot name="button">
+                                                                        次へ
+                                                                    </x-slot>
                                                                 </x-user-register-button>
                                                             </a>
                                                         </div>
