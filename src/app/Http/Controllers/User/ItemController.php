@@ -26,7 +26,7 @@ class ItemController extends Controller
             $product->japanese_status = $japanese_product_statuses[$product->status];
             return $product;
         });
-        return view('backend_test.items', compact('products', 'japanese_product_statuses', 'product_tags'));
+        return view('user.items.index', compact('products', 'japanese_product_statuses', 'product_tags'));
     }
 
     /**
