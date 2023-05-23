@@ -5,11 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\EventParticipantLog;
+use App\Models\EventTag;
+use App\Models\EventLike;
+use App\Models\User;
 
 class Event extends Model
 {
-    use HasFactory;
-    use softDeletes;
+    use HasFactory, softDeletes;
     protected $dates = ['created_at', 'updated_at', 'date', 'deleted_at', 'completed_at'];
     public static function booted()
     {

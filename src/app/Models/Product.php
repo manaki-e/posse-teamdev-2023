@@ -7,6 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\File;
+use App\Models\ProductDealLog;
+use App\Models\User;
+use App\Models\ProductImage;
+use App\Models\Request;
+use App\Models\ProductTag;
+use App\Models\ProductLike;
 
 class Product extends Model
 {

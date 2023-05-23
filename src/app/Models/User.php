@@ -7,10 +7,20 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Event;
+use App\Models\EventLike;
+use App\Models\EventParticipantLog;
+use App\Models\ProductDealLog;
+use App\Models\PointExchangeLog;
+use App\Models\Product;
+use App\Models\ProductLike;
+use App\Models\Request;
+use App\Models\RequestLike;
+use App\Models\Department;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
     public $timestamps = true;
     /**
      * The attributes that are mass assignable.
@@ -44,8 +54,8 @@ class User extends Authenticatable
     public static function booted()
     {
         static::deleted(function ($user) {
-            $user->events()->delete();
             $user->eventLikes()->delete();
+            $user->events()->delete();
             $user->eventParticipantLogs()->delete();
             $user->productDealLogs()->delete();
             $user->pointExchangeLogs()->delete();
