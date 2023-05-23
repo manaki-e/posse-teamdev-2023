@@ -1,3 +1,13 @@
+<?php
+
+namespace App\Http\Controllers\User;
+
+use Illuminate\Support\Facades\Auth;
+
+//userのログイン情報を$user_infoに格納
+$user_info = Auth::user();
+
+?>
 <!--
     引数は色、アプリ名、ボタン名、各ポイント、ユーザーのアイコン、アカウントページ、マイページへのリンク
     textColorとbgColorには以下の色を指定する
@@ -44,7 +54,7 @@
                             stroke="black" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
 
-                    <p class="text-black">{{ $earned_point }} pt</p>
+                    <p class="text-black">{{ $user_info->earned_point }} pt</p>
                 </div>
                 <hr class="border-black">
                 <div class="flex justify-between items-center">
@@ -56,7 +66,7 @@
                             d="M7.99935 7.9987C8.35297 7.9987 8.69211 8.13917 8.94216 8.38922C9.19221 8.63927 9.33268 8.97841 9.33268 9.33203C9.33268 9.68565 9.19221 10.0248 8.94216 10.2748C8.69211 10.5249 8.35297 10.6654 7.99935 10.6654H6.66602V5.33203H7.99935C8.35297 5.33203 8.69211 5.47251 8.94216 5.72256C9.19221 5.9726 9.33268 6.31174 9.33268 6.66536C9.33268 7.01899 9.19221 7.35812 8.94216 7.60817C8.69211 7.85822 8.35297 7.9987 7.99935 7.9987ZM7.99935 7.9987H6.66602"
                             stroke="black" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
-                    <p class="text-black">{{ $distribution_point }} pt</p>
+                    <p class="text-black">{{ $user_info->distribution_point }} pt</p>
                 </div>
 
                 <div x-cloak x-show.transition.origin.top="tooltip"
