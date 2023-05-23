@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('slackID');
             $table->string('department_name');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

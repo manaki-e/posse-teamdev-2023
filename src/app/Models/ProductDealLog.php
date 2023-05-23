@@ -5,11 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Product;
+use App\Models\User;
 
 class ProductDealLog extends Model
 {
-    use HasFactory;
-    use softDeletes;
+    use HasFactory, SoftDeletes;
     protected $dates = ['created_at', 'updated_at', 'returned_at', 'deleted_at'];
     const UNCHARGEABLE_MONTH_COUNT = 1;
     public function product()

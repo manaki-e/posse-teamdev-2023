@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\User;
 
 class PointExchangeLog extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     const MULTIPLE_OF = 500;
     const STATUS = [
         'PENDING' => 1,
