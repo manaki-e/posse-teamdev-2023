@@ -81,7 +81,7 @@ $user_info = Auth::user();
                             <img src="{{asset('images/'.$user_info->icon)}}" alt="icon" class="w-8 h-8 object-cover">
                         </div>
                         <!-- pannel -->
-                        <div x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="absolute right-0 top-full w-48 py-3 bg-white rounded-lg shadow border mt-5">
+                        <div x-cloak x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="absolute right-0 top-full w-48 bg-white rounded-lg shadow border mt-5">
                             <ul>
                                 <li class="px-5 py-3 font-medium hover:bg-gray-100">
                                     <a href="#" class="flex items-center transform transition-colors duration-200">
@@ -108,15 +108,19 @@ $user_info = Auth::user();
                                 </li>
                                 <hr>
                                 <li class="px-5 py-3 font-medium hover:bg-gray-100">
-                                    <a href="#" class="flex items-center transform transition-colors duration-200">
-                                        <div class="mr-3 text-red-600">
-                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
-                                                </path>
-                                            </svg>
+                                    <form method="POST" action="{{ route('logout') }}">
+                                        @csrf
+                                        <div class="flex items-center transform transition-colors duration-200" onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+                                            <div class="mr-3 text-red-600">
+                                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
+                                                    </path>
+                                                </svg>
+                                            </div>
+                                            ログアウト
                                         </div>
-                                        ログアウト
-                                    </a>
+                                    </form>
                                 </li>
                             </ul>
                         </div>
