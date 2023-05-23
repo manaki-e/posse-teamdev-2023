@@ -7,11 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\File;
+use App\Models\ProductDealLog;
+use App\Models\User;
+use App\Models\ProductImage;
+use App\Models\Request;
+use App\Models\ProductTag;
+use App\Models\ProductLike;
 
 class Product extends Model
 {
-    use HasFactory;
-    use softDeletes;
+    use HasFactory, softDeletes;
     const STATUS = [
         'pending' => 1,
         'available' => 2,
@@ -24,6 +29,15 @@ class Product extends Model
         3 => '貸出中',
         4 => '配送中'
     ];
+    public static function booted()
+    {
+        static::deleted(function ($product) {
+            $product->productImages()->delete();
+            $product->productTags()->delete();
+            $product->productLikes()->delete();
+            $product->productDealLogs()->delete();
+        });
+    }
     const CONDITION = [
         1 => '新品・未使用',
         2 => '未使用に近い',

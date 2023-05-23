@@ -33,6 +33,7 @@ class TagSeeder extends Seeder
             ['request_type_id' => '1', 'name' => 'ノートPC'],
             ['request_type_id' => '1', 'name' => 'タブレット'],
             ['request_type_id' => '1', 'name' => 'スマートフォン'],
+            ['request_type_id' => '2', 'name' => '勉強会'],
             ['request_type_id' => '2', 'name' => 'PHP'],
             ['request_type_id' => '2', 'name' => 'MySQL'],
             ['request_type_id' => '2', 'name' => 'Laravel'],
