@@ -50,10 +50,6 @@ class Request extends Model
             return 'イベント';
         }
     }
-    public function requestTags()
-    {
-        return $this->hasMany(RequestTag::class);
-    }
     public function scopeResolvedRequests()
     {
         return $this->where('completed_at', '!=', null);
