@@ -69,8 +69,6 @@ class ItemController extends Controller
     public function show($id)
     {
         $product = Product::withRelations()->findOrFail($id);
-        //Productモデルからuser_idを取得して、そのユーザーのemailを取得
-        $product->email = User::findOrFail($product->user_id)->email;
         $product->japanese_status = Product::JAPANESE_STATUS[$product->status];
         $product->description = $product->changeDescriptionReturnToBreakTag($product->description);
         // このproduct_idをもつproduct_deal_logの最後のレコードのuser_idがログインユーザーの場合表示
@@ -152,7 +150,7 @@ class ItemController extends Controller
         // productのステータス変更
         $product_instance->changeStatusToDelivering();
         // 処理が終わった後redirect back
-        return redirect()->back();
+        return redirect()->back()->with(['flush.message' => 'レンタルが完了しました。以後、アイテムのオーナーとslackで連絡をお取りください。', 'flush.alert_type' => 'success']);
     }
     public function return($item)
     {
