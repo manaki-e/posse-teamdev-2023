@@ -196,7 +196,11 @@
                                                                 <x-user-register-button textColor="text-white"
                                                                     bgColor="bg-peer-request"
                                                                     borderColor="border-peer-request">
-                                                                    <x-slot name="button">次へ</x-slot>
+                                                                    <a href="{{route('requests.create')}}">
+                                                                        <x-slot name="button">
+                                                                            次へ
+                                                                        </x-slot>
+                                                                    </a>
                                                                 </x-user-register-button>
                                                             </a>
                                                         </div>
