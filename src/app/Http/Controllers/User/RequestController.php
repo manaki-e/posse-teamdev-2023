@@ -78,7 +78,7 @@ class RequestController extends Controller
                 ]);
             }
         }
-        return Redirect::route('requests.create')->with(['flush.message' => 'リクエストを追加しました', 'flush.alert_type' => 'success']);
+        return Redirect::route('requests.index')->with(['flush.message' => 'リクエストを追加しました', 'flush.alert_type' => 'success']);
     }
 
     /**
@@ -152,21 +152,25 @@ class RequestController extends Controller
         $request_instance->save();
         //request_tagテーブルのレコードを追加
         if ($request->type_id === ModelsRequest::EVENT_REQUEST_TYPE_ID) {
-            foreach ($request->event_tags as $tag_id) {
-                RequestTag::create([
-                    'request_id' => $request_instance->id,
-                    'tag_id' => $tag_id
-                ]);
+            if (!empty($request->event_tags)) {
+                foreach ($request->event_tags as $tag_id) {
+                    RequestTag::create([
+                        'request_id' => $request_instance->id,
+                        'tag_id' => $tag_id
+                    ]);
+                }
             }
         } else {
-            foreach ($request->product_tags as $tag_id) {
-                RequestTag::create([
-                    'request_id' => $request_instance->id,
-                    'tag_id' => $tag_id
-                ]);
+            if (!empty($request->product_tags)) {
+                foreach ($request->product_tags as $tag_id) {
+                    RequestTag::create([
+                        'request_id' => $request_instance->id,
+                        'tag_id' => $tag_id
+                    ]);
+                }
             }
         }
-        return redirect()->back();
+        return redirect()->route('requests.edit', $id)->with(['flush.message' => 'リクエストを更新しました', 'flush.alert_type' => 'success']);
     }
 
     /**

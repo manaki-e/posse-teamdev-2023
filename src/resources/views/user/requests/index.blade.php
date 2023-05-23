@@ -1,6 +1,6 @@
 <x-user-app>
     <x-slot name="header_slot">
-        <x-user-header textColor="text-green-400" bgColor="bg-green-400">
+        <x-user-header textColor="text-peer-request" bgColor="bg-peer-request">
             <x-slot:app_name>Peer Request</x-slot:app_name>
             <x-slot:button_text>リクエスト登録</x-slot:button_text>
             <x-slot:button_link>{{ route('requests.create') }}</x-slot:button_link>
@@ -11,7 +11,7 @@
     <x-slot name="body_slot">
         <x-user-side-navi>
             <div class="mx-auto max-w-5xl">
-                <x-user-search-box bgColor="bg-green-400">
+                <x-user-search-box bgColor="bg-peer-request">
                     <section x-data="{ activeTab : 0 }" class="text-gray-600 body-font">
                         <div class="container px-5 mx-auto flex flex-col">
                             <div class="lg:w-4/6 mx-auto">
@@ -85,7 +85,7 @@
                             <div class="rounded-lg text-xs shadow-md p-4 pb-1 text-gray-500 bg-white">
                                 <!-- イベント名 -->
                                 <div class="w-full text-xl text-gray-800 mb-4">
-                                    <p class="font-bold pl-2 border-l-4 border-green-400">{{$request->title}}</p>
+                                    <p class="font-bold pl-2 border-l-4 border-peer-request">{{$request->title}}</p>
                                 </div>
                                 <!-- 概要 -->
                                 <div class="w-full mb-2 text-sm text-gray-800">
@@ -119,8 +119,8 @@
                                 <!-- ボタン・モーダル -->
                                 <div x-data="{ modelOpen: false }">
                                     <div @click="modelOpen =!modelOpen" class="flex items-center justify-center px-3">
-                                        <x-user-register-button textColor="text-green-400" bgColor="bg-white"
-                                            borderColor="border-green-400">
+                                        <x-user-register-button textColor="text-peer-request" bgColor="bg-white"
+                                            borderColor="border-peer-request">
                                             <x-slot name="button">リクエストに応える</x-slot>
                                         </x-user-register-button>
                                     </div>
@@ -149,7 +149,7 @@
                                                 class="inline-block w-full max-w-xl p-8 my-40 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl 2xl:max-w-2xl">
                                                 <div class="flex items-center justify-between space-x-4">
                                                     <h1
-                                                        class="text-xl font-semibold text-gray-800 pl-2 border-l-4 border-green-400">
+                                                        class="text-xl font-semibold text-gray-800 pl-2 border-l-4 border-peer-request">
                                                         リクエストに応える</h1>
                                                     <button @click="modelOpen = false"
                                                         class="text-gray-600 focus:outline-none hover:text-gray-700">
@@ -186,7 +186,8 @@
                                                     <div class="mt-6">
                                                         <a href="#">
                                                             <x-user-register-button textColor="text-white"
-                                                                bgColor="bg-green-400" borderColor="border-green-400">
+                                                                bgColor="bg-peer-request"
+                                                                borderColor="border-peer-request">
                                                                 <x-slot name="button">次へ</x-slot>
                                                             </x-user-register-button>
                                                         </a>
@@ -224,8 +225,3 @@
         </x-user-side-navi>
     </x-slot>
 </x-user-app>
-<style>
-[x-cloak] {
-    display: none;
-}
-</style>

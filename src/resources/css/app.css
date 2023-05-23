@@ -78,3 +78,6 @@
 .border-peer-perk {
     border-color: #079292;
 }
+[x-cloak]{
+    display: none !important;
+}
