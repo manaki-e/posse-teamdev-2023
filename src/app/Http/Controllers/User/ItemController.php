@@ -70,6 +70,7 @@ class ItemController extends Controller
     {
         $product = Product::withRelations()->findOrFail($id);
         $product->japanese_status = Product::JAPANESE_STATUS[$product->status];
+        $product->japanese_condition = Product::CONDITION[$product->condition];
         $product->description = $product->changeDescriptionReturnToBreakTag($product->description);
         // このproduct_idをもつproduct_deal_logの最後のレコードのuser_idがログインユーザーの場合表示
         $last_product_deal_log = $product->productDealLogs->last();
