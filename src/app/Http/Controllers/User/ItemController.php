@@ -22,11 +22,22 @@ class ItemController extends Controller
         $japanese_product_statuses = Product::JAPANESE_STATUS;
         unset($japanese_product_statuses[1]);
         $product_tags = Tag::productTags()->get();
-        $products = Product::approvedProducts()->withRelations()->paginate(8)->map(function ($product) use ($japanese_product_statuses) {
+        $paginator = Product::approvedProducts()->withRelations()->paginate(8);
+
+        $products = $paginator->getCollection()->map(function ($product) use ($japanese_product_statuses) {
             $product->japanese_status = $japanese_product_statuses[$product->status];
             return $product;
-        });
-        return view('user.items.index', compact('products', 'japanese_product_statuses', 'product_tags'));
+        })->sortByDesc('created_at');
+
+        $productsPaginated = new \Illuminate\Pagination\LengthAwarePaginator(
+            $products,
+            $paginator->total(),
+            $paginator->perPage(),
+            $paginator->currentPage(),
+            ['path' => \Illuminate\Pagination\Paginator::resolveCurrentPath()]
+        );
+
+        return view('user.items.index', compact('products', 'japanese_product_statuses', 'product_tags', 'productsPaginated'));
     }
 
     /**
