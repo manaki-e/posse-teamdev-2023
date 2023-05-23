@@ -1,9 +1,3 @@
-<?php
-
-$tags = ['PC', 'マウス', 'ディスプレイ', 'スマホ', 'ヘッドホン', 'タブレット']
-
-?>
-
 <x-user-app>
     <x-slot name="header_slot">
         <x-user-header textColor="text-blue-400" bgColor="bg-blue-400">
@@ -15,7 +9,7 @@ $tags = ['PC', 'マウス', 'ディスプレイ', 'スマホ', 'ヘッドホン'
     <x-slot name="body_slot">
         <x-user-side-navi>
             <div class="w-full mx-auto">
-                <x-user-form method="POST">
+                <x-user-form method="POST" action="{{ route('items.store') }}">
                     <x-slot name="title">アイテムの出品</x-slot>
                     <section class="text-left w-full flex gap-8">
                         <div class="w-1/2">
@@ -38,7 +32,7 @@ $tags = ['PC', 'マウス', 'ディスプレイ', 'スマホ', 'ヘッドホン'
                                             または ファイルをドロップ</div>
                                         <p class="text-sm text-gray-500">SVG, PNG, JPG or GIF (max. 800x400px)</p>
                                     </div>
-                                    <input id="file" type="file" name="file[]" class="sr-only" multiple required
+                                    <input id="file" type="file" name="product_images[]" class="sr-only" multiple required
                                         onchange="preview(this)" />
                                     <div class="preview-area "></div>
                                 </label>
@@ -48,13 +42,13 @@ $tags = ['PC', 'マウス', 'ディスプレイ', 'スマホ', 'ヘッドホン'
                                 </h3>
                                 <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">カテゴリ</h4>
                                 <div class="w-full flex flex-wrap max-w-lg text-sm font-medium text-gray-900 bg-white">
-                                    @foreach ($tags as $index => $tag)
+                                    @foreach ($product_tags as $index => $tag)
                                     <div class="min-w-max m-1 border rounded border-gray-200">
                                         <div class="flex items-center px-3">
-                                            <input id="tag_{{ $index }}" type="checkbox" value=""
+                                            <input id="tag_{{ $index }}" type="checkbox" value="{{ $tag->id }}" name="product_tags[]"
                                                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
                                             <label for="tag_{{ $index }}"
-                                                class="w-auto py-3 pl-1 text-sm font-medium text-gray-900">{{ $tag }}</label>
+                                                class="w-auto py-3 pl-1 text-sm font-medium text-gray-900">{{ $tag->name }}</label>
                                         </div>
                                     </div>
                                     @endforeach
@@ -62,16 +56,16 @@ $tags = ['PC', 'マウス', 'ディスプレイ', 'スマホ', 'ヘッドホン'
                                 <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">アイテムの状態<span
                                         class="text-red-600">*</span></h4>
                                 <div class="mb-4 border border-gray-300 rounded-md">
-                                    <select id="example1"
+                                    <select name="condition" id="example1"
                                         class="p-1 block w-full rounded-md border-gray-300 shadow-sm text-lg text-gray-500"
                                         required>
-                                        <option value="">選択してください</option>
-                                        <option value="">新品・未使用</option>
-                                        <option value="">未使用に近い</option>
-                                        <option value="">目立った傷や汚れなし</option>
-                                        <option value="">やや傷や汚れあり</option>
-                                        <option value="">傷や汚れあり</option>
-                                        <option value="">全体的に状態が悪い</option>
+                                        <option >選択してください</option>
+                                        <option value="1">新品・未使用</option>
+                                        <option value="2">未使用に近い</option>
+                                        <option value="3">目立った傷や汚れなし</option>
+                                        <option value="4">やや傷や汚れあり</option>
+                                        <option value="5">傷や汚れあり</option>
+                                        <option value="6">全体的に状態が悪い</option>
                                     </select>
                                 </div>
                             </section>
@@ -82,17 +76,17 @@ $tags = ['PC', 'マウス', 'ディスプレイ', 'スマホ', 'ヘッドホン'
                             <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">アイテム名<span
                                     class="text-red-600">*</span></h4>
                             <div class="mx-auto">
-                                <input type="text" class="p-1 block w-full rounded-md border border-gray-300"
+                                <input name="title" type="text" class="p-1 block w-full rounded-md border border-gray-300"
                                     required />
                             </div>
                             <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">アイテムの説明</h4>
                             <div class="mx-auto">
-                                <textarea class="p-1 block w-full rounded-md border border-gray-300"
+                                <textarea name="description" class="p-1 block w-full rounded-md border border-gray-300"
                                     rows="3"></textarea>
                             </div>
                             <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">関連するリクエスト</h4>
                             <div class="mb-4 border border-gray-300 rounded-md">
-                                <select id="example1"
+                                <select name="request_id" id="example1"
                                     class="p-1 block w-full rounded-md border-gray-300 shadow-sm text-lg text-gray-500">
                                     <option value="">なし</option>
                                     @foreach($requests as $request)
@@ -120,7 +114,6 @@ $tags = ['PC', 'マウス', 'ディスプレイ', 'スマホ', 'ヘッドホン'
 .preview-area {
     width: 100%;
     height: 100%;
-    /* background-color: brown; */
     position: absolute;
     top: 0;
     left: 0;

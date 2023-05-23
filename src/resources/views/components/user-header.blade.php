@@ -149,17 +149,19 @@ $user_info = Auth::user();
                                 </li>
                                 <hr>
                                 <li class="px-5 py-3 font-medium hover:bg-gray-100">
-                                    <a href="#" class="flex items-center transform transition-colors duration-200">
-                                        <div class="mr-3 text-red-600">
-                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
-                                                </path>
-                                            </svg>
+                                    <form method="POST" action="{{ route('logout') }}">
+                                        @csrf
+                                        <div class="flex items-center transform transition-colors duration-200" onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+                                            <div class="mr-3 text-red-600">
+                                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
+                                                    </path>
+                                                </svg>
+                                            </div>
+                                            ログアウト
                                         </div>
-                                        ログアウト
-                                    </a>
+                                    </form>
                                 </li>
                             </ul>
                         </div>
