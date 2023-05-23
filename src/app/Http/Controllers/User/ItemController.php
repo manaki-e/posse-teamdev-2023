@@ -8,6 +8,7 @@ use App\Models\ProductTag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Tag;
+use App\Models\User;
 
 class ItemController extends Controller
 {
@@ -69,13 +70,14 @@ class ItemController extends Controller
     {
         $product = Product::withRelations()->findOrFail($id);
         $product->japanese_status = Product::JAPANESE_STATUS[$product->status];
+        $product->japanese_condition = Product::CONDITION[$product->condition];
         $product->description = $product->changeDescriptionReturnToBreakTag($product->description);
         // このproduct_idをもつproduct_deal_logの最後のレコードのuser_idがログインユーザーの場合表示
         $last_product_deal_log = $product->productDealLogs->last();
         $login_user_can_borrow_this_product = $product->status === Product::STATUS['available'] && !$product->productBelongsToLoginUser();
         $login_borrower_can_cancel_or_receive_this_product = $product->status === Product::STATUS['delivering'] && $last_product_deal_log->user_id === Auth::id();
         $login_lender_can_return_this_product = $product->status === Product::STATUS['occupied'] && $product->productBelongsToLoginUser();
-        return view('backend_test.item', compact('product', 'login_borrower_can_cancel_or_receive_this_product', 'login_lender_can_return_this_product', 'login_user_can_borrow_this_product'));
+        return view('user.items.detail', compact('product', 'login_borrower_can_cancel_or_receive_this_product', 'login_lender_can_return_this_product', 'login_user_can_borrow_this_product'));
     }
 
     /**
@@ -149,7 +151,7 @@ class ItemController extends Controller
         // productのステータス変更
         $product_instance->changeStatusToDelivering();
         // 処理が終わった後redirect back
-        return redirect()->back();
+        return redirect()->route('items.index')->with(['flush.message' => 'レンタルが完了しました。以後、アイテムのオーナーとslackで連絡をお取りください。', 'flush.alert_type' => 'success']);
     }
     public function return($item)
     {

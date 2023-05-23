@@ -6,7 +6,7 @@
 -->
 
 <div x-data="setup()" @resize.window="watchScreen()">
-    <div class="flex antialiased text-gray-900 bg-gray-100" style="height:calc(100vh - 64px);">
+    <div class="flex antialiased text-gray-900" style="height:calc(100vh - 64px);">
         <!-- Sidebar -->
         <div class="flex" :class=" (isSidebarOpen) ? 'w-48' : 'w-14'">
             <!-- Left mini bar -->
