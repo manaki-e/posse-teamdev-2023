@@ -27,7 +27,10 @@ class RequestController extends Controller
         ];
         $product_tags = Tag::where('request_type_id', $product_request_type_id)->get();
         $event_tags = Tag::where('request_type_id', $event_request_type_id)->get();
-        $requests = ModelsRequest::with(['user', 'requestTags.tag'])->orderBy('created_at','desc')->get();
+        $requests = ModelsRequest::with(['user', 'requestTags.tag'])->orderBy('created_at','desc')->unresolvedRequests()->get()->map(function($request){
+            $request->description=$request->changeDescriptionReturnToBreakTag($request->description);
+            return $request;
+        });
         return view('user.requests.index', compact('requests', 'product_tags', 'event_tags', 'app', 'event_request_type_id', 'product_request_type_id'));
     }
 
@@ -64,18 +67,22 @@ class RequestController extends Controller
         $request_instance->save();
         //add record to request_tag table using request_id,tag_id
         if ($request->type_id === ModelsRequest::EVENT_REQUEST_TYPE_ID) {
-            foreach ($request->event_tags as $tag_id) {
-                RequestTag::create([
-                    'request_id' => $request_instance->id,
-                    'tag_id' => $tag_id
-                ]);
+            if(!empty($request->event_tags)){
+                foreach ($request->event_tags as $tag_id) {
+                    RequestTag::create([
+                        'request_id' => $request_instance->id,
+                        'tag_id' => $tag_id
+                    ]);
+                }
             }
         } else {
-            foreach ($request->product_tags as $tag_id) {
-                RequestTag::create([
-                    'request_id' => $request_instance->id,
-                    'tag_id' => $tag_id
-                ]);
+            if(!empty($request->product_tags)){
+                foreach ($request->product_tags as $tag_id) {
+                    RequestTag::create([
+                        'request_id' => $request_instance->id,
+                        'tag_id' => $tag_id
+                    ]);
+                }
             }
         }
         return Redirect::route('requests.index')->with(['flush.message' => 'リクエストを追加しました', 'flush.alert_type' => 'success']);

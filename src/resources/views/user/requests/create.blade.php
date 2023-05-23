@@ -7,7 +7,7 @@
 
 <x-user-app>
     <x-slot name="header_slot">
-        <x-user-header textColor="text-peer-request" bgColor="bg-green-400">
+        <x-user-header textColor="text-peer-request" bgColor="bg-peer-request">
             <x-slot:app_name>Peer Request</x-slot:app_name>
             <x-slot:button_text>リクエスト登録</x-slot:button_text>
             <x-slot:button_link>{{ route('requests.create') }}</x-slot:button_link>
@@ -53,7 +53,7 @@
                                         <label for="event"
                                             class="flex p-3 w-full bg-white border border-gray-300 rounded-md text-sm"
                                             @click="activeTab = 1">
-                                            <input type="radio" name="type_id" value="{{ $event_request_type_id }} }}"
+                                            <input type="radio" name="type_id" value="{{ $event_request_type_id }}"
                                                 class="shrink-0 mt-0.5 border-gray-200 rounded-full" id="event">
                                             <span class="text-sm ml-3">イベント</span>
                                         </label>
@@ -66,10 +66,10 @@
                                     @foreach ($product_tags as $index => $tag)
                                     <div class="min-w-max m-1 border rounded border-gray-200">
                                         <div class="flex items-center px-3">
-                                            <input name="product_tags[]" id="tag_{{ $index }}" type="checkbox"
+                                            <input name="product_tags[]" id="product_tag_{{ $tag->id }}" type="checkbox"
                                                 value="{{ $tag->id }}"
                                                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
-                                            <label for="tag_{{ $index }}"
+                                            <label for="product_tag_{{ $tag->id }}"
                                                 class="w-auto py-3 pl-1 text-sm font-medium text-gray-900">{{ $tag->name }}</label>
                                         </div>
                                     </div>
@@ -81,10 +81,10 @@
                                     @foreach ($event_tags as $index => $tag)
                                     <div class="min-w-max m-1 border rounded border-gray-200">
                                         <div class="flex items-center px-3">
-                                            <input name="event_tags[]" id="tag_{{ $index }}" type="checkbox"
+                                            <input name="event_tags[]" id="event_tag_{{ $tag->id }}" type="checkbox"
                                                 value="{{ $tag->id }}"
                                                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
-                                            <label for="tag_{{ $index }}"
+                                            <label for="event_tag_{{ $tag->id }}"
                                                 class="w-auto py-3 pl-1 text-sm font-medium text-gray-900">{{ $tag->name }}</label>
                                         </div>
                                     </div>
@@ -93,7 +93,7 @@
                             </div>
                         </section>
                     </section>
-                    <x-user-register-button textColor="text-white" bgColor="bg-green-400"
+                    <x-user-register-button textColor="text-white" bgColor="bg-peer-request"
                         borderColor="border-peer-request">
                         <x-slot name="button">
                             登録する

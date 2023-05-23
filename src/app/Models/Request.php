@@ -66,4 +66,8 @@ class Request extends Model
     {
         return $query->where('type_id', self::EVENT_REQUEST_TYPE_ID);
     }
+    public function changeDescriptionReturnToBreakTag($value)
+    {
+        return str_replace("\n", "<br>", e($value));
+    }
 }

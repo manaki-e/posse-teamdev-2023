@@ -45,9 +45,9 @@
                                                     @foreach ($product_tags as $index => $tag)
                                                     <div class="min-w-max m-1 border rounded border-gray-200">
                                                         <div class="flex items-center px-3">
-                                                            <input id="tag_{{ $index }}" type="checkbox" value=""
+                                                            <input id="product_tag_{{ $index }}" type="checkbox" value=""
                                                                 class="w-4 h-4 bg-gray-100 border-gray-300 rounded">
-                                                            <label for="tag_{{ $index }}"
+                                                            <label for="product_tag_{{ $index }}"
                                                                 class="w-auto py-3 pl-1 text-sm font-medium text-gray-900">{{ $tag->name }}</label>
                                                         </div>
                                                     </div>
@@ -59,9 +59,9 @@
                                                     @foreach ($event_tags as $index => $tag)
                                                     <div class="min-w-max m-1 border rounded border-gray-200">
                                                         <div class="flex items-center px-3">
-                                                            <input id="tag_{{ $index }}" type="checkbox" value=""
+                                                            <input id="event_tag_{{ $index }}" type="checkbox" value=""
                                                                 class="w-4 h-4 bg-gray-100 border-gray-300 rounded">
-                                                            <label for="tag_{{ $index }}"
+                                                            <label for="event_tag_{{ $index }}"
                                                                 class="w-auto py-3 pl-1 text-sm font-medium text-gray-900">{{ $tag->name }}</label>
                                                         </div>
                                                     </div>
