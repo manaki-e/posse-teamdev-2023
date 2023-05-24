@@ -71,7 +71,6 @@
                             </div>
                             @endforeach
                         </div>
-                        {{ $productsPaginated->withPath(url('/items'))->links() }}
                 </section>
             </div>
 
@@ -120,7 +119,7 @@
 
                 //共通タグ、選択したタグ、ターゲットタグをコンソールに表示＝＞デバッグ用
                 console.log(commonTags, checkedTagsValues, targetTags);
-                
+
                 //ターゲットタグが空かつインプットタグが空ではない場合タグによる絞り込みは偽判定
                 if (targetTagsEmpty && !tagsNotChosen) {
                     filterByTags = false;
