@@ -228,6 +228,8 @@ class MyPageController extends Controller
                 return $request_like;
             });
 
-        return view('user.mypage.requests-liked', compact('liked_requests', 'user'));
+        $product_request_type_id = Request::PRODUCT_REQUEST_TYPE_ID;
+
+        return view('user.mypage.requests-liked', compact('liked_requests', 'user', 'product_request_type_id'));
     }
 }
