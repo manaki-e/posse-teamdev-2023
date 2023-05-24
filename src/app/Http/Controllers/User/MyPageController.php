@@ -10,6 +10,7 @@ use App\Models\PointExchangeLog;
 use App\Models\Product;
 use App\Models\ProductDealLog;
 use App\Models\Request;
+use App\Models\RequestLike;
 
 //#82-主催したイベント情報
 class MyPageController extends Controller
@@ -192,8 +193,9 @@ class MyPageController extends Controller
         $user = Auth::user();
         $resolved_requests = Request::where('user_id', $user->id)
             ->resolvedRequests()
-            // ->with('requestLikes')
+            ->with('requestLikes')
             ->with('requestTags.tag')
+            ->orderBy('created_at', 'desc')
             ->get()
             ->each(function ($request) {
                 $request->type = $request->getRequestType($request->type_id);
@@ -201,8 +203,9 @@ class MyPageController extends Controller
 
         $unresolved_requests = Request::where('user_id', $user->id)
             ->unresolvedRequests()
-            // ->with('requestLikes')
+            ->with('requestLikes')
             ->with('requestTags.tag')
+            ->orderBy('created_at', 'desc')
             ->get()
             ->each(function ($request) {
                 $request->type = $request->getRequestType($request->type_id);
@@ -214,14 +217,16 @@ class MyPageController extends Controller
     public function requestsLiked()
     {
         $user = Auth::user();
-        // $liked_requests = Request::where('user_id', $user->id)
-        //     ->unresolvedRequests()
-        //     // ->with('requestLikes')
-        //     ->with('requestTags.tag')
-        //     ->get()
-        //     ->each(function ($request) {
-        //         $request->type = $request->getRequestType($request->type_id);
-        //     });
+        $liked_requests = Request::with(['requestLikes' => function ($query) {
+            $query->where('user_id', Auth::id());
+        }])
+            ->with('requestTags.tag')
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->each(function ($request) {
+                $request->type = $request->getRequestType($request->type_id);
+            });
+
         return view('user.mypage.requests-liked', compact('liked_requests'));
     }
 }
