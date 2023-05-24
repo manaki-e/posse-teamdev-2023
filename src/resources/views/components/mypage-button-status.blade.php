@@ -1,7 +1,10 @@
 <div x-data="{ showModal: false }" x-on:keydown.window.escape="showModal = false">
     <div class="flex justify-center">
         <a @click="showModal = true">
-            <button class="middle none center mr-3 rounded-lg border border-yellow-700 py-3 px-6 font-sans text-xs font-bold uppercase text-yellow-700 transition-all hover:opacity-75 focus:ring focus:ring-yellow-200 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" data-ripple-dark="true">
+            <button class="flex select-none items-center gap-3 rounded-lg bg-blue-500 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button" data-ripple-light="true">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true" class="h-5 w-5">
+                    {{ $logo_path }}
+                </svg>
                 {{ $content }}
             </button>
         </a>
