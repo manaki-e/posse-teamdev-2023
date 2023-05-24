@@ -72,7 +72,7 @@ class ItemController extends Controller
         $product_instance->save();
         $product_instance->addProductImages($images, $product_instance->id);
         $product_instance->updateProductTags($request->product_tags, $product_instance->id);
-        return redirect('/items');
+        return redirect()->route('items.index')->with(['flush.message' => 'アイテム登録申請完了しました。', 'flush.alert_type' => 'success']);
     }
 
     /**

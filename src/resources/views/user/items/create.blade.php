@@ -76,10 +76,11 @@
                                 <input name="title" type="text"
                                     class="p-1 block w-full rounded-md border border-gray-300" required />
                             </div>
-                            <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">アイテムの説明</h4>
+                            <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">アイテムの説明<span
+                                    class="text-red-600">*</span></h4>
                             <div class="mx-auto">
                                 <textarea name="description" class="p-1 block w-full rounded-md border border-gray-300"
-                                    rows="3"></textarea>
+                                    rows="3" required></textarea>
                             </div>
                             <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">関連するリクエスト</h4>
                             <div class="mb-4 border border-gray-300 rounded-md">
