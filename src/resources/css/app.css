@@ -43,3 +43,7 @@
 .font-patua {
     font-family: "Patua One", cursive;
 }
+
+[x-cloak] {
+    display: none !important;
+}
