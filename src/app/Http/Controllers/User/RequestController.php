@@ -189,6 +189,15 @@ class RequestController extends Controller
     public function destroy($id)
     {
         ModelsRequest::findOrFail($id)->delete();
-        return redirect()->route('requests.index');
+        return redirect()->route('mypage.requests.posted');
+    }
+
+    public function resolve($id)
+    {
+        $request_instance = ModelsRequest::findOrFail($id);
+        $request_instance->completed_at = now();
+        $request_instance->save();
+
+        return redirect()->route('mypage.requests.posted');
     }
 }
