@@ -22,7 +22,11 @@
                             <x-slot:likes>{{ count($request  -> requestLikes) }}</x-slot:likes>
                             <x-slot:user_icon>{{ $request  -> user -> icon }}</x-slot:user_icon>
                             <x-slot:user_name>{{ $request  -> user -> name }}</x-slot:user_name>
-                            <x-slot:button></x-slot:button>
+                            <x-slot:button>
+                                <a href="{{ $request -> type_id === $product_request_type_id ? route('items.create-with-request', $request->id) : route('events.create-with-request', $request->id) }}" class="flex select-none items-center gap-3 rounded-lg bg-peer-request py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-yellow-500/20 transition-all hover:shadow-lg hover:shadow-yellow-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button" data-ripple-light="true">
+                                    リクエストに答える
+                                </a>
+                            </x-slot:button>
                         </x-mypage-request-list>
                     </li>
                     @endforeach

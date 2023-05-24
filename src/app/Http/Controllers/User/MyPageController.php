@@ -10,7 +10,7 @@ use App\Models\PointExchangeLog;
 use App\Models\Product;
 use App\Models\ProductDealLog;
 use App\Models\Request;
-use App\Models\RequestLike;
+use App\Models\Tag;
 
 //#82-主催したイベント情報
 class MyPageController extends Controller
@@ -227,6 +227,15 @@ class MyPageController extends Controller
                 $request->type = $request->getRequestType($request->type_id);
             });
 
-        return view('user.mypage.requests-liked', compact('liked_requests'));
+        $event_request_type_id = Request::EVENT_REQUEST_TYPE_ID;
+        $product_request_type_id = Request::PRODUCT_REQUEST_TYPE_ID;
+        $app = [
+            $product_request_type_id => ['color' => 'text-blue-400', 'name' => 'Peer Product Share'],
+            $event_request_type_id => ['color' => 'text-pink-600', 'name' => 'Peer Event']
+        ];
+        $product_tags = Tag::where('request_type_id', $product_request_type_id)->get();
+        $event_tags = Tag::where('request_type_id', $event_request_type_id)->get();
+
+        return view('user.mypage.requests-liked', compact('liked_requests', 'product_tags', 'event_tags', 'app', 'event_request_type_id', 'product_request_type_id'));
     }
 }
