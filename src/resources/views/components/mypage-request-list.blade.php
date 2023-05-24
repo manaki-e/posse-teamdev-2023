@@ -1,4 +1,4 @@
-<div {{ $attributes->merge(['class' => 'flex justify-between items-center border-t border-gray-300 py-3 px-6 text-sm']) }}>
+<div {{ $attributes->merge(['class' => 'flex gap-4 justify-between items-center border-t border-gray-300 py-3 px-6 text-sm']) }}>
     <div class="flex gap-2 font-mono">
         <div class="flex flex-col gap-2">
             <p class="text-gray-800 text-base">{{ $title ?? '' }}</p>
@@ -19,7 +19,7 @@
             </div>
         </div>
     </div>
-    <div class="flex-center gap-4">
+    <div class="flex-center gap-2">
         {{ $button }}
     </div>
 </div>

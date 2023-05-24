@@ -66,7 +66,7 @@
                                 <span>Peer Event</span>
                             </li>
                             <li>
-                                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                                <x-nav-link :href="route('mypage.events.organized')" :active="request()->routeIs('mypage.events.organized')">
                                     {{ __('主催したイベント') }}
                                 </x-nav-link>
                             </li>

@@ -3,39 +3,18 @@
 namespace App\Http\Controllers\User;
 
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\EventParticipantLog;
-use App\Http\Controllers\Controller;
 use App\Models\PointExchangeLog;
 use App\Models\Product;
 use App\Models\ProductDealLog;
 use App\Models\Request;
 use App\Models\RequestLike;
-use App\Models\Tag;
 
 //#82-主催したイベント情報
 class MyPageController extends Controller
 {
-    // イベントID
-    public function eventsOrganized()
-    {
-        // Authのid
-        $auth_id = Auth::id();
-        //Authのidに紐づいているテーブルを全部取得
-        $event_organizes = Event::with('eventParticipants')->where('user_id', '=', $auth_id)->with('event')->get();
-        foreach ($event_organizes as $event_organize) {
-            print_r($event_organize->title . '<br>');
-            print_r($event_organize->created_at . '<br>');
-            print_r($event_organize->completed_at . '<br>');
-        }
-        $earned_points = Event::where('user_id', $auth_id)->with('eventParticipants')->withSum('eventParticipants', 'point')->get();
-        foreach ($earned_points as $earned_point) {
-            print_r($earned_point->event_participants_sum_point);
-        }
-        dd();
-        // return view();
-    }
-
     #81-参加したイベント情報
     public function eventsJoined()
     {
@@ -189,9 +168,35 @@ class MyPageController extends Controller
         return view('user.mypage.items-listed', compact('lendable_products', 'borrowed_products', 'applying_products'));
     }
 
+    public function eventsOrganized()
+    {
+        $user = Auth::user();
+
+        $before_held_events = Event::where('user_id', $user->id)
+            ->where('completed_at', null)
+            ->with('eventLikes')
+            ->with('eventParticipants')
+            ->with('eventTags.tag')
+            ->withSum('eventParticipants', 'point')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $after_held_events = Event::where('user_id', $user->id)
+            ->where('completed_at', '!=', null)
+            ->with('eventLikes')
+            ->with('eventParticipants')
+            ->with('eventTags.tag')
+            ->withSum('eventParticipants', 'point')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('user.mypage.events-organized', compact('before_held_events', 'after_held_events'));
+    }
+
     public function requestsPosted()
     {
         $user = Auth::user();
+
         $resolved_requests = Request::where('user_id', $user->id)
             ->resolvedRequests()
             ->with('requestLikes')
@@ -218,13 +223,14 @@ class MyPageController extends Controller
     public function requestsLiked()
     {
         $user = Auth::user();
+
         $liked_requests = RequestLike::where('user_id', $user->id)
             ->with(['request.requestTags.tag' => function ($query) {
                 $query->orderBy('created_at', 'desc');
             }])
             ->get()
             ->map(function ($request_like) {
-                $request_like -> request -> request_likes_count = $request_like->request->requestLikes->count();
+                $request_like->request->request_likes_count = $request_like->request->requestLikes->count();
                 return $request_like;
             });
 
