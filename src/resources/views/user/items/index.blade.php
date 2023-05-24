@@ -23,7 +23,7 @@
                             @foreach($product_tags as $key=>$value)
                             <div class="w-auto mx-1 border rounded border-gray-200">
                                 <div class="flex items-center px-3">
-                                    <input name="tag"  id="{{$value->id}}" type="checkbox" value="{{ $value->id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded filter-input">
+                                    <input name="tag" id="{{$value->id}}" type="checkbox" value="{{ $value->id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded filter-input">
                                     <label for="{{$value->id}}" class="w-full py-3 pl-1 text-sm font-medium text-gray-900">{{ $value->name }}</label>
                                 </div>
                             </div>
@@ -86,60 +86,66 @@
     // Add event listener to each filter button
     filterInputs.forEach(input => {
         input.addEventListener('click', () => {
-            // Get the value of the clicked status input and put them in a integer variable
-            let checkedStatus=document.querySelector('input[name=status]:checked');
+            //選択したステータスを変数にいれる
+            let checkedStatus = document.querySelector('input[name=status]:checked');
             let checkedStatusValue;
-            if(checkedStatus===null){
-                checkedStatusValue=null;
-            }else{
-                checkedStatusValue=checkedStatus.value;
+            if (checkedStatus === null) {
+                checkedStatusValue = null;
+            } else {
+                checkedStatusValue = checkedStatus.value;
             }
-            // console.log(checkedStatusValue);
-            // Get the value of the clicked tags input and put them in an array
-            let checkedTags=Array.from(document.querySelectorAll('input[name=tag]:checked'));
-            let checkedTagsValues=checkedTags.map(e=>e.value);
-            // console.log(checkedTagsValues);
-            // Get all filter targets
+            // 選択したタグを配列に入れる
+            let checkedTags = Array.from(document.querySelectorAll('input[name=tag]:checked'));
+            let checkedTagsValues = checkedTags.map(e => e.value);
+            // 絞り込み対象全て取得
             let filterTargets = document.querySelectorAll('.filter-target');
 
             // Show/hide targets based on the integer variable checkedStatus and array variable checkedTags
             filterTargets.forEach(filterTarget => {
-                //get common tags
-                let commonTags=checkedTagsValues.filter(value => JSON.parse(filterTarget.dataset.tag).includes(value));
-                let commonTagsExist;
-                //タグラジオが空ではなく、productのタグが空の場合タグによる絞り込みする判定
-                console.log(JSON.parse(filterTarget.dataset.tag));
-                if(filterTarget.dataset.tag.length===0&&checkedTagsValues.length!==0){
-                    commonTagsExist=false;
+                //ターゲットタグを配列に変換
+                let targetTags = JSON.parse(filterTarget.dataset.tag);
+                //ターゲットタグが空か判定
+                let targetTagsEmpty = targetTags.length === 0;
+                //インプットタグとターゲットタグの共通項を取得
+                let commonTags = checkedTagsValues.filter(value => targetTags.includes(parseInt(value)));
+                let filterByTags;
+                //ターゲットステータスとステータスラジオの値が一致するか判定
+                let statusEqual = filterTarget.dataset.status === checkedStatusValue;
+                //インプットタグが空か判定
+                let tagsNotChosen = checkedTagsValues.length === 0;
+                //ステータスラジオが空か判定
+                let statusNotChosen = checkedStatusValue === null;
+                //インプットタグとターゲットタグの共通項が空か判定
+                let commonTagsEmpty = commonTags.length === 0;
+
+                //共通タグ、選択したタグ、ターゲットタグをコンソールに表示＝＞デバッグ用
+                console.log(commonTags, checkedTagsValues, targetTags);
+                
+                //ターゲットタグが空かつインプットタグが空ではない場合タグによる絞り込みは偽判定
+                if (targetTagsEmpty && !tagsNotChosen) {
+                    filterByTags = false;
                 }
-                //タグラジオが空の場合タグによる絞り込みなし判定
-                if(checkedTagsValues.length===0){
-                    commonTagsExist=true;
-                }else{
-                    commonTagsExist=commonTags.length>=1;
+                //インプットタグが空の場合タグによる絞り込みは真判定
+                else if (tagsNotChosen) {
+                    filterByTags = true;
                 }
-                console.log('common'+commonTagsExist);
-                //ステータスが空の場合
-                if(checkedStatusValue===null){
-                    //タグラジオが空の場合
-                    if(checkedTagsValues.length===0){
-                        // console.log('status and tags null')
+                //インプットタグとターゲットタグの共通項がある場合タグによる絞り込みは偽判定
+                else if (commonTagsEmpty) {
+                    filterByTags = false;
+                }
+                //インプットタグとターゲットタグの共通項がない場合タグによる絞り込みは真判定
+                else if (!commonTagsEmpty) {
+                    filterByTags = true;
+                }
+                if (statusNotChosen) {
+                    if (filterByTags) {
                         filterTarget.style.display = 'block';
-                    }else if(commonTagsExist){
-                        // console.log('status null and true');
-                        filterTarget.style.display = 'block';
-                    }else{
-                        // console.log('status null and false');
+                    } else {
                         filterTarget.style.display = 'none';
                     }
-                //ステータスとタグが一致する場合
-                }else if(checkedStatusValue == filterTarget.dataset.status && commonTagsExist){
-                    // console.log('true2');
+                } else if (statusEqual && filterByTags) {
                     filterTarget.style.display = 'block';
-                }else{
-                    // console.log('false2');
-                    // console.log(checkedStatusValue);
-                    // console.log(filterTarget.dataset.status);
+                } else {
                     filterTarget.style.display = 'none';
                 }
             });
