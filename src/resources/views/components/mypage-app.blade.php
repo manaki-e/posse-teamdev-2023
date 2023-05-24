@@ -91,7 +91,7 @@
                                 </x-nav-link>
                             </li>
                             <li>
-                                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                                <x-nav-link :href="route('mypage.requests.liked')" :active="request()->routeIs('mypage.requests.liked')">
                                     {{ __('いいねしたリクエスト') }}
                                 </x-nav-link>
                             </li>
@@ -99,7 +99,10 @@
                     </nav>
                 </aside>
                 <div class="bg-white shadow rounded-lg md:p-6 w-3/4">
-                    <x-mypage-title>{{ $title }}</x-mypage-title>
+                    <x-mypage-title>
+                        <x-slot:border_color>{{ $border_color }}</x-slot:border_color>
+                        {{ $title }}
+                    </x-mypage-title>
                     {{ $slot }}
                 </div>
             </div>
