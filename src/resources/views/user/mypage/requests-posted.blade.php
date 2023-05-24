@@ -39,7 +39,7 @@
                                 <x-slot:user_icon>{{ $request  -> user -> icon }}</x-slot:user_icon>
                                 <x-slot:user_name>{{ $request  -> user -> name }}</x-slot:user_name>
                                 <x-slot:button>
-                                    <x-mypage-button-status action="{{ route('requests.resolve', ['request' =>  $request -> id]) }}">
+                                    <x-mypage-button-request-resolve action="{{ route('requests.resolve', ['request' =>  $request -> id]) }}">
                                         <x-slot:content>リクエスト解決済み</x-slot:content>
                                         <x-slot:logo_path>
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M10.125 2.25h-4.5c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125v-9M10.125 2.25h.375a9 9 0 019 9v.375M10.125 2.25A3.375 3.375 0 0113.5 5.625v1.5c0 .621.504 1.125 1.125 1.125h1.5a3.375 3.375 0 013.375 3.375M9 15l2.25 2.25L15 12" />
@@ -48,7 +48,7 @@
                                         <x-slot:modal_description>リクエストが解決されたら、解決済みにしてください。一度解決済みにすると、解除できません。</x-slot:modal_description>
                                         <x-slot:method></x-slot:method>
                                         <x-slot:form_slot></x-slot:form_slot>
-                                    </x-mypage-button-status>
+                                    </x-mypage-button-request-resolve>
                                     <x-mypage-button-edit href="{{ route('requests.edit', ['request' =>  $request -> id]) }}"></x-mypage-button-edit>
                                     <x-mypage-button-delete action="{{ route('requests.destroy', ['request' =>  $request -> id]) }}">
                                         <x-slot name="modal_title">
