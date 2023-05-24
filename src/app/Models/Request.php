@@ -50,12 +50,12 @@ class Request extends Model
             return 'イベント';
         }
     }
-    public function scopeResolvedRequests()
+    public function scopeResolvedRequests($query)
     {
-        return $this->where('completed_at', '!=', null);
+        return $query->where('completed_at', '!=', null);
     }
-    public function scopeUnresolvedRequests()
+    public function scopeUnresolvedRequests($query)
     {
-        return $this->where('completed_at', null);
+        return $query->where('completed_at', null);
     }
 }
