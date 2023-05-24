@@ -7,16 +7,17 @@
                         <h2 class="font-medium title-font text-gray-900 text-lg ">{{ $category1}}</h2>
                         <div class="w-full h-1 bg-gray-500 rounded mt-2 mb-4"></div>
                         <div class="flex items-center mb-4">
-                            <input id="box-1" type="checkbox" value="" name=""
-                                class="w-4 h-4 bg-gray-100 border-gray-300">
+                            <input id="box-1" type="radio" value="{{ $available_value }}" name="{{ $name }}"
+                                class="w-4 h-4 bg-gray-100 border-gray-300 filter-input">
                             <label for="box-1"
-                                class="ml-2 text-sm font-medium text-gray-900">{{ $available}}</label>
+                                class="ml-2 text-sm font-medium text-gray-900">{{ $available }}</label>
                         </div>
+                        <!-- なぜか↓の方がサイズ小さい -->
                         <div class="flex items-center">
-                            <input id="box-2" type="checkbox" value="" name=""
-                                class="w-4 h-4 bg-gray-100 border-gray-300">
+                            <input id="box-2" type="radio" value="{{ $unavailable_value }}" name="{{ $name }}"
+                                class="w-4 h-4 bg-gray-100 border-gray-300 filter-input">
                             <label for="box-2"
-                                class="ml-2 text-sm font-medium text-gray-900">{{ $unavailable}}</label>
+                                class="ml-2 text-sm font-medium text-gray-900">{{ $unavailable }}</label>
                         </div>
                     </div>
                 </div>

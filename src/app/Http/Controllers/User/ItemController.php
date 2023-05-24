@@ -26,7 +26,14 @@ class ItemController extends Controller
         $paginator = Product::approvedProducts()->withRelations()->paginate(8);
 
         $products = $paginator->getCollection()->map(function ($product) use ($japanese_product_statuses) {
-            $product->japanese_status = $japanese_product_statuses[$product->status];
+            $product->data_tag='['.implode(',',$product->productTags->pluck('tag_id')->toArray()).']';
+            //配送中は貸出中として表示
+            if($product->status===Product::STATUS['delivering']){
+                $product->japanese_status = $japanese_product_statuses[Product::STATUS['occupied']];
+                $product->status=Product::STATUS['occupied'];
+            }else{
+                $product->japanese_status = $japanese_product_statuses[$product->status];
+            }
             return $product;
         })->sortByDesc('created_at');
 
