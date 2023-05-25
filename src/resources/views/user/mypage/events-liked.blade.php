@@ -8,6 +8,12 @@
         <div>
             <ul class="border-b border-gray-300">
                 @foreach ($liked_events as $event)
+                <?php
+                $array_participants = [];
+                foreach ($event->eventParticipants as $participant) {
+                    array_push($array_participants, $participant->user_id);
+                }
+                ?>
                 <li>
                     <x-mypage-event-list>
                         <x-slot:title>{{ $event -> title }}</x-slot:title>
@@ -29,10 +35,10 @@
                             @if ($event -> user_id === $user -> id)
                             <p class="text-red-500">自分が主催するイベントです。</p>
                             <!-- 自身が参加予定のイベントの場合 -->
-                            @elseif ($event -> user_id === $user -> id)
+                            @elseif (in_array ($user -> id, $array_participants))
                             <p class="text-red-500">すでに参加予約したイベントです。</p>
                             <!-- 開催前のイベントであった場合 -->
-                            @elseif ($event -> user_id === $user -> id)
+                            @elseif ($event -> completed_at === null && $event -> canceled_at === null)
                             <x-mypage-button-event-held action="{{ route('events.participate', ['event' =>  $event -> id]) }}">
                                 <x-slot:content>予約する</x-slot:content>
                                 <x-slot:logo_path>
