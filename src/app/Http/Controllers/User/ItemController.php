@@ -23,12 +23,12 @@ class ItemController extends Controller
         $japanese_product_statuses = Product::JAPANESE_STATUS;
         unset($japanese_product_statuses[1]);
         $product_tags = Tag::productTags()->get();
-        $paginator = Product::approvedProducts()->withRelations()->paginate(8);
+        $paginator = Product::approvedProducts()->withRelations()->orderBy('created_at','desc')->paginate(8);
 
         $products = $paginator->getCollection()->map(function ($product) use ($japanese_product_statuses) {
             $product->japanese_status = $japanese_product_statuses[$product->status];
             return $product;
-        })->sortByDesc('created_at');
+        });
 
         $productsPaginated = new \Illuminate\Pagination\LengthAwarePaginator(
             $products,
