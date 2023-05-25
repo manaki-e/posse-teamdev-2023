@@ -218,14 +218,15 @@ class MyPageController extends Controller
     public function requestsLiked()
     {
         $user = Auth::user();
-        $liked_requests = RequestLike::where('user_id', $user->id)
-            ->with(['request.requestTags.tag' => function ($query) {
-                $query->orderBy('created_at', 'desc');
-            }])
+
+        $liked_requests = Request::whereHas('requestLikes', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })
+            ->with(['requestTags.tag', 'requestLikes'])
+            ->orderBy('created_at', 'desc')
             ->get()
-            ->map(function ($request_like) {
-                $request_like -> request -> request_likes_count = $request_like->request->requestLikes->count();
-                return $request_like;
+            ->each(function ($request) {
+                $request->type = $request->getRequestType($request->type_id);
             });
 
         $product_request_type_id = Request::PRODUCT_REQUEST_TYPE_ID;
