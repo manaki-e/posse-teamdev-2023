@@ -44,40 +44,6 @@
     font-family: "Patua One", cursive;
 }
 
-.text-peer-request {
-    color: #c0c81e;
-}
-
-.bg-peer-request {
-    background-color: #c0c81e;
-}
-
-.border-peer-request {
-    border-color: #c0c81e;
-}
-.text-peer-request {
-    color: #c0c81e;
-}
-
-.bg-peer-request {
-    background-color: #c0c81e;
-}
-
-.border-peer-request {
-    border-color: #c0c81e;
-}
-
-.text-peer-perk {
-    color: #079292;
-}
-
-.bg-peer-perk {
-    background-color: #079292;
-}
-
-.border-peer-perk {
-    border-color: #079292;
-}
-[x-cloak]{
+[x-cloak] {
     display: none !important;
 }
