@@ -33,10 +33,10 @@
                         <x-slot:button>
                             <!-- 自身が主催するイベントの場合 -->
                             @if ($event -> user_id === $user -> id)
-                            <p class="text-red-500">自分が主催するイベントです。</p>
+                            <p class="text-red-500">自分が主催するイベントです</p>
                             <!-- 自身が参加予定のイベントの場合 -->
                             @elseif (in_array ($user -> id, $array_participants))
-                            <p class="text-red-500">すでに参加予約したイベントです。</p>
+                            <p class="text-red-500">すでに参加予約したイベントです</p>
                             <!-- 開催前のイベントであった場合 -->
                             @elseif ($event -> completed_at === null && $event -> canceled_at === null)
                             <x-mypage-button-event-held action="{{ route('events.participate', ['event' =>  $event -> id]) }}">
@@ -48,13 +48,23 @@
                                 <x-slot:modal_description>主催者に支払うポイントを設定してください。一度支払ったポイントは戻ってこないのでご注意ください。</x-slot:modal_description>
                                 <x-slot:method></x-slot:method>
                                 <x-slot:form_slot>
-                                    <label class="block text-sm text-gray-700 capitalize dark:text-gray-200">参加ポイント</label>
-                                    <input type="number" step="10" min="0" max="500" class="block w-full px-3 py-2 mt-2 text-gray-600 placeholder-gray-400 bg-white border border-gray-200 rounded-md" required />
-                                    <p class="ml-2 text-xs text-gray-500 ">
-                                        ポイントの上限は 500 pt
-                                    </p>
+                                    <div class="mb-4">
+                                        <div class="relative flex gap-4">
+                                            <label for="point" class="leading-7 text-sm text-gray-600 flex-center">Point:</label>
+                                            <input type="number" id="point" name="point" class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                        </div>
+                                        <p class="ml-2 text-xs text-gray-500 ">
+                                            ポイントの上限は 500 pt
+                                        </p>
+                                    </div>
                                 </x-slot:form_slot>
                             </x-mypage-button-event-held>
+                            <!-- 自身が参加予定のイベントの場合 -->
+                            @elseif ($event -> completed_at !== null)
+                            <p class="text-red-500">すでに開催されたイベントです</p>
+                            <!-- 自身が参加予定のイベントの場合 -->
+                            @elseif ($event -> cancelled_at !== null)
+                            <p class="text-red-500">開催がキャンセルされたイベントです</p>
                             @endif
                         </x-slot:button>
                     </x-mypage-event-list>
