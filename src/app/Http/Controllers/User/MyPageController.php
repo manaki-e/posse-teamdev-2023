@@ -15,17 +15,6 @@ use App\Models\RequestLike;
 //#82-主催したイベント情報
 class MyPageController extends Controller
 {
-    #81-参加したイベント情報
-    public function eventsJoined()
-    {
-        $auth_id = Auth::id();
-        $event_joins = EventParticipantLog::where('user_id', $auth_id)->get();
-        foreach ($event_joins as $event_join) {
-            print_r($event_join->event->title . '<br>');
-            print_r($event_join->point . '<br>');
-            print_r($event_join->user->name . '<br>');
-        }
-    }
     public function points()
     {
         $user = Auth::user();
@@ -193,6 +182,19 @@ class MyPageController extends Controller
         return view('user.mypage.events-organized', compact('before_held_events', 'after_held_events'));
     }
 
+    public function eventsJoined()
+    {
+        $user = Auth::user();
+        $joined_events = EventParticipantLog::where('user_id', $user->id)
+            ->with(['event' => function ($query) {
+                $query->orderBy('created_at', 'desc');
+                return $query;
+            }], 'event.eventLikes', 'event.eventParticipants', 'event.eventTags.tag')
+            ->get();
+
+        return view('user.mypage.events-joined', compact('event_joins'));
+    }
+
     public function requestsPosted()
     {
         $user = Auth::user();
@@ -225,7 +227,7 @@ class MyPageController extends Controller
         $user = Auth::user();
 
         $liked_requests = RequestLike::where('user_id', $user->id)
-            ->with(['request.requestTags.tag' => function ($query) {
+            ->with(['request' => function ($query) {
                 $query->orderBy('created_at', 'desc');
             }])
             ->get()
