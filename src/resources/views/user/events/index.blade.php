@@ -1,102 +1,74 @@
-<?php
-
-$tags = ['勉強会', 'スポーツ', '娯楽'];
-$events = ['React勉強会', '野球', 'サッカー', 'pythonで機械学習', 'Go勉強会', 'バスケ'];
-
-?>
-
-
 <x-user-app>
     <x-slot name="header_slot">
         <x-user-header textColor="text-pink-600" bgColor="bg-pink-600">
             <x-slot:app_name>Peer Event</x-slot:app_name>
             <x-slot:button_text>イベント登録</x-slot:button_text>
             <x-slot:button_link>{{ route('events.create') }}</x-slot:button_link>
-            <x-slot:earned_point>580</x-slot:earned_point>
-            <x-slot:distribution_point>5000</x-slot:distribution_point>
+            <x-slot:earned_point>{{ Auth::user()->earned_point }}</x-slot:earned_point>
+            <x-slot:distribution_point>{{ Auth::user()->distribution_point }}</x-slot:distribution_point>
         </x-user-header>
     </x-slot>
     <x-slot name="body_slot">
         <x-user-side-navi>
             <div class="mx-auto max-w-5xl">
                 <x-user-search-box bgColor="bg-pink-600">
-                    <x-user-search-item>
-                        <x-slot name="filter_by_radio">
-                            <x-user-search-radio>
-                                <x-slot name="radio_name">利用状況</x-slot>
-                                <x-slot name="radios">
-                                    @foreach()
-                                    <div class="flex items-center mb-4">
-                                        <input id="box-1" type="radio" value="{{ $available_value }}" name="{{ $name }}" class="w-4 h-4 bg-gray-100 border-gray-300 filter-input">
-                                        <label for="box-1" class="ml-2 text-sm font-medium text-gray-900">{{ $available }}</label>
-                                    </div>
-                                    <!-- なぜか↓の方がサイズ小さい -->
-                                    <div class="flex items-center">
-                                        <input id="box-2" type="radio" value="{{ $unavailable_value }}" name="{{ $name }}" class="w-4 h-4 bg-gray-100 border-gray-300 filter-input">
-                                        <label for="box-2" class="ml-2 text-sm font-medium text-gray-900">{{ $unavailable }}</label>
-                                    </div>
-                                    @endforeach
-                                </x-slot>
-                                <x-slot name="available">利用可能</x-slot>
-                                <x-slot name="unavailable">利用不可</x-slot>
-                            </x-user-search-radio>
-                        </x-slot>
+                    <x-user-search-event>
                         <x-slot name="filter_by_tags">
                             <x-user-search-tags>
                                 <x-slot name="category_tags">
                                     @foreach ($tags as $index => $tag)
                                     <div class="w-auto mx-1 border rounded border-gray-200">
                                         <div class="flex items-center px-3">
-                                            <input id="tag_{{ $index }}" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
-                                            <label for="tag_{{ $index }}" class="w-full py-3 pl-1 text-sm font-medium text-gray-900">{{ $tag }}</label>
+                                            <input id="tag_{{ $index }}" type="checkbox" value="{{ $index }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
+                                            <label for="tag_{{ $index }}" class="w-full py-3 pl-1 text-sm font-medium text-gray-900">{{ $tag->name }}</label>
                                         </div>
                                     </div>
                                     @endforeach
                                 </x-slot>
                             </x-user-search-tags>
                         </x-slot>
-                    </x-user-search-item>
+                    </x-user-search-event>
                 </x-user-search-box>
                 <div class="mx-auto max-w-5xl my-4">
                     <div class="mx-auto grid grid-cols-2 gap-4">
-                        @for ($i = 0; $i < 5; $i++) <div x-data="{ open: false }" class="col-span-1">
+                        @foreach ($events as $event)
+                        <div x-data="{ open: false }" class="col-span-1">
                             <div class="rounded-lg border border-gray-200 bg-white shadow-sm">
                                 <div class="rounded-lg text-xs shadow-md p-4 pb-1 text-gray-500 bg-white">
                                     <section>
                                         <!-- イベント名 -->
                                         <div class="w-full text-xl text-gray-800 mb-4">
-                                            <p class="font-bold pl-2 border-l-4 border-pink-600">Larave10 勉強会</p>
+                                            <p class="font-bold pl-2 border-l-4 border-pink-600">{{ $event->title }}</p>
                                         </div>
                                         <!-- タグ -->
                                         <div class="w-full">
                                             <div class="inline-flex flex-wrap mb-4">
+                                                @foreach($event->eventTags as $event_tag)
                                                 <span class="items-center gap-1 rounded-full border border-gray-300 bg-gray-50 px-2 py-1 text-xs font-semibold text-gray-400">
-                                                    勉強会
+                                                    {{ $event_tag->tag->name }}
                                                 </span>
-                                                <span class="items-center gap-1 rounded-full border border-gray-300 bg-gray-50 px-2 py-1 text-xs font-semibold text-gray-400">
-                                                    プログラミング
-                                                </span>
-                                                <span class="items-center gap-1 rounded-full border border-gray-300 bg-gray-50 px-2 py-1 text-xs font-semibold text-gray-400">
-                                                    Laravel
-                                                </span>
+                                                @endforeach
                                             </div>
                                         </div>
                                         <!-- データ -->
                                         <div class="relative flex mb-4">
                                             <div class="w-1/2 space-y-1 flex flex-col text-sm">
-                                                <p>日程：未定</p>
-                                                <p>形態：オンライン</p>
+                                                <p>日程：{{ $event->show_date }}</p>
+                                                <p>形態：{{ $event->location }}</p>
                                                 <p>主催：
-                                                    <span><a href="http://google.com" class="hover:border-gray-400 border-transparent border-b">山田太郎</a></span>
+                                                    <!-- プロフィール参照機能できたら代入 -->
+                                                    <span><a href="#" class="hover:border-gray-400 border-transparent border-b">{{ $event->user->name }}</a></span>
                                                 </p>
                                             </div>
                                             <!-- ユーザーアイコン -->
                                             <div class="w-1/2 flex items-end justify-end -space-x-1">
-                                                @for ($j = 0; $j < 5; $j++) <div x-data="{ tooltip: false }" x-on:mouseover="tooltip = true" x-on:mouseleave="tooltip = false" class="h-8 w-8 relative">
-                                                    <img class="h-full w-full rounded-full object-cover object-center ring ring-white" src="https://images.unsplash.com/photo-1645378999013-95abebf5f3c1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
-                                                    <div x-cloak x-show.transition.origin.top="tooltip" class="absolute w-20">山田太郎</div>
+                                                @foreach ($event->eventParticipants as $event_participant)
+                                                {{ dd($event_participant) }}
+                                                <div x-data="{ tooltip: false }" x-on:mouseover="tooltip = true" x-on:mouseleave="tooltip = false" class="h-8 w-8 relative">
+                                                    <img class="h-full w-full rounded-full object-cover object-center ring ring-white" src="{{ $event_participant->user->icon }}" alt="" />
+                                                    <div x-cloak x-show.transition.origin.top="tooltip" class="absolute w-20">{{ $event_participant->user->name }}</div>
+                                                    @endforeach
                                             </div>
-                                            @endfor
                                             <div class="z-30 flex bg-gray-200 h-8 w-8 items-center justify-center overflow-hidden rounded-full ring ring-white">
                                                 <button id="" class="h-full w-full inline-flex items-center justify-center rounded-full text-gray-700 shadow-sm align-middle">
                                                     <span class="leading-none">•••</span>
@@ -174,10 +146,10 @@ $events = ['React勉強会', '野球', 'サッカー', 'pythonで機械学習', 
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        @endforeach
                     </div>
-                    @endfor
                 </div>
-            </div>
             </div>
         </x-user-side-navi>
     </x-slot>
