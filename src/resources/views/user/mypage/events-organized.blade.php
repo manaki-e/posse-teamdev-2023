@@ -18,7 +18,11 @@
                             開催済み
                         </a>
                     </li>
-                    <div class=""></div>
+                    <li>
+                        <a @click="activeTab = 2" class="inline-flex cursor-pointer items-center gap-2 px-1 py-3 text-pink-600 hover:text-pink-600" :class="{'relative text-pink-600 after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-full after:bg-pink-600': activeTab === 2}">
+                            開催キャンセル
+                        </a>
+                    </li>
                 </ul>
             </div>
             <div>
@@ -26,7 +30,7 @@
                     <ul class="border-b border-gray-300">
                         @foreach ($before_held_events as $event)
                         <li>
-                            <x-mypage-request-list>
+                            <x-mypage-event-list>
                                 <x-slot:title>{{ $event -> title }}</x-slot:title>
                                 <x-slot:description>{{ $event -> description }}</x-slot:description>
                                 <x-slot:tag>
@@ -34,7 +38,10 @@
                                     <x-user-tag>{{ $tag->tag->name }}</x-user-tag>
                                     @endforeach
                                 </x-slot:tag>
-                                <x-slot:date>{{ date( 'Y.m.d', strtotime( $event  -> created_at ) ) }}</x-slot:date>
+                                <x-slot:date>{{ $event  -> date ? date( 'Y.m.d', strtotime( $event  -> date ) ) : '未定' }}</x-slot:date>
+                                <x-slot:style>{{ $event -> style ?? '未定' }}</x-slot:style>
+                                <x-slot:participants_count>{{ count($event -> eventParticipants) }}</x-slot:participants_count>
+                                <x-slot:create_date>{{ date( 'Y.m.d', strtotime( $event  -> created_at ) ) }}</x-slot:create_date>
                                 <x-slot:likes>{{ count($event -> eventLikes) }}</x-slot:likes>
                                 <x-slot:user_icon>{{ $event  -> user -> icon }}</x-slot:user_icon>
                                 <x-slot:user_name>{{ $event  -> user -> name }}</x-slot:user_name>
@@ -71,16 +78,16 @@
                                         </x-slot>
                                     </x-mypage-button-delete>
                                 </x-slot:button>
-                            </x-mypage-request-list>
+                            </x-mypage-event-list>
                         </li>
                         @endforeach
                     </ul>
                 </div>
-                <div :class="{ '!block': activeTab === 1 }" x-show.transition.in.opacity.duration.600="activeTab === 1" class="hidden">
+                <div :class="{ '!block': activeTab === 2 }" x-show.transition.in.opacity.duration.600="activeTab === 2" class="hidden">
                     <ul class="border-b border-gray-300">
                         @foreach ($after_held_events as $event)
                         <li>
-                            <x-mypage-request-list>
+                            <x-mypage-event-list>
                                 <x-slot:title>{{ $event -> title }}</x-slot:title>
                                 <x-slot:description>{{ $event -> description }}</x-slot:description>
                                 <x-slot:tag>
@@ -88,12 +95,40 @@
                                     <x-user-tag>{{ $tag->tag->name }}</x-user-tag>
                                     @endforeach
                                 </x-slot:tag>
-                                <x-slot:date>{{ date( 'Y.m.d', strtotime( $event  -> created_at ) ) }}</x-slot:date>
-                                <x-slot:likes>{{ count($event -> requestLikes) }}</x-slot:likes>
+                                <x-slot:date>{{ $event  -> date ? date( 'Y.m.d', strtotime( $event  -> date ) ) : '未定' }}</x-slot:date>
+                                <x-slot:style>{{ $event -> style ?? '未定' }}</x-slot:style>
+                                <x-slot:participants_count>{{ count($event -> eventParticipants) }}</x-slot:participants_count>
+                                <x-slot:create_date>{{ date( 'Y.m.d', strtotime( $event  -> created_at ) ) }}</x-slot:create_date>
+                                <x-slot:likes>{{ count($event -> eventLikes) }}</x-slot:likes>
                                 <x-slot:user_icon>{{ $event  -> user -> icon }}</x-slot:user_icon>
                                 <x-slot:user_name>{{ $event  -> user -> name }}</x-slot:user_name>
                                 <x-slot:button></x-slot:button>
-                            </x-mypage-request-list>
+                            </x-mypage-event-list>
+                        </li>
+                        @endforeach
+                    </ul>
+                </div>
+                <div :class="{ '!block': activeTab === 1 }" x-show.transition.in.opacity.duration.600="activeTab === 1" class="hidden">
+                    <ul class="border-b border-gray-300">
+                        @foreach ($cancelled_events as $event)
+                        <li>
+                            <x-mypage-event-list>
+                                <x-slot:title>{{ $event -> title }}</x-slot:title>
+                                <x-slot:description>{{ $event -> description }}</x-slot:description>
+                                <x-slot:tag>
+                                    @foreach ($event->eventTags as $tag)
+                                    <x-user-tag>{{ $tag->tag->name }}</x-user-tag>
+                                    @endforeach
+                                </x-slot:tag>
+                                <x-slot:date>{{ $event  -> date ? date( 'Y.m.d', strtotime( $event  -> date ) ) : '未定' }}</x-slot:date>
+                                <x-slot:style>{{ $event -> style ?? '未定' }}</x-slot:style>
+                                <x-slot:participants_count>{{ count($event -> eventParticipants) }}</x-slot:participants_count>
+                                <x-slot:create_date>{{ date( 'Y.m.d', strtotime( $event  -> created_at ) ) }}</x-slot:create_date>
+                                <x-slot:likes>{{ count($event -> eventLikes) }}</x-slot:likes>
+                                <x-slot:user_icon>{{ $event  -> user -> icon }}</x-slot:user_icon>
+                                <x-slot:user_name>{{ $event  -> user -> name }}</x-slot:user_name>
+                                <x-slot:button></x-slot:button>
+                            </x-mypage-event-list>
                         </li>
                         @endforeach
                     </ul>

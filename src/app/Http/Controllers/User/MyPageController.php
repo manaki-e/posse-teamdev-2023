@@ -89,7 +89,7 @@ class MyPageController extends Controller
             ];
         });
         //productが削除されてもポイントの変動は残る、product_deal_logが削除＝キャンセルされた場合はポイントの変動も削除
-        $earned_product_deal_logs = ProductDealLog::notCanceled()->chargeable()->with(['product' => function ($query) {
+        $earned_product_deal_logs = ProductDealLog::notCancelled()->chargeable()->with(['product' => function ($query) {
             $query->withTrashed();
         }])->whereHas('product', function ($query) use ($user) {
             $query->where('user_id', $user->id)->withTrashed();
@@ -163,33 +163,37 @@ class MyPageController extends Controller
 
         $before_held_events = Event::where('user_id', $user->id)
             ->where('completed_at', null)
-            ->with('eventLikes')
-            ->with('eventParticipants')
-            ->with('eventTags.tag')
+            ->where('cancelled_at', null)
+            ->with(['eventLikes', 'eventParticipants.user', 'eventTags.tag'])
             ->withSum('eventParticipants', 'point')
             ->orderBy('created_at', 'desc')
             ->get();
 
         $after_held_events = Event::where('user_id', $user->id)
             ->where('completed_at', '!=', null)
-            ->with('eventLikes')
-            ->with('eventParticipants')
-            ->with('eventTags.tag')
+            ->with(['eventLikes', 'eventParticipants.user', 'eventTags.tag'])
             ->withSum('eventParticipants', 'point')
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('user.mypage.events-organized', compact('before_held_events', 'after_held_events'));
+        $cancelled_events = Event::where('user_id', $user->id)
+            ->where('cancelled_at', '!=', null)
+            ->with(['eventLikes', 'eventParticipants.user', 'eventTags.tag'])
+            ->withSum('eventParticipants', 'point')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('user.mypage.events-organized', compact('before_held_events', 'after_held_events', 'cancelled_events'));
     }
 
     public function eventsJoined()
     {
         $user = Auth::user();
-        $joined_events = EventParticipantLog::where('user_id', $user->id)
-            ->with(['event' => function ($query) {
-                $query->orderBy('created_at', 'desc');
-                return $query;
-            }], 'event.eventLikes', 'event.eventParticipants', 'event.eventTags.tag')
+        $joined_events = Event::whereHas('eventParticipants', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })
+            ->with('eventLikes', 'eventParticipants.user', 'eventTags.tag')
+            ->orderBy('created_at', 'desc')
             ->get();
 
         return view('user.mypage.events-joined', compact('event_joins'));

@@ -28,7 +28,7 @@ class EventController extends Controller
             return $event;
         });
         $tags = Tag::eventTags()->get();
-        return view('backend_test.events', compact('events', 'tags'));
+        return view('user.events.index', compact('events', 'tags'));
     }
 
     /**
@@ -87,7 +87,7 @@ class EventController extends Controller
         $user = Auth::user();
         $event = Event::withCount(['eventParticipants', 'eventLikes'])->with(['user', 'eventParticipants.user', 'eventTags.tag', 'eventLikes.user'])->findOrFail($id);
         $event->isLiked = $event->eventLikes->contains('user_id', Auth::id());
-        $login_user_event_participant_instance = $event->eventParticipants->where('user_id', Auth::id())->where('canceled_at', null)->first();
+        $login_user_event_participant_instance = $event->eventParticipants->where('user_id', Auth::id())->where('cancelled_at', null)->first();
         //nullの場合はキャンセル済みまたはそもそも参加予約したことない
         if (empty($login_user_event_participant_instance)) {
             $event->isParticipated = false;
@@ -177,17 +177,25 @@ class EventController extends Controller
         $event_instance->user->earned_point += $event_points;
         $event_instance->user->save();
         // var_dump($event_instance->user->earned_point);
-        //リダイレクト先は未確定
-        return redirect()->route('events.show', $event);
+        return redirect()->route('mypage.events.organized');
     }
     public function cancel($event)
     {
-        // canceled_atを入力
-        $event_participant_log = EventParticipantLog::where('event_id', $event)->where('user_id', Auth::id())->where('canceled_at', null)->first();
-        $event_participant_log->canceled_at = now();
-        $event_participant_log->save();
-        // 処理後redirect back
-        return redirect()->back();
+        $user = Auth::user();
+        $event_data = Event::findOrFail($event);
+
+        if ($user->id === $event_data->user_id) {
+            $event_data->cancelled_at = now();
+            $event_data->save();
+
+            return redirect()->route('mypage.events.organized');
+        } else {
+            $event_participant_log = EventParticipantLog::where('event_id', $event)->where('user_id', $user->id)->where('cancelled_at', null)->first();
+            $event_participant_log->cancelled_at = now();
+            $event_participant_log->save();
+
+            return redirect()->route('mypage.events.joined');
+        }
     }
     public function participate(Request $request, $event)
     {

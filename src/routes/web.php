@@ -62,10 +62,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/points', [MyPageController::class, 'points'])->name('points');
         Route::get('/point/history', [MyPageController::class, 'pointHistory'])->name('point.history');
         Route::get('/profile', [MyPageController::class, 'profile'])->name('profile');
-        Route::get('/events/organized', [MyPageController::class, 'eventsOrganized'])->name('events.organized');
-        Route::get('/events/joined', [MyPageController::class, 'eventsJoined'])->name('events.joined');
         Route::get('/items/listed', [MyPageController::class, 'itemsListed'])->name('items.listed');
         Route::get('/events/organized', [MyPageController::class, 'eventsOrganized'])->name('events.organized');
+        Route::get('/events/joined', [MyPageController::class, 'eventsJoined'])->name('events.joined');
         Route::get('/requests/posted', [MyPageController::class, 'requestsPosted'])->name('requests.posted');
         Route::get('/requests/liked', [MyPageController::class, 'requestsLiked'])->name('requests.liked');
     });
