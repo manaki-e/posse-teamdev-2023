@@ -23,12 +23,12 @@ class ItemController extends Controller
         $japanese_product_statuses = Product::JAPANESE_STATUS;
         unset($japanese_product_statuses[1]);
         $product_tags = Tag::productTags()->get();
-        $paginator = Product::approvedProducts()->withRelations()->paginate(8);
+        $paginator = Product::approvedProducts()->withRelations()->orderBy('created_at','desc')->paginate(8);
 
         $products = $paginator->getCollection()->map(function ($product) use ($japanese_product_statuses) {
             $product->japanese_status = $japanese_product_statuses[$product->status];
             return $product;
-        })->sortByDesc('created_at');
+        });
 
         $productsPaginated = new \Illuminate\Pagination\LengthAwarePaginator(
             $products,
@@ -48,9 +48,10 @@ class ItemController extends Controller
      */
     public function create()
     {
+        $conditions = Product::CONDITION;
         $product_tags = Tag::productTags()->get();
         $requests = ModelsRequest::unresolvedRequests()->productRequests()->get();
-        return view('user.items.create', compact('product_tags', 'requests'));
+        return view('user.items.create', compact('product_tags', 'requests', 'conditions'));
     }
 
     /**
@@ -71,7 +72,7 @@ class ItemController extends Controller
         $product_instance->save();
         $product_instance->addProductImages($images, $product_instance->id);
         $product_instance->updateProductTags($request->product_tags, $product_instance->id);
-        return redirect('/items');
+        return redirect()->route('items.index')->with(['flush.message' => 'アイテム登録申請完了しました。', 'flush.alert_type' => 'success']);
     }
 
     /**
