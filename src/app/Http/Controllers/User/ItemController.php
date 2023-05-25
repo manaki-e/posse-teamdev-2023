@@ -47,9 +47,10 @@ class ItemController extends Controller
      */
     public function create()
     {
+        $conditions = Product::CONDITION;
         $product_tags = Tag::productTags()->get();
         $requests = ModelsRequest::unresolvedRequests()->productRequests()->get();
-        return view('user.items.create', compact('product_tags', 'requests'));
+        return view('user.items.create', compact('product_tags', 'requests', 'conditions'));
     }
 
     /**
@@ -70,7 +71,7 @@ class ItemController extends Controller
         $product_instance->save();
         $product_instance->addProductImages($images, $product_instance->id);
         $product_instance->updateProductTags($request->product_tags, $product_instance->id);
-        return redirect('/items');
+        return redirect()->route('items.index')->with(['flush.message' => 'アイテム登録申請完了しました。', 'flush.alert_type' => 'success']);
     }
 
     /**
