@@ -65,7 +65,7 @@
 
                         <!-- urlが/eventsまたは/events/*の場合 -->
                         @if (request()->is('events') || request()->is('events/*'))
-                        <a href="{{ route('events.index') }}" class="mx-4 my-4 text-center flex items-center">
+                        <a href="#" class="mx-4 my-4 text-center flex items-center">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M5 21C4.45 21 3.979 20.804 3.587 20.412C3.195 20.02 2.99934 19.5493 3 19V5C3 4.45 3.196 3.979 3.588 3.587C3.98 3.195 4.45067 2.99934 5 3H19C19.55 3 20.021 3.196 20.413 3.588C20.805 3.98 21.0007 4.45067 21 5V19C21 19.55 20.804 20.021 20.412 20.413C20.02 20.805 19.5493 21.0007 19 21H15V19H19V7H5V19H9V21H5ZM11 21V14.85L9.4 16.45L8 15L12 11L16 15L14.6 16.45L13 14.85V21H11Z" fill="black" />
                             </svg>
@@ -73,7 +73,7 @@
                                 参加イベント
                             </p>
                         </a>
-                        <a href="{{ route('events.index') }}" class="mx-4 text-center flex items-center">
+                        <a href="#" class="mx-4 text-center flex items-center">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M19.7151 0.855469H4.28655C3.33978 0.855469 2.57227 1.62298 2.57227 2.56975V21.4269C2.57227 22.3737 3.33978 23.1412 4.28655 23.1412H19.7151C20.6619 23.1412 21.4294 22.3737 21.4294 21.4269V2.56975C21.4294 1.62298 20.6619 0.855469 19.7151 0.855469Z" stroke="black" stroke-width="1.71429" stroke-linecap="round" stroke-linejoin="round" />
                                 <path d="M2.57227 17.9978H21.4294M7.71512 5.14062H16.2866M7.71512 9.42634H16.2866M7.71512 13.7121H12.858" stroke="black" stroke-width="1.71429" stroke-linecap="round" stroke-linejoin="round" />
@@ -84,7 +84,7 @@
                         </a>
                         @elseif(request()->is('items') || request()->is('items/*'))
                         <!-- urlが/itemsまたは/items/*の場合 -->
-                        <a href="{{ route('items.index') }}" class="mx-4 my-4 text-center flex items-center">
+                        <a href="#" class="mx-4 my-4 text-center flex items-center">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M5 21C4.45 21 3.979 20.804 3.587 20.412C3.195 20.02 2.99934 19.5493 3 19V5C3 4.45 3.196 3.979 3.588 3.587C3.98 3.195 4.45067 2.99934 5 3H19C19.55 3 20.021 3.196 20.413 3.588C20.805 3.98 21.0007 4.45067 21 5V19C21 19.55 20.804 20.021 20.412 20.413C20.02 20.805 19.5493 21.0007 19 21H15V19H19V7H5V19H9V21H5ZM11 21V14.85L9.4 16.45L8 15L12 11L16 15L14.6 16.45L13 14.85V21H11Z" fill="black" />
                             </svg>
@@ -93,7 +93,7 @@
                             </p>
                         </a>
                         <!-- 貸借履歴に飛ぶ -->
-                        <a href="{{ route('items.index') }}" class="mx-4 my-4 text-center flex items-center">
+                        <a href="#" class="mx-4 my-4 text-center flex items-center">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M5 21C4.45 21 3.979 20.804 3.587 20.412C3.195 20.02 2.99934 19.5493 3 19V5C3 4.45 3.196 3.979 3.588 3.587C3.98 3.195 4.45067 2.99934 5 3H19C19.55 3 20.021 3.196 20.413 3.588C20.805 3.98 21.0007 4.45067 21 5V19C21 19.55 20.804 20.021 20.412 20.413C20.02 20.805 19.5493 21.0007 19 21H15V19H19V7H5V19H9V21H5ZM11 21V14.85L9.4 16.45L8 15L12 11L16 15L14.6 16.45L13 14.85V21H11Z" fill="black" />
                             </svg>
@@ -104,7 +104,7 @@
                         <!-- urlが/requestsまたは/requests/*の場合 -->
                         @elseif(request()->is('requests') || request()->is('requests/*'))
                         <!-- ログインしているユーザーが投稿したリクエスト画面に飛ぶ -->
-                        <a href="{{ route('items.index') }}" class="mx-4 my-4 text-center flex items-center">
+                        <a href="#}" class="mx-4 my-4 text-center flex items-center">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M5 21C4.45 21 3.979 20.804 3.587 20.412C3.195 20.02 2.99934 19.5493 3 19V5C3 4.45 3.196 3.979 3.588 3.587C3.98 3.195 4.45067 2.99934 5 3H19C19.55 3 20.021 3.196 20.413 3.588C20.805 3.98 21.0007 4.45067 21 5V19C21 19.55 20.804 20.021 20.412 20.413C20.02 20.805 19.5493 21.0007 19 21H15V19H19V7H5V19H9V21H5ZM11 21V14.85L9.4 16.45L8 15L12 11L16 15L14.6 16.45L13 14.85V21H11Z" fill="black" />
                             </svg>
