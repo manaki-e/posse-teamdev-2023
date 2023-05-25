@@ -12,7 +12,7 @@
                     </svg>
                     <span class="flex-center">{{ $likes ?? '' }}</span>
                 </div>
-                <div class="flex-center">
+                <div class="flex-center gap-1">
                     <img src="{{ $user_icon ?? '' }}" alt="ユーザアイコン" class="w-6 h-6 rounded-full object-cover object-center">
                     <span class="flex-center">{{ $user_name ?? '' }}</span>
                 </div>

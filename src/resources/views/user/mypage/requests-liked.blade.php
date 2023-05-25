@@ -29,7 +29,7 @@
                             @else
                             <x-slot:button>
                                 <a href="{{ $request -> request -> type_id === $product_request_type_id ? route('items.create-with-request', $request->id) : route('events.create-with-request', $request->id) }}" class="flex select-none items-center gap-3 rounded-lg bg-peer-request py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-yellow-500/20 transition-all hover:shadow-lg hover:shadow-yellow-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button" data-ripple-light="true">
-                                    リクエストに答える
+                                    リクエストに応える
                                 </a>
                             </x-slot:button>
                             @endif
