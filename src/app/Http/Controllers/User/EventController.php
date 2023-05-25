@@ -35,6 +35,7 @@ class EventController extends Controller
                 $event->show_date=$event->date->format('Y.m.d');
             }
             $event->data_tag = '[' . implode(',', $event->eventTags->pluck('tag_id')->toArray()) . ']';
+            $event->description=$event->changeDescriptionReturnToBreakTag($event->description);
             return $event;
         });
         $tags = Tag::eventTags()->get();

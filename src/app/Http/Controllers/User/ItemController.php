@@ -32,6 +32,7 @@ class ItemController extends Controller
             } else {
                 $product->japanese_status = $japanese_product_statuses[$product->status];
             }
+            $product->description=$product->changeDescriptionReturnToBreakTag($product->description);
             return $product;
         })->sortByDesc('created_at');
         //statuses for filter

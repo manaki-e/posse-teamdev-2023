@@ -46,4 +46,8 @@ class Event extends Model
     {
         return $query->whereNotNull('completed_at');
     }
+    public function changeDescriptionReturnToBreakTag($value)
+    {
+        return str_replace("\n", "<br>", e($value));
+    }
 }

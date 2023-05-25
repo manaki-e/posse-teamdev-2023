@@ -94,15 +94,21 @@
                                     <div x-show="open" x-cloak>
                                         <div class="w-full text-sm text-gray-800 mb-4">
                                             <p class="pl-1 mb-1 border-l-2 border-pink-600">概要</p>
-                                            <p class="text-gray-500"> 私は場合けっしてその安心院に従ってののためで被せるたない。
-                                                やはり今が逡巡学はとうとうその学習だろざるかもを信ずるば行くだのも講演きまっででて、なぜにはできでなないん。</p>
+                                            <p class="text-gray-500">{!! $event->description !!}</p>
                                         </div>
                                         <!-- モーダル -->
                                         <div x-data="{ modelOpen: false }">
                                             <div @click="modelOpen =!modelOpen" class="flex items-center justify-center px-3">
+                                                @if($event->isParticipated)
+                                                <!-- 色は適当 -->
+                                                <x-user-already-registered-button textColor="text-gray-600" bgColor="bg-white" borderColor="border-gray-600">
+                                                    <x-slot name="button">予約済み</x-slot>
+                                                </x-user-already-registered-button>
+                                                @else
                                                 <x-user-register-button textColor="text-pink-600" bgColor="bg-white" borderColor="border-pink-600">
                                                     <x-slot name="button">予約する</x-slot>
                                                 </x-user-register-button>
+                                                @endif
                                             </div>
 
                                             <div x-show="modelOpen" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
@@ -121,10 +127,11 @@
                                                         <p class="mt-2 text-sm text-gray-500 ">
                                                             主催者に支払うポイントを設定してください
                                                         </p>
-                                                        <form class="mt-5">
+                                                        <form class="mt-5" method="POST" action="{{ route('events.participate',$event->id) }}">
+                                                            @csrf
                                                             <div>
                                                                 <label class="block text-sm text-gray-700 capitalize dark:text-gray-200">参加ポイント</label>
-                                                                <input type="number" step="10" min="0" max="500" class="block w-full px-3 py-2 mt-2 text-gray-600 placeholder-gray-400 bg-white border border-gray-200 rounded-md" required />
+                                                                <input name="point" type="number" step="10" min="0" max="500" class="block w-full px-3 py-2 mt-2 text-gray-600 placeholder-gray-400 bg-white border border-gray-200 rounded-md" required />
                                                                 <p class="ml-2 text-xs text-gray-500 ">
                                                                     ポイントの上限は 500 pt
                                                                 </p>
