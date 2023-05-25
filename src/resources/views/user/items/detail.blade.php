@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 $user_info = Auth::user();
 
 // 貸し出し可能か判定→ボタン表示
-$unavailable_tag = $login_user_can_borrow_this_product ? '' : '<span class="absolute left-0 top-0 rounded-br-lg bg-red-500 px-3 py-1.5 text-sm uppercase tracking-wider text-white">貸出中</span>';
+$unavailable_tag = $product->japanese_status=='貸出可能' ? '' : '<span class="absolute left-0 top-0 rounded-br-lg bg-red-500 px-3 py-1.5 text-sm uppercase tracking-wider text-white">貸出中</span>';
 
 //アイテムの画像の合計枚数を取得
 $images_count = count($product->productImages);
