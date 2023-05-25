@@ -34,14 +34,6 @@ class Request extends Model
     {
         return $this->hasMany(RequestLike::class);
     }
-    public function getRequestType($id)
-    {
-        if ($id == self::PRODUCT_REQUEST_TYPE_ID) {
-            return 'アイテム';
-        } else {
-            return 'イベント';
-        }
-    }
     public function requestTags()
     {
         return $this->hasMany(RequestTag::class);
@@ -49,6 +41,14 @@ class Request extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    public function getRequestType($id)
+    {
+        if ($id == self::PRODUCT_REQUEST_TYPE_ID) {
+            return 'アイテム';
+        } else {
+            return 'イベント';
+        }
     }
     public function scopeResolvedRequests($query)
     {

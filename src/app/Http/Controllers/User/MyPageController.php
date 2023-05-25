@@ -9,6 +9,9 @@ use App\Http\Controllers\Controller;
 use App\Models\PointExchangeLog;
 use App\Models\Product;
 use App\Models\ProductDealLog;
+use App\Models\Request;
+use App\Models\RequestLike;
+use App\Models\Tag;
 
 //#82-主催したイベント情報
 class MyPageController extends Controller
@@ -140,16 +143,6 @@ class MyPageController extends Controller
         dd('配布ポイントの変動', $distribution_point_logs, '獲得ポイントの変動', $earned_point_logs);
         return view('user.mypage.point_history', compact('earned_point_logs', 'distribution_point_logs'));
     }
-    public function requests()
-    {
-        $user = Auth::user();
-        $requests = $user->requests()->with('requestTags.tag')->get()->map(function ($request) {
-            $request->type = $request->getRequestType($request->type_id);
-            return $request;
-        });
-        dd($requests);
-        return view('user.mypage.requests', compact('requests'));
-    }
     public function deals()
     {
         $user = Auth::user();
@@ -194,5 +187,50 @@ class MyPageController extends Controller
             ->get();
 
         return view('user.mypage.items-listed', compact('lendable_products', 'borrowed_products', 'applying_products'));
+    }
+
+    public function requestsPosted()
+    {
+        $user = Auth::user();
+        $resolved_requests = Request::where('user_id', $user->id)
+            ->resolvedRequests()
+            ->with('requestLikes')
+            ->with('requestTags.tag')
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->each(function ($request) {
+                $request->type = $request->getRequestType($request->type_id);
+            });
+
+        $unresolved_requests = Request::where('user_id', $user->id)
+            ->unresolvedRequests()
+            ->with('requestLikes')
+            ->with('requestTags.tag')
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->each(function ($request) {
+                $request->type = $request->getRequestType($request->type_id);
+            });
+
+        return view('user.mypage.requests-posted', compact('resolved_requests', 'unresolved_requests'));
+    }
+
+    public function requestsLiked()
+    {
+        $user = Auth::user();
+
+        $liked_requests = Request::whereHas('requestLikes', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })
+            ->with(['requestTags.tag', 'requestLikes'])
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->each(function ($request) {
+                $request->type = $request->getRequestType($request->type_id);
+            });
+
+        $product_request_type_id = Request::PRODUCT_REQUEST_TYPE_ID;
+
+        return view('user.mypage.requests-liked', compact('liked_requests', 'user', 'product_request_type_id'));
     }
 }

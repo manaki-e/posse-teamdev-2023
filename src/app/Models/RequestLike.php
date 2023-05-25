@@ -14,4 +14,12 @@ class RequestLike extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function request()
+    {
+        return $this->belongsTo(Request::class);
+    }
+    public function requestTags()
+    {
+        return $this->hasMany(RequestTag::class);
+    }
 }

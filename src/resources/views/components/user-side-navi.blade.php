@@ -120,7 +120,7 @@
         <!-- Sidebar ここまで -->
 
         <!-- main content -->
-        <main class="mx-auto w-full pt-3 overflow-x-hidden overflow-y-auto">
+        <main class="mx-auto w-full py-3 overflow-x-hidden overflow-y-auto">
             <div class="mx-4 mb-4">
                 @if (session('flush.message') && session('flush.alert_type') === 'info')
                 <div class="flex rounded-md bg-blue-50 p-4 text-sm text-blue-500" x-cloak x-show="showAlert" x-data="{ showAlert: true }">

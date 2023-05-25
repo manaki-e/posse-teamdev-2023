@@ -1,7 +1,7 @@
 <div x-data="{ showModal: false }" x-on:keydown.window.escape="showModal = false">
     <div class="flex justify-center">
         <a @click="showModal = true">
-            <button class="flex select-none items-center gap-3 rounded-lg bg-blue-500 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button" data-ripple-light="true">
+            <button class="flex select-none items-center gap-3 rounded-lg bg-peer-request py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-sm shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button" data-ripple-light="true">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true" class="h-5 w-5">
                     {{ $logo_path }}
                 </svg>
@@ -29,7 +29,7 @@
                         @csrf
                         {{ $method }}
                         {{ $form_slot }}
-                        <button type="submit" class="w-full rounded-lg border border-blue-500 bg-blue-500 px-4 py-2 text-center text-sm font-medium text-white shadow-sm transition-all hover:border-blue-700 hover:bg-blue-700 focus:ring focus:ring-blue-200 disabled:cursor-not-allowed disabled:border-blue-300 disabled:bg-blue-300">{{ $content }}</button>
+                        <button type="submit" class="w-full rounded-lg border border-peer-request bg-peer-request px-4 py-2 text-center text-sm font-medium text-white shadow-sm transition-all hover:border-green-700 hover:bg-green-700 focus:ring focus:ring-green-200 disabled:cursor-not-allowed disabled:border-green-300 disabled:bg-green-300">{{ $content }}</button>
                     </form>
                     <button @click="showModal = false" class="rounded-lg border border-gray-300 bg-white px-4 py-2 text-center text-sm font-medium text-gray-700 shadow-sm transition-all hover:bg-gray-100 focus:ring focus:ring-gray-100 disabled:cursor-not-allowed disabled:border-gray-100 disabled:bg-gray-50 disabled:text-gray-400">戻る</button>
                 </div>
