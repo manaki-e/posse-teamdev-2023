@@ -103,12 +103,13 @@
                         </a>
                         <!-- urlが/requestsまたは/requests/*の場合 -->
                         @elseif(request()->is('requests') || request()->is('requests/*'))
-                        <a href="{{ route('requests.index') }}" class="mx-4 my-4 text-center flex items-center">
+                        <!-- ログインしているユーザーが投稿したリクエスト画面に飛ぶ -->
+                        <a href="{{ route('items.index') }}" class="mx-4 my-4 text-center flex items-center">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M5 21C4.45 21 3.979 20.804 3.587 20.412C3.195 20.02 2.99934 19.5493 3 19V5C3 4.45 3.196 3.979 3.588 3.587C3.98 3.195 4.45067 2.99934 5 3H19C19.55 3 20.021 3.196 20.413 3.588C20.805 3.98 21.0007 4.45067 21 5V19C21 19.55 20.804 20.021 20.412 20.413C20.02 20.805 19.5493 21.0007 19 21H15V19H19V7H5V19H9V21H5ZM11 21V14.85L9.4 16.45L8 15L12 11L16 15L14.6 16.45L13 14.85V21H11Z" fill="black" />
                             </svg>
                             <p class="font-patua ml-2 p-1 text-base rounded hover:bg-gray-100">
-                                貸借履歴
+                                投稿したリクエスト
                             </p>
                         </a>
                         @endif
