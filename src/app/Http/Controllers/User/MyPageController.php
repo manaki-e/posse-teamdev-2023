@@ -10,7 +10,6 @@ use App\Models\PointExchangeLog;
 use App\Models\Product;
 use App\Models\ProductDealLog;
 use App\Models\Request;
-use App\Models\RequestLike;
 
 //#82-主催したイベント情報
 class MyPageController extends Controller
@@ -188,6 +187,7 @@ class MyPageController extends Controller
     public function eventsJoined()
     {
         $user = Auth::user();
+
         $before_held_joined_events = Event::whereHas('eventParticipants', function ($query) use ($user) {
             $query->where('user_id', $user->id)->where('cancelled_at', null);
         })
@@ -216,6 +216,20 @@ class MyPageController extends Controller
             ->get();
 
         return view('user.mypage.events-joined', compact('before_held_joined_events', 'after_held_joined_events', 'cancelled_joined_events'));
+    }
+
+    public function eventsLiked()
+    {
+        $user = Auth::user();
+
+        $liked_events = Event::whereHas('eventLikes', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })
+            ->with('eventLikes', 'eventParticipants.user', 'eventTags.tag')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('user.mypage.events-liked', compact('user', 'liked_events'));
     }
 
     public function requestsPosted()
