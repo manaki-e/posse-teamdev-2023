@@ -14,26 +14,19 @@
                     <section class="text-left w-full flex gap-8">
                         <div class="w-1/2">
                             <div class="mx-auto mt-6">
-                                <label for="file" class="mb-1 block text-sm font-medium text-gray-700">出品画像<span
-                                        class="text-red-600">*</span></label>
-                                <label
-                                    class="relative flex w-full cursor-pointer appearance-none items-center justify-center rounded-md border-2 border-dashed border-gray-200 p-6 transition-all hover:border-gray-300 overflow-x-scroll">
+                                <label for="file" class="mb-1 block text-sm font-medium text-gray-700">出品画像<span class="text-red-600">*</span></label>
+                                <label class="relative flex w-full cursor-pointer appearance-none items-center justify-center rounded-md border-2 border-dashed border-gray-200 p-6 transition-all hover:border-gray-300 overflow-x-scroll">
                                     <div class="space-y-1 text-center">
-                                        <div
-                                            class="mx-auto inline-flex h-10 w-10 items-center justify-center rounded-full bg-gray-100">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                stroke-width="1.5" stroke="currentColor" class="h-6 w-6 text-gray-500">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" />
+                                        <div class="mx-auto inline-flex h-10 w-10 items-center justify-center rounded-full bg-gray-100">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6 text-gray-500">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" />
                                             </svg>
                                         </div>
-                                        <div class="text-gray-600"><a href="#"
-                                                class="font-medium text-primary-500 hover:text-primary-700">クリックして追加</a>
+                                        <div class="text-gray-600"><a href="#" class="font-medium text-primary-500 hover:text-primary-700">クリックして追加</a>
                                             または ファイルをドロップ</div>
                                         <p class="text-sm text-gray-500">SVG, PNG, JPG or GIF (max. 800x400px)</p>
                                     </div>
-                                    <input id="file" type="file" name="product_images[]" class="sr-only" multiple required
-                                        onchange="preview(this)" />
+                                    <input id="file" type="file" name="product_images[]" class="sr-only" multiple required onchange="checkFileSize(this),preview(this)" />
                                     <div class="preview-area "></div>
                                 </label>
                             </div>
@@ -45,21 +38,16 @@
                                     @foreach ($product_tags as $index => $tag)
                                     <div class="min-w-max m-1 border rounded border-gray-200">
                                         <div class="flex items-center px-3">
-                                            <input id="tag_{{ $index }}" type="checkbox" value="{{ $tag->id }}" name="product_tags[]"
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
-                                            <label for="tag_{{ $index }}"
-                                                class="w-auto py-3 pl-1 text-sm font-medium text-gray-900">{{ $tag->name }}</label>
+                                            <input id="tag_{{ $index }}" type="checkbox" value="{{ $tag->id }}" name="product_tags[]" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
+                                            <label for="tag_{{ $index }}" class="w-auto py-3 pl-1 text-sm font-medium text-gray-900">{{ $tag->name }}</label>
                                         </div>
                                     </div>
                                     @endforeach
                                 </div>
-                                <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">アイテムの状態<span
-                                        class="text-red-600">*</span></h4>
+                                <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">アイテムの状態<span class="text-red-600">*</span></h4>
                                 <div class="mb-4 border border-gray-300 rounded-md">
-                                    <select name="condition" id="example1"
-                                        class="p-1 block w-full rounded-md border-gray-300 shadow-sm text-lg text-gray-500"
-                                        required>
-                                        <option >選択してください</option>
+                                    <select name="condition" id="example1" class="p-1 block w-full rounded-md border-gray-300 shadow-sm text-lg text-gray-500" required>
+                                        <option>選択してください</option>
                                         <option value="1">新品・未使用</option>
                                         <option value="2">未使用に近い</option>
                                         <option value="3">目立った傷や汚れなし</option>
@@ -73,21 +61,17 @@
 
                         <section class="my-6 w-1/2">
                             <h3 class="mb-2 text-xl text-gray-600 font-extrabold border-b border-gray-500">アイテム名と説明</h3>
-                            <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">アイテム名<span
-                                    class="text-red-600">*</span></h4>
+                            <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">アイテム名<span class="text-red-600">*</span></h4>
                             <div class="mx-auto">
-                                <input name="title" type="text" class="p-1 block w-full rounded-md border border-gray-300"
-                                    required />
+                                <input name="title" type="text" class="p-1 block w-full rounded-md border border-gray-300" required />
                             </div>
                             <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">アイテムの説明</h4>
                             <div class="mx-auto">
-                                <textarea name="description" class="p-1 block w-full rounded-md border border-gray-300"
-                                    rows="3"></textarea>
+                                <textarea name="description" class="p-1 block w-full rounded-md border border-gray-300" rows="3"></textarea>
                             </div>
                             <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">関連するリクエスト</h4>
                             <div class="mb-4 border border-gray-300 rounded-md">
-                                <select name="request_id" id="example1"
-                                    class="p-1 block w-full rounded-md border-gray-300 shadow-sm text-lg text-gray-500">
+                                <select name="request_id" id="example1" class="p-1 block w-full rounded-md border-gray-300 shadow-sm text-lg text-gray-500">
                                     <option value="">なし</option>
                                     @foreach($requests as $request)
                                     @if(isset($chosen_request_id)&&$chosen_request_id==$request->id)
@@ -111,30 +95,46 @@
     </x-slot>
 </x-user-app>
 <style>
-.preview-area {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: flex;
-    overflow-x: scroll;
-}
+    .preview-area {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: flex;
+        overflow-x: scroll;
+    }
 
-.preview-area img {
-    height: 100%;
-    padding: 0 1rem;
-    object-fit: contain;
-    background-color: white;
-    border: 0.5px solid gray;
-}
+    .preview-area img {
+        height: 100%;
+        padding: 0 1rem;
+        object-fit: contain;
+        background-color: white;
+        border: 0.5px solid gray;
+    }
 </style>
 <script>
-function preview(elem, output = '') {
-    Array.from(elem.files).map((file) => {
-        const blobUrl = window.URL.createObjectURL(file)
-        output += `<img src=${blobUrl}>`
-    })
-    elem.nextElementSibling.innerHTML = output
-}
+    function preview(elem, output = '') {
+        Array.from(elem.files).map((file) => {
+            const blobUrl = window.URL.createObjectURL(file)
+            output += `<img src=${blobUrl}>`
+        })
+        elem.nextElementSibling.innerHTML = output
+    }
+
+    function checkFileSize(input) {
+        const maxSize = 1 * 1024 * 1024; // 1MB in bytes
+        const files = input.files;
+        for (let i = 0; i < files.length; i++) {
+            if (files[i].size > maxSize) {
+                // File size exceeds the maximum limit
+                alert('1MB以下の画像を選択してください.');
+                input.value = null; // Clear the file input
+                return;
+            }
+        }
+
+        // Proceed with file preview or submission
+        preview(input);
+    }
 </script>
