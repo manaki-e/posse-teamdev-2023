@@ -18,7 +18,7 @@
                     </svg>
                 </button>
                 <!-- Product -->
-                <a href="items.index">
+                <a href="route{{items.index}}">
                     <div class="pt-5 text-blue-400" :class=" (isSidebarOpen) ? 'flex flex-row' : 'text-center'">
                         <div class="ml-4 text-center flex items-center">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="stroke-current">
