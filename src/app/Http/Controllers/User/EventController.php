@@ -22,10 +22,10 @@ class EventController extends Controller
     public function index()
     {
         $user_id = Auth::id();
-        $events = Event::withCount('eventLikes')->withCount(['eventParticipant',function($query){
+        $events = Event::withCount('eventLikes')->withCount(['eventParticipants'=>function($query){
             $query->where('canceled_at',null);
-        }])->with(['user', 'eventTags.tag', 'eventLikes.user'])->with(['eventParticipants.user',function($query){
-            $query->where('canceled_at',null);
+        }])->with(['user', 'eventTags.tag', 'eventLikes.user'])->with(['eventParticipants'=>function($query){
+            $query->where('canceled_at',null)->with('user');
         }])->get()->map(function ($event) use ($user_id) {
             $event->isLiked = $event->eventLikes->contains('user_id', $user_id);
             $event->isParticipated = $event->eventParticipants->contains('user_id', $user_id);
