@@ -34,7 +34,10 @@ class ItemController extends Controller
             }
             return $product;
         })->sortByDesc('created_at');
-        return view('user.items.index', compact('products', 'japanese_product_statuses', 'product_tags'));
+        //statuses for filter
+        unset($japanese_product_statuses[4]);
+        $filter_statuses=$japanese_product_statuses;
+        return view('user.items.index', compact('products', 'japanese_product_statuses', 'product_tags','filter_statuses'));
     }
 
     /**

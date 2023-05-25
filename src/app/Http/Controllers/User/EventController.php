@@ -28,7 +28,7 @@ class EventController extends Controller
             return $event;
         });
         $tags = Tag::eventTags()->get();
-        return view('backend_test.events', compact('events', 'tags'));
+        return view('user.events.index', compact('events', 'tags'));
     }
 
     /**
