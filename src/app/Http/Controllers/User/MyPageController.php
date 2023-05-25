@@ -165,21 +165,20 @@ class MyPageController extends Controller
             ->where('completed_at', null)
             ->where('cancelled_at', null)
             ->with(['eventLikes', 'eventParticipants.user', 'eventTags.tag'])
-            ->withSum('eventParticipants', 'point')
             ->orderBy('created_at', 'desc')
             ->get();
 
         $after_held_events = Event::where('user_id', $user->id)
             ->where('completed_at', '!=', null)
+            ->where('cancelled_at', null)
             ->with(['eventLikes', 'eventParticipants.user', 'eventTags.tag'])
-            ->withSum('eventParticipants', 'point')
             ->orderBy('created_at', 'desc')
             ->get();
 
         $cancelled_events = Event::where('user_id', $user->id)
+            ->where('completed_at', null)
             ->where('cancelled_at', '!=', null)
             ->with(['eventLikes', 'eventParticipants.user', 'eventTags.tag'])
-            ->withSum('eventParticipants', 'point')
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -189,14 +188,34 @@ class MyPageController extends Controller
     public function eventsJoined()
     {
         $user = Auth::user();
-        $joined_events = Event::whereHas('eventParticipants', function ($query) use ($user) {
-            $query->where('user_id', $user->id);
+        $before_held_joined_events = Event::whereHas('eventParticipants', function ($query) use ($user) {
+            $query->where('user_id', $user->id)->where('cancelled_at', null);
         })
+            ->where('completed_at', null)
+            ->where('cancelled_at', null)
             ->with('eventLikes', 'eventParticipants.user', 'eventTags.tag')
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('user.mypage.events-joined', compact('event_joins'));
+        $after_held_joined_events = Event::whereHas('eventParticipants', function ($query) use ($user) {
+            $query->where('user_id', $user->id)->where('cancelled_at', null);
+        })
+            ->where('completed_at', '!=', null)
+            ->where('cancelled_at', null)
+            ->with(['eventLikes', 'eventParticipants.user', 'eventTags.tag'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $cancelled_joined_events = Event::whereHas('eventParticipants', function ($query) use ($user) {
+            $query->where('user_id', $user->id)->where('cancelled_at', null);
+        })
+            ->where('completed_at', null)
+            ->where('cancelled_at', '!=', null)
+            ->with(['eventLikes', 'eventParticipants.user', 'eventTags.tag'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('user.mypage.events-joined', compact('before_held_joined_events', 'after_held_joined_events', 'cancelled_joined_events'));
     }
 
     public function requestsPosted()

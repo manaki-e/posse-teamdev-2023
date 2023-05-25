@@ -71,7 +71,7 @@
                                 </x-nav-link>
                             </li>
                             <li>
-                                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                                <x-nav-link :href="route('mypage.events.joined')" :active="request()->routeIs('mypage.events.joined')">
                                     {{ __('参加したイベント') }}
                                 </x-nav-link>
                             </li>
