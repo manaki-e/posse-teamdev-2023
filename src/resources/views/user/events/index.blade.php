@@ -63,11 +63,11 @@
                                             <!-- ユーザーアイコン -->
                                             <div class="w-1/2 flex items-end justify-end -space-x-1">
                                                 @foreach ($event->eventParticipants as $event_participant)
-                                                {{ dd($event_participant) }}
                                                 <div x-data="{ tooltip: false }" x-on:mouseover="tooltip = true" x-on:mouseleave="tooltip = false" class="h-8 w-8 relative">
-                                                    <img class="h-full w-full rounded-full object-cover object-center ring ring-white" src="{{ $event_participant->user->icon }}" alt="" />
+                                                    <img class="h-full w-full rounded-full object-cover object-center ring ring-white" src="{{ $event_participant->user->icon }}" alt="icon" />
                                                     <div x-cloak x-show.transition.origin.top="tooltip" class="absolute w-20">{{ $event_participant->user->name }}</div>
-                                                    @endforeach
+                                                </div>
+                                                @endforeach
                                             </div>
                                             <div class="z-30 flex bg-gray-200 h-8 w-8 items-center justify-center overflow-hidden rounded-full ring ring-white">
                                                 <button id="" class="h-full w-full inline-flex items-center justify-center rounded-full text-gray-700 shadow-sm align-middle">
@@ -84,7 +84,8 @@
                                                     </svg>
                                                 </button>
                                                 <div class="mt-3">
-                                                    <p class="text-xs">11</p>
+                                                    @if($event)
+                                                    <p class="text-xs">{{ dd($event->event_likes_count) }}</p>
                                                 </div>
                                             </div>
                                         </div>
