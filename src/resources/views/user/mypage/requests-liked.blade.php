@@ -32,7 +32,7 @@
                             </x-slot:button>
                             @else
                             <x-slot:button>
-                                <a href="{{ $request -> type_id == $product_request_type_id ? route('items.create-with-request', $request -> id) : route('events.create-with-request', $request ->id) }}" class="flex select-none items-center gap-3 rounded-lg bg-peer-request py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-yellow-500/20 transition-all hover:shadow-lg hover:shadow-yellow-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button" data-ripple-light="true">
+                                <a href="{{ $request -> type_id == $product_request_type_id ? route('items.create-with-request', $request -> id) : route('events.create-with-request', $request ->id) }}" class="flex select-none items-center gap-3 rounded-lg bg-peer-request py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-sm shadow-yellow-500/20 transition-all hover:shadow-lg hover:shadow-yellow-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button" data-ripple-light="true">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
