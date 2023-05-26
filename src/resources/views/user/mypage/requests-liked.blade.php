@@ -58,6 +58,8 @@
                     @foreach ($resolved_liked_requests as $request)
                     <li>
                         <x-mypage-request-list>
+                            <x-slot:id>{{ $request->id }}</x-slot:id>
+                            <x-slot:fill>@if($request->isLiked) red @else none @endif</x-slot:fill>
                             <x-slot:title>{{ $request -> title }}</x-slot:title>
                             <x-slot:description>{{ $request -> description }}</x-slot:description>
                             <x-slot:tag>
@@ -66,7 +68,7 @@
                                 @endforeach
                             </x-slot:tag>
                             <x-slot:date>{{ date( 'Y.m.d', strtotime( $request -> created_at ) ) }}</x-slot:date>
-                            <x-slot:likes>{{ $request -> request_likes_count }}</x-slot:likes>
+                            <x-slot:likes>{{ $request->request_likes_count }}</x-slot:likes>
                             <x-slot:user_icon>{{ $request -> user -> icon }}</x-slot:user_icon>
                             <x-slot:user_name>{{ $request -> user -> name }}</x-slot:user_name>
                             <x-slot:status>解決済み</x-slot:status>

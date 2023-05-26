@@ -287,28 +287,30 @@ class MyPageController extends Controller
             ->resolvedRequests()
             ->with('requestLikes')
             ->with('requestTags.tag')
+            ->withCount('requestLikes')
             ->orderBy('created_at', 'desc')
             ->get()
             ->each(function ($request) {
                 $request->type = $request->getRequestType($request->type_id);
-                if($request->requestLikes->contains('user_id', Auth::id())){
+                if ($request->requestLikes->contains('user_id', Auth::id())) {
                     $request->isLiked = 1;
-                }else{
+                } else {
                     $request->isLiked = 0;
                 }
             });
 
-            $unresolved_requests = Request::where('user_id', $user->id)
+        $unresolved_requests = Request::where('user_id', $user->id)
             ->unresolvedRequests()
             ->with('requestLikes')
             ->with('requestTags.tag')
+            ->withCount('requestLikes')
             ->orderBy('created_at', 'desc')
             ->get()
             ->each(function ($request) {
                 $request->type = $request->getRequestType($request->type_id);
-                if($request->requestLikes->contains('user_id', Auth::id())){
+                if ($request->requestLikes->contains('user_id', Auth::id())) {
                     $request->isLiked = 1;
-                }else{
+                } else {
                     $request->isLiked = 0;
                 }
             });
@@ -326,10 +328,16 @@ class MyPageController extends Controller
             ->where('completed_at', null)
             ->where('user_id', '!=', $user->id)
             ->with(['requestTags.tag', 'requestLikes'])
+            ->withCount('requestLikes')
             ->orderBy('created_at', 'desc')
             ->get()
             ->each(function ($request) {
                 $request->type = $request->getRequestType($request->type_id);
+                if ($request->requestLikes->contains('user_id', Auth::id())) {
+                    $request->isLiked = 1;
+                } else {
+                    $request->isLiked = 0;
+                }
             });
 
         $resolved_liked_requests = Request::whereHas('requestLikes', function ($query) use ($user) {
@@ -338,12 +346,17 @@ class MyPageController extends Controller
             ->where('completed_at', '!=', null)
             ->where('user_id', '!=', $user->id)
             ->with(['requestTags.tag', 'requestLikes'])
+            ->withCount('requestLikes')
             ->orderBy('created_at', 'desc')
             ->get()
             ->each(function ($request) {
                 $request->type = $request->getRequestType($request->type_id);
+                if ($request->requestLikes->contains('user_id', Auth::id())) {
+                    $request->isLiked = 1;
+                } else {
+                    $request->isLiked = 0;
+                }
             });
-
         $product_request_type_id = Request::PRODUCT_REQUEST_TYPE_ID;
 
         return view('user.mypage.requests-liked', compact('user', 'product_request_type_id', 'unresolved_liked_requests', 'resolved_liked_requests'));
