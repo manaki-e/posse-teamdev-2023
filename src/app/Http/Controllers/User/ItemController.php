@@ -93,6 +93,11 @@ class ItemController extends Controller
         $product->japanese_status = Product::JAPANESE_STATUS[$product->status];
         $product->japanese_condition = Product::CONDITION[$product->condition];
         $product->description = $product->changeDescriptionReturnToBreakTag($product->description);
+        if ($product->productLikes->contains('user_id', Auth::id())) {
+            $product->isLiked = 1;
+        } else {
+            $product->isLiked = 0;
+        }
         // このproduct_idをもつproduct_deal_logの最後のレコードのuser_idがログインユーザーの場合表示
         $last_product_deal_log = $product->productDealLogs->last();
         $login_user_can_borrow_this_product = $product->status === Product::STATUS['available'] && !$product->productBelongsToLoginUser();
