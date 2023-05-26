@@ -1,10 +1,3 @@
-<?php
-
-// $product_tags = ['PC', 'マウス', 'ディスプレイ', 'スマホ', 'ヘッドホン', 'タブレット'];
-// $event_tags = ['勉強会', 'スポーツ', '娯楽'];
-
-?>
-
 <x-user-app>
     <x-slot name="header_slot">
         <x-user-header textColor="text-peer-request" bgColor="bg-peer-request">
@@ -28,9 +21,9 @@
                             <div class="mx-auto">
                                 <input name="title" type="text" class="p-1 block w-full rounded-md border border-gray-300" required />
                             </div>
-                            <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">リクエストの概要</h4>
+                            <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">リクエストの概要<span class="text-red-600">*</span></h4>
                             <div class="mx-auto">
-                                <textarea name="description" class="p-1 block w-full rounded-md border border-gray-300" rows="3"></textarea>
+                                <textarea name="description" class="p-1 block w-full rounded-md border border-gray-300" rows="3" required></textarea>
                             </div>
                         </section>
                         <section class="my-6 w-1/2">
