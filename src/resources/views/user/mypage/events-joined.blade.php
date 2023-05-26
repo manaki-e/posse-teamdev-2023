@@ -38,7 +38,8 @@
                                     <x-user-tag>{{ $tag->tag->name }}</x-user-tag>
                                     @endforeach
                                 </x-slot:tag>
-                                <x-slot:date>{{ $event  -> date ? date( 'Y.m.d', strtotime( $event  -> date ) ) : '未定' }}</x-slot:date>
+                                <x-slot:start_date>{{ $event  -> start_date ? date( 'Y.m.d', strtotime( $event  -> date ) ) : '未定' }}</x-slot:start_date>
+                                <x-slot:end_date>{{ $event  -> end_date ? date( 'Y.m.d', strtotime( $event  -> date ) ) : '未定' }}</x-slot:end_date>
                                 <x-slot:style>{{ $event -> style ?? '未定' }}</x-slot:style>
                                 <x-slot:participants_count>{{ count($event -> eventParticipants) }}</x-slot:participants_count>
                                 <x-slot:create_date>{{ date( 'Y.m.d', strtotime( $event  -> created_at ) ) }}</x-slot:create_date>
@@ -76,7 +77,8 @@
                                     <x-user-tag>{{ $tag->tag->name }}</x-user-tag>
                                     @endforeach
                                 </x-slot:tag>
-                                <x-slot:date>{{ $event  -> date ? date( 'Y.m.d', strtotime( $event  -> date ) ) : '未定' }}</x-slot:date>
+                                <x-slot:start_date>{{ $event  -> start_date ? date( 'Y.m.d', strtotime( $event  -> start_date ) ) : '未定' }}</x-slot:start_date>
+                                <x-slot:end_date>{{ $event  -> end_date ? date( 'Y.m.d', strtotime( $event  -> end_date ) ) : '未定' }}</x-slot:end_date>
                                 <x-slot:style>{{ $event -> style ?? '未定' }}</x-slot:style>
                                 <x-slot:participants_count>{{ count($event -> eventParticipants) }}</x-slot:participants_count>
                                 <x-slot:create_date>{{ date( 'Y.m.d', strtotime( $event  -> created_at ) ) }}</x-slot:create_date>
@@ -103,7 +105,8 @@
                                     <x-user-tag>{{ $tag->tag->name }}</x-user-tag>
                                     @endforeach
                                 </x-slot:tag>
-                                <x-slot:date>{{ $event  -> date ? date( 'Y.m.d', strtotime( $event  -> date ) ) : '未定' }}</x-slot:date>
+                                <x-slot:start_date>{{ $event  -> start_date ? date( 'Y.m.d H:i', strtotime( $event  -> start_date ) ) : '未定' }}</x-slot:start_date>
+                                <x-slot:end_date>{{ $event  -> end_date ? date( 'Y.m.d H:i', strtotime( $event  -> end_date ) ) : '未定' }}</x-slot:end_date>
                                 <x-slot:style>{{ $event -> style ?? '未定' }}</x-slot:style>
                                 <x-slot:participants_count>{{ count($event -> eventParticipants) }}</x-slot:participants_count>
                                 <x-slot:create_date>{{ date( 'Y.m.d', strtotime( $event  -> created_at ) ) }}</x-slot:create_date>

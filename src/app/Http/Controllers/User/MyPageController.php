@@ -165,21 +165,45 @@ class MyPageController extends Controller
             ->where('cancelled_at', null)
             ->with(['eventLikes', 'eventParticipants.user', 'eventTags.tag'])
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->get()
+            ->map(function ($event) {
+                if ($event->eventLikes->contains('user_id', Auth::id())) {
+                    $event->isLiked = 1;
+                } else {
+                    $event->isLiked = 0;
+                }
+                return $event;
+            });
 
         $after_held_events = Event::where('user_id', $user->id)
             ->where('completed_at', '!=', null)
             ->where('cancelled_at', null)
             ->with(['eventLikes', 'eventParticipants.user', 'eventTags.tag'])
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->get()
+            ->map(function ($event) {
+                if ($event->eventLikes->contains('user_id', Auth::id())) {
+                    $event->isLiked = 1;
+                } else {
+                    $event->isLiked = 0;
+                }
+                return $event;
+            });
 
         $cancelled_events = Event::where('user_id', $user->id)
             ->where('completed_at', null)
             ->where('cancelled_at', '!=', null)
             ->with(['eventLikes', 'eventParticipants.user', 'eventTags.tag'])
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->get()
+            ->map(function ($event) {
+                if ($event->eventLikes->contains('user_id', Auth::id())) {
+                    $event->isLiked = 1;
+                } else {
+                    $event->isLiked = 0;
+                }
+                return $event;
+            });
 
         return view('user.mypage.events-organized', compact('before_held_events', 'after_held_events', 'cancelled_events'));
     }
