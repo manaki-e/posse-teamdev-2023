@@ -29,6 +29,11 @@ class EventController extends Controller
         }])->get()->map(function ($event) use ($user_id) {
             $event->isLiked = $event->eventLikes->contains('user_id', $user_id);
             $event->isParticipated = $event->eventParticipants->contains('user_id', $user_id);
+            if(empty($event->completed_at)){
+                $event->isCompleted = Event::COMPLETED_STATUSES[0];
+            }else{
+                $event->isCompleted = Event::COMPLETED_STATUSES[1];
+            }
             if (empty($event->date)) {
                 $event->show_date = '未定';
             } else {
@@ -39,7 +44,8 @@ class EventController extends Controller
             return $event;
         })->sortByDesc('created_at');
         $tags = Tag::eventTags()->get();
-        return view('user.events.index', compact('events', 'tags'));
+        $completed_statuses=Event::COMPLETED_STATUSES;
+        return view('user.events.index', compact('events', 'tags','completed_statuses'));
     }
 
     /**

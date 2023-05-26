@@ -14,6 +14,19 @@
             <div class="mx-auto max-w-5xl">
                 <x-user-search-box bgColor="bg-pink-600">
                     <x-user-search-event>
+                        <x-slot name="filter_by_completed">
+                            <x-user-search-radio>
+                                <x-slot name="radio_name">開催状況</x-slot>
+                                <x-slot name="radios">
+                                    @foreach($completed_statuses as $index => $status)
+                                    <div class="flex items-center mb-4">
+                                        <input id="box-{{ $index }}" type="radio" value="{{ $status }}" name="completed" class="w-4 h-4 bg-gray-100 border-gray-300 filter-input">
+                                        <label for="box-{{ $index }}" class="ml-2 text-sm font-medium text-gray-900">{{ $status }}</label>
+                                    </div>
+                                    @endforeach
+                                </x-slot>
+                            </x-user-search-radio>
+                        </x-slot>
                         <x-slot name="filter_by_tags">
                             <x-user-search-tags>
                                 <x-slot name="category_tags">
@@ -33,7 +46,7 @@
                 <div class="mx-auto max-w-5xl my-4">
                     <div class="mx-auto grid grid-cols-2 gap-4">
                         @foreach($events as $event)
-                        <div x-data="{ open: false }" data-tag="{{ $event->data_tag  }}" class=" col-span-1 filter-target">
+                        <div x-data="{ open: false }" data-completed="{{ $event->isCompleted }}" data-tag="{{ $event->data_tag  }}" class=" col-span-1 filter-target">
                             <div class="rounded-lg border border-gray-200 bg-white shadow-sm">
                                 <div class="rounded-lg text-xs shadow-md p-4 pb-1 text-gray-500 bg-white">
                                     <section>
@@ -56,6 +69,7 @@
                                             <div class="w-1/2 space-y-1 flex flex-col text-sm">
                                                 <p>日程：{{ $event->show_date }}</p>
                                                 <p>形態：{{ $event->location }}</p>
+                                                <p>開催状況：{{ $event->isCompleted }}</p>
                                                 <p>主催：
                                                     <!-- プロフィール参照機能できたら代入 -->
                                                     <span><a href="#" class="hover:border-gray-400 border-transparent border-b">{{ $event->user->name }}</a></span>
@@ -175,6 +189,14 @@
     // Add event listener to each filter button
     filterInputs.forEach(input => {
         input.addEventListener('click', () => {
+            //選択したcompletedを変数にいれる
+            let checkedCompleted = document.querySelector('input[name=completed]:checked');
+            let checkedCompletedValue;
+            if (checkedCompleted === null) {
+                checkedCompletedValue = null;
+            } else {
+                checkedCompletedValue = checkedCompleted.value;
+            }
             // 選択したタグを配列に入れる
             let checkedTags = Array.from(document.querySelectorAll('input[name=tag]:checked'));
             let checkedTagsValues = checkedTags.map(e => parseInt(e.value));
@@ -194,6 +216,10 @@
                 let tagsNotChosen = checkedTagsValues.length === 0;
                 //インプットタグとターゲットタグの共通項が空か判定
                 let commonTagsEmpty = commonTags.length === 0;
+                //ターゲットcompletedとcompletedラジオの値が一致するか判定
+                let completedEqual = filterTarget.dataset.completed === checkedCompletedValue;
+                //completedラジオが空か判定
+                let completedNotChosen = checkedCompletedValue === null;
 
                 //共通タグ、選択したタグ、ターゲットタグをコンソールに表示＝＞デバッグ用
                 console.log(commonTags, checkedTagsValues, targetTags);
@@ -214,7 +240,13 @@
                 else if (!commonTagsEmpty) {
                     filterByTags = true;
                 }
-                if (filterByTags) {
+                if (completedNotChosen) {
+                    if (filterByTags) {
+                        filterTarget.style.display = 'block';
+                    } else {
+                        filterTarget.style.display = 'none';
+                    }
+                } else if (completedEqual && filterByTags) {
                     filterTarget.style.display = 'block';
                 } else {
                     filterTarget.style.display = 'none';
