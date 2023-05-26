@@ -91,7 +91,7 @@
                                             </div>
                                         </div>
                                         <!-- <div class="w-full"> -->
-                                        <div class="likes relative top-0 right-0" data-request_id="{{ $request->id }}" data-is_liked="{{ $request->isLiked }}">
+                                        <div class="likes relative top-0 right-0" data-event_id="{{ $event->id }}" data-is_liked="{{ $event->isLiked }}">
                                             <div class="flex relative">
                                                 <button class="text-gray-500">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="@if($event->isLiked) red @else none @endif" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -99,7 +99,7 @@
                                                     </svg>
                                                 </button>
                                                 <div class="mt-3">
-                                                    <p class="text-xs">{{ $event->event_likes_count }}</p>
+                                                    <p class="text-xs like-count">{{ $event->event_likes_count }}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -255,18 +255,18 @@
         });
     });
     let likes = document.querySelectorAll('.likes');
-    //foreach likes, if clicked, change color and send ajax request to route('requests.like') or route('requests.unlike')
+    //foreach likes, if clicked, change color and send ajax event to route('events.like') or route('events.unlike')
     likes.forEach(like => {
         like.addEventListener('click', () => {
             //get isLiked data from element
             let isLiked = like.dataset.is_liked;
-            //get request id from element
-            let requestId = like.dataset.request_id;
+            //get event id from element
+            let eventId = like.dataset.event_id;
             //get like count element
             let likeCount = like.querySelector('.like-count');
-            //if isLiked is true, send unlike request
+            //if isLiked is true, send unlike event
             if (isLiked === '1') {
-                axios.post('/requests/' + requestId + '/unlike')
+                axios.post('/events/' + eventId + '/unlike')
                     .then(function(response) {
                         //change isLiked data to false
                         like.setAttribute('data-is_liked', 0);
@@ -279,9 +279,9 @@
                         console.log(error);
                     });
             }
-            //if isLiked is false, send like request
+            //if isLiked is false, send like event
             else {
-                axios.post('/requests/' + requestId + '/like')
+                axios.post('/events/' + eventId + '/like')
                     .then(function(response) {
                         //change isLiked data to true
                         like.setAttribute('data-is_liked', 1);

@@ -42,21 +42,21 @@ Route::middleware('auth')->group(function () {
     Route::post('/items/{item}/return', [ItemController::class, 'return'])->name('items.return');
     Route::post('/items/{item}/receive', [ItemController::class, 'receive'])->name('items.receive');
     Route::get('/items/create/{chosen_request_id}', [ItemController::class, 'createWithRequest'])->name('items.create-with-request');
-    Route::post('/items/{item}/like', [ItemController::class,'like'])->name('items.like');
-    Route::post('/items/{item}/unlike', [ItemController::class,'unlike'])->name('items.unlike');
+    Route::post('/items/{item}/like', [ItemController::class, 'like'])->name('items.like');
+    Route::post('/items/{item}/unlike', [ItemController::class, 'unlike'])->name('items.unlike');
 
     Route::resource('/events', EventController::class);
     Route::post('/events/{event}/held', [EventController::class, 'held'])->name('events.held');
     Route::post('/events/{event}/participate', [EventController::class, 'participate'])->name('events.participate');
     Route::post('/events/{event}/cancel', [EventController::class, 'cancel'])->name('events.cancel');
     Route::get('/events/create/{chosen_request_id}', [EventController::class, 'createWithRequest'])->name('events.create-with-request');
-    Route::post('/events/{event}/like', [EventController::class,'like'])->name('events.like');
-    Route::post('/events/{event}/unlike', [EventController::class,'unlike'])->name('events.unlike');
+    Route::post('/events/{event}/like', [EventController::class, 'like'])->name('events.like');
+    Route::post('/events/{event}/unlike', [EventController::class, 'unlike'])->name('events.unlike');
 
-    Route::resource('/requests',RequestController::class);
+    Route::resource('/requests', RequestController::class);
     Route::post('/requests/{request}/resolve', [RequestController::class, 'resolve'])->name('requests.resolve');
-    Route::post('/requests/{request}/like', [RequestController::class,'like'])->name('requests.like');
-    Route::post('/requests/{request}/unlike', [RequestController::class,'unlike'])->name('requests.unlike');
+    Route::post('/requests/{request}/like', [RequestController::class, 'like'])->name('requests.like');
+    Route::post('/requests/{request}/unlike', [RequestController::class, 'unlike'])->name('requests.unlike');
 
     Route::resource('/point-exchange', PointExchangeController::class);
     Route::put('/point-exchanges/{id}', [PointExchangeController::class, 'updateApproved'])->name('point-exchanges.update-approved');

@@ -239,15 +239,15 @@ class EventController extends Controller
     }
     public function like($id)
     {
-        EventLike::create([
-            'request_id' => $id,
-            'user_id' => Auth::id()
-        ]);
-        return response()->json(['success' => true]);
+        $event_like_instance = new EventLike();
+        $event_like_instance->event_id = $id;
+        $event_like_instance->user_id = Auth::id();
+        $event_like_instance->save();
+        return response()->json(['message' => 'liked', 'event' => EventLike::where('event_id', $id)->where('user_id', Auth::id())->get()]);
     }
     public function unlike($id)
     {
-        EventLike::where('request_id', $id)->where('user_id', Auth::id())->delete();
-        return response()->json(['success' => true]);
+        EventLike::where('event_id', $id)->where('user_id', Auth::id())->delete();
+        return response()->json(['message' => 'unliked', 'event' => EventLike::where('event_id', $id)->where('user_id', Auth::id())->get()]);
     }
 }
