@@ -22,13 +22,30 @@ class EventController extends Controller
     public function index()
     {
         $user_id = Auth::id();
-        $events = Event::withCount(['eventParticipants', 'eventLikes'])->with(['user', 'eventParticipants.user', 'eventTags.tag', 'eventLikes.user'])->get()->map(function ($event) use ($user_id) {
+        $events = Event::withCount('eventLikes')->withCount(['eventParticipants' => function ($query) {
+            $query->where('canceled_at', null);
+        }])->with(['user', 'eventTags.tag', 'eventLikes.user'])->with(['eventParticipants' => function ($query) {
+            $query->where('canceled_at', null)->with('user');
+        }])->get()->map(function ($event) use ($user_id) {
             $event->isLiked = $event->eventLikes->contains('user_id', $user_id);
             $event->isParticipated = $event->eventParticipants->contains('user_id', $user_id);
+            if (empty($event->completed_at)) {
+                $event->isCompleted = Event::COMPLETED_STATUSES[0];
+            } else {
+                $event->isCompleted = Event::COMPLETED_STATUSES[1];
+            }
+            if (empty($event->date)) {
+                $event->show_date = '未定';
+            } else {
+                $event->show_date = $event->date->format('Y.m.d');
+            }
+            $event->data_tag = '[' . implode(',', $event->eventTags->pluck('tag_id')->toArray()) . ']';
+            $event->description = $event->changeDescriptionReturnToBreakTag($event->description);
             return $event;
-        });
+        })->sortByDesc('created_at');
         $tags = Tag::eventTags()->get();
-        return view('user.events.index', compact('events', 'tags'));
+        $completed_statuses = Event::COMPLETED_STATUSES;
+        return view('user.events.index', compact('events', 'tags', 'completed_statuses'));
     }
 
     /**
@@ -42,7 +59,8 @@ class EventController extends Controller
         $requests = ModelsRequest::unresolvedRequests()->eventRequests()->get();
         //イベントタグ一覧を取得
         $tags = Tag::eventTags()->get();
-        return view('backend_test.add_event', compact('requests', 'tags'));
+        $locations = Event::LOCATIONS;
+        return view('user.events.create', compact('requests', 'tags', 'locations'));
     }
 
     /**
@@ -58,22 +76,24 @@ class EventController extends Controller
         $event->user_id = Auth::id();
         $event->title = $request->title;
         $event->description = $request->description;
-        $event->date = $request->date;
+        $event->start_date = $request->start_date;
+        $event->end_date = $request->end_date;
         $event->location = $request->location;
         $event->request_id = $request->request_id;
         //ここにslackchannel自動生成の処理を書く。今は仮置き
         $event->slack_channel = 'test';
         $event->save();
         //event_tags追加
-        foreach ($request->tags as $tag_id) {
-            $event_tag = new EventTag();
-            $event_tag->event_id = $event->id;
-            $event_tag->tag_id = $tag_id;
-            $event_tag->save();
+        if (!empty($request->tags)) {
+            foreach ($request->tags as $tag_id) {
+                $event_tag = new EventTag();
+                $event_tag->event_id = $event->id;
+                $event_tag->tag_id = $tag_id;
+                $event_tag->save();
+            }
         }
         //作ったイベント詳細にとぶor redirect back
-        // return redirect()->back();
-        return redirect()->route('events.show', $event->id);
+        return redirect()->route('events.index')->with(['flush.message' => 'イベント登録完了しました。', 'flush.alert_type' => 'success']);
     }
 
     /**

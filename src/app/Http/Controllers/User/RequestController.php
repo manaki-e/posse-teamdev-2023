@@ -22,13 +22,14 @@ class RequestController extends Controller
         $event_request_type_id = ModelsRequest::EVENT_REQUEST_TYPE_ID;
         $product_request_type_id = ModelsRequest::PRODUCT_REQUEST_TYPE_ID;
         $app = [
-            $product_request_type_id => ['color' => 'text-blue-400', 'name' => 'Peer Product Share'],
-            $event_request_type_id => ['color' => 'text-pink-600', 'name' => 'Peer Event']
+            $product_request_type_id => ['color' => 'text-blue-400', 'name' => 'Peer Product Share','japanese_name'=>'アイテム'],
+            $event_request_type_id => ['color' => 'text-pink-600', 'name' => 'Peer Event','japanese_name'=>'イベント']
         ];
         $product_tags = Tag::where('request_type_id', $product_request_type_id)->get();
         $event_tags = Tag::where('request_type_id', $event_request_type_id)->get();
         $requests = ModelsRequest::with(['user', 'requestTags.tag'])->orderBy('created_at','desc')->unresolvedRequests()->get()->map(function($request){
             $request->description=$request->changeDescriptionReturnToBreakTag($request->description);
+            $request->data_tag = '[' . implode(',', $request->requestTags->pluck('tag_id')->toArray()) . ']';
             return $request;
         });
         return view('user.requests.index', compact('requests', 'product_tags', 'event_tags', 'app', 'event_request_type_id', 'product_request_type_id'));

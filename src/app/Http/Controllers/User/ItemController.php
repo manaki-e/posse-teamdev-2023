@@ -23,22 +23,22 @@ class ItemController extends Controller
         $japanese_product_statuses = Product::JAPANESE_STATUS;
         unset($japanese_product_statuses[1]);
         $product_tags = Tag::productTags()->get();
-        $paginator = Product::approvedProducts()->withRelations()->orderBy('created_at','desc')->paginate(8);
-
-        $products = $paginator->getCollection()->map(function ($product) use ($japanese_product_statuses) {
-            $product->japanese_status = $japanese_product_statuses[$product->status];
+        $products = Product::approvedProducts()->withRelations()->get()->map(function ($product) use ($japanese_product_statuses) {
+            $product->data_tag = '[' . implode(',', $product->productTags->pluck('tag_id')->toArray()) . ']';
+            //配送中は貸出中として表示
+            if ($product->status === Product::STATUS['delivering']) {
+                $product->japanese_status = $japanese_product_statuses[Product::STATUS['occupied']];
+                $product->status = Product::STATUS['occupied'];
+            } else {
+                $product->japanese_status = $japanese_product_statuses[$product->status];
+            }
+            $product->description=$product->changeDescriptionReturnToBreakTag($product->description);
             return $product;
-        });
-
-        $productsPaginated = new \Illuminate\Pagination\LengthAwarePaginator(
-            $products,
-            $paginator->total(),
-            $paginator->perPage(),
-            $paginator->currentPage(),
-            ['path' => \Illuminate\Pagination\Paginator::resolveCurrentPath()]
-        );
-
-        return view('user.items.index', compact('products', 'japanese_product_statuses', 'product_tags', 'productsPaginated'));
+        })->sortByDesc('created_at');
+        //statuses for filter
+        unset($japanese_product_statuses[4]);
+        $filter_statuses=$japanese_product_statuses;
+        return view('user.items.index', compact('products', 'japanese_product_statuses', 'product_tags','filter_statuses'));
     }
 
     /**

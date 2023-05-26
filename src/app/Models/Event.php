@@ -14,6 +14,13 @@ class Event extends Model
 {
     use HasFactory, softDeletes;
     protected $dates = ['created_at', 'updated_at', 'date', 'deleted_at', 'completed_at'];
+    const LOCATIONS = [
+        '対面', 'オンライン', '対面・オンライン併用', '未定'
+    ];
+    const COMPLETED_STATUSES = [
+        0 => '開催予定',
+        1 => '開催済み'
+    ];
     public static function booted()
     {
         static::deleted(function ($event) {
@@ -45,5 +52,9 @@ class Event extends Model
     public function scopeCompletedEvents($query)
     {
         return $query->whereNotNull('completed_at');
+    }
+    public function changeDescriptionReturnToBreakTag($value)
+    {
+        return str_replace("\n", "<br>", e($value));
     }
 }
