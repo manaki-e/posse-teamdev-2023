@@ -18,7 +18,8 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->string('title');
             $table->string('description');
-            $table->timestamp('date')->default(null)->nullable();
+            $table->timestamp('start_date')->default(null)->nullable();
+            $table->timestamp('end_date')->default(null)->nullable();
             $table->string('location');
             $table->string('slack_channel');
             $table->timestamp('completed_at')->nullable();

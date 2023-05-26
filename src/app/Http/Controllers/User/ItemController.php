@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\ProductLike;
 use App\Models\ProductTag;
 use App\Models\Request as ModelsRequest;
 use Illuminate\Http\Request;
@@ -23,22 +24,27 @@ class ItemController extends Controller
         $japanese_product_statuses = Product::JAPANESE_STATUS;
         unset($japanese_product_statuses[1]);
         $product_tags = Tag::productTags()->get();
-        $paginator = Product::approvedProducts()->withRelations()->orderBy('created_at','desc')->paginate(8);
-
-        $products = $paginator->getCollection()->map(function ($product) use ($japanese_product_statuses) {
-            $product->japanese_status = $japanese_product_statuses[$product->status];
+        $products = Product::approvedProducts()->withRelations()->get()->map(function ($product) use ($japanese_product_statuses) {
+            $product->data_tag = '[' . implode(',', $product->productTags->pluck('tag_id')->toArray()) . ']';
+            //配送中は貸出中として表示
+            if ($product->status === Product::STATUS['delivering']) {
+                $product->japanese_status = $japanese_product_statuses[Product::STATUS['occupied']];
+                $product->status = Product::STATUS['occupied'];
+            } else {
+                $product->japanese_status = $japanese_product_statuses[$product->status];
+            }
+            if ($product->productLikes->contains('user_id', Auth::id())) {
+                $product->isLiked = 1;
+            } else {
+                $product->isLiked = 0;
+            }
+            $product->description=$product->changeDescriptionReturnToBreakTag($product->description);
             return $product;
-        });
-
-        $productsPaginated = new \Illuminate\Pagination\LengthAwarePaginator(
-            $products,
-            $paginator->total(),
-            $paginator->perPage(),
-            $paginator->currentPage(),
-            ['path' => \Illuminate\Pagination\Paginator::resolveCurrentPath()]
-        );
-
-        return view('user.items.index', compact('products', 'japanese_product_statuses', 'product_tags', 'productsPaginated'));
+        })->sortByDesc('created_at');
+        //statuses for filter
+        unset($japanese_product_statuses[4]);
+        $filter_statuses=$japanese_product_statuses;
+        return view('user.items.index', compact('products', 'japanese_product_statuses', 'product_tags','filter_statuses'));
     }
 
     /**
@@ -87,6 +93,11 @@ class ItemController extends Controller
         $product->japanese_status = Product::JAPANESE_STATUS[$product->status];
         $product->japanese_condition = Product::CONDITION[$product->condition];
         $product->description = $product->changeDescriptionReturnToBreakTag($product->description);
+        if ($product->productLikes->contains('user_id', Auth::id())) {
+            $product->isLiked = 1;
+        } else {
+            $product->isLiked = 0;
+        }
         // このproduct_idをもつproduct_deal_logの最後のレコードのuser_idがログインユーザーの場合表示
         $last_product_deal_log = $product->productDealLogs->last();
         $login_user_can_borrow_this_product = $product->status === Product::STATUS['available'] && !$product->productBelongsToLoginUser();
@@ -190,7 +201,7 @@ class ItemController extends Controller
         // 借りた人のポイント変動なし
         // productのステータス変更
         $product_instance->changeStatusToAvailable();
-        // product_deal_logのcanceled_at変更
+        // product_deal_logのcancelled_at変更
         $product_deal_log_instance->changeCanceledAtToNow();
         // 処理が終わった後redirect back
         return redirect()->back();
@@ -208,5 +219,18 @@ class ItemController extends Controller
         $product_tags = Tag::productTags()->get();
         $requests = ModelsRequest::unresolvedRequests()->productRequests()->get();
         return view('user.items.create', compact('chosen_request_id', 'product_tags', 'requests'));
+    }
+    public function like($id)
+    {
+        $product_like_instance = new ProductLike();
+        $product_like_instance->product_id = $id;
+        $product_like_instance->user_id = Auth::id();
+        $product_like_instance->save();
+        return response()->json(['message' => 'liked', 'product' => ProductLike::where('product_id', $id)->where('user_id', Auth::id())->get()]);
+    }
+    public function unlike($id)
+    {
+        ProductLike::where('product_id', $id)->where('user_id', Auth::id())->delete();
+        return response()->json(['message' => 'unliked', 'product' => ProductLike::where('product_id', $id)->where('user_id', Auth::id())->get()]);
     }
 }

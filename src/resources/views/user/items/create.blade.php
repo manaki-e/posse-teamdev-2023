@@ -27,7 +27,7 @@
                                             または ファイルをドロップ</div>
                                         <p class="text-sm text-gray-500">SVG, PNG, JPG or GIF (max. 800x400px)</p>
                                     </div>
-                                    <input id="file" type="file" name="product_images[]" class="sr-only" multiple required onchange="preview(this)" />
+                                    <input id="file" type="file" name="product_images[]" class="sr-only" multiple required onchange="checkFileSize(this),preview(this)" />
                                     <div class="preview-area "></div>
                                 </label>
                             </div>
@@ -117,5 +117,21 @@
             output += `<img src=${blobUrl}>`
         })
         elem.nextElementSibling.innerHTML = output
+    }
+
+    function checkFileSize(input) {
+        const maxSize = 1 * 1024 * 1024; // 1MB in bytes
+        const files = input.files;
+        for (let i = 0; i < files.length; i++) {
+            if (files[i].size > maxSize) {
+                // File size exceeds the maximum limit
+                alert('1MB以下の画像を選択してください.');
+                input.value = null; // Clear the file input
+                return;
+            }
+        }
+
+        // Proceed with file preview or submission
+        preview(input);
     }
 </script>
