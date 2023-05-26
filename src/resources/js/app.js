@@ -10,7 +10,7 @@ let currentURL = window.location.href;
 console.log(currentURL);
 let app_name = "";
 
-if (currentURL.includes("/items/")) {
+if (currentURL.includes("/items")) {
     app_name = "item";
     console.log("item");
 } else if (currentURL.includes("/events")) {
