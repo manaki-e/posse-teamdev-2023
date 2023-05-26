@@ -240,47 +240,4 @@
             });
         });
     });
-    //get all elements with class likes
-    let likes = document.querySelectorAll('.likes');
-    //foreach likes, if clicked, change color and send ajax request to route('requests.like') or route('requests.unlike')
-    likes.forEach(like => {
-        like.addEventListener('click', () => {
-            //get isLiked data from element
-            let isLiked = like.dataset.is_liked;
-            //get request id from element
-            let requestId = like.dataset.request_id;
-            //get like count element
-            let likeCount = like.querySelector('.like-count');
-            //if isLiked is true, send unlike request
-            if (isLiked === '1') {
-                axios.post('/requests/' + requestId + '/unlike')
-                    .then(function(response) {
-                        //change isLiked data to false
-                        like.setAttribute('data-is_liked', 0);
-                        //change svg color to gray
-                        like.querySelector('svg').style.fill = 'none';
-                        //decrease like count
-                        likeCount.innerHTML = parseInt(likeCount.innerHTML) - 1;
-                    })
-                    .catch(function(error) {
-                        console.log(error);
-                    });
-            }
-            //if isLiked is false, send like request
-            else {
-                axios.post('/requests/' + requestId + '/like')
-                    .then(function(response) {
-                        //change isLiked data to true
-                        like.setAttribute('data-is_liked', 1);
-                        //change svg color to red
-                        like.querySelector('svg').style.fill = 'red';
-                        //increase like count
-                        likeCount.innerHTML = parseInt(likeCount.innerHTML) + 1;
-                    })
-                    .catch(function(error) {
-                        console.log(error);
-                    });
-            }
-        });
-    });
 </script>
