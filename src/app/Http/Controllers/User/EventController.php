@@ -29,9 +29,9 @@ class EventController extends Controller
         }])->get()->map(function ($event) use ($user_id) {
             $event->isLiked = $event->eventLikes->contains('user_id', $user_id);
             $event->isParticipated = $event->eventParticipants->contains('user_id', $user_id);
-            if(empty($event->completed_at)){
+            if (empty($event->completed_at)) {
                 $event->isCompleted = Event::COMPLETED_STATUSES[0];
-            }else{
+            } else {
                 $event->isCompleted = Event::COMPLETED_STATUSES[1];
             }
             if (empty($event->date)) {
@@ -44,8 +44,8 @@ class EventController extends Controller
             return $event;
         })->sortByDesc('created_at');
         $tags = Tag::eventTags()->get();
-        $completed_statuses=Event::COMPLETED_STATUSES;
-        return view('user.events.index', compact('events', 'tags','completed_statuses'));
+        $completed_statuses = Event::COMPLETED_STATUSES;
+        return view('user.events.index', compact('events', 'tags', 'completed_statuses'));
     }
 
     /**
@@ -93,8 +93,7 @@ class EventController extends Controller
             }
         }
         //作ったイベント詳細にとぶor redirect back
-        // return redirect()->back();
-        return redirect()->route('events.index');
+        return redirect()->route('events.index')->with(['flush.message' => 'イベント登録完了しました。', 'flush.alert_type' => 'success']);
     }
 
     /**
