@@ -330,7 +330,7 @@
                                     </td>
                                     <td class="px-6 py-4 text-center">
                                         @if ( $event -> deleted_at )
-                                        <x-admin-status-red>開催キャンセル</x-admin-status-red>
+                                        <x-admin-status-red>開催中止</x-admin-status-red>
                                         @elseif ( $event -> completed_at )
                                         <x-admin-status-basic>開催終了</x-admin-status-basic>
                                         @else

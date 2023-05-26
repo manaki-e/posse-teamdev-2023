@@ -202,7 +202,7 @@ class ItemController extends Controller
         // productのステータス変更
         $product_instance->changeStatusToAvailable();
         // product_deal_logのcancelled_at変更
-        $product_deal_log_instance->changeCanceledAtToNow();
+        $product_deal_log_instance->changeCancelledAtToNow();
         // 処理が終わった後redirect back
         return redirect()->back();
     }
