@@ -44,11 +44,11 @@
                     </x-user-search-event>
                 </x-user-search-box>
                 <div class="mx-auto max-w-5xl my-4">
-                    <div class="mx-auto grid grid-cols-2 items-stretch gap-4">
+                    <div class="mx-auto grid grid-cols-2 gap-4">
                         @foreach($events as $event)
                         <div x-data="{ open: false }" data-completed="{{ $event->isCompleted }}" data-tag="{{ $event->data_tag  }}" class=" col-span-1 filter-target">
-                            <div class="h-full rounded-lg border border-gray-200 bg-white shadow-sm">
-                                <div class="flex flex-col justify-between h-full rounded-lg text-xs shadow-md p-4 pb-1 text-gray-500 bg-white">
+                            <div class="rounded-lg border border-gray-200 bg-white shadow-sm">
+                                <div class="flex flex-col rounded-lg text-xs shadow-md p-4 pb-1 text-gray-500 bg-white">
                                     <section>
                                         <!-- イベント名 -->
                                         <div class="w-full text-xl text-gray-800 mb-4">
