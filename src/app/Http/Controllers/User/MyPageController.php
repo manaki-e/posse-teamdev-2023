@@ -222,15 +222,37 @@ class MyPageController extends Controller
     {
         $user = Auth::user();
 
-        $liked_events = Event::whereHas('eventLikes', function ($query) use ($user) {
+        $before_held_liked_events = Event::whereHas('eventLikes', function ($query) use ($user) {
             $query->where('user_id', $user->id);
         })
+            ->where('completed_at', null)
+            ->where('cancelled_at', null)
             ->where('user_id', '!=', $user->id)
             ->with('eventLikes', 'eventParticipants.user', 'eventTags.tag')
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('user.mypage.events-liked', compact('user', 'liked_events'));
+        $after_held_liked_events = Event::whereHas('eventLikes', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })
+            ->where('completed_at', '!=', null)
+            ->where('cancelled_at', null)
+            ->where('user_id', '!=', $user->id)
+            ->with('eventLikes', 'eventParticipants.user', 'eventTags.tag')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $cancelled_liked_events = Event::whereHas('eventLikes', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })
+            ->where('completed_at', null)
+            ->where('cancelled_at', '!=', null)
+            ->where('user_id', '!=', $user->id)
+            ->with('eventLikes', 'eventParticipants.user', 'eventTags.tag')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('user.mypage.events-liked', compact('user', 'before_held_liked_events', 'after_held_liked_events', 'cancelled_liked_events'));
     }
 
     public function requestsPosted()
@@ -264,9 +286,22 @@ class MyPageController extends Controller
     {
         $user = Auth::user();
 
-        $liked_requests = Request::whereHas('requestLikes', function ($query) use ($user) {
+        $unresolved_liked_requests = Request::whereHas('requestLikes', function ($query) use ($user) {
             $query->where('user_id', $user->id);
         })
+            ->where('completed_at', null)
+            ->where('user_id', '!=', $user->id)
+            ->with(['requestTags.tag', 'requestLikes'])
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->each(function ($request) {
+                $request->type = $request->getRequestType($request->type_id);
+            });
+
+        $resolved_liked_requests = Request::whereHas('requestLikes', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })
+            ->where('completed_at', '!=', null)
             ->where('user_id', '!=', $user->id)
             ->with(['requestTags.tag', 'requestLikes'])
             ->orderBy('created_at', 'desc')
@@ -277,6 +312,6 @@ class MyPageController extends Controller
 
         $product_request_type_id = Request::PRODUCT_REQUEST_TYPE_ID;
 
-        return view('user.mypage.requests-liked', compact('liked_requests', 'user', 'product_request_type_id'));
+        return view('user.mypage.requests-liked', compact('user', 'product_request_type_id', 'unresolved_liked_requests', 'resolved_liked_requests'));
     }
 }
