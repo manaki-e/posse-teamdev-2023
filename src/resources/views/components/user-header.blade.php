@@ -18,32 +18,13 @@ $user_info = Auth::user();
 <header class="text-gray-600 body-font">
     <div class="mx-3 flex justify-between p-2 flex-col md:flex-row items-center">
         <div {{ $attributes->merge(['class' => 'flex '.$textColor]) }}>
-            <!-- urlが/itemsまたは/items/*の場合 -->
-            @if (request()->is('items') || request()->is('items/*'))
-            <a href="{{ route('items.index') }}" class="flex title-font font-medium items-center ml-10 mb-4 md:mb-0">
+            <a href="{{ $top_title_link }}" class="flex title-font font-medium items-center ml-10 mb-4 md:mb-0">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="stroke-current">
                     <path d="M3 12C3 13.1819 3.23279 14.3522 3.68508 15.4442C4.13738 16.5361 4.80031 17.5282 5.63604 18.364C6.47177 19.1997 7.46392 19.8626 8.55585 20.3149C9.64778 20.7672 10.8181 21 12 21C13.1819 21 14.3522 20.7672 15.4442 20.3149C16.5361 19.8626 17.5282 19.1997 18.364 18.364C19.1997 17.5282 19.8626 16.5361 20.3149 15.4442C20.7672 14.3522 21 13.1819 21 12C21 10.8181 20.7672 9.64778 20.3149 8.55585C19.8626 7.46392 19.1997 6.47177 18.364 5.63604C17.5282 4.80031 16.5361 4.13738 15.4442 3.68508C14.3522 3.23279 13.1819 3 12 3C10.8181 3 9.64778 3.23279 8.55585 3.68508C7.46392 4.13738 6.47177 4.80031 5.63604 5.63604C4.80031 6.47177 4.13738 7.46392 3.68508 8.55585C3.23279 9.64778 3 10.8181 3 12Z" stroke="" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                     <path d="M10 16V8H12.5C13.163 8 13.7989 8.26339 14.2678 8.73223C14.7366 9.20107 15 9.83696 15 10.5C15 11.163 14.7366 11.7989 14.2678 12.2678C13.7989 12.7366 13.163 13 12.5 13H10" stroke="" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
                 <span class="ml-3 text-xl font-patua">{{ $app_name }}</span>
             </a>
-            @elseif (request()->is('requests') || request()->is('requests/*'))
-            <a href="{{ route('requests.index') }}" class="flex title-font font-medium items-center ml-10 mb-4 md:mb-0">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="stroke-current">
-                    <path d="M3 12C3 13.1819 3.23279 14.3522 3.68508 15.4442C4.13738 16.5361 4.80031 17.5282 5.63604 18.364C6.47177 19.1997 7.46392 19.8626 8.55585 20.3149C9.64778 20.7672 10.8181 21 12 21C13.1819 21 14.3522 20.7672 15.4442 20.3149C16.5361 19.8626 17.5282 19.1997 18.364 18.364C19.1997 17.5282 19.8626 16.5361 20.3149 15.4442C20.7672 14.3522 21 13.1819 21 12C21 10.8181 20.7672 9.64778 20.3149 8.55585C19.8626 7.46392 19.1997 6.47177 18.364 5.63604C17.5282 4.80031 16.5361 4.13738 15.4442 3.68508C14.3522 3.23279 13.1819 3 12 3C10.8181 3 9.64778 3.23279 8.55585 3.68508C7.46392 4.13738 6.47177 4.80031 5.63604 5.63604C4.80031 6.47177 4.13738 7.46392 3.68508 8.55585C3.23279 9.64778 3 10.8181 3 12Z" stroke="" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M10 16V8H12.5C13.163 8 13.7989 8.26339 14.2678 8.73223C14.7366 9.20107 15 9.83696 15 10.5C15 11.163 14.7366 11.7989 14.2678 12.2678C13.7989 12.7366 13.163 13 12.5 13H10" stroke="" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-                <span class="ml-3 text-xl font-patua">{{ $app_name }}</span>
-            </a>
-            @elseif (request()->is('events') || request()->is('events/*'))
-            <a href="#" class="flex title-font font-medium items-center ml-10 mb-4 md:mb-0">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="stroke-current">
-                    <path d="M3 12C3 13.1819 3.23279 14.3522 3.68508 15.4442C4.13738 16.5361 4.80031 17.5282 5.63604 18.364C6.47177 19.1997 7.46392 19.8626 8.55585 20.3149C9.64778 20.7672 10.8181 21 12 21C13.1819 21 14.3522 20.7672 15.4442 20.3149C16.5361 19.8626 17.5282 19.1997 18.364 18.364C19.1997 17.5282 19.8626 16.5361 20.3149 15.4442C20.7672 14.3522 21 13.1819 21 12C21 10.8181 20.7672 9.64778 20.3149 8.55585C19.8626 7.46392 19.1997 6.47177 18.364 5.63604C17.5282 4.80031 16.5361 4.13738 15.4442 3.68508C14.3522 3.23279 13.1819 3 12 3C10.8181 3 9.64778 3.23279 8.55585 3.68508C7.46392 4.13738 6.47177 4.80031 5.63604 5.63604C4.80031 6.47177 4.13738 7.46392 3.68508 8.55585C3.23279 9.64778 3 10.8181 3 12Z" stroke="" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M10 16V8H12.5C13.163 8 13.7989 8.26339 14.2678 8.73223C14.7366 9.20107 15 9.83696 15 10.5C15 11.163 14.7366 11.7989 14.2678 12.2678C13.7989 12.7366 13.163 13 12.5 13H10" stroke="" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-                <span class="ml-3 text-xl font-patua">{{ $app_name }}</span>
-            </a>
-            @endif
         </div>
         <div class="flex">
             <a href="{{ $button_link }}" {{ $button_text ?? 'hidden'  }} {{ $attributes->merge(['class' => 'rounded-lg w-40 mx-3 my-1 px-7 py-2 shadow-md text-center text-sm text-white transition-all hover:shadow-lg hover:opacity-75 '.$bgColor]) }}>
@@ -103,7 +84,7 @@ $user_info = Auth::user();
                             <ul>
                                 <li class="px-5 py-3 font-medium hover:bg-gray-100">
                                     <!-- プロフィールに移行する -->
-                                    <a href="#" class="flex items-center transform transition-colors duration-200">
+                                    <a href="{{ route('profile.edit') }}" class="flex items-center transform transition-colors duration-200">
                                         <div class="mr-3">
                                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z">

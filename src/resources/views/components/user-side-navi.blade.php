@@ -18,7 +18,7 @@
                     </svg>
                 </button>
                 <!-- Product -->
-                <a href="route{{items.index}}">
+                <a href="{{ route('items.index')}}">
                     <div class="pt-5 text-blue-400" :class=" (isSidebarOpen) ? 'flex flex-row' : 'text-center'">
                         <div class="ml-4 text-center flex items-center">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="stroke-current">
@@ -32,7 +32,7 @@
                     </div>
                 </a>
                 <!-- Event -->
-                <a href="#">
+                <a href="{{ route('events.index') }}">
                     <div href="#" class="text-pink-600" :class=" (isSidebarOpen) ? 'flex flex-row justify-start my-8' : 'text-center my-4'">
                         <div class="ml-4 text-center flex items-center" :class="{ '' : isSidebarOpen, 'mx-auto' : !isSidebarOpen}">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="stroke-current">
@@ -45,7 +45,7 @@
                     </div>
                 </a>
                 <!-- Request -->
-                <a href="route{{requests.index}}">
+                <a href="{{ route('requests.index') }}">
                     <div href="#" class="mb-4 text-peer-request" :class=" (isSidebarOpen) ? 'flex flex-row'
                         : 'text-center'">
                         <div class="ml-4 text-center flex items-center" :class="{ '' : isSidebarOpen, 'mx-auto' : !isSidebarOpen}">
