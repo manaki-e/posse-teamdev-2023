@@ -42,6 +42,11 @@ class EventController extends Controller
             }
             $event->data_tag = '[' . implode(',', $event->eventTags->pluck('tag_id')->toArray()) . ']';
             $event->description = $event->changeDescriptionReturnToBreakTag($event->description);
+            if ($event->eventLikes->contains('user_id', Auth::id())) {
+                $event->isLiked = 1;
+            } else {
+                $event->isLiked = 0;
+            }
             return $event;
         })->sortByDesc('created_at');
         $tags = Tag::eventTags()->get();

@@ -253,7 +253,6 @@
             let likeCount = like.querySelector('.like-count');
             //if isLiked is true, send unlike request
             if (isLiked === '1') {
-                console.log(isLiked);
                 axios.post('/requests/' + requestId + '/unlike')
                     .then(function(response) {
                         //change isLiked data to false
@@ -262,7 +261,6 @@
                         like.querySelector('svg').style.fill = 'none';
                         //decrease like count
                         likeCount.innerHTML = parseInt(likeCount.innerHTML) - 1;
-                        console.log(response.data, like.dataset.is_liked);
                     })
                     .catch(function(error) {
                         console.log(error);
@@ -270,7 +268,6 @@
             }
             //if isLiked is false, send like request
             else {
-                console.log(like.dataset.is_liked);
                 axios.post('/requests/' + requestId + '/like')
                     .then(function(response) {
                         //change isLiked data to true
@@ -279,7 +276,6 @@
                         like.querySelector('svg').style.fill = 'red';
                         //increase like count
                         likeCount.innerHTML = parseInt(likeCount.innerHTML) + 1;
-                        console.log(response.data, like.dataset.is_liked);
                     })
                     .catch(function(error) {
                         console.log(error);

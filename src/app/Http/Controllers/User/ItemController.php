@@ -33,6 +33,11 @@ class ItemController extends Controller
             } else {
                 $product->japanese_status = $japanese_product_statuses[$product->status];
             }
+            if ($product->productLikes->contains('user_id', Auth::id())) {
+                $product->isLiked = 1;
+            } else {
+                $product->isLiked = 0;
+            }
             $product->description=$product->changeDescriptionReturnToBreakTag($product->description);
             return $product;
         })->sortByDesc('created_at');
