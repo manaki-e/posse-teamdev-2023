@@ -250,8 +250,7 @@ class EventController extends Controller
         $user->save();
 
         $channel_id = Event::findOrFail($event)->slack_channel;
-        $user_slack_id = $user->slack_id;
-        dd($channel_id, $user_slack_id);
+        $user_slack_id = $user->slackID;
         $this->slackController->inviteUsers($channel_id, $user_slack_id);
 
         // event_participantsにレコード追加

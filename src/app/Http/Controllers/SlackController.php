@@ -123,11 +123,16 @@ class SlackController extends Controller
     {
         $user = Auth::user();
 
-        $create_user = User::where('id', $user->id)->pluck('slackID')->join(', ');
+        if (empty($user)) {
+            $create_user = "";
+            $channel_name = $event_title;
+        } else {
+            $create_user = User::where('id', $user->id)->pluck('slackID')->join(', ');
+            $channel_name = 'peerevent-' . $event_title;
+        }
         $admin_users = User::where('is_admin', 1)->pluck('slackID')->join(', ');
         $invite_users = $create_user . ', ' . $admin_users;
 
-        $channel_name = 'peerevent-' . $event_title;
         $valid_channel_name = strtolower(str_replace([' ', '.'], '', $channel_name));
         $channel = [
             'name' => $valid_channel_name
@@ -173,16 +178,21 @@ class SlackController extends Controller
         }
     }
 
-    /**
-     * ユーザIDの配列をカンマ区切りのslackIDに変換する
-     * @param array $user ユーザIDの配列
-     * @return string $user_slack_id カンマ区切りのslackID
-     */
-    public function getUserSlackIds($users)
-    {
-        $user_slack_id = User::whereIn('id', $users)->pluck('slackID')->join(', ');
 
-        return $user_slack_id;
+    public function searchChannelId($channelName)
+    {
+        $response = Http::withToken($this->token)
+            ->get('https://slack.com/api/conversations.list');
+
+        $channels = $response['channels'];
+
+        foreach ($channels as $channel) {
+            if ($channel['name'] === $channelName) {
+                return $channel['id'];
+            }
+        }
+
+        return null; // チャンネルが見つからなかった場合はnullを返す
     }
 }
 

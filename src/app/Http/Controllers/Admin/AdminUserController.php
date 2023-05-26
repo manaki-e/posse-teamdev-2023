@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\SlackController;
 use App\Models\Department;
 use App\Models\Event;
 use App\Models\EventParticipantLog;
@@ -18,6 +19,11 @@ use Illuminate\Support\Str;
 
 class AdminUserController extends Controller
 {
+    public function __construct(SlackController $slackController)
+    {
+        $this->slackController = $slackController;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -115,6 +121,11 @@ class AdminUserController extends Controller
             $user_instance->is_admin = 0;
         } elseif ($user_instance->is_admin === 0) {
             $user_instance->is_admin = 1;
+            //
+            $channel_id = $this->slackController->searchChannelId("peerperk管理者");
+            $user_slack_id = $user_instance->slackID;
+            $this->slackController->inviteUsers($channel_id, $user_slack_id);
+
         }
         $user_instance->save();
 

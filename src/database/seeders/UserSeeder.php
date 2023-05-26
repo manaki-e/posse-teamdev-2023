@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Department;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Http\Controllers\SlackController;
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
 use Illuminate\Support\Facades\Hash;
@@ -46,6 +46,8 @@ class UserSeeder extends Seeder
                 'department_id' => 1,
             ]
         ]);
+        $event_controller = new SlackController;
+        $event_controller->createChannel("peerperk管理者");
         for ($i = 1; $i <= 50; $i++) {
             $unique_user_name = $this->unique_name($faker);
             $users_array[] = [

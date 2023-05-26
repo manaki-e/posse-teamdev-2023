@@ -23,7 +23,6 @@ return new class extends Migration
             $table->foreignId('department_id')->nullable()->constrained('departments');
             $table->softDeletes();
         });
-        // slackからユーザー一斉に追加する機能実装するときはここに書く想定
     }
 
     /**
