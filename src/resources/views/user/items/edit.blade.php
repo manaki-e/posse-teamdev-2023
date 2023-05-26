@@ -10,14 +10,22 @@
     <x-slot name="body_slot">
         <x-user-side-navi>
             <div class="w-full mx-auto">
-                <x-user-form method="POST" action="{{ route('items.store') }}" enctype="multipart/form-data">
-                    <x-slot name="title">アイテムの出品</x-slot>
+                <x-user-form method="POST" action="{{ route('items.update',$product->id) }}" enctype="multipart/form-data">
+                    <x-slot name="title">アイテムの編集</x-slot>
                     <section class="text-left w-full flex gap-8">
                         <div class="w-1/2">
                             <div class="mx-auto mt-6">
                                 <label for="file" class="mb-1 block text-sm font-medium text-gray-700">出品画像<span class="text-red-600">*</span></label>
                                 <label class="relative flex w-full cursor-pointer appearance-none items-center justify-center rounded-md border-2 border-dashed border-gray-200 p-6 transition-all hover:border-gray-300 overflow-x-scroll">
                                     <div class="space-y-1 text-center">
+                                        <div>削除する画像を選択</div>
+                                        @foreach($product->productImages as $product_image)
+                                        <label>
+                                            <img width="100" height="100" src=" {{asset('images/'.$product_image->image_url)}}">
+                                            <input value="{{$product_image->id}}" type="checkbox" name="delete_images[]">
+                                            {{ $product_image->image_url }}
+                                        </label>
+                                        @endforeach
                                         <div class="mx-auto inline-flex h-10 w-10 items-center justify-center rounded-full bg-gray-100">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6 text-gray-500">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" />
@@ -39,7 +47,7 @@
                                     @foreach ($product_tags as $index => $tag)
                                     <div class="min-w-max m-1 border rounded border-gray-200">
                                         <div class="flex items-center px-3">
-                                            <input id="tag_{{ $index }}" type="checkbox" value="{{ $tag->id }}" name="product_tags[]" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
+                                            <input id="tag_{{ $index }}" type="checkbox" value="{{ $tag->id }}" name="product_tags[]" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded" @if($tag->is_chosen) checked @endif>
                                             <label for="tag_{{ $index }}" class="w-auto py-3 pl-1 text-sm font-medium text-gray-900">{{ $tag->name }}</label>
                                         </div>
                                     </div>
@@ -49,7 +57,7 @@
                                 <div class="mb-4 border border-gray-300 rounded-md">
                                     <select name="condition" id="example1" class="p-1 block w-full rounded-md border-gray-300 shadow-sm text-lg text-gray-500" required>
                                         @foreach($conditions as $key => $condition)
-                                        <option value="{{ $key }}">{{ $condition }}</option>
+                                        <option value="{{ $key }}" @if($product->condition===$key)>{{ $condition }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -60,18 +68,18 @@
                             <h3 class="mb-2 text-xl text-gray-600 font-extrabold border-b border-gray-500">アイテム名と説明</h3>
                             <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">アイテム名<span class="text-red-600">*</span></h4>
                             <div class="mx-auto">
-                                <input name="title" type="text" class="p-1 block w-full rounded-md border border-gray-300" required />
+                                <input value="{{ $product->title }}" name="title" type="text" class="p-1 block w-full rounded-md border border-gray-300" required />
                             </div>
                             <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">アイテムの説明<span class="text-red-600">*</span></h4>
                             <div class="mx-auto">
-                                <textarea name="description" class="p-1 block w-full rounded-md border border-gray-300" rows="3" required></textarea>
+                                <textarea name="description" class="p-1 block w-full rounded-md border border-gray-300" rows="3" required>{{ $product->description }}</textarea>
                             </div>
                             <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">関連するリクエスト</h4>
                             <div class="mb-4 border border-gray-300 rounded-md">
                                 <select name="request_id" id="example1" class="p-1 block w-full rounded-md border-gray-300 shadow-sm text-lg text-gray-500">
                                     <option value="">なし</option>
                                     @foreach($requests as $request)
-                                    @if(isset($chosen_request_id)&&$chosen_request_id==$request->id)
+                                    @if($request->id===$product->request_id)
                                     <option value="{{ $request->id }}" selected>{{ $request->title }}</option>
                                     @else
                                     <option value="{{ $request->id }}">{{ $request->title }}</option>
@@ -83,7 +91,7 @@
                     </section>
                     <x-user-register-button textColor=" text-white" bgColor="bg-blue-400" borderColor="border-blue-400">
                         <x-slot name="button">
-                            登録する
+                            更新する
                         </x-slot>
                     </x-user-register-button>
                 </x-user-form>
