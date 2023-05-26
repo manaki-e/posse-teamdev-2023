@@ -3,50 +3,17 @@
 namespace App\Http\Controllers\User;
 
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\EventParticipantLog;
-use App\Http\Controllers\Controller;
 use App\Models\PointExchangeLog;
 use App\Models\Product;
 use App\Models\ProductDealLog;
 use App\Models\Request;
-use App\Models\RequestLike;
-use App\Models\Tag;
 
 //#82-主催したイベント情報
 class MyPageController extends Controller
 {
-    // イベントID
-    public function eventsOrganized()
-    {
-        // Authのid
-        $auth_id = Auth::id();
-        //Authのidに紐づいているテーブルを全部取得
-        $event_organizes = Event::with('eventParticipants')->where('user_id', '=', $auth_id)->with('event')->get();
-        foreach ($event_organizes as $event_organize) {
-            print_r($event_organize->title . '<br>');
-            print_r($event_organize->created_at . '<br>');
-            print_r($event_organize->completed_at . '<br>');
-        }
-        $earned_points = Event::where('user_id', $auth_id)->with('eventParticipants')->withSum('eventParticipants', 'point')->get();
-        foreach ($earned_points as $earned_point) {
-            print_r($earned_point->event_participants_sum_point);
-        }
-        dd();
-        // return view();
-    }
-
-    #81-参加したイベント情報
-    public function eventsJoined()
-    {
-        $auth_id = Auth::id();
-        $event_joins = EventParticipantLog::where('user_id', $auth_id)->get();
-        foreach ($event_joins as $event_join) {
-            print_r($event_join->event->title . '<br>');
-            print_r($event_join->point . '<br>');
-            print_r($event_join->user->name . '<br>');
-        }
-    }
     public function points()
     {
         $user = Auth::user();
@@ -121,7 +88,7 @@ class MyPageController extends Controller
             ];
         });
         //productが削除されてもポイントの変動は残る、product_deal_logが削除＝キャンセルされた場合はポイントの変動も削除
-        $earned_product_deal_logs = ProductDealLog::notCanceled()->chargeable()->with(['product' => function ($query) {
+        $earned_product_deal_logs = ProductDealLog::notCancelled()->chargeable()->with(['product' => function ($query) {
             $query->withTrashed();
         }])->whereHas('product', function ($query) use ($user) {
             $query->where('user_id', $user->id)->withTrashed();
@@ -189,9 +156,109 @@ class MyPageController extends Controller
         return view('user.mypage.items-listed', compact('lendable_products', 'borrowed_products', 'applying_products'));
     }
 
+    public function eventsOrganized()
+    {
+        $user = Auth::user();
+
+        $before_held_events = Event::where('user_id', $user->id)
+            ->where('completed_at', null)
+            ->where('cancelled_at', null)
+            ->with(['eventLikes', 'eventParticipants.user', 'eventTags.tag'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $after_held_events = Event::where('user_id', $user->id)
+            ->where('completed_at', '!=', null)
+            ->where('cancelled_at', null)
+            ->with(['eventLikes', 'eventParticipants.user', 'eventTags.tag'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $cancelled_events = Event::where('user_id', $user->id)
+            ->where('completed_at', null)
+            ->where('cancelled_at', '!=', null)
+            ->with(['eventLikes', 'eventParticipants.user', 'eventTags.tag'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('user.mypage.events-organized', compact('before_held_events', 'after_held_events', 'cancelled_events'));
+    }
+
+    public function eventsJoined()
+    {
+        $user = Auth::user();
+
+        $before_held_joined_events = Event::whereHas('eventParticipants', function ($query) use ($user) {
+            $query->where('user_id', $user->id)->where('cancelled_at', null);
+        })
+            ->where('completed_at', null)
+            ->where('cancelled_at', null)
+            ->with('eventLikes', 'eventParticipants.user', 'eventTags.tag')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $after_held_joined_events = Event::whereHas('eventParticipants', function ($query) use ($user) {
+            $query->where('user_id', $user->id)->where('cancelled_at', null);
+        })
+            ->where('completed_at', '!=', null)
+            ->where('cancelled_at', null)
+            ->with(['eventLikes', 'eventParticipants.user', 'eventTags.tag'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $cancelled_joined_events = Event::whereHas('eventParticipants', function ($query) use ($user) {
+            $query->where('user_id', $user->id)->where('cancelled_at', null);
+        })
+            ->where('completed_at', null)
+            ->where('cancelled_at', '!=', null)
+            ->with(['eventLikes', 'eventParticipants.user', 'eventTags.tag'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('user.mypage.events-joined', compact('before_held_joined_events', 'after_held_joined_events', 'cancelled_joined_events'));
+    }
+
+    public function eventsLiked()
+    {
+        $user = Auth::user();
+
+        $before_held_liked_events = Event::whereHas('eventLikes', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })
+            ->where('completed_at', null)
+            ->where('cancelled_at', null)
+            ->where('user_id', '!=', $user->id)
+            ->with('eventLikes', 'eventParticipants.user', 'eventTags.tag')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $after_held_liked_events = Event::whereHas('eventLikes', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })
+            ->where('completed_at', '!=', null)
+            ->where('cancelled_at', null)
+            ->where('user_id', '!=', $user->id)
+            ->with('eventLikes', 'eventParticipants.user', 'eventTags.tag')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $cancelled_liked_events = Event::whereHas('eventLikes', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })
+            ->where('completed_at', null)
+            ->where('cancelled_at', '!=', null)
+            ->where('user_id', '!=', $user->id)
+            ->with('eventLikes', 'eventParticipants.user', 'eventTags.tag')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('user.mypage.events-liked', compact('user', 'before_held_liked_events', 'after_held_liked_events', 'cancelled_liked_events'));
+    }
+
     public function requestsPosted()
     {
         $user = Auth::user();
+
         $resolved_requests = Request::where('user_id', $user->id)
             ->resolvedRequests()
             ->with('requestLikes')
@@ -219,9 +286,23 @@ class MyPageController extends Controller
     {
         $user = Auth::user();
 
-        $liked_requests = Request::whereHas('requestLikes', function ($query) use ($user) {
+        $unresolved_liked_requests = Request::whereHas('requestLikes', function ($query) use ($user) {
             $query->where('user_id', $user->id);
         })
+            ->where('completed_at', null)
+            ->where('user_id', '!=', $user->id)
+            ->with(['requestTags.tag', 'requestLikes'])
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->each(function ($request) {
+                $request->type = $request->getRequestType($request->type_id);
+            });
+
+        $resolved_liked_requests = Request::whereHas('requestLikes', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })
+            ->where('completed_at', '!=', null)
+            ->where('user_id', '!=', $user->id)
             ->with(['requestTags.tag', 'requestLikes'])
             ->orderBy('created_at', 'desc')
             ->get()
@@ -231,6 +312,6 @@ class MyPageController extends Controller
 
         $product_request_type_id = Request::PRODUCT_REQUEST_TYPE_ID;
 
-        return view('user.mypage.requests-liked', compact('liked_requests', 'user', 'product_request_type_id'));
+        return view('user.mypage.requests-liked', compact('user', 'product_request_type_id', 'unresolved_liked_requests', 'resolved_liked_requests'));
     }
 }
