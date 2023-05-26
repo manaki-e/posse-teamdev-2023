@@ -12,64 +12,59 @@
     <x-slot name="body_slot">
         <x-user-side-navi>
             <div class="mx-auto max-w-5xl">
-                <x-user-search-box bgColor="bg-peer-request">
-                    <section x-data="{ activeTab : 0 }" class="text-gray-600 body-font">
-                        <div class="container px-5 mx-auto flex flex-col">
-                            <div class="lg:w-4/6 mx-auto">
-                                <div class="flex flex-col sm:flex-row">
-                                    <div class="sm:w-1/4 text-center sm:pr-8 sm:py-4">
-                                        <div class="flex flex-col items-center text-center justify-center">
-                                            <h2 class="font-medium title-font text-gray-900 text-lg ">区分</h2>
-                                            <div class="w-full h-1 bg-gray-500 rounded mt-2 mb-4"></div>
-                                            <div class="flex items-center mb-4" @click="activeTab = 0">
-                                                <input id="box-1" type="radio" name="request_type" checked class="w-4 h-4 bg-gray-100 border-gray-300">
-                                                <label for="box-1" class="ml-2 text-sm font-medium text-gray-900">アイテム</label>
-                                            </div>
-                                            <div class="flex items-center" @click="activeTab = 1">
-                                                <input id="box-2" type="radio" name="request_type" class="w-4 h-4 bg-gray-100 border-gray-300">
-                                                <label for="box-2" class="ml-2 text-sm font-medium text-gray-900">イベント</label>
+                <x-user-search-request bgColor="bg-peer-request">
+                    <x-slot name="default_request_type_id">{{ $product_request_type_id }}</x-slot>
+                    <x-slot name="filter_by_radio">
+                        <x-user-search-radio>
+                            <x-slot name="radio_name">リクエストタイプ</x-slot>
+                            <x-slot name="radios">
+                                @foreach($app as $request_type_id=>$request_type)
+                                <!-- peer product shareとpeer eventを表示することもできる -->
+                                <div class="flex items-center mb-4" @click="activeTab = {{ $request_type_id }}">
+                                    <input id="box-{{ $request_type_id }}" type="radio" value="{{ $request_type_id }}" name="request_type" class="w-4 h-4 bg-gray-100 border-gray-300 filter-input" @if($request_type_id==$product_request_type_id) checked @endif>
+                                    <label for="box-{{ $request_type_id }}" class="ml-2 text-sm font-medium text-gray-900">{{ $request_type['japanese_name']  }}</label>
+                                </div>
+                                @endforeach
+                            </x-slot>
+                        </x-user-search-radio>
+                    </x-slot>
+                    <x-slot name="filter_by_tags">
+                        <div class="sm:w-3/4 sm:pl-8 sm:py-4 sm:mt-0 text-center sm:text-left">
+                            <div class="flex flex-col items-center text-center justify-center">
+                                <h2 class="font-medium title-font text-gray-900 text-lg">カテゴリ</h2>
+                                <div class="w-full h-1 bg-gray-500 rounded mt-2 mb-4"></div>
+                                <div class="flex flex-wrap w-full text-sm font-medium text-gray-900 bg-white sm:flex">
+                                    <div class="w-full flex flex-wrap max-w-lg text-sm font-medium text-gray-900 bg-white" x-show="activeTab === {{ $product_request_type_id }}">
+                                        @foreach ($product_tags as $index => $tag)
+                                        <div class="min-w-max m-1 border rounded border-gray-200">
+                                            <div class="flex items-center px-3">
+                                                <input value="{{ $tag->id }}" type="checkbox" id="product_tag_{{ $index }}" name="tag_type_{{ $product_request_type_id  }}" class="w-4 h-4 bg-gray-100 border-gray-300 rounded filter-input">
+                                                <label for="product_tag_{{ $index }}" class="w-auto py-3 pl-1 text-sm font-medium text-gray-900">{{ $tag->name }}</label>
                                             </div>
                                         </div>
+                                        @endforeach
                                     </div>
-                                    <div class="sm:w-3/4 sm:pl-8 sm:py-4 sm:mt-0 text-center sm:text-left">
-                                        <div class="flex flex-col items-center text-center justify-center">
-                                            <h2 class="font-medium title-font text-gray-900 text-lg">カテゴリ</h2>
-                                            <div class="w-full h-1 bg-gray-500 rounded mt-2 mb-4"></div>
-                                            <div class="flex flex-wrap w-full text-sm font-medium text-gray-900 bg-white sm:flex">
-                                                <div class="w-full flex flex-wrap max-w-lg text-sm font-medium text-gray-900 bg-white" x-show="activeTab === 0">
-                                                    @foreach ($product_tags as $index => $tag)
-                                                    <div class="min-w-max m-1 border rounded border-gray-200">
-                                                        <div class="flex items-center px-3">
-                                                            <input id="product_tag_{{ $index }}" type="checkbox" value="" class="w-4 h-4 bg-gray-100 border-gray-300 rounded">
-                                                            <label for="product_tag_{{ $index }}" class="w-auto py-3 pl-1 text-sm font-medium text-gray-900">{{ $tag->name }}</label>
-                                                        </div>
-                                                    </div>
-                                                    @endforeach
-                                                </div>
-                                                <div x-cloak class="w-full flex flex-wrap max-w-lg text-sm font-medium text-gray-900 bg-white" x-show="activeTab === 1">
-                                                    @foreach ($event_tags as $index => $tag)
-                                                    <div class="min-w-max m-1 border rounded border-gray-200">
-                                                        <div class="flex items-center px-3">
-                                                            <input id="event_tag_{{ $index }}" type="checkbox" value="" class="w-4 h-4 bg-gray-100 border-gray-300 rounded">
-                                                            <label for="event_tag_{{ $index }}" class="w-auto py-3 pl-1 text-sm font-medium text-gray-900">{{ $tag->name }}</label>
-                                                        </div>
-                                                    </div>
-                                                    @endforeach
-                                                </div>
+                                    <div x-cloak class="w-full flex flex-wrap max-w-lg text-sm font-medium text-gray-900 bg-white" x-show="activeTab === {{ $event_request_type_id }}">
+                                        @foreach ($event_tags as $index => $tag)
+                                        <div class="min-w-max m-1 border rounded border-gray-200">
+                                            <div class="flex items-center px-3">
+                                                <input value="{{ $tag->id }}" type="checkbox" id="event_tag_{{ $index  }}" name="tag_type_{{ $event_request_type_id }}" class="w-4 h-4 bg-gray-100 border-gray-300 rounded filter-input">
+                                                <label for="event_tag_{{ $index }}" class="w-auto py-3 pl-1 text-sm font-medium text-gray-900">{{ $tag->name }}</label>
                                             </div>
                                         </div>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </section>
-                </x-user-search-box>
+                    </x-slot>
+                </x-user-search-request>
             </div>
 
             <div class="mx-auto max-w-5xl my-4">
                 <div class="mx-auto grid grid-cols-2 items-stretch gap-4">
                     @foreach ($requests as $request)
-                    <div class="col-span-1">
+                    <div class="col-span-1 filter-target" data-tag="{{ $request->data_tag }}">
                         <div class="h-full rounded-lg border border-gray-200 bg-white shadow-sm">
                             <div class="flex flex-col justify-between rounded-lg h-full text-xs shadow-md p-4 pb-1 text-gray-500 bg-white">
                                 <div>
@@ -187,3 +182,61 @@
         </x-user-side-navi>
     </x-slot>
 </x-user-app>
+<script>
+    // Get all filter inputs
+    let filterInputs = document.querySelectorAll('.filter-input');
+
+    // Add event listener to each filter button
+    filterInputs.forEach(input => {
+        input.addEventListener('click', () => {
+            //変数が空なら全て表示、変数が空じゃないなら変数とリクエストのタグの共通項があるものだけ表示
+            //name:request_typeのcheckedの値を取得
+            let checkedRequestTypeId = document.querySelector('input[name=request_type]:checked').value;
+            // 選択したタグを配列に入れる
+            let checkedTags = Array.from(document.querySelectorAll('input[name=tag_type_' + checkedRequestTypeId + ']:checked'));
+            let checkedTagsValues = checkedTags.map(e => parseInt(e.value));
+            // 絞り込み対象全て取得
+            let filterTargets = document.querySelectorAll('.filter-target');
+
+            // Show/hide targets based on the integer variable checkedStatus and array variable checkedTags
+            filterTargets.forEach(filterTarget => {
+                //ターゲットタグを配列に変換
+                let targetTags = JSON.parse(filterTarget.dataset.tag);
+                //ターゲットタグが空か判定
+                let targetTagsEmpty = targetTags.length === 0;
+                //インプットタグとターゲットタグの共通項を取得
+                let commonTags = checkedTagsValues.filter(value => targetTags.includes(value));
+                let filterByTags;
+                //インプットタグが空か判定
+                let tagsNotChosen = checkedTagsValues.length === 0;
+                //インプットタグとターゲットタグの共通項が空か判定
+                let commonTagsEmpty = commonTags.length === 0;
+
+                //共通タグ、選択したタグ、ターゲットタグをコンソールに表示＝＞デバッグ用
+                console.log(commonTags, checkedTagsValues, targetTags);
+
+                //ターゲットタグが空かつインプットタグが空ではない場合タグによる絞り込みは偽判定
+                if (targetTagsEmpty && !tagsNotChosen) {
+                    filterByTags = false;
+                }
+                //インプットタグが空の場合タグによる絞り込みは真判定
+                else if (tagsNotChosen) {
+                    filterByTags = true;
+                }
+                //インプットタグとターゲットタグの共通項がある場合タグによる絞り込みは偽判定
+                else if (commonTagsEmpty) {
+                    filterByTags = false;
+                }
+                //インプットタグとターゲットタグの共通項がない場合タグによる絞り込みは真判定
+                else if (!commonTagsEmpty) {
+                    filterByTags = true;
+                }
+                if (filterByTags) {
+                    filterTarget.style.display = 'block';
+                } else {
+                    filterTarget.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>

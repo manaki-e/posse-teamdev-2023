@@ -23,13 +23,24 @@ class EventController extends Controller
     public function index()
     {
         $user_id = Auth::id();
-        $events = Event::withCount(['eventParticipants', 'eventLikes'])->with(['user', 'eventParticipants.user', 'eventTags.tag', 'eventLikes.user'])->get()->map(function ($event) use ($user_id) {
+        $events = Event::withCount('eventLikes')->withCount(['eventParticipants'=>function($query){
+            $query->where('canceled_at',null);
+        }])->with(['user', 'eventTags.tag', 'eventLikes.user'])->with(['eventParticipants'=>function($query){
+            $query->where('canceled_at',null)->with('user');
+        }])->get()->map(function ($event) use ($user_id) {
             $event->isLiked = $event->eventLikes->contains('user_id', $user_id);
             $event->isParticipated = $event->eventParticipants->contains('user_id', $user_id);
+            if(empty($event->date)){
+                $event->show_date='未定';
+            }else{
+                $event->show_date=$event->date->format('Y.m.d');
+            }
+            $event->data_tag = '[' . implode(',', $event->eventTags->pluck('tag_id')->toArray()) . ']';
+            $event->description=$event->changeDescriptionReturnToBreakTag($event->description);
             return $event;
         });
         $tags = Tag::eventTags()->get();
-        return view('backend_test.events', compact('events', 'tags'));
+        return view('user.events.index', compact('events', 'tags'));
     }
 
     /**
