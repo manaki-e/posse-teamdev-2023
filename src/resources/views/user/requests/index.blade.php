@@ -163,8 +163,7 @@
                                     <!-- 日付・いいね -->
                                     <div class="flex items-end justify-between mb-1">
                                         <p>{{$request->created_at->format('Y.m.d')}}</p>
-                                        <div class="likes" id="                                        @if($request->isLiked) unlike_{{ $request->id }} @else like_{{ $request->id }} @endif
-">
+                                        <div class="likes" @if($request->isLiked) id="unlike_{{ $request->id }}" @else id="like_{{ $request->id }}" @endif>
                                             <div class="flex relative">
                                                 <button class="text-gray-500">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
