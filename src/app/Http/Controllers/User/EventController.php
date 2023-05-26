@@ -22,20 +22,20 @@ class EventController extends Controller
     public function index()
     {
         $user_id = Auth::id();
-        $events = Event::withCount('eventLikes')->withCount(['eventParticipants'=>function($query){
-            $query->where('canceled_at',null);
-        }])->with(['user', 'eventTags.tag', 'eventLikes.user'])->with(['eventParticipants'=>function($query){
-            $query->where('canceled_at',null)->with('user');
+        $events = Event::withCount('eventLikes')->withCount(['eventParticipants' => function ($query) {
+            $query->where('canceled_at', null);
+        }])->with(['user', 'eventTags.tag', 'eventLikes.user'])->with(['eventParticipants' => function ($query) {
+            $query->where('canceled_at', null)->with('user');
         }])->get()->map(function ($event) use ($user_id) {
             $event->isLiked = $event->eventLikes->contains('user_id', $user_id);
             $event->isParticipated = $event->eventParticipants->contains('user_id', $user_id);
-            if(empty($event->date)){
-                $event->show_date='未定';
-            }else{
-                $event->show_date=$event->date->format('Y.m.d');
+            if (empty($event->date)) {
+                $event->show_date = '未定';
+            } else {
+                $event->show_date = $event->date->format('Y.m.d');
             }
             $event->data_tag = '[' . implode(',', $event->eventTags->pluck('tag_id')->toArray()) . ']';
-            $event->description=$event->changeDescriptionReturnToBreakTag($event->description);
+            $event->description = $event->changeDescriptionReturnToBreakTag($event->description);
             return $event;
         })->sortByDesc('created_at');
         $tags = Tag::eventTags()->get();
@@ -77,7 +77,7 @@ class EventController extends Controller
         $event->slack_channel = 'test';
         $event->save();
         //event_tags追加
-        if(!empty($request->tags)){
+        if (!empty($request->tags)) {
             foreach ($request->tags as $tag_id) {
                 $event_tag = new EventTag();
                 $event_tag->event_id = $event->id;
@@ -182,7 +182,7 @@ class EventController extends Controller
         $event_instance->user->save();
         // var_dump($event_instance->user->earned_point);
         //リダイレクト先は未確定
-        return redirect()->route('events.show', $event);
+        return redirect()->back();
     }
     public function cancel($event)
     {
