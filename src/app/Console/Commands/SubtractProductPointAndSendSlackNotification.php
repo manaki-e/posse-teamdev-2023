@@ -41,7 +41,7 @@ class SubtractProductPointAndSendSlackNotification extends Command
                 //productごとにグループしてその最後のレコードを取得
                 $last_of_product_deal_log_grouped_by_product_id = $product_deal_log_grouped_by_product_id->last();
                 //キャンセルまたは返却済みの場合は何もしない
-                if (!empty($last_of_product_deal_log_grouped_by_product_id->returned_at) || !empty($last_of_product_deal_log_grouped_by_product_id->canceled_at)) {
+                if (!empty($last_of_product_deal_log_grouped_by_product_id->returned_at) || !empty($last_of_product_deal_log_grouped_by_product_id->cancelled_at)) {
                     Log::info('取引' . $last_of_product_deal_log_grouped_by_product_id->id . 'は処理不要');
                     return;
                 } else {

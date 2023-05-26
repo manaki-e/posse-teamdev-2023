@@ -24,9 +24,9 @@ class EventController extends Controller
     {
         $user_id = Auth::id();
         $events = Event::withCount('eventLikes')->withCount(['eventParticipants' => function ($query) {
-            $query->where('canceled_at', null);
+            $query->where('cancelled_at', null);
         }])->with(['user', 'eventTags.tag', 'eventLikes.user'])->with(['eventParticipants' => function ($query) {
-            $query->where('canceled_at', null)->with('user');
+            $query->where('cancelled_at', null)->with('user');
         }])->get()->map(function ($event) use ($user_id) {
             $event->isLiked = $event->eventLikes->contains('user_id', $user_id);
             $event->isParticipated = $event->eventParticipants->contains('user_id', $user_id);
@@ -198,9 +198,9 @@ class EventController extends Controller
     }
     public function cancel($event)
     {
-        // canceled_atを入力
-        $event_participant_log = EventParticipantLog::where('event_id', $event)->where('user_id', Auth::id())->where('canceled_at', null)->first();
-        $event_participant_log->canceled_at = now();
+        // cancelled_atを入力
+        $event_participant_log = EventParticipantLog::where('event_id', $event)->where('user_id', Auth::id())->where('cancelled_at', null)->first();
+        $event_participant_log->cancelled_at = now();
         $event_participant_log->save();
         // 処理後redirect back
         return redirect()->back();
