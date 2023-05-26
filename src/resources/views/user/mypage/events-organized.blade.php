@@ -20,7 +20,7 @@
                     </li>
                     <li>
                         <a @click="activeTab = 2" class="inline-flex cursor-pointer items-center gap-2 px-1 py-3 text-pink-600 hover:text-pink-600" :class="{'relative text-pink-600 after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-full after:bg-pink-600': activeTab === 2}">
-                            開催キャンセル
+                            開催中止
                         </a>
                     </li>
                 </ul>
@@ -60,7 +60,7 @@
                                             <x-slot:form_slot></x-slot:form_slot>
                                         </x-mypage-button-event-held>
                                         <x-mypage-button-event-cancel action="{{ route('events.cancel', ['event' =>  $event -> id]) }}">
-                                            <x-slot:content>開催キャンセル</x-slot:content>
+                                            <x-slot:content>開催中止</x-slot:content>
                                             <x-slot:logo_path>
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5m6 4.125l2.25 2.25m0 0l2.25 2.25M12 13.875l2.25-2.25M12 13.875l-2.25 2.25M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
                                             </x-slot:logo_path>
@@ -70,22 +70,39 @@
                                             <x-slot:form_slot></x-slot:form_slot>
                                         </x-mypage-button-event-cancel>
                                     </div>
-                                    <x-mypage-button-edit href="{{ route('events.edit', ['event' =>  $event -> id]) }}"></x-mypage-button-edit>
-                                    <x-mypage-button-delete action="{{ route('events.destroy', ['event' =>  $event -> id]) }}">
-                                        <x-slot name="modal_title">
-                                            {{ $event -> title }}を削除しますか？
-                                        </x-slot>
-                                        <x-slot name="modal_description">
-                                            対象のイベントを削除します。一度削除すると復元できません。
-                                        </x-slot>
-                                    </x-mypage-button-delete>
                                 </x-slot:button>
+                                <div x-data="{ showModal: false }" x-on:keydown.window.escape="showModal = false" class="absolute top-0 right-0">
+                                    <div class="flex justify-center">
+                                        <a @click="showModal = !showModal">
+                                            <button class="middle none center font-sans py-3 px-2 text-xs font-bold uppercase text-gray-700 transition-all hover:opacity-75 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" data-ripple-dark="true">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
+                                                </svg>
+                                            </button>
+                                        </a>
+                                    </div>
+                                    <ul x-cloak x-show="showModal" x-transitio class="absolute z-10 w-28 overflow-auto rounded-md border border-blue-gray-50 bg-white font-sans text-sm font-normal text-blue-gray-500 shadow-lg shadow-blue-gray-500/10 focus:outline-none">
+                                        <li role="menuitem" class="hover:bg-gray-300 block w-full cursor-pointer select-none px-3 py-4 text-start leading-tight transition-all hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900">
+                                            <x-mypage-button-edit href="{{ route('events.edit', ['event' =>  $event -> id]) }}"></x-mypage-button-edit>
+                                        </li>
+                                        <li role="menuitem" class="hover:bg-gray-300 block w-full cursor-pointer select-none px-3 py-4 text-start leading-tight transition-all hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900">
+                                            <x-mypage-button-delete action="{{ route('events.destroy', ['event' =>  $event -> id]) }}">
+                                                <x-slot name="modal_title">
+                                                    {{ $event -> title }}を削除しますか？
+                                                </x-slot>
+                                                <x-slot name="modal_description">
+                                                    対象のイベントを削除します。一度削除すると復元できません。
+                                                </x-slot>
+                                            </x-mypage-button-delete>
+                                        </li>
+                                    </ul>
+                                </div>
                             </x-mypage-event-list>
                         </li>
                         @endforeach
                     </ul>
                 </div>
-                <div :class="{ '!block': activeTab === 2 }" x-show.transition.in.opacity.duration.600="activeTab === 2" class="hidden">
+                <div :class="{ '!block': activeTab === 1 }" x-show.transition.in.opacity.duration.600="activeTab === 1" class="hidden">
                     <ul class="border-b border-gray-300">
                         @foreach ($after_held_events as $event)
                         <li>
@@ -112,7 +129,7 @@
                         @endforeach
                     </ul>
                 </div>
-                <div :class="{ '!block': activeTab === 1 }" x-show.transition.in.opacity.duration.600="activeTab === 1" class="hidden">
+                <div :class="{ '!block': activeTab === 2 }" x-show.transition.in.opacity.duration.600="activeTab === 2" class="hidden">
                     <ul class="border-b border-gray-300">
                         @foreach ($cancelled_events as $event)
                         <li>

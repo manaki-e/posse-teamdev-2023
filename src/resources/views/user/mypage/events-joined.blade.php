@@ -20,7 +20,7 @@
                     </li>
                     <li>
                         <a @click="activeTab = 2" class="inline-flex cursor-pointer items-center gap-2 px-1 py-3 text-pink-600 hover:text-pink-600" :class="{'relative text-pink-600 after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-full after:bg-pink-600': activeTab === 2}">
-                            開催キャンセル
+                            開催中止
                         </a>
                     </li>
                 </ul>

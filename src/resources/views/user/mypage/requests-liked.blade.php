@@ -22,15 +22,11 @@
                             <x-slot:likes>{{ $request -> request_likes_count }}</x-slot:likes>
                             <x-slot:user_icon>{{ $request -> user -> icon }}</x-slot:user_icon>
                             <x-slot:user_name>{{ $request -> user -> name }}</x-slot:user_name>
-                            @if ($request -> user_id === $user -> id)
-                            <x-slot:button>
-                                <p class="text-red-500">これは自分が投稿したリクエストです。</p>
-                            </x-slot:button>
-                            @elseif ($request -> completed_at)
-                            <x-slot:button>
-                                <p class="text-red-500">これはすでに解決されたリクエストです。</p>
-                            </x-slot:button>
+                            @if ($request -> completed_at)
+                            <x-slot:status>解決済み</x-slot:status>
+                            <x-slot:button></x-slot:button>
                             @else
+                            <x-slot:status></x-slot:status>
                             <x-slot:button>
                                 <a href="{{ $request -> type_id == $product_request_type_id ? route('items.create-with-request', $request -> id) : route('events.create-with-request', $request ->id) }}" class="flex select-none items-center gap-3 rounded-lg bg-peer-request py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-sm shadow-yellow-500/20 transition-all hover:shadow-lg hover:shadow-yellow-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button" data-ripple-light="true">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">

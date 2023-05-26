@@ -30,13 +30,11 @@
                         <x-slot:likes>{{ count($event -> eventLikes) }}</x-slot:likes>
                         <x-slot:user_icon>{{ $event  -> user -> icon }}</x-slot:user_icon>
                         <x-slot:user_name>{{ $event  -> user -> name }}</x-slot:user_name>
-                        @if ($event -> completed_at !== null))
+                        @if ($event -> completed_at !== null)
                         <x-slot:status>開催済み</x-slot:status>
-                        <x-slot:timestamp>{{ date( 'Y.m.d', strtotime( $event  -> completed_at ) ) }}</x-slot:timestamp>
                         <x-slot:button></x-slot:button>
-                        @elseif ($event -> cancelled_at !== null))
+                        @elseif ($event -> cancelled_at !== null)
                         <x-slot:status>中止</x-slot:status>
-                        <x-slot:timestamp>{{ date( 'Y.m.d', strtotime( $event  -> cancelled_at ) ) }}</x-slot:timestamp>
                         <x-slot:button></x-slot:button>
                         <!-- 自身が参加予定のイベントの場合 -->
                         @elseif (in_array ($user -> id, $array_participants))

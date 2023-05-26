@@ -1,4 +1,19 @@
-<div {{ $attributes->merge(['class' => 'flex gap-4 justify-between items-center border-t border-gray-300 py-3 px-6 text-sm']) }}>
+<?php
+if ($status == "解決済み") {
+    $class = "bg-gray-100";
+} else {
+    $class = "";
+}
+?>
+
+<div {{ $attributes->merge(['class' => $class . ' relative flex justify-between items-center border-t border-gray-300 py-3 pl-6 pr-12 text-sm']) }}>
+    @if ($status == "解決済み")
+    <div class="absolute transform top-1/2 -translate-x-1/2 left-1/2 -translate-y-1/2 m-0 p-2 w-44 h-14 border-2 border-double border-red-500 rounded-lg text-red-500 text-center text-lg leading-24 -rotate-12">
+        <div class="absolute transform top-1/2 -translate-x-1/2 left-1/2 -translate-y-1/2">
+            <span class="text-lg font-extrabold">{{ $status }}</span>
+        </div>
+    </div>
+    @endif
     <div class="flex gap-2 font-mono">
         <div class="flex flex-col gap-2">
             <p class="text-gray-800 text-base">{{ $title ?? '' }}</p>
@@ -22,4 +37,5 @@
     <div class="flex-center gap-2">
         {{ $button }}
     </div>
+    {{ $slot ?? '' }}
 </div>
