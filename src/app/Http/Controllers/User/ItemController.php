@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\ProductLike;
 use App\Models\ProductTag;
 use App\Models\Request as ModelsRequest;
 use Illuminate\Http\Request;
@@ -208,5 +209,18 @@ class ItemController extends Controller
         $product_tags = Tag::productTags()->get();
         $requests = ModelsRequest::unresolvedRequests()->productRequests()->get();
         return view('user.items.create', compact('chosen_request_id', 'product_tags', 'requests'));
+    }
+    public function like($id)
+    {
+        ProductLike::create([
+            'product_id' => $id,
+            'user_id' => Auth::id()
+        ]);
+        return response()->json(['success' => true]);
+    }
+    public function unlike($id)
+    {
+        ProductLike::where('product_id', $id)->where('user_id', Auth::id())->delete();
+        return response()->json(['success' => true]);
     }
 }

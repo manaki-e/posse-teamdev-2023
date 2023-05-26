@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Event;
+use App\Models\EventLike;
 use App\Models\EventParticipantLog;
 use App\Models\EventTag;
 use App\Models\Request as ModelsRequest;
@@ -220,5 +221,18 @@ class EventController extends Controller
         //イベントタグ一覧を取得
         $tags = Tag::eventTags()->get();
         return view('user.events.create', compact('requests', 'tags', 'chosen_request_id'));
+    }
+    public function like($id)
+    {
+        EventLike::create([
+            'request_id' => $id,
+            'user_id' => Auth::id()
+        ]);
+        return response()->json(['success' => true]);
+    }
+    public function unlike($id)
+    {
+        EventLike::where('request_id', $id)->where('user_id', Auth::id())->delete();
+        return response()->json(['success' => true]);
     }
 }

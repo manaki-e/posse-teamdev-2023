@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Request as ModelsRequest;
+use App\Models\RequestLike;
 use App\Models\RequestTag;
 use App\Models\Tag;
 use Illuminate\Http\Request;
@@ -199,5 +200,16 @@ class RequestController extends Controller
         $request_instance->save();
 
         return redirect()->route('mypage.requests.posted');
+    }
+    public function like($id){
+        RequestLike::create([
+            'request_id' => $id,
+            'user_id' => Auth::id()
+        ]);
+        return response()->json(['success'=>true]);
+    }
+    public function unlike($id){
+        RequestLike::where('request_id', $id)->where('user_id', Auth::id())->delete();
+        return response()->json(['success'=>true]);
     }
 }
