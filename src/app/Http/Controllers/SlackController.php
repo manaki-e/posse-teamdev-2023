@@ -118,13 +118,15 @@ class SlackController extends Controller
      * @param string $invite_users 招待するユーザーのSlackID
      * @return void
      */
-    public function createChannel(Request $request)
+    public function createChannel($event_title)
     {
-        // 引数として受け取る値を想定
-        $channel_name = 'latest';
-        $invite_users = 'U056N55T9AB, U0572LXKNLA';
+        $user = Auth::user();
 
-        // 作成するチャンネルの情報
+        $create_user = getUserSlackIds([$user->id]);
+        $admin_users = User::where('is_admin', 1)->pluck('slackID')->join(', ');
+        $invite_users = $create_user . ', ' . $admin_users;
+
+        $channel_name = 'Peer Event ' . $event_title;
         $channel = [
             'name' => $channel_name,
         ];
@@ -135,6 +137,8 @@ class SlackController extends Controller
 
         // チャンネルを作成して、そのチャンネルのIDを取得
         $channelId = $response->json()['channel']['id'];
+
+        dd();
 
         $this->inviteUsers($request, $channelId, $invite_users);
     }
@@ -165,15 +169,16 @@ class SlackController extends Controller
         $response->throw();
     }
 
-    public function getUserSlackIds($user, $dbConfig)
+    /**
+     * ユーザIDの配列をカンマ区切りのslackIDに変換する
+     * @param array $user ユーザIDの配列
+     * @return string $user_slack_id カンマ区切りのslackID
+     */
+    public function getUserSlackIds($users)
     {
-        // ユーザテーブルから必要な情報を取得し、ユーザIDをキー、slackIDを値とする連想配列に変換する
-        $user_slack_map = User::whereIn('id', $user)->pluck('slackID', 'id')->toArray();
+        $user_slack_id = User::whereIn('id', $users)->pluck('slackID')->join(', ');
 
-        // $user配列に含まれる各ユーザのIDに対応するslackIDを取得する
-        $user_slack_ids = array_values(array_intersect_key($user_slack_map, array_flip($user)));
-
-        return $user_slack_ids;
+        return $user_slack_id;
     }
 }
 

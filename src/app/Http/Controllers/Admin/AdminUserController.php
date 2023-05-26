@@ -68,7 +68,7 @@ class AdminUserController extends Controller
         $user_instance->created_at = now();
         $user_instance->save();
 
-        return Redirect::route('admin.users.index')->with(['flush.message' => '交換完了処理が正しく行われました', 'flush.alert_type' => 'success']);
+        return Redirect::route('admin.users.index')->with(['flush.message' => 'slackにいるユーザを新しくPeerPerkユーザとして登録しました', 'flush.alert_type' => 'success']);
     }
 
     /**
