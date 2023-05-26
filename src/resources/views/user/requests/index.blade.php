@@ -37,7 +37,7 @@
                                         @foreach ($product_tags as $index => $tag)
                                         <div class="min-w-max m-1 border rounded border-gray-200">
                                             <div class="flex items-center px-3">
-                                                <input type="checkbox" id="product_tag_{{ $index }}" name="tag_type_{{ $product_request_type_id }}" class="w-4 h-4 bg-gray-100 border-gray-300 rounded filter-input">
+                                                <input value="{{ $tag->id }}" type="checkbox" id="product_tag_{{ $index }}" name="tag_type_{{ $product_request_type_id  }}" class="w-4 h-4 bg-gray-100 border-gray-300 rounded filter-input">
                                                 <label for="product_tag_{{ $index }}" class="w-auto py-3 pl-1 text-sm font-medium text-gray-900">{{ $tag->name }}</label>
                                             </div>
                                         </div>
@@ -47,7 +47,7 @@
                                         @foreach ($event_tags as $index => $tag)
                                         <div class="min-w-max m-1 border rounded border-gray-200">
                                             <div class="flex items-center px-3">
-                                                <input type="checkbox" id="event_tag_{{ $index }}" name="tag_type_{{ $event_request_type_id }}" class="w-4 h-4 bg-gray-100 border-gray-300 rounded filter-input">
+                                                <input value="{{ $tag->id }}" type="checkbox" id="event_tag_{{ $index  }}" name="tag_type_{{ $event_request_type_id }}" class="w-4 h-4 bg-gray-100 border-gray-300 rounded filter-input">
                                                 <label for="event_tag_{{ $index }}" class="w-auto py-3 pl-1 text-sm font-medium text-gray-900">{{ $tag->name }}</label>
                                             </div>
                                         </div>
@@ -193,7 +193,7 @@
             let checkedRequestTypeId = document.querySelector('input[name=request_type]:checked').value;
             // 選択したタグを配列に入れる
             let checkedTags = Array.from(document.querySelectorAll('input[name=tag_type_' + checkedRequestTypeId + ']:checked'));
-            let checkedTagsValues = checkedTags.map(e => e.value);
+            let checkedTagsValues = checkedTags.map(e => parseInt(e.value));
             // 絞り込み対象全て取得
             let filterTargets = document.querySelectorAll('.filter-target');
 
@@ -204,7 +204,7 @@
                 //ターゲットタグが空か判定
                 let targetTagsEmpty = targetTags.length === 0;
                 //インプットタグとターゲットタグの共通項を取得
-                let commonTags = checkedTagsValues.filter(value => targetTags.includes(parseInt(value)));
+                let commonTags = checkedTagsValues.filter(value => targetTags.includes(value));
                 let filterByTags;
                 //インプットタグが空か判定
                 let tagsNotChosen = checkedTagsValues.length === 0;
