@@ -87,7 +87,7 @@ class EventController extends Controller
     public function store(Request $request)
     {
         // slackチャンネル作成
-        $slackId = $this->slackController->createChannel($request->title);
+        $slackId = $this->slackController->createChannel($request->title, false);
 
         //events追加
         $event = new Event();
@@ -251,7 +251,7 @@ class EventController extends Controller
 
         $channel_id = Event::findOrFail($event)->slack_channel;
         $user_slack_id = $user->slackID;
-        $this->slackController->inviteUsers($channel_id, $user_slack_id);
+        $this->slackController->inviteUsersToChannel($channel_id, $user_slack_id);
 
         // event_participantsにレコード追加
         $event_participant_log = new EventParticipantLog();

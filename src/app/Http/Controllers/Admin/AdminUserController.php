@@ -115,23 +115,20 @@ class AdminUserController extends Controller
      */
     public function update(Request $request, $user)
     {
-        // 管理者権限に変更する
         $user_instance = User::findOrFail($user);
+        $channel_id = $this->slackController->searchChannelId("peerperk管理者");
+        $user_slack_id = $user_instance->slackID;
+
         if ($user_instance->is_admin === 1) {
             $user_instance->is_admin = 0;
+            $this->slackController->removeUserFromChannel($channel_id, $user_slack_id);
         } elseif ($user_instance->is_admin === 0) {
             $user_instance->is_admin = 1;
-            //
-            $channel_id = $this->slackController->searchChannelId("peerperk管理者");
-            $user_slack_id = $user_instance->slackID;
-            $this->slackController->inviteUsers($channel_id, $user_slack_id);
-
+            $this->slackController->inviteUsersToChannel($channel_id, $user_slack_id);
         }
         $user_instance->save();
 
-        // 後ほどここでチャンネルへ招待するメソッドを呼び出す
-
-        return Redirect::route('admin.users.index')->with(['flush.message' => '管理者権限の付与が正しく行われました', 'flush.alert_type' => 'success']);
+        return Redirect::route('admin.users.index')->with(['flush.message' => '権限の変更が正しく行われました', 'flush.alert_type' => 'success']);
     }
 
     /**
