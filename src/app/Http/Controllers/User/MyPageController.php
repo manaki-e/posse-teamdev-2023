@@ -10,8 +10,6 @@ use App\Models\PointExchangeLog;
 use App\Models\Product;
 use App\Models\ProductDealLog;
 use App\Models\Request;
-use App\Models\RequestLike;
-use App\Models\Tag;
 
 //#82-主催したイベント情報
 class MyPageController extends Controller

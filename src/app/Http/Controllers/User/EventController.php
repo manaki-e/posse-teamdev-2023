@@ -230,7 +230,12 @@ class EventController extends Controller
         // 提示したポイント差し引かれる
         $user->distribution_point -= $request->point;
         $user->save();
-        //専用slackチャンネルに招待される＝＞slackの実装できたらやる
+
+        $channel_id = Event::findOrFail($event)->slack_channel;
+        $user_slack_id = $user->slack_id;
+        dd($channel_id, $user_slack_id);
+        $this->slackController->inviteUsers($channel_id, $user_slack_id);
+
         // event_participantsにレコード追加
         $event_participant_log = new EventParticipantLog();
         $event_participant_log->event_id = $event;
