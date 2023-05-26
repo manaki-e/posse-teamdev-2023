@@ -173,6 +173,7 @@
             let likeCount = like.querySelector('.like-count');
             //if isLiked is true, send unlike product
             if (isLiked === '1') {
+                
                 axios.post('/items/' + productId + '/unlike')
                     .then(function(response) {
                         //change isLiked data to false

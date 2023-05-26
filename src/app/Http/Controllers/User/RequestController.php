@@ -28,12 +28,12 @@ class RequestController extends Controller
         ];
         $product_tags = Tag::where('request_type_id', $product_request_type_id)->get();
         $event_tags = Tag::where('request_type_id', $event_request_type_id)->get();
-        $requests = ModelsRequest::with(['user', 'requestTags.tag'])->orderBy('created_at', 'desc')->unresolvedRequests()->get()->map(function ($request) {
+        $requests = ModelsRequest::with(['user', 'requestTags.tag'])->withCount('requestLikes')->orderBy('created_at', 'desc')->unresolvedRequests()->get()->map(function ($request) {
             $request->description = $request->changeDescriptionReturnToBreakTag($request->description);
             $request->data_tag = '[' . implode(',', $request->requestTags->pluck('tag_id')->toArray()) . ']';
-            if($request->requestLikes->contains('user_id', Auth::id())){
+            if ($request->requestLikes->contains('user_id', Auth::id())) {
                 $request->isLiked = 1;
-            }else{
+            } else {
                 $request->isLiked = 0;
             }
             return $request;
@@ -209,17 +209,15 @@ class RequestController extends Controller
     }
     public function like($id)
     {
-        //すでにある自分のいいね消してから追加＝＞バグ対策
-        RequestLike::where('request_id', $id)->where('user_id', Auth::id())->delete();
-        $request_like_instance=new RequestLike();
-        $request_like_instance->request_id=$id;
-        $request_like_instance->user_id=Auth::id();
+        $request_like_instance = new RequestLike();
+        $request_like_instance->request_id = $id;
+        $request_like_instance->user_id = Auth::id();
         $request_like_instance->save();
-        return response()->json(['message' => 'liked','request'=>RequestLike::where('request_id', $id)->where('user_id', Auth::id())->get()]);
+        return response()->json(['message' => 'liked', 'request' => RequestLike::where('request_id', $id)->where('user_id', Auth::id())->get()]);
     }
     public function unlike($id)
     {
         RequestLike::where('request_id', $id)->where('user_id', Auth::id())->delete();
-        return response()->json(['message' => 'unliked','request'=>RequestLike::where('request_id', $id)->where('user_id', Auth::id())->get()]);
+        return response()->json(['message' => 'unliked', 'request' => RequestLike::where('request_id', $id)->where('user_id', Auth::id())->get()]);
     }
 }

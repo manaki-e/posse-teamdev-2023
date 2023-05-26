@@ -168,7 +168,7 @@
                                                     </svg>
                                                 </button>
                                                 <div class="mt-3">
-                                                    <p class="text-xs like-count">11</p>
+                                                    <p class="text-xs like-count">{{ $request->request_likes_count }}</p>
                                                 </div>
                                             </div>
                                         </div>
