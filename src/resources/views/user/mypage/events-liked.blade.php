@@ -30,15 +30,35 @@
                         <x-slot:likes>{{ count($event -> eventLikes) }}</x-slot:likes>
                         <x-slot:user_icon>{{ $event  -> user -> icon }}</x-slot:user_icon>
                         <x-slot:user_name>{{ $event  -> user -> name }}</x-slot:user_name>
+                        @if ($event -> completed_at !== null))
+                        <x-slot:status>開催済み</x-slot:status>
+                        <x-slot:timestamp>{{ date( 'Y.m.d', strtotime( $event  -> completed_at ) ) }}</x-slot:timestamp>
+                        <x-slot:button></x-slot:button>
+                        @elseif ($event -> cancelled_at !== null))
+                        <x-slot:status>中止</x-slot:status>
+                        <x-slot:timestamp>{{ date( 'Y.m.d', strtotime( $event  -> cancelled_at ) ) }}</x-slot:timestamp>
+                        <x-slot:button></x-slot:button>
+                        <!-- 自身が参加予定のイベントの場合 -->
+                        @elseif (in_array ($user -> id, $array_participants))
+                        <x-slot:status></x-slot:status>
+                        <x-slot:timestamp></x-slot:timestamp>
                         <x-slot:button>
-                            <!-- 自身が主催するイベントの場合 -->
-                            @if ($event -> user_id === $user -> id)
-                            <p class="text-red-500">自分が主催するイベントです</p>
-                            <!-- 自身が参加予定のイベントの場合 -->
-                            @elseif (in_array ($user -> id, $array_participants))
-                            <p class="text-red-500">すでに参加予約したイベントです</p>
-                            <!-- 開催前のイベントであった場合 -->
-                            @elseif ($event -> completed_at === null && $event -> canceled_at === null)
+                            <x-mypage-button-event-cancel action="{{ route('events.cancel', ['event' =>  $event -> id]) }}">
+                                <x-slot:content>予約をキャンセルする</x-slot:content>
+                                <x-slot:logo_path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5m6 4.125l2.25 2.25m0 0l2.25 2.25M12 13.875l2.25-2.25M12 13.875l-2.25 2.25M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
+                                </x-slot:logo_path>
+                                <x-slot:modal_title>イベントへの参加予定をキャンセル</x-slot:modal_title>
+                                <x-slot:modal_description>参加をキャンセルすると、主催者にポイントは入りません。ただし、自分自身にポイントは戻ってこないため、ご注意ください。</x-slot:modal_description>
+                                <x-slot:method></x-slot:method>
+                                <x-slot:form_slot></x-slot:form_slot>
+                            </x-mypage-button-event-cancel>
+                        </x-slot:button>
+                        <!-- 開催前のイベントであった場合 -->
+                        @else
+                        <x-slot:status></x-slot:status>
+                        <x-slot:timestamp></x-slot:timestamp>
+                        <x-slot:button>
                             <x-mypage-button-event-held action="{{ route('events.participate', ['event' =>  $event -> id]) }}">
                                 <x-slot:content>予約する</x-slot:content>
                                 <x-slot:logo_path>
@@ -59,14 +79,8 @@
                                     </div>
                                 </x-slot:form_slot>
                             </x-mypage-button-event-held>
-                            <!-- 自身が参加予定のイベントの場合 -->
-                            @elseif ($event -> completed_at !== null)
-                            <p class="text-red-500">すでに開催されたイベントです</p>
-                            <!-- 自身が参加予定のイベントの場合 -->
-                            @elseif ($event -> cancelled_at !== null)
-                            <p class="text-red-500">開催がキャンセルされたイベントです</p>
-                            @endif
                         </x-slot:button>
+                        @endif
                     </x-mypage-event-list>
                 </li>
                 @endforeach

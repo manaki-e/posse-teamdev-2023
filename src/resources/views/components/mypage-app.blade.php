@@ -62,7 +62,7 @@
                             </li>
                         </ul>
                         <ul class="mb-3 border-b border-gray-300">
-                            <li class="border-slate-100 text-pink-400 text-lg ml-2 mt-4 rounded-t-1 group relative flex w-full items-center border-b border-solid pb-2 text-left font-semibold text-dark-500 transition-all ease-in">
+                            <li class="border-slate-100 text-pink-600 text-lg ml-2 mt-4 rounded-t-1 group relative flex w-full items-center border-b border-solid pb-2 text-left font-semibold text-dark-500 transition-all ease-in">
                                 <span>Peer Event</span>
                             </li>
                             <li>

@@ -225,6 +225,7 @@ class MyPageController extends Controller
         $liked_events = Event::whereHas('eventLikes', function ($query) use ($user) {
             $query->where('user_id', $user->id);
         })
+            ->where('user_id', '!=', $user->id)
             ->with('eventLikes', 'eventParticipants.user', 'eventTags.tag')
             ->orderBy('created_at', 'desc')
             ->get();
@@ -266,6 +267,7 @@ class MyPageController extends Controller
         $liked_requests = Request::whereHas('requestLikes', function ($query) use ($user) {
             $query->where('user_id', $user->id);
         })
+            ->where('user_id', '!=', $user->id)
             ->with(['requestTags.tag', 'requestLikes'])
             ->orderBy('created_at', 'desc')
             ->get()
