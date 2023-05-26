@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\ProductLike;
 use App\Models\ProductTag;
 use App\Models\Request as ModelsRequest;
 use Illuminate\Http\Request;
@@ -31,6 +32,11 @@ class ItemController extends Controller
                 $product->status = Product::STATUS['occupied'];
             } else {
                 $product->japanese_status = $japanese_product_statuses[$product->status];
+            }
+            if ($product->productLikes->contains('user_id', Auth::id())) {
+                $product->isLiked = 1;
+            } else {
+                $product->isLiked = 0;
             }
             $product->description=$product->changeDescriptionReturnToBreakTag($product->description);
             return $product;
@@ -87,6 +93,11 @@ class ItemController extends Controller
         $product->japanese_status = Product::JAPANESE_STATUS[$product->status];
         $product->japanese_condition = Product::CONDITION[$product->condition];
         $product->description = $product->changeDescriptionReturnToBreakTag($product->description);
+        if ($product->productLikes->contains('user_id', Auth::id())) {
+            $product->isLiked = 1;
+        } else {
+            $product->isLiked = 0;
+        }
         // このproduct_idをもつproduct_deal_logの最後のレコードのuser_idがログインユーザーの場合表示
         $last_product_deal_log = $product->productDealLogs->last();
         $login_user_can_borrow_this_product = $product->status === Product::STATUS['available'] && !$product->productBelongsToLoginUser();
@@ -208,5 +219,18 @@ class ItemController extends Controller
         $product_tags = Tag::productTags()->get();
         $requests = ModelsRequest::unresolvedRequests()->productRequests()->get();
         return view('user.items.create', compact('chosen_request_id', 'product_tags', 'requests'));
+    }
+    public function like($id)
+    {
+        $product_like_instance = new ProductLike();
+        $product_like_instance->product_id = $id;
+        $product_like_instance->user_id = Auth::id();
+        $product_like_instance->save();
+        return response()->json(['message' => 'liked', 'product' => ProductLike::where('product_id', $id)->where('user_id', Auth::id())->get()]);
+    }
+    public function unlike($id)
+    {
+        ProductLike::where('product_id', $id)->where('user_id', Auth::id())->delete();
+        return response()->json(['message' => 'unliked', 'product' => ProductLike::where('product_id', $id)->where('user_id', Auth::id())->get()]);
     }
 }
