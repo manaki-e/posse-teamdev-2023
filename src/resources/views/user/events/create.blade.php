@@ -61,10 +61,9 @@ $tags = ['勉強会', 'スポーツ', '娯楽', 'プログラミング', 'React'
                             <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">開催形態<span class="text-red-600">*</span></h4>
                             <div class="mb-4 border border-gray-300 rounded-md">
                                 <select name="location" id="example1" class="p-1 block w-full rounded-md border-gray-300 shadow-sm text-lg text-gray-500" required>
-                                    <option value="対面">対面</option>
-                                    <option value="オンライン">オンライン</option>
-                                    <option value="対面・オンライン併用">対面・オンライン併用</option>
-                                    <option value="未定">未定</option>
+                                    @foreach($locations as $location)
+                                    <option value="{{ $location }}">{{ $location }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">開催予定日</h4>

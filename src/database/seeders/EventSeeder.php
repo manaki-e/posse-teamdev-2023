@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Event;
 use App\Models\Request;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -22,6 +23,7 @@ class EventSeeder extends Seeder
         $faker = Faker::create('ja_JP');
         $user_ids = User::getUserIds();
         $request_ids = Request::getRequestIds();
+        $locations = Event::LOCATIONS;
         for ($i = 1; $i <= 30; $i++) {
             $user_id = $faker->randomElement($user_ids);
             $date = $faker->dateTimeBetween('today', '+1 month');
@@ -44,7 +46,7 @@ class EventSeeder extends Seeder
                 'description' => "イベント" . $i . "の説明\nイベント" . $i . "の説明",
                 'start_date' => $faker->randomElement([null, $date]),
                 'end_date' => $faker->randomElement([null, $date]),
-                'location' => $faker->randomElement(['オンライン', $faker->address]),
+                'location' => $faker->randomElement($locations),
                 'slack_channel' => $this->channelId(),
                 'completed_at' => $completed_at,
                 'created_at' => now(),
