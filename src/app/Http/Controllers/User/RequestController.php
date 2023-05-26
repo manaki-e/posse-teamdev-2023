@@ -23,14 +23,15 @@ class RequestController extends Controller
         $event_request_type_id = ModelsRequest::EVENT_REQUEST_TYPE_ID;
         $product_request_type_id = ModelsRequest::PRODUCT_REQUEST_TYPE_ID;
         $app = [
-            $product_request_type_id => ['color' => 'text-blue-400', 'name' => 'Peer Product Share','japanese_name'=>'アイテム'],
-            $event_request_type_id => ['color' => 'text-pink-600', 'name' => 'Peer Event','japanese_name'=>'イベント']
+            $product_request_type_id => ['color' => 'text-blue-400', 'name' => 'Peer Product Share', 'japanese_name' => 'アイテム'],
+            $event_request_type_id => ['color' => 'text-pink-600', 'name' => 'Peer Event', 'japanese_name' => 'イベント']
         ];
         $product_tags = Tag::where('request_type_id', $product_request_type_id)->get();
         $event_tags = Tag::where('request_type_id', $event_request_type_id)->get();
-        $requests = ModelsRequest::with(['user', 'requestTags.tag'])->orderBy('created_at','desc')->unresolvedRequests()->get()->map(function($request){
-            $request->description=$request->changeDescriptionReturnToBreakTag($request->description);
+        $requests = ModelsRequest::with(['user', 'requestTags.tag'])->orderBy('created_at', 'desc')->unresolvedRequests()->get()->map(function ($request) {
+            $request->description = $request->changeDescriptionReturnToBreakTag($request->description);
             $request->data_tag = '[' . implode(',', $request->requestTags->pluck('tag_id')->toArray()) . ']';
+            $request->isLiked = $request->requestLikes->contains('user_id', Auth::id());
             return $request;
         });
         return view('user.requests.index', compact('requests', 'product_tags', 'event_tags', 'app', 'event_request_type_id', 'product_request_type_id'));
@@ -69,7 +70,7 @@ class RequestController extends Controller
         $request_instance->save();
         //add record to request_tag table using request_id,tag_id
         if ($request->type_id === ModelsRequest::EVENT_REQUEST_TYPE_ID) {
-            if(!empty($request->event_tags)){
+            if (!empty($request->event_tags)) {
                 foreach ($request->event_tags as $tag_id) {
                     RequestTag::create([
                         'request_id' => $request_instance->id,
@@ -78,7 +79,7 @@ class RequestController extends Controller
                 }
             }
         } else {
-            if(!empty($request->product_tags)){
+            if (!empty($request->product_tags)) {
                 foreach ($request->product_tags as $tag_id) {
                     RequestTag::create([
                         'request_id' => $request_instance->id,
@@ -202,15 +203,17 @@ class RequestController extends Controller
 
         return redirect()->route('mypage.requests.posted');
     }
-    public function like($id){
+    public function like($id)
+    {
         RequestLike::create([
             'request_id' => $id,
             'user_id' => Auth::id()
         ]);
-        return response()->json(['success'=>true]);
+        return response()->json(['success' => true]);
     }
-    public function unlike($id){
+    public function unlike($id)
+    {
         RequestLike::where('request_id', $id)->where('user_id', Auth::id())->delete();
-        return response()->json(['success'=>true]);
+        return response()->json(['success' => true]);
     }
 }
