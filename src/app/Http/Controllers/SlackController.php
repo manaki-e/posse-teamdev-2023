@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SlackUser;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
+use App\Models\SlackUser;
 use App\Models\User;
 
 class SlackController extends Controller
@@ -122,51 +123,54 @@ class SlackController extends Controller
     {
         $user = Auth::user();
 
-        $create_user = getUserSlackIds([$user->id]);
+        $create_user = User::where('id', $user->id)->pluck('slackID')->join(', ');
         $admin_users = User::where('is_admin', 1)->pluck('slackID')->join(', ');
         $invite_users = $create_user . ', ' . $admin_users;
 
-        $channel_name = 'Peer Event ' . $event_title;
+        $channel_name = 'peerevent-' . $event_title;
+        $valid_channel_name = strtolower(str_replace([' ', '.'], '', $channel_name));
         $channel = [
-            'name' => $channel_name,
+            'name' => $valid_channel_name
         ];
 
         // Slack APIにPOSTリクエストを送信
         $response = Http::withToken($this->token)
             ->post('https://slack.com/api/conversations.create', $channel);
 
-        // チャンネルを作成して、そのチャンネルのIDを取得
-        $channelId = $response->json()['channel']['id'];
+        // チャンネル作成が成功した場合のみユーザを招待
+        if ($response->json()['ok']) {
+            $channel_id = $response->json()['channel']['id'];
+            $this->inviteUsers($channel_id, $invite_users);
+        } else {
+            return Redirect::route('events.index')->with(['flush.message' => 'なんらかのエラーが発生してイベントを作成できませんでした。', 'flush.alert_type' => 'error']);
+        }
 
-        dd();
-
-        $this->inviteUsers($request, $channelId, $invite_users);
+        return $channel_id;
     }
 
     /**
      * Slackにチャンネルにユーザーを招待する
-     * @param Request $request
-     * @param string $channelId 作成するチャンネルのID
+     * @param string $channelId 招待するチャンネルID
      * @param string $invite_users 招待するユーザーのSlackID
      * @return void
      */
-    public function inviteUsers(Request $request, $channelId, $invite_users)
+    public function inviteUsers($channel_id, $invite_users)
     {
-        // 全てのチャンネルに必要なユーザ（例えば管理者など）を追加
-        $invite_users .= ',U056W35F71C';
-
-        // 招待するチャンネルの情報とユーザの情報
-        $invite_channel = [
-            'channel' => $channelId,
+        // ユーザを招待する情報を準備
+        $invite_data = [
+            'channel' => $channel_id,
             'users' => $invite_users,
         ];
 
-        // Slack APIにPOSTリクエストを送信
-        $response = Http::withToken($this->token)
-            ->post('https://slack.com/api/conversations.invite', $invite_channel);
+        // Slack APIにPOSTリクエストを送信してユーザを招待
+        $invite_response = Http::withToken($this->token)
+        ->post('https://slack.com/api/conversations.invite', $invite_data);
 
-        // チャンネルに招待する
-        $response->throw();
+        if ($invite_response->successful()) {
+            return;
+        } else {
+            return Redirect::route('events.index')->with(['flush.message' => 'なんらかのエラーが発生してイベントを作成できませんでした。', 'flush.alert_type' => 'error']);
+        }
     }
 
     /**
