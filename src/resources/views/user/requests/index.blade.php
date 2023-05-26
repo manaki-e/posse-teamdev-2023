@@ -252,7 +252,7 @@
             //get like count element
             let likeCount = like.querySelector('.like-count');
             //if isLiked is true, send unlike request
-            if (isLiked === 1) {
+            if (isLiked === '1') {
                 console.log(isLiked);
                 axios.post('/requests/' + requestId + '/unlike')
                     .then(function(response) {
