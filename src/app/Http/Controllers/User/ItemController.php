@@ -217,15 +217,15 @@ class ItemController extends Controller
     }
     public function like($id)
     {
-        ProductLike::create([
-            'product_id' => $id,
-            'user_id' => Auth::id()
-        ]);
-        return response()->json(['success' => true]);
+        $product_like_instance = new ProductLike();
+        $product_like_instance->product_id = $id;
+        $product_like_instance->user_id = Auth::id();
+        $product_like_instance->save();
+        return response()->json(['message' => 'liked', 'product' => ProductLike::where('product_id', $id)->where('user_id', Auth::id())->get()]);
     }
     public function unlike($id)
     {
         ProductLike::where('product_id', $id)->where('user_id', Auth::id())->delete();
-        return response()->json(['success' => true]);
+        return response()->json(['message' => 'unliked', 'product' => ProductLike::where('product_id', $id)->where('user_id', Auth::id())->get()]);
     }
 }
