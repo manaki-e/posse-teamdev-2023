@@ -18,7 +18,7 @@
                     </svg>
                 </button>
                 <!-- Product -->
-                <a href="#">
+                <a href="{{ route('items.index')}}">
                     <div class="pt-5 text-blue-400" :class=" (isSidebarOpen) ? 'flex flex-row' : 'text-center'">
                         <div class="ml-4 text-center flex items-center">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="stroke-current">
@@ -32,7 +32,7 @@
                     </div>
                 </a>
                 <!-- Event -->
-                <a href="#">
+                <a href="{{ route('events.index') }}">
                     <div href="#" class="text-pink-600" :class=" (isSidebarOpen) ? 'flex flex-row justify-start my-8' : 'text-center my-4'">
                         <div class="ml-4 text-center flex items-center" :class="{ '' : isSidebarOpen, 'mx-auto' : !isSidebarOpen}">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="stroke-current">
@@ -45,7 +45,7 @@
                     </div>
                 </a>
                 <!-- Request -->
-                <a href="#">
+                <a href="{{ route('requests.index') }}">
                     <div href="#" class="mb-4 text-peer-request" :class=" (isSidebarOpen) ? 'flex flex-row'
                         : 'text-center'">
                         <div class="ml-4 text-center flex items-center" :class="{ '' : isSidebarOpen, 'mx-auto' : !isSidebarOpen}">
@@ -62,6 +62,9 @@
                 <div x-show="isSidebarOpen">
                     <nav x-show="isSidebarOpen" aria-label="Main" class="flex flex-col">
                         <hr class="border-gray-500 mx-4">
+
+                        <!-- urlが/eventsまたは/events/*の場合 -->
+                        @if (request()->is('events') || request()->is('events/*'))
                         <a href="#" class="mx-4 my-4 text-center flex items-center">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M5 21C4.45 21 3.979 20.804 3.587 20.412C3.195 20.02 2.99934 19.5493 3 19V5C3 4.45 3.196 3.979 3.588 3.587C3.98 3.195 4.45067 2.99934 5 3H19C19.55 3 20.021 3.196 20.413 3.588C20.805 3.98 21.0007 4.45067 21 5V19C21 19.55 20.804 20.021 20.412 20.413C20.02 20.805 19.5493 21.0007 19 21H15V19H19V7H5V19H9V21H5ZM11 21V14.85L9.4 16.45L8 15L12 11L16 15L14.6 16.45L13 14.85V21H11Z" fill="black" />
@@ -69,7 +72,7 @@
                             <p class="font-patua ml-2 p-1 text-base rounded hover:bg-gray-100">
                                 参加イベント
                             </p>
-                        </a href="#">
+                        </a>
                         <a href="#" class="mx-4 text-center flex items-center">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M19.7151 0.855469H4.28655C3.33978 0.855469 2.57227 1.62298 2.57227 2.56975V21.4269C2.57227 22.3737 3.33978 23.1412 4.28655 23.1412H19.7151C20.6619 23.1412 21.4294 22.3737 21.4294 21.4269V2.56975C21.4294 1.62298 20.6619 0.855469 19.7151 0.855469Z" stroke="black" stroke-width="1.71429" stroke-linecap="round" stroke-linejoin="round" />
@@ -78,15 +81,38 @@
                             <p class="font-patua ml-2 p-1 text-base rounded hover:bg-gray-100">
                                 主催イベント
                             </p>
-                        </a href="#">
+                        </a>
+                        @elseif(request()->is('items') || request()->is('items/*'))
+                        <!-- urlが/itemsまたは/items/*の場合 -->
                         <a href="#" class="mx-4 my-4 text-center flex items-center">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M5 9V21H1V9H5ZM9 21C8.46957 21 7.96086 20.7893 7.58579 20.4142C7.21071 20.0391 7 19.5304 7 19V9C7 8.45 7.22 7.95 7.59 7.59L14.17 1L15.23 2.06C15.5 2.33 15.67 2.7 15.67 3.11L15.64 3.43L14.69 8H21C21.5304 8 22.0391 8.21071 22.4142 8.58579C22.7893 8.96086 23 9.46957 23 10V12C23 12.26 22.95 12.5 22.86 12.73L19.84 19.78C19.54 20.5 18.83 21 18 21H9ZM9 19H18.03L21 12V10H12.21L13.34 4.68L9 9.03V19Z" fill="black" />
+                                <path d="M5 21C4.45 21 3.979 20.804 3.587 20.412C3.195 20.02 2.99934 19.5493 3 19V5C3 4.45 3.196 3.979 3.588 3.587C3.98 3.195 4.45067 2.99934 5 3H19C19.55 3 20.021 3.196 20.413 3.588C20.805 3.98 21.0007 4.45067 21 5V19C21 19.55 20.804 20.021 20.412 20.413C20.02 20.805 19.5493 21.0007 19 21H15V19H19V7H5V19H9V21H5ZM11 21V14.85L9.4 16.45L8 15L12 11L16 15L14.6 16.45L13 14.85V21H11Z" fill="black" />
                             </svg>
                             <p class="font-patua ml-2 p-1 text-base rounded hover:bg-gray-100">
-                                いいね
+                                出品一覧
                             </p>
                         </a>
+                        <!-- 貸借履歴に飛ぶ -->
+                        <a href="#" class="mx-4 my-4 text-center flex items-center">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M5 21C4.45 21 3.979 20.804 3.587 20.412C3.195 20.02 2.99934 19.5493 3 19V5C3 4.45 3.196 3.979 3.588 3.587C3.98 3.195 4.45067 2.99934 5 3H19C19.55 3 20.021 3.196 20.413 3.588C20.805 3.98 21.0007 4.45067 21 5V19C21 19.55 20.804 20.021 20.412 20.413C20.02 20.805 19.5493 21.0007 19 21H15V19H19V7H5V19H9V21H5ZM11 21V14.85L9.4 16.45L8 15L12 11L16 15L14.6 16.45L13 14.85V21H11Z" fill="black" />
+                            </svg>
+                            <p class="font-patua ml-2 p-1 text-base rounded hover:bg-gray-100">
+                                貸借履歴
+                            </p>
+                        </a>
+                        <!-- urlが/requestsまたは/requests/*の場合 -->
+                        @elseif(request()->is('requests') || request()->is('requests/*'))
+                        <!-- ログインしているユーザーが投稿したリクエスト画面に飛ぶ -->
+                        <a href="#}" class="mx-4 my-4 text-center flex items-center">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M5 21C4.45 21 3.979 20.804 3.587 20.412C3.195 20.02 2.99934 19.5493 3 19V5C3 4.45 3.196 3.979 3.588 3.587C3.98 3.195 4.45067 2.99934 5 3H19C19.55 3 20.021 3.196 20.413 3.588C20.805 3.98 21.0007 4.45067 21 5V19C21 19.55 20.804 20.021 20.412 20.413C20.02 20.805 19.5493 21.0007 19 21H15V19H19V7H5V19H9V21H5ZM11 21V14.85L9.4 16.45L8 15L12 11L16 15L14.6 16.45L13 14.85V21H11Z" fill="black" />
+                            </svg>
+                            <p class="font-patua ml-2 p-1 text-base rounded hover:bg-gray-100">
+                                投稿したリクエスト
+                            </p>
+                        </a>
+                        @endif
                     </nav>
                 </div>
             </div>
@@ -94,7 +120,7 @@
         <!-- Sidebar ここまで -->
 
         <!-- main content -->
-        <main class="mx-auto w-full pt-3 overflow-x-hidden overflow-y-auto">
+        <main class="mx-auto w-full py-3 overflow-x-hidden overflow-y-auto">
             <div class="mx-4 mb-4">
                 @if (session('flush.message') && session('flush.alert_type') === 'info')
                 <div class="flex rounded-md bg-blue-50 p-4 text-sm text-blue-500" x-cloak x-show="showAlert" x-data="{ showAlert: true }">
