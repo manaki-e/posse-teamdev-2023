@@ -20,7 +20,7 @@
                                     @foreach ($tags as $index => $tag)
                                     <div class="w-auto mx-1 border rounded border-gray-200">
                                         <div class="flex items-center px-3">
-                                            <input name="tag" id="tag_{{ $index }}" type="checkbox" value="{{ $index }}" class="filter-input w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
+                                            <input name="tag" id="tag_{{ $index }}" type="checkbox" value="{{ $tag->id }}" class="filter-input w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
                                             <label for="tag_{{ $index }}" class="w-full py-3 pl-1 text-sm font-medium text-gray-900">{{ $tag->name }}</label>
                                         </div>
                                     </div>
@@ -177,7 +177,7 @@
         input.addEventListener('click', () => {
             // 選択したタグを配列に入れる
             let checkedTags = Array.from(document.querySelectorAll('input[name=tag]:checked'));
-            let checkedTagsValues = checkedTags.map(e => e.value);
+            let checkedTagsValues = checkedTags.map(e => parseInt(e.value));
             // 絞り込み対象全て取得
             let filterTargets = document.querySelectorAll('.filter-target');
 
