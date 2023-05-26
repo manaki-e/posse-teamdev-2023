@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 $user_info = Auth::user();
 
 // 貸し出し可能か判定→ボタン表示
-$unavailable_tag = $product->japanese_status=='貸出可能' ? '' : '<span class="absolute left-0 top-0 rounded-br-lg bg-red-500 px-3 py-1.5 text-sm uppercase tracking-wider text-white">貸出中</span>';
+$unavailable_tag = $product->japanese_status == '貸出可能' ? '' : '<span class="absolute left-0 top-0 rounded-br-lg bg-red-500 px-3 py-1.5 text-sm uppercase tracking-wider text-white">貸出中</span>';
 
 //アイテムの画像の合計枚数を取得
 $images_count = count($product->productImages);
@@ -21,6 +21,7 @@ $images_count = count($product->productImages);
             <x-slot:button_link>{{ route('items.create') }}</x-slot:button_link>
             <x-slot:earned_point>580</x-slot:earned_point>
             <x-slot:distribution_point>5000</x-slot:distribution_point>
+            <x-slot:top_title_link>{{ route('items.index') }}</x-slot:top_title_link>
         </x-user-header>
     </x-slot>
     <x-slot name="body_slot">

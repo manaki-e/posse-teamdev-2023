@@ -13,6 +13,7 @@ $events = ['React勉強会', '野球', 'サッカー', 'pythonで機械学習', 
             <x-slot:button_text>イベント登録</x-slot:button_text>
             <x-slot:earned_point>580</x-slot:earned_point>
             <x-slot:distribution_point>5000</x-slot:distribution_point>
+            <x-slot:top_title_link>{{ route('events.index') }}</x-slot:top_title_link>
         </x-user-header>
     </x-slot>
     <x-slot name="body_slot">
