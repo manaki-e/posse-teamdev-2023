@@ -1,5 +1,5 @@
 <div {{ $attributes->merge(['class' => 'flex justify-between items-center border-t border-gray-300 py-3 px-6 text-sm']) }}>
-    <div class="flex gap-2">
+    <div class="flex gap-2 font-mono">
         <div>
             <img class="w-28 h-24 object-contain" src="{{ asset('images/'.$image_url) }}" alt="Product Image">
         </div>
@@ -15,7 +15,7 @@
             <ul class="flex flex-wrap gap-2">{{ $tag }}</ul>
         </div>
     </div>
-    <div class="flex-center">
+    <div class="flex-center gap-4">
         {{ $button }}
     </div>
 </div>

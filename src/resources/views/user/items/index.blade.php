@@ -6,6 +6,7 @@
             <x-slot:button_link>{{ route('items.create') }}</x-slot:button_link>
             <x-slot:earned_point>{{Auth::user()->earned_point}}</x-slot:earned_point>
             <x-slot:distribution_point>{{Auth::user()->distribution_point}}</x-slot:distribution_point>
+            <x-slot:top_title_link>{{ route('items.index') }}</x-slot:top_title_link>
         </x-user-header>
     </x-slot>
     <x-slot name="body_slot">

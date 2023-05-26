@@ -42,17 +42,18 @@ Route::middleware('auth')->group(function () {
     Route::post('/items/{item}/return', [ItemController::class, 'return'])->name('items.return');
     Route::post('/items/{item}/receive', [ItemController::class, 'receive'])->name('items.receive');
     Route::get('/items/create/{chosen_request_id}', [ItemController::class, 'createWithRequest'])->name('items.create-with-request');
-    Route::resource('/point-exchange', PointExchangeController::class);
-
-    Route::resource('/requests',RequestController::class);
-
-    Route::put('/point-exchanges/{id}', [PointExchangeController::class, 'updateApproved'])->name('point-exchanges.update-approved');
 
     Route::resource('/events', EventController::class);
     Route::post('/events/{event}/held', [EventController::class, 'held'])->name('events.held');
     Route::post('/events/{event}/participate', [EventController::class, 'participate'])->name('events.participate');
     Route::post('/events/{event}/cancel', [EventController::class, 'cancel'])->name('events.cancel');
     Route::get('/events/create/{chosen_request_id}', [EventController::class, 'createWithRequest'])->name('events.create-with-request');
+
+    Route::resource('/requests',RequestController::class);
+    Route::post('/requests/{request}/resolve', [RequestController::class, 'resolve'])->name('requests.resolve');
+
+    Route::resource('/point-exchange', PointExchangeController::class);
+    Route::put('/point-exchanges/{id}', [PointExchangeController::class, 'updateApproved'])->name('point-exchanges.update-approved');
 
     Route::group(['prefix' => 'mypage', 'as' => 'mypage.'], function () {
         Route::get('/items', [MyPageController::class, 'items'])->name('items');
@@ -64,6 +65,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/events/organized', [MyPageController::class, 'eventsOrganized'])->name('events.organized');
         Route::get('/events/joined', [MyPageController::class, 'eventsJoined'])->name('events.joined');
         Route::get('/items/listed', [MyPageController::class, 'itemsListed'])->name('items.listed');
+        Route::get('/requests/posted', [MyPageController::class, 'requestsPosted'])->name('requests.posted');
+        Route::get('/requests/liked', [MyPageController::class, 'requestsLiked'])->name('requests.liked');
     });
 
     Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'check.admin'], function () {

@@ -4,6 +4,7 @@
             <x-slot:app_name>Peer Product Share</x-slot:app_name>
             <x-slot:button_link>{{ route('items.create') }}</x-slot:button_link>
             <x-slot:button_text>アイテム登録</x-slot:button_text>
+            <x-slot:top_title_link>{{ route('items.index') }}</x-slot:top_title_link>
         </x-user-header>
     </x-slot>
     <x-slot name="body_slot">
