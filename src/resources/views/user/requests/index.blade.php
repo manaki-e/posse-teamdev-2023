@@ -158,7 +158,7 @@
                                     <!-- 日付・いいね -->
                                     <div class="flex items-end justify-between mb-1">
                                         <p>{{$request->created_at->format('Y.m.d')}}</p>
-                                        <div class="likes" data-isLiked="{{ $request->isLiked }}">
+                                        <div class="likes" data-request_id="{{ $request->id }}" data-is_liked="{{ $request->isLiked  }}">
                                             <div class="flex relative">
                                                 <button class="text-gray-500">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="@if($request->isLiked) red @else none @endif" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -166,7 +166,7 @@
                                                     </svg>
                                                 </button>
                                                 <div class="mt-3">
-                                                    <p class="text-xs">11</p>
+                                                    <p class="text-xs like-count">11</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -245,23 +245,21 @@
     likes.forEach(like => {
         like.addEventListener('click', () => {
             //get isLiked data from element
-            let isLiked = like.dataset.isliked;
+            let isLiked = like.dataset.is_liked;
             //get request id from element
-            let requestId = like.dataset.requestid;
+            let requestId = like.dataset.request_id;
             //get like count element
             let likeCount = like.querySelector('.like-count');
             //if isLiked is true, send unlike request
             if (isLiked) {
-                axios.post('/requests/unlike', {
-                        request_id: requestId
-                    })
+                axios.post('/requests/' + requestId + '/unlike')
                     .then(function(response) {
                         //change isLiked data to false
-                        like.dataset.isliked = false;
+                        like.dataset.is_liked = false;
                         //change svg color to gray
                         like.querySelector('svg').style.fill = 'none';
                         //decrease like count
-                        likeCount.textContent = parseInt(likeCount.textContent) - 1;
+                        likeCount.innerHTML = parseInt(likeCount.innerHTML) - 1;
                     })
                     .catch(function(error) {
                         console.log(error);
@@ -269,16 +267,14 @@
             }
             //if isLiked is false, send like request
             else {
-                axios.post('/requests/like', {
-                        request_id: requestId
-                    })
+                axios.post('/requests/' + requestId + '/like')
                     .then(function(response) {
                         //change isLiked data to true
-                        like.dataset.isliked = true;
+                        like.dataset.is_liked = true;
                         //change svg color to red
                         like.querySelector('svg').style.fill = 'red';
                         //increase like count
-                        likeCount.textContent = parseInt(likeCount.textContent) + 1;
+                        likeCount.innerHTML = parseInt(likeCount.innerHTML) + 1;
                     })
                     .catch(function(error) {
                         console.log(error);
