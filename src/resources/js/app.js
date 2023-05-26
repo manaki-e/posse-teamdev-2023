@@ -12,13 +12,10 @@ let app_name = "";
 
 if (currentURL.includes("/items")) {
     app_name = "item";
-    console.log("item");
 } else if (currentURL.includes("/events")) {
     app_name = "event";
-    console.log("event");
 } else if (currentURL.includes("/requests")) {
     app_name = "request";
-    console.log("request");
 }
 
 console.log(app_name);
