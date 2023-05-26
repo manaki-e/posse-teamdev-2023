@@ -154,7 +154,7 @@ class EventController extends Controller
         $event = Event::with('eventTags.tag')->findOrFail($id);
         //ログインユーザーのイベントか確認
         if ($user->id !== $event->user_id) {
-            return redirect()->back()->with(['flush.message' => 'あなたは主催者ではないです','flush.alert_type' => 'error']);
+            return redirect()->back()->with(['flush.message' => 'あなたは主催者ではないです', 'flush.alert_type' => 'error']);
         }
         //イベント更新
         $event->title = $request->title;
@@ -254,6 +254,7 @@ class EventController extends Controller
     }
     public function like($id)
     {
+        EventLike::where('event_id', $id)->where('user_id', Auth::id())->delete();
         $event_like_instance = new EventLike();
         $event_like_instance->event_id = $id;
         $event_like_instance->user_id = Auth::id();

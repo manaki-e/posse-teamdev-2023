@@ -222,6 +222,7 @@ class ItemController extends Controller
     }
     public function like($id)
     {
+        ProductLike::where('product_id', $id)->where('user_id', Auth::id())->delete();
         $product_like_instance = new ProductLike();
         $product_like_instance->product_id = $id;
         $product_like_instance->user_id = Auth::id();

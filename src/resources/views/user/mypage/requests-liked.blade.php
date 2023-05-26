@@ -1,8 +1,8 @@
 <x-mypage-app>
     <x-slot:border_color>border-peer-request</x-slot:border_color>
     <x-slot:title>いいねしたリクエスト一覧</x-slot:title>
-    <x-slot:earned_point>580</x-slot:earned_point>
-    <x-slot:distribution_point>5000</x-slot:distribution_point>
+    <x-slot:earned_point>{{ Auth::user()->earned_point }}</x-slot:earned_point>
+    <x-slot:distribution_point>{{ Auth::user()->distribution_point }}</x-slot:distribution_point>
 
     <div class="bg-white md:p-6 w-full">
         <div x-data="{ activeTab: {{ request()->query('activeTab', 0) }} }">
@@ -25,6 +25,9 @@
                     @foreach ($unresolved_liked_requests as $request)
                     <li>
                         <x-mypage-request-list>
+                            <x-slot:id>{{ $request->id }}</x-slot:id>
+                            <x-slot:is_liked>{{ $request->idLiked }}</x-slot:is_liked>
+                            <x-slot:fill>@if($request->isLiked) red @else none @endif</x-slot:fill>
                             <x-slot:title>{{ $request -> title }}</x-slot:title>
                             <x-slot:description>{{ $request -> description }}</x-slot:description>
                             <x-slot:tag>

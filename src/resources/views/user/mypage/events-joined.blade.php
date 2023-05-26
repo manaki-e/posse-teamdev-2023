@@ -1,8 +1,8 @@
 <x-mypage-app>
     <x-slot:border_color>border-pink-600</x-slot:border_color>
     <x-slot:title>参加予約したイベント一覧</x-slot:title>
-    <x-slot:earned_point>580</x-slot:earned_point>
-    <x-slot:distribution_point>5000</x-slot:distribution_point>
+    <x-slot:earned_point>{{ Auth::user()->earned_point }}</x-slot:earned_point>
+    <x-slot:distribution_point>{{ Auth::user()->distribution_point }}</x-slot:distribution_point>
 
     <div class="bg-white md:p-6 w-full">
         <div x-data="{ activeTab: {{ request()->query('activeTab', 0) }} }">

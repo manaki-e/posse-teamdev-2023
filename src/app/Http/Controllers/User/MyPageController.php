@@ -291,9 +291,14 @@ class MyPageController extends Controller
             ->get()
             ->each(function ($request) {
                 $request->type = $request->getRequestType($request->type_id);
+                if($request->requestLikes->contains('user_id', Auth::id())){
+                    $request->isLiked = 1;
+                }else{
+                    $request->isLiked = 0;
+                }
             });
 
-        $unresolved_requests = Request::where('user_id', $user->id)
+            $unresolved_requests = Request::where('user_id', $user->id)
             ->unresolvedRequests()
             ->with('requestLikes')
             ->with('requestTags.tag')
@@ -301,6 +306,11 @@ class MyPageController extends Controller
             ->get()
             ->each(function ($request) {
                 $request->type = $request->getRequestType($request->type_id);
+                if($request->requestLikes->contains('user_id', Auth::id())){
+                    $request->isLiked = 1;
+                }else{
+                    $request->isLiked = 0;
+                }
             });
 
         return view('user.mypage.requests-posted', compact('resolved_requests', 'unresolved_requests'));
