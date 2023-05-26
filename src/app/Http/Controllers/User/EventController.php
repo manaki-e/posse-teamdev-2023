@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Event;
+use App\Models\EventLike;
 use App\Models\EventParticipantLog;
 use App\Models\EventTag;
 use App\Models\Request as ModelsRequest;
@@ -23,9 +24,9 @@ class EventController extends Controller
     {
         $user_id = Auth::id();
         $events = Event::withCount('eventLikes')->withCount(['eventParticipants' => function ($query) {
-            $query->where('canceled_at', null);
+            $query->where('cancelled_at', null);
         }])->with(['user', 'eventTags.tag', 'eventLikes.user'])->with(['eventParticipants' => function ($query) {
-            $query->where('canceled_at', null)->with('user');
+            $query->where('cancelled_at', null)->with('user');
         }])->get()->map(function ($event) use ($user_id) {
             $event->isLiked = $event->eventLikes->contains('user_id', $user_id);
             $event->isParticipated = $event->eventParticipants->contains('user_id', $user_id);
@@ -41,6 +42,11 @@ class EventController extends Controller
             }
             $event->data_tag = '[' . implode(',', $event->eventTags->pluck('tag_id')->toArray()) . ']';
             $event->description = $event->changeDescriptionReturnToBreakTag($event->description);
+            if ($event->eventLikes->contains('user_id', Auth::id())) {
+                $event->isLiked = 1;
+            } else {
+                $event->isLiked = 0;
+            }
             return $event;
         })->sortByDesc('created_at');
         $tags = Tag::eventTags()->get();
@@ -248,5 +254,18 @@ class EventController extends Controller
         //イベントタグ一覧を取得
         $tags = Tag::eventTags()->get();
         return view('user.events.create', compact('requests', 'tags', 'chosen_request_id'));
+    }
+    public function like($id)
+    {
+        $event_like_instance = new EventLike();
+        $event_like_instance->event_id = $id;
+        $event_like_instance->user_id = Auth::id();
+        $event_like_instance->save();
+        return response()->json(['message' => 'liked', 'event' => EventLike::where('event_id', $id)->where('user_id', Auth::id())->get()]);
+    }
+    public function unlike($id)
+    {
+        EventLike::where('event_id', $id)->where('user_id', Auth::id())->delete();
+        return response()->json(['message' => 'unliked', 'event' => EventLike::where('event_id', $id)->where('user_id', Auth::id())->get()]);
     }
 }

@@ -91,7 +91,7 @@
                                             </div>
                                         </div>
                                         <!-- <div class="w-full"> -->
-                                        <div class="likes relative top-0 right-0">
+                                        <div class="likes relative top-0 right-0" data-event_id="{{ $event->id }}" data-is_liked="{{ $event->isLiked }}">
                                             <div class="flex relative">
                                                 <button class="text-gray-500">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="@if($event->isLiked) red @else none @endif" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -99,7 +99,7 @@
                                                     </svg>
                                                 </button>
                                                 <div class="mt-3">
-                                                    <p class="text-xs">{{ $event->event_likes_count }}</p>
+                                                    <p class="text-xs like-count">{{ $event->event_likes_count }}</p>
                                                 </div>
                                             </div>
                                         </div>

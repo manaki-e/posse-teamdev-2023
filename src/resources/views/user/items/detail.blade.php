@@ -19,8 +19,8 @@ $images_count = count($product->productImages);
             <x-slot:app_name>Peer Product Share</x-slot:app_name>
             <x-slot:button_text>アイテム登録</x-slot:button_text>
             <x-slot:button_link>{{ route('items.create') }}</x-slot:button_link>
-            <x-slot:earned_point>580</x-slot:earned_point>
-            <x-slot:distribution_point>5000</x-slot:distribution_point>
+            <x-slot:earned_point>{{ Auth::user()->earned_point }}</x-slot:earned_point>
+            <x-slot:distribution_point>{{ Auth::user()->distribution_point }}</x-slot:distribution_point>
             <x-slot:top_title_link>{{ route('items.index') }}</x-slot:top_title_link>
         </x-user-header>
     </x-slot>
@@ -97,13 +97,13 @@ $images_count = count($product->productImages);
                                 <h1 class="text-3xl text-gray-800 font-bold mb-1 pl-2 border-l-4 border-blue-400">{{$product->title}}</h1>
                                 <div class="px-2 flex mt-4 justify-between">
                                     <p class="title-font font-medium text-2xl text-gray-500">{{$product->point}} pt</p>
-                                    <span class="flex items-center">
-                                        <button type="">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <span class="flex items-center likes" data-product_id="{{ $product->id }}" data-is_liked="{{ $product->isLiked }}">
+                                        <button>
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="@if($product->isLiked) red @else none @endif" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
                                             </svg>
                                         </button>
-                                        <span class="text-gray-600 ml-3">{{$product->product_likes_count}} likes</span>
+                                        <span class="text-gray-600 ml-3 like-count">{{$product->product_likes_count}}</span>
                                     </span>
                                 </div>
                                 <!-- ここから -->
