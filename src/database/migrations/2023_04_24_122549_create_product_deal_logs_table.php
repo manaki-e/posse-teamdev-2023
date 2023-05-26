@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('point');
             $table->integer('month_count');
             $table->timestamp('returned_at')->default(null)->nullable();
-            $table->timestamp('canceled_at')->default(null)->nullable();
+            $table->timestamp('cancelled_at')->default(null)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -37,7 +37,7 @@ class ProductDealLog extends Model
     }
     public function scopeNotCanceled($query)
     {
-        return $query->whereNull('canceled_at');
+        return $query->whereNull('cancelled_at');
     }
     public function changeReturnedAtToNow()
     {
@@ -46,7 +46,7 @@ class ProductDealLog extends Model
     }
     public function changeCanceledAtToNow()
     {
-        $this->canceled_at = now();
+        $this->cancelled_at = now();
         $this->save();
     }
     public function scopeChargeable($query)
