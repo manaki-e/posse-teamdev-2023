@@ -1,6 +1,6 @@
 <x-mypage-app>
     <x-slot:border_color>border-pink-600</x-slot:border_color>
-    <x-slot:title>参加予約したイベント一覧</x-slot:title>
+    <x-slot:title>いいねしたイベント一覧</x-slot:title>
     <x-slot:earned_point>580</x-slot:earned_point>
     <x-slot:distribution_point>5000</x-slot:distribution_point>
 
