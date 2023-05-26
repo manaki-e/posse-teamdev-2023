@@ -12,35 +12,37 @@
     <x-slot name="body_slot">
         <x-user-side-navi>
             <div class="mx-auto max-w-5xl">
-                <x-user-search-item bgColor="bg-blue-400">
-                    <x-slot name="filter_by_radio">
-                        <x-user-search-radio>
-                            <x-slot name="radio_name">利用状況</x-slot>
-                            <x-slot name="radios">
-                                @foreach($filter_statuses as $key=>$filter_status)
-                                <div class="flex items-center mb-4">
-                                    <input id="box-{{ $key }}" type="radio" value="{{ $key }}" name="status" class="w-4 h-4 bg-gray-100 border-gray-300 filter-input">
-                                    <label for="box-{{ $key }}" class="ml-2 text-sm font-medium text-gray-900">{{ $filter_status  }}</label>
-                                </div>
-                                @endforeach
-                            </x-slot>
-                        </x-user-search-radio>
-                    </x-slot>
-                    <x-slot name="filter_by_tags">
-                        <x-user-search-tags>
-                            <x-slot name="category_tags">
-                                @foreach($product_tags as $key=>$value)
-                                <div class="w-auto mx-1 border rounded border-gray-200">
-                                    <div class="flex items-center px-3">
-                                        <input name="tag" id="{{$value->id}}" type="checkbox" value="{{ $value->id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded filter-input">
-                                        <label for="{{$value->id}}" class="w-full py-3 pl-1 text-sm font-medium text-gray-900">{{ $value->name }}</label>
+                <x-user-search-box bgColor="bg-blue-400">
+                    <x-user-search-item bgColor="bg-blue-400">
+                        <x-slot name="filter_by_radio">
+                            <x-user-search-radio>
+                                <x-slot name="radio_name">利用状況</x-slot>
+                                <x-slot name="radios">
+                                    @foreach($filter_statuses as $key=>$filter_status)
+                                    <div class="flex items-center mb-4">
+                                        <input id="box-{{ $key }}" type="radio" value="{{ $key }}" name="status" class="w-4 h-4 bg-gray-100 border-gray-300 filter-input">
+                                        <label for="box-{{ $key }}" class="ml-2 text-sm font-medium text-gray-900">{{ $filter_status  }}</label>
                                     </div>
-                                </div>
-                                @endforeach
-                            </x-slot>
-                        </x-user-search-tags>
-                    </x-slot>
-                </x-user-search-item>
+                                    @endforeach
+                                </x-slot>
+                            </x-user-search-radio>
+                        </x-slot>
+                        <x-slot name="filter_by_tags">
+                            <x-user-search-tags>
+                                <x-slot name="category_tags">
+                                    @foreach($product_tags as $key=>$value)
+                                    <div class="w-auto mx-1 border rounded border-gray-200">
+                                        <div class="flex items-center px-3">
+                                            <input name="tag" id="{{$value->id}}" type="checkbox" value="{{ $value->id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded filter-input">
+                                            <label for="{{$value->id}}" class="w-full py-3 pl-1 text-sm font-medium text-gray-900">{{ $value->name }}</label>
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                </x-slot>
+                            </x-user-search-tags>
+                        </x-slot>
+                    </x-user-search-item>
+                </x-user-search-box>
 
                 <section class="text-gray-600 body-font mx-auto max-w-5xl">
                     <div class="py-12 mx-auto">
@@ -83,7 +85,6 @@
                         </div>
                 </section>
             </div>
-
         </x-user-side-navi>
 
     </x-slot>

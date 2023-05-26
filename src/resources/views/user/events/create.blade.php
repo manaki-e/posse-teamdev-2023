@@ -1,17 +1,11 @@
-<?php
-
-$tags = ['勉強会', 'スポーツ', '娯楽', 'プログラミング', 'React', 'Vue', 'Laravel']
-
-?>
-
 <x-user-app>
     <x-slot name="header_slot">
         <x-user-header textColor="text-pink-600" bgColor="bg-pink-600">
             <x-slot:app_name>Peer Event</x-slot:app_name>
             <x-slot:button_text>イベント登録</x-slot:button_text>
             <x-slot:button_link>{{ route('events.create') }}</x-slot:button_link>
-            <x-slot:earned_point>580</x-slot:earned_point>
-            <x-slot:distribution_point>5000</x-slot:distribution_point>
+            <x-slot:earned_point>{{ Auth::user()->earned_point }}</x-slot:earned_point>
+            <x-slot:distribution_point>{{ Auth::user()->distribution_point }}</x-slot:distribution_point>
             <x-slot:top_title_link>{{ route('events.index') }}</x-slot:top_title_link>
         </x-user-header>
     </x-slot>
@@ -52,8 +46,8 @@ $tags = ['勉強会', 'スポーツ', '娯楽', 'プログラミング', 'React'
                                 @foreach ($tags as $index => $tag)
                                 <div class="min-w-max m-1 border rounded border-gray-200">
                                     <div class="flex items-center px-3">
-                                        <input name="tags" id="tag_{{ $index }}" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
-                                        <label for="tag_{{ $index }}" class="w-auto py-3 pl-1 text-sm font-medium text-gray-900">{{ $tag }}</label>
+                                        <input name="tags[]" id="tag_{{ $index }}" type="checkbox" value="{{ $tag->id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
+                                        <label for="tag_{{ $index }}" class="w-auto py-3 pl-1 text-sm font-medium text-gray-900">{{ $tag->name }}</label>
                                     </div>
                                 </div>
                                 @endforeach
@@ -61,10 +55,9 @@ $tags = ['勉強会', 'スポーツ', '娯楽', 'プログラミング', 'React'
                             <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">開催形態<span class="text-red-600">*</span></h4>
                             <div class="mb-4 border border-gray-300 rounded-md">
                                 <select name="location" id="example1" class="p-1 block w-full rounded-md border-gray-300 shadow-sm text-lg text-gray-500" required>
-                                    <option value="対面">対面</option>
-                                    <option value="オンライン">オンライン</option>
-                                    <option value="対面・オンライン併用">対面・オンライン併用</option>
-                                    <option value="未定">未定</option>
+                                    @foreach($locations as $location)
+                                    <option value="{{ $location }}">{{ $location }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">開催予定日</h4>

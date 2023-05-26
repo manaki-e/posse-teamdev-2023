@@ -54,7 +54,8 @@ class EventController extends Controller
         $requests = ModelsRequest::unresolvedRequests()->eventRequests()->get();
         //イベントタグ一覧を取得
         $tags = Tag::eventTags()->get();
-        return view('user.events.create', compact('requests', 'tags'));
+        $locations = Event::LOCATIONS;
+        return view('user.events.create', compact('requests', 'tags', 'locations'));
     }
 
     /**
