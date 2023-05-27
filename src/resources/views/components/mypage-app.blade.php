@@ -29,7 +29,7 @@
                                 </x-nav-link>
                             </li>
                             <li>
-                                <x-nav-link :href="route('point.history')" :active="request()->routeIs('point.history')">
+                                <x-nav-link :href="route('mypage.point.history')" :active="request()->routeIs('mypage.point.history')">
                                     {{ __('ポイント移行履歴') }}
                                 </x-nav-link>
                             </li>

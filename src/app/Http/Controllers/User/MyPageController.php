@@ -14,21 +14,12 @@ use App\Models\Request;
 //#82-主催したイベント情報
 class MyPageController extends Controller
 {
-    public function points()
+    public function account()
     {
         $user = Auth::user();
-        $earned_point = $user->earned_point;
-        $distribution_point = $user->distribution_point;
-        print_r('換金可能' . $earned_point . '換金不可能' . $distribution_point);
-        dd();
-        return view('user.mypage.points', compact('earned_point', 'distribution_point'));
+        return view('user.mypage.account', compact('user'));
     }
-    public function profile()
-    {
-        $user = Auth::user();
-        dd();
-        return view('user.mypage.profile', compact('user'));
-    }
+
     public function pointHistory()
     {
         //消費と獲得に分ける
@@ -43,6 +34,7 @@ class MyPageController extends Controller
             if ($product_deal_log->month_count === $unchargeable_month_count - 1) {
                 //借りた最初の月
                 return [
+                    'app' => 'PPS',
                     'name' => $product_deal_log->product->title,
                     'created_at' => $product_deal_log->created_at,
                     'point' => -$product_deal_log->point,
@@ -50,6 +42,7 @@ class MyPageController extends Controller
             } else {
                 //借りた最初の月と差し引き不可能な月以外
                 return [
+                    'app' => 'PPS',
                     'name' => $product_deal_log->product->title . ($product_deal_log->created_at->subMonth()->format('(n月分)')),
                     'created_at' => $product_deal_log->created_at,
                     'point' => -$product_deal_log->point,
@@ -60,6 +53,7 @@ class MyPageController extends Controller
             $query->withTrashed();
         }])->get()->map(function ($event_participant_log) {
             return [
+                'app' => 'PE',
                 'name' => $event_participant_log->event->title,
                 'created_at' => $event_participant_log->created_at,
                 'point' => -$event_participant_log->point,
@@ -75,6 +69,7 @@ class MyPageController extends Controller
         //獲得=>point_exchange_logsとevents->withsum()とproduct_deal_logsを結合
         $earned_point_exchange_logs = PointExchangeLog::where('user_id', $user->id)->get()->map(function ($point_exchange_log) {
             return [
+                'app' => 'PP',
                 'name' => '換金申請',
                 'created_at' => $point_exchange_log->created_at,
                 'point' => -$point_exchange_log->point,
@@ -82,6 +77,7 @@ class MyPageController extends Controller
         });
         $earned_event_logs = Event::where('user_id', $user->id)->where('completed_at', '!=', null)->withSum('eventParticipants', 'point')->get()->map(function ($event) {
             return [
+                'app' => 'PE',
                 'name' => $event->title,
                 'created_at' => $event->completed_at,
                 'point' => $event->event_participants_sum_point,
@@ -94,6 +90,7 @@ class MyPageController extends Controller
             $query->where('user_id', $user->id)->withTrashed();
         })->get()->map(function ($product_deal_log) {
             return [
+                'app' => 'PPS',
                 'name' => $product_deal_log->product->title,
                 'created_at' => $product_deal_log->created_at,
                 'point' => $product_deal_log->point,
@@ -107,32 +104,8 @@ class MyPageController extends Controller
             $earned_point_log['created_at'] = $earned_point_log['created_at']->format('Y-m-d');
             return $earned_point_log;
         });
-        dd('配布ポイントの変動', $distribution_point_logs, '獲得ポイントの変動', $earned_point_logs);
-        return view('user.mypage.point_history', compact('earned_point_logs', 'distribution_point_logs'));
-    }
-    public function deals()
-    {
-        $user = Auth::user();
-        $product_deal_logs = $user->productDealLogs()->with('product.user', 'product.productImages')->get();
-        dd($product_deal_logs);
-        return view('user.mypage.deals', compact('product_deal_logs'));
-    }
-    public function items()
-    {
-        $user = Auth::user();
-        $available_products = $user->products()->availableProducts()->with('productImages')->get();
-        $occupied_products = $user->products()->occupiedProducts()->with('productImages')->with('productDealLogs.user', function ($query) {
-            //一番最後のレコード==今借りてる人
-            $query->latest()->take(1);
-        })->get();
-        dd($occupied_products);
-        return view('user.mypage.items', compact('available_products', 'occupied_products'));
-    }
-
-    public function account()
-    {
-        $user = Auth::user();
-        return view('user.mypage.account', compact('user'));
+        // dd('配布ポイントの変動', $distribution_point_logs[1]["app"], '獲得ポイントの変動', $earned_point_logs);
+        return view('user.mypage.point-history', compact('earned_point_logs', 'distribution_point_logs'));
     }
 
     public function itemsListed()
