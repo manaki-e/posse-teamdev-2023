@@ -31,10 +31,10 @@
                             <x-user-search-tags>
                                 <x-slot name="category_tags">
                                     @foreach ($tags as $index => $tag)
-                                    <div class="w-auto mx-1 border rounded border-gray-200">
-                                        <div class="flex items-center px-3">
-                                            <input name="tag" id="tag_{{ $index }}" type="checkbox" value="{{ $tag->id }}" class="filter-input w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
-                                            <label for="tag_{{ $index }}" class="w-full py-3 pl-1 text-sm font-medium text-gray-900">{{ $tag->name }}</label>
+                                    <div class="w-auto">
+                                        <div class="flex items-center">
+                                            <input hidden name="tag" id="tag_{{ $index }}" type="checkbox" value="{{ $tag->id }}" class="filter-input w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
+                                            <label for="tag_{{ $index }}" class="rounded-full border border-gray-300 bg-gray-50 px-2 py-1 text-xs font-semibold text-gray-400 cursor-pointer">{{ $tag->name }}</label>
                                         </div>
                                     </div>
                                     @endforeach
@@ -193,6 +193,22 @@
     </x-slot>
 </x-user-app>
 <script>
+    //絞り込みタグの色
+    const checkboxes = document.querySelectorAll('input[name="tag"]');
+
+    checkboxes.forEach((checkbox) => {
+        checkbox.addEventListener('change', function() {
+            const checkboxId = checkbox.id;
+            const targetLabel = document.querySelector(`label[for="${checkboxId}"]`);
+
+            if (checkbox.checked) {
+                targetLabel.classList.add('bg-gray-500');
+            } else {
+                targetLabel.classList.remove('bg-gray-500');
+            }
+        });
+    });
+
     // Get all filter inputs
     let filterInputs = document.querySelectorAll('.filter-input');
 

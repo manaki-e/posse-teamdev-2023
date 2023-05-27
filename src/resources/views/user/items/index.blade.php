@@ -31,10 +31,10 @@
                             <x-user-search-tags>
                                 <x-slot name="category_tags">
                                     @foreach($product_tags as $key=>$value)
-                                    <div class="w-auto mx-1 border rounded border-gray-200">
-                                        <div class="flex items-center px-3">
-                                            <input name="tag" id="{{$value->id}}" type="checkbox" value="{{ $value->id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded filter-input">
-                                            <label for="{{$value->id}}" class="w-full py-3 pl-1 text-sm font-medium text-gray-900">{{ $value->name }}</label>
+                                    <div class="w-auto">
+                                        <div class="flex items-center">
+                                            <input hidden name="tag" id="tag_{{ $key }}" type="checkbox" value="{{ $value->id }}" class="filter-input w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
+                                            <label for="tag_{{ $key }}" class="rounded-full border border-gray-300 bg-gray-50 px-2 py-1 text-xs font-semibold text-gray-400 cursor-pointer">{{ $value->name }}</label>
                                         </div>
                                     </div>
                                     @endforeach
@@ -49,7 +49,7 @@
                         <div class="grid grid-cols-4 justify-items-stretch gap-8 mb-8">
                             @foreach ($products as $product)
                             <div data-status="{{ $product->status }}" data-tag="{{ $product->data_tag  }}" class="col-span-1 filter-target shadow-md bg-white rounded-lg flex flex-col justify-between">
-                                <a href="/items/{{$product->id}}" >
+                                <a href="/items/{{$product->id}}">
                                     <div class="bg-white relative h-48 rounded-t-lg overflow-hidden">
                                         <img alt="ecommerce" class="object-cover w-full h-full block" src=" {{asset('images/'.$product->productImages->first()->image_url)}}">
                                         @if ( $product->japanese_status !== '貸出可能' )
@@ -88,6 +88,22 @@
     </x-slot>
 </x-user-app>
 <script>
+    //絞り込みタグの色
+    const checkboxes = document.querySelectorAll('input[name="tag"]');
+
+    checkboxes.forEach((checkbox) => {
+        checkbox.addEventListener('change', function() {
+            const checkboxId = checkbox.id;
+            const targetLabel = document.querySelector(`label[for="${checkboxId}"]`);
+
+            if (checkbox.checked) {
+                targetLabel.classList.add('bg-gray-500');
+            } else {
+                targetLabel.classList.remove('bg-gray-500');
+            }
+        });
+    });
+
     // Get all filter inputs
     let filterInputs = document.querySelectorAll('.filter-input');
 
