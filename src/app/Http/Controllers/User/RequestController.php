@@ -73,7 +73,7 @@ class RequestController extends Controller
         $request_instance->user_id = Auth::id();
         $request_instance->save();
         //add record to request_tag table using request_id,tag_id
-        if ($request->type_id === ModelsRequest::EVENT_REQUEST_TYPE_ID) {
+        if ((int)$request->type_id === ModelsRequest::EVENT_REQUEST_TYPE_ID) {
             if (!empty($request->event_tags)) {
                 foreach ($request->event_tags as $tag_id) {
                     RequestTag::create([

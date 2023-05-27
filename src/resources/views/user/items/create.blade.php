@@ -35,12 +35,12 @@
                                 <h3 class="mb-2 text-xl text-gray-600 font-extrabold border-b border-gray-500">アイテムの詳細
                                 </h3>
                                 <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">カテゴリ</h4>
-                                <div class="w-full flex flex-wrap max-w-lg text-sm font-medium text-gray-900 bg-white">
+                                <div class="w-full flex flex-wrap gap-2 max-w-lg text-sm font-medium text-gray-900 bg-white">
                                     @foreach ($product_tags as $index => $tag)
-                                    <div class="min-w-max m-1 border rounded border-gray-200">
-                                        <div class="flex items-center px-3">
-                                            <input id="tag_{{ $index }}" type="checkbox" value="{{ $tag->id }}" name="product_tags[]" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
-                                            <label for="tag_{{ $index }}" class="w-auto py-3 pl-1 text-sm font-medium text-gray-900">{{ $tag->name }}</label>
+                                    <div class="w-auto">
+                                        <div class="flex items-center">
+                                            <input hidden id="tag_{{ $index }}" type="checkbox" value="{{ $tag->id }}" name="product_tags[]" class="filter-input w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
+                                            <label for="tag_{{ $index }}" class="rounded-full border border-gray-300 bg-gray-50 px-2 py-1 text-xs font-semibold text-gray-400 cursor-pointer">{{ $tag->name }}</label>
                                         </div>
                                     </div>
                                     @endforeach
@@ -111,6 +111,22 @@
     }
 </style>
 <script>
+    //タグの色
+    const checkboxes = document.querySelectorAll('input[name="product_tags[]"]');
+
+    checkboxes.forEach((checkbox) => {
+        checkbox.addEventListener('change', function() {
+            const checkboxId = checkbox.id;
+            const targetLabel = document.querySelector(`label[for="${checkboxId}"]`);
+
+            if (checkbox.checked) {
+                targetLabel.classList.add('bg-gray-500');
+            } else {
+                targetLabel.classList.remove('bg-gray-500');
+            }
+        });
+    });
+
     function preview(elem, output = '') {
         Array.from(elem.files).map((file) => {
             const blobUrl = window.URL.createObjectURL(file)
