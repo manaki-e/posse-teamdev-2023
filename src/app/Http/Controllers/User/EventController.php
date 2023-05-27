@@ -154,7 +154,7 @@ class EventController extends Controller
         $event = Event::with('eventTags.tag')->findOrFail($id);
         //ログインユーザーのイベントか確認
         if ($user->id !== $event->user_id) {
-            return redirect()->back()->with(['flush.message' => 'あなたは主催者ではないです', 'flush.alert_type' => 'error']);
+            return redirect()->back()->with(['flush.message' => 'あなたは主催者ではありません', 'flush.alert_type' => 'error']);
         }
         //イベント更新
         $event->title = $request->title;
@@ -173,7 +173,7 @@ class EventController extends Controller
             $event_tag->tag_id = $tag_id;
             $event_tag->save();
         }
-        return redirect()->route('mypage.events.organized')->with(['flush.message' => 'イベント更新完了しました。', 'flush.alert_type' => 'success']);
+        return redirect()->route('mypage.events.organized')->with(['flush.message' => 'イベント更新を完了しました。', 'flush.alert_type' => 'success']);
     }
 
     /**
