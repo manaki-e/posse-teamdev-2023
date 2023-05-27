@@ -6,7 +6,7 @@ if ($status == "開催済み" or $status == "中止") {
 }
 ?>
 
-<div {{ $attributes->merge(['class' => $class . ' relative flex justify-between items-center border-t border-gray-300 py-3 pl-6 pr-12 text-sm']) }}>
+<div {{ $attributes->merge(['class' => $class . ' relative flex gap-4 justify-between items-center border-t border-gray-300 py-3 pl-6 pr-12 text-sm']) }}>
     @if ($status == "開催済み" or $status == "中止")
     <div class="absolute transform top-1/2 -translate-x-1/2 left-1/2 -translate-y-1/2 m-0 p-2 w-44 h-14 border-2 border-double border-red-500 rounded-lg text-red-500 text-center text-lg leading-24 -rotate-12">
         <div class="absolute transform top-1/2 -translate-x-1/2 left-1/2 -translate-y-1/2">
@@ -17,7 +17,7 @@ if ($status == "開催済み" or $status == "中止") {
     <div class="flex gap-2 font-mono">
         <div class="flex flex-col gap-2">
             <p class="text-gray-800 text-base">{{ $title ?? '' }}</p>
-            <p class="text-gray-500 text-xs">{{ $description ?? '' }}</p>
+            <p class="text-gray-500 text-xs">{!! $description ?? '' !!}</p>
             <ul class="flex flex-wrap gap-2">{{ $tag ?? '' }}</ul>
             <ul class="text-gray-500 text-xs">
                 <li>日付 : {{ $date }}</li>

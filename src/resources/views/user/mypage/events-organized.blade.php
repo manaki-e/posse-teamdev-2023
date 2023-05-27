@@ -31,7 +31,7 @@
                     <li>
                         <x-mypage-event-list>
                             <x-slot:title>{{ $event -> title }}</x-slot:title>
-                            <x-slot:description>{!! $event -> description !!}</x-slot:description>
+                            <x-slot:description>{!! nl2br($event -> description) !!}</x-slot:description>
                             <x-slot:tag>
                                 @foreach ($event->eventTags as $tag)
                                 <x-user-tag>{{ $tag->tag->name }}</x-user-tag>
@@ -106,7 +106,7 @@
                     <li>
                         <x-mypage-event-list>
                             <x-slot:title>{{ $event -> title }}</x-slot:title>
-                            <x-slot:description>{!! $event -> description !!}</x-slot:description>
+                            <x-slot:description>{!! nl2br($event -> description) !!}</x-slot:description>
                             <x-slot:tag>
                                 @foreach ($event->eventTags as $tag)
                                 <x-user-tag>{{ $tag->tag->name }}</x-user-tag>
@@ -132,7 +132,7 @@
                     <li>
                         <x-mypage-event-list>
                             <x-slot:title>{{ $event -> title }}</x-slot:title>
-                            <x-slot:description>{!! $event -> description !!}</x-slot:description>
+                            <x-slot:description>{!! nl2br($event -> description) !!}</x-slot:description>
                             <x-slot:tag>
                                 @foreach ($event->eventTags as $tag)
                                 <x-user-tag>{{ $tag->tag->name }}</x-user-tag>

@@ -37,7 +37,7 @@
                     <li>
                         <x-mypage-event-list>
                             <x-slot:title>{{ $event -> title }}</x-slot:title>
-                            <x-slot:description>{!! $event -> description !!}</x-slot:description>
+                            <x-slot:description>{!! nl2br($event -> description) !!}</x-slot:description>
                             <x-slot:tag>
                                 @foreach ($event->eventTags as $tag)
                                 <x-user-tag>{{ $tag->tag->name }}</x-user-tag>
@@ -67,26 +67,28 @@
                             @else
                             <x-slot:status></x-slot:status>
                             <x-slot:button>
-                                <x-mypage-button-event-held action="{{ route('events.participate',$event->id) }}">
-                                    <x-slot:content>予約する</x-slot:content>
-                                    <x-slot:logo_path>
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
-                                    </x-slot:logo_path>
-                                    <x-slot:modal_title>参加予約</x-slot:modal_title>
-                                    <x-slot:modal_description>主催者に支払うポイントを設定してください。一度支払ったポイントは戻ってこないのでご注意ください。</x-slot:modal_description>
-                                    <x-slot:method></x-slot:method>
-                                    <x-slot:form_slot>
-                                        <div class="mb-4">
-                                            <div class="relative flex gap-4">
-                                                <label for="point" class="leading-7 text-sm text-gray-600 flex-center">Point:</label>
-                                                <input type="number" id="point" name="point" class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" required>
+                                <div class="whitespace-nowrap flex flex-col gap-2">
+                                    <x-mypage-button-event-held action="{{ route('events.participate',$event->id) }}">
+                                        <x-slot:content>予約する</x-slot:content>
+                                        <x-slot:logo_path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
+                                        </x-slot:logo_path>
+                                        <x-slot:modal_title>参加予約</x-slot:modal_title>
+                                        <x-slot:modal_description>主催者に支払うポイントを設定してください。一度支払ったポイントは戻ってこないのでご注意ください。</x-slot:modal_description>
+                                        <x-slot:method></x-slot:method>
+                                        <x-slot:form_slot>
+                                            <div class="mb-4">
+                                                <div class="relative flex gap-4">
+                                                    <label for="point" class="leading-7 text-sm text-gray-600 flex-center">Point:</label>
+                                                    <input type="number" id="point" name="point" class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" required>
+                                                </div>
+                                                <p class="ml-2 text-xs text-gray-500 ">
+                                                    ポイントの上限は 500 pt
+                                                </p>
                                             </div>
-                                            <p class="ml-2 text-xs text-gray-500 ">
-                                                ポイントの上限は 500 pt
-                                            </p>
-                                        </div>
-                                    </x-slot:form_slot>
-                                </x-mypage-button-event-held>
+                                        </x-slot:form_slot>
+                                    </x-mypage-button-event-held>
+                                </div>
                             </x-slot:button>
                             @endif
                         </x-mypage-event-list>
@@ -106,7 +108,7 @@
                     <li>
                         <x-mypage-event-list>
                             <x-slot:title>{{ $event -> title }}</x-slot:title>
-                            <x-slot:description>{!! $event -> description !!}</x-slot:description>
+                            <x-slot:description>{!! nl2br($event -> description) !!}</x-slot:description>
                             <x-slot:tag>
                                 @foreach ($event->eventTags as $tag)
                                 <x-user-tag>{{ $tag->tag->name }}</x-user-tag>
@@ -138,7 +140,7 @@
                     <li>
                         <x-mypage-event-list>
                             <x-slot:title>{{ $event -> title }}</x-slot:title>
-                            <x-slot:description>{!! $event -> description !!}</x-slot:description>
+                            <x-slot:description>{!! nl2br($event -> description) !!}</x-slot:description>
                             <x-slot:tag>
                                 @foreach ($event->eventTags as $tag)
                                 <x-user-tag>{{ $tag->tag->name }}</x-user-tag>
