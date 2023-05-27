@@ -108,15 +108,19 @@ class SlackController extends Controller
      * @param Request $request
      * @param string $channel_name 作成するチャンネル名
      * @param string $invite_users 招待するユーザーのSlackID
+     * @param boolean $is_private プライベートチャンネルかどうか
      * @return void
      */
     public function createChannel($event_id, $event_title, $is_private)
     {
         $user = Auth::user();
 
-        if (empty($user)) {
+        if (empty($user) && $is_private) {
             $create_user = "";
             $channel_name = $event_title;
+        } elseif (empty($use) && !$is_private) {
+            $create_user = "";
+            $channel_name = 'peerevent-' . $event_id . '-' . $event_title;
         } else {
             $create_user = User::where('id', $user->id)->pluck('slackID')->join(', ');
             $channel_name = 'peerevent-' . $event_id . '-' . $event_title;
@@ -125,7 +129,7 @@ class SlackController extends Controller
         $admin_users = User::where('is_admin', 1)->pluck('slackID')->join(', ');
         $invite_users = $create_user . ', ' . $admin_users;
 
-        $valid_channel_name = strtolower(str_replace([' ', '.'], '', $channel_name));
+        $valid_channel_name = strtolower(str_replace([' ', '.', ','], '', $channel_name));
 
         $channel_data = [
             'name' => $valid_channel_name,
@@ -134,10 +138,12 @@ class SlackController extends Controller
 
         $response = Http::withToken($this->token)
             ->post('https://slack.com/api/conversations.create', $channel_data);
-
+        // dd($response->json());
         if ($response->json()['ok']) {
             $channel_id = $response->json()['channel']['id'];
             $this->inviteUsersToChannel($channel_id, $invite_users);
+        } elseif ($response->json()['error'] == 'name_taken') {
+            $channel_id = $this->searchChannelId($valid_channel_name, false);
         } else {
             return Redirect::route('events.index')->with(['flush.message' => 'なんらかのエラーが発生してイベントを作成できませんでした。', 'flush.alert_type' => 'error']);
         }
@@ -148,15 +154,21 @@ class SlackController extends Controller
     /**
      * プライベートチャンネルを検索する
      * @param string $channel_name 取得するチャンネル名
+     * @param boolean $is_private プライベートチャンネルかどうか
      * @return string|null チャンネルID
      * @return null チャンネルが見つからなかった場合
      */
-    public function searchChannelId($channel_name)
+    public function searchChannelId($channel_name, $is_private)
     {
-        $response = Http::withToken($this->token)
-            ->get('https://slack.com/api/conversations.list', [
-                'types' => 'private_channel',
-            ]);
+        if ($is_private) {
+            $response = Http::withToken($this->token)
+                ->get('https://slack.com/api/conversations.list', [
+                    'types' => 'private_channel',
+                ]);
+        } else {
+            $response = Http::withToken($this->token)
+                ->get('https://slack.com/api/conversations.list');
+        }
 
         $channels = $response['channels'];
 
@@ -165,7 +177,6 @@ class SlackController extends Controller
                 return $channel['id'];
             }
         }
-
         return Redirect::route('admin.users.index')->with(['flush.message' => 'なんらかのエラーが発生して処理を行えませんでした。', 'flush.alert_type' => 'error']);
     }
 

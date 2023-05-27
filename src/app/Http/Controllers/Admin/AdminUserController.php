@@ -116,7 +116,7 @@ class AdminUserController extends Controller
     public function update(Request $request, $user)
     {
         $user_instance = User::findOrFail($user);
-        $channel_id = $this->slackController->searchChannelId("peerperk管理者");
+        $channel_id = $this->slackController->searchChannelId("peerperk管理者", true);
         $user_slack_id = $user_instance->slackID;
 
         if ($user_instance->is_admin === 1) {
