@@ -46,23 +46,23 @@
 
                 <section class="text-gray-600 body-font mx-auto max-w-5xl">
                     <div class="py-12 mx-auto">
-                        <div class="grid grid-cols-4 gap-8 mb-8">
+                        <div class="grid grid-cols-4 justify-items-stretch gap-8 mb-8">
                             @foreach ($products as $product)
-                            <div data-status="{{ $product->status }}" data-tag="{{ $product->data_tag  }}" class="col-span-1 filter-target shadow-md bg-white rounded-lg">
-                                <a href="/items/{{$product->id}}">
-                                    <div class="bg-white relative h-48 rounded-lg overflow-hidden">
-                                        <img alt="ecommerce" class="object-cover object-center w-full h-full block" src=" {{asset('images/'.$product->productImages->first()->image_url)}}">
+                            <div data-status="{{ $product->status }}" data-tag="{{ $product->data_tag  }}" class="col-span-1 filter-target shadow-md bg-white rounded-lg flex flex-col justify-between">
+                                <a href="/items/{{$product->id}}" >
+                                    <div class="bg-white relative h-48 rounded-t-lg overflow-hidden">
+                                        <img alt="ecommerce" class="object-cover w-full h-full block" src=" {{asset('images/'.$product->productImages->first()->image_url)}}">
                                         @if ( $product->japanese_status !== '貸出可能' )
                                         <span class="absolute left-0 top-0 rounded-br-lg bg-red-500 px-3 py-1.5 text-sm uppercase tracking-wider text-white">
                                             貸出中
                                         </span>
                                         @endif
                                     </div>
-                                    <div class="p-4">
+                                    <div class="p-4 pb-0">
                                         <h2 class="text-gray-900 title-font text-lg font-medium">{{$product->title}}</h2>
-                                        <h3 class="text-gray-500 text-xs tracking-widest title-font mb-1">
+                                        <p class="text-gray-500 text-xs tracking-widest title-font mb-1">
                                             {!! $product->description !!}
-                                        </h3>
+                                        </p>
                                     </div>
                                 </a>
                                 <div class="p-4 flex justify-between">
