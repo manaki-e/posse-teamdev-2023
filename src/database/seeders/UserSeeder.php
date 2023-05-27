@@ -47,7 +47,7 @@ class UserSeeder extends Seeder
             ]
         ]);
         $event_controller = new SlackController;
-        $event_controller->createChannel("peerperk管理者", true);
+        $event_controller->createChannel("", "peerperk管理者", true);
         for ($i = 1; $i <= 50; $i++) {
             $unique_user_name = $this->unique_name($faker);
             $users_array[] = [

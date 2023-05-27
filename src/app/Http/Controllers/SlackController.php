@@ -86,29 +86,20 @@ class SlackController extends Controller
 
     /**
      * Slackに通知を送信する
-     * @param Request $request
-     * @param array $payload 送信する通知のペイロード
+     * @param string $channel_id 送信するチャンネルIDまたはユーザID
+     * @param string $message 送信するメッセージ
      * @return void
      */
-    public function sendNotification(Request $request)
+    public function sendNotification($channel_id, $message)
     {
-        // 送信する通知のペイロードを作成
-        // https://api.slack.com/methods/chat.postMessage
-        /**
-         * @var array $payload 送信する通知のペイロード
-         * @var string $payload['channel'] チャンネル名
-         * @var string $payload['text'] 送信するテキスト
-         */
         $payload = [
-            'channel' => 'U0572LXKNLA',
-            'text' => '<@U056W35F71C> さんがあなたの本を借りました.',
+            'channel' => $channel_id,
+            'text' => $message,
         ];
 
-        // Slack APIにPOSTリクエストを送信
         $response = Http::withToken($this->token)
             ->post('https://hooks.slack.com/api/chat.postMessage', $payload);
 
-        // 実行する
         $response->throw();
     }
 
@@ -119,7 +110,7 @@ class SlackController extends Controller
      * @param string $invite_users 招待するユーザーのSlackID
      * @return void
      */
-    public function createChannel($event_title, $is_private)
+    public function createChannel($event_id, $event_title, $is_private)
     {
         $user = Auth::user();
 
@@ -128,7 +119,7 @@ class SlackController extends Controller
             $channel_name = $event_title;
         } else {
             $create_user = User::where('id', $user->id)->pluck('slackID')->join(', ');
-            $channel_name = 'peerevent-' . $event_title;
+            $channel_name = 'peerevent-' . $event_id . '-' . $event_title;
         }
 
         $admin_users = User::where('is_admin', 1)->pluck('slackID')->join(', ');
