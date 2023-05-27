@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\SlackController;
 use App\Models\Department;
 use App\Models\Event;
 use App\Models\EventParticipantLog;
@@ -18,6 +19,11 @@ use Illuminate\Support\Str;
 
 class AdminUserController extends Controller
 {
+    public function __construct(SlackController $slackController)
+    {
+        $this->slackController = $slackController;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -68,7 +74,7 @@ class AdminUserController extends Controller
         $user_instance->created_at = now();
         $user_instance->save();
 
-        return Redirect::route('admin.users.index')->with(['flush.message' => '交換完了処理が正しく行われました', 'flush.alert_type' => 'success']);
+        return Redirect::route('admin.users.index')->with(['flush.message' => 'slackにいるユーザを新しくPeerPerkユーザとして登録しました', 'flush.alert_type' => 'success']);
     }
 
     /**
@@ -109,18 +115,20 @@ class AdminUserController extends Controller
      */
     public function update(Request $request, $user)
     {
-        // 管理者権限に変更する
         $user_instance = User::findOrFail($user);
+        $channel_id = $this->slackController->searchChannelId("peerperk管理者");
+        $user_slack_id = $user_instance->slackID;
+
         if ($user_instance->is_admin === 1) {
             $user_instance->is_admin = 0;
+            $this->slackController->removeUserFromChannel($channel_id, $user_slack_id);
         } elseif ($user_instance->is_admin === 0) {
             $user_instance->is_admin = 1;
+            $this->slackController->inviteUsersToChannel($channel_id, $user_slack_id);
         }
         $user_instance->save();
 
-        // 後ほどここでチャンネルへ招待するメソッドを呼び出す
-
-        return Redirect::route('admin.users.index')->with(['flush.message' => '管理者権限の付与が正しく行われました', 'flush.alert_type' => 'success']);
+        return Redirect::route('admin.users.index')->with(['flush.message' => '権限の変更が正しく行われました', 'flush.alert_type' => 'success']);
     }
 
     /**

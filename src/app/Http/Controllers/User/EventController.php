@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\SlackController;
 use App\Models\Event;
 use App\Models\EventLike;
 use App\Models\EventParticipantLog;
@@ -15,6 +16,14 @@ use Illuminate\Support\Facades\Auth;
 
 class EventController extends Controller
 {
+    /**
+     * @var SlackController
+     */
+    public function __construct(SlackController $slackController)
+    {
+        $this->slackController = $slackController;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -72,6 +81,9 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
+        // slackチャンネル作成
+        $slackId = $this->slackController->createChannel($request->title, false);
+
         //events追加
         $event = new Event();
         $event->user_id = Auth::id();
@@ -81,8 +93,7 @@ class EventController extends Controller
         $event->end_date = $request->end_date;
         $event->location = $request->location;
         $event->request_id = $request->request_id;
-        //ここにslackchannel自動生成の処理を書く。今は仮置き
-        $event->slack_channel = 'test';
+        $event->slack_channel = $slackId;
         $event->save();
         //event_tags追加
         if (!empty($request->tags)) {
@@ -234,7 +245,11 @@ class EventController extends Controller
         // 提示したポイント差し引かれる
         $user->distribution_point -= $request->point;
         $user->save();
-        //専用slackチャンネルに招待される＝＞slackの実装できたらやる
+
+        $channel_id = Event::findOrFail($event)->slack_channel;
+        $user_slack_id = $user->slackID;
+        $this->slackController->inviteUsersToChannel($channel_id, $user_slack_id);
+
         // event_participantsにレコード追加
         $event_participant_log = new EventParticipantLog();
         $event_participant_log->event_id = $event;
