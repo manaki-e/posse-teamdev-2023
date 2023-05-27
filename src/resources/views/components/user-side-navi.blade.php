@@ -24,7 +24,7 @@
                             <x-icon-pps></x-icon-pps>
                         </div>
                         <p class="font-patua" :class=" (isSidebarOpen) ? 'hidden': 'text-xs'">Product</p>
-                        <p x-cloak class="font-patua" :class="{ 'hidden' : ! isSidebarOpen, 'ml-2 text-base' : isSidebarOpen}">Peer Product
+                        <p x-cloak x-show="isSidebarOpen" x-transition.duration.100ms class="font-patua ml-2 text-base">Peer Product
                             Share</p>
                     </div>
                 </a>
@@ -35,7 +35,7 @@
                             <x-icon-pe></x-icon-pe>
                         </div>
                         <p class="font-patua" :class=" (isSidebarOpen) ? 'hidden': 'text-xs'">Event</p>
-                        <p x-cloak class="font-patua" :class="{'ml-2 text-base' : isSidebarOpen, 'hidden' : ! isSidebarOpen}">Peer Event</p>
+                        <p x-cloak x-show="isSidebarOpen" x-transition.duration.100ms class="font-patua ml-2 text-base">Peer Event</p>
                     </div>
                 </a>
                 <!-- Request -->
@@ -46,7 +46,7 @@
                             <x-icon-pr></x-icon-pr>
                         </div>
                         <p class="font-patua" :class=" (isSidebarOpen) ? 'hidden': 'text-xs'">Request</p>
-                        <p x-cloak class="font-patua" :class="{ 'hidden' : ! isSidebarOpen, 'ml-2 text-base' : isSidebarOpen}">Peer Request</p>
+                        <p x-cloak x-show="isSidebarOpen" x-transition.duration.100ms class="font-patua ml-2 text-base">Peer Request</p>
                     </div>
                 </a>
                 <!-- アプリ内リンク -->
