@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SlackUser;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
+use App\Models\SlackUser;
 use App\Models\User;
 
 class SlackController extends Controller
@@ -118,87 +119,108 @@ class SlackController extends Controller
      * @param string $invite_users 招待するユーザーのSlackID
      * @return void
      */
-    public function createChannel(Request $request)
+    public function createChannel($event_title, $is_private)
     {
-        // 引数として受け取る値を想定
-        $channel_name = 'latest';
-        $invite_users = 'U056N55T9AB, U0572LXKNLA';
+        $user = Auth::user();
 
-        // 作成するチャンネルの情報
-        $channel = [
-            'name' => $channel_name,
+        if (empty($user)) {
+            $create_user = "";
+            $channel_name = $event_title;
+        } else {
+            $create_user = User::where('id', $user->id)->pluck('slackID')->join(', ');
+            $channel_name = 'peerevent-' . $event_title;
+        }
+
+        $admin_users = User::where('is_admin', 1)->pluck('slackID')->join(', ');
+        $invite_users = $create_user . ', ' . $admin_users;
+
+        $valid_channel_name = strtolower(str_replace([' ', '.'], '', $channel_name));
+
+        $channel_data = [
+            'name' => $valid_channel_name,
+            'is_private' => $is_private,
         ];
 
-        // Slack APIにPOSTリクエストを送信
         $response = Http::withToken($this->token)
-            ->post('https://slack.com/api/conversations.create', $channel);
+            ->post('https://slack.com/api/conversations.create', $channel_data);
 
-        // チャンネルを作成して、そのチャンネルのIDを取得
-        $channelId = $response->json()['channel']['id'];
+        if ($response->json()['ok']) {
+            $channel_id = $response->json()['channel']['id'];
+            $this->inviteUsersToChannel($channel_id, $invite_users);
+        } else {
+            return Redirect::route('events.index')->with(['flush.message' => 'なんらかのエラーが発生してイベントを作成できませんでした。', 'flush.alert_type' => 'error']);
+        }
 
-        $this->inviteUsers($request, $channelId, $invite_users);
+        return $channel_id;
+    }
+
+    /**
+     * プライベートチャンネルを検索する
+     * @param string $channel_name 取得するチャンネル名
+     * @return string|null チャンネルID
+     * @return null チャンネルが見つからなかった場合
+     */
+    public function searchChannelId($channel_name)
+    {
+        $response = Http::withToken($this->token)
+            ->get('https://slack.com/api/conversations.list', [
+                'types' => 'private_channel',
+            ]);
+
+        $channels = $response['channels'];
+
+        foreach ($channels as $channel) {
+            if ($channel['name'] === $channel_name) {
+                return $channel['id'];
+            }
+        }
+
+        return Redirect::route('admin.users.index')->with(['flush.message' => 'なんらかのエラーが発生して処理を行えませんでした。', 'flush.alert_type' => 'error']);
     }
 
     /**
      * Slackにチャンネルにユーザーを招待する
-     * @param Request $request
-     * @param string $channelId 作成するチャンネルのID
+     * @param string $channel_id 招待するチャンネルID
      * @param string $invite_users 招待するユーザーのSlackID
      * @return void
      */
-    public function inviteUsers(Request $request, $channelId, $invite_users)
+    public function inviteUsersToChannel($channel_id, $invite_users)
     {
-        // 全てのチャンネルに必要なユーザ（例えば管理者など）を追加
-        $invite_users .= ',U056W35F71C';
-
-        // 招待するチャンネルの情報とユーザの情報
-        $invite_channel = [
-            'channel' => $channelId,
+        $invite_data = [
+            'channel' => $channel_id,
             'users' => $invite_users,
         ];
 
-        // Slack APIにPOSTリクエストを送信
         $response = Http::withToken($this->token)
-            ->post('https://slack.com/api/conversations.invite', $invite_channel);
+            ->post('https://slack.com/api/conversations.invite', $invite_data);
 
-        // チャンネルに招待する
-        $response->throw();
+        if ($response->json()['ok']) {
+            return;
+        } else {
+            return Redirect::route('admin.users.index')->with(['flush.message' => 'なんらかのエラーが発生して処理を行えませんでした。', 'flush.alert_type' => 'error']);
+        }
     }
 
-    public function getUserSlackIds($user, $dbConfig)
+    /**
+     * Slackチャンネルからユーザーを削除する
+     * @param string $channel_id 削除するチャンネルID
+     * @param string $delete_user 削除するユーザーのSlackID
+     * @return void
+     */
+    public function removeUserFromChannel($channel_id, $delete_user)
     {
-        // ユーザテーブルから必要な情報を取得し、ユーザIDをキー、slackIDを値とする連想配列に変換する
-        $user_slack_map = User::whereIn('id', $user)->pluck('slackID', 'id')->toArray();
+        $delete_data = [
+            'channel' => $channel_id,
+            'user' => $delete_user,
+        ];
 
-        // $user配列に含まれる各ユーザのIDに対応するslackIDを取得する
-        $user_slack_ids = array_values(array_intersect_key($user_slack_map, array_flip($user)));
+        $response = Http::withToken($this->token)
+            ->post('https://slack.com/api/conversations.kick', $delete_data);
 
-        return $user_slack_ids;
+        if ($response->json()['ok']) {
+            return;
+        } else {
+            return Redirect::route('admin.users.index')->with(['flush.message' => 'なんらかのエラーが発生して処理を行えませんでした。', 'flush.alert_type' => 'error']);
+        }
     }
 }
-
-// 現時点でのユーザ情報
-
-// string(8) "Slackbot"
-// string(9) "USLACKBOT"
-
-// string(24) "井戸宗達/Ido Sohtatu"
-// string(11) "U056N55T9AB"
-
-// string(31) "高梨 彩音 / Ayane Takahashi"
-// string(11) "U056W35F71C"
-
-// string(26) "遠藤愛期 / Manaki Endo"
-// string(11) "U0572LXKNLA"
-
-// string(8) "PeerPerk"
-// string(11) "U0572Q3RJQJ"
-
-// string(18) "M22y10m20 Yoshikun"
-// string(11) "U057562KC7N"
-
-// string(25) "古屋美羽 / Miu Furuya"
-// string(11) "U057FAD67R7"
-
-// string(25) "本城裕大 / Yuta Honjo"
-// string(11) "U057SC3MRKJ"
