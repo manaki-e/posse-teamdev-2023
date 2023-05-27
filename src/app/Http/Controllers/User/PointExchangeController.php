@@ -41,9 +41,10 @@ class PointExchangeController extends Controller
     public function store(Request $request)
     {
         $user = Auth::user();
+        $request->point = (int)$request->point;
 
         // ログインユーザーのポイント足りるかチェック
-        if ($user->earned_point > $request->point) {
+        if ($user->earned_point >= $request->point) {
             // ポイントを減らす
             $user->earned_point -= $request->point;
             $user->save();
@@ -54,7 +55,7 @@ class PointExchangeController extends Controller
             $point_exchange_instance->status = PointExchangeLog::STATUS['PENDING'];
             $point_exchange_instance->save();
             // redirect backする
-            return redirect()->back();
+            return redirect()->back()->with(['flush.message' => 'ポイント交換申請完了しました。', 'flush.alert_type' => 'success']);
         } else {
             //ポイントが足りないエラーメッセージ
             return redirect()->back()->with('error', 'ポイントが不足しています。');

@@ -1,5 +1,6 @@
 <?php
 
+
 use Illuminate\Support\Facades\Auth;
 
 //userのログイン情報を$user_infoに格納
@@ -34,9 +35,13 @@ $user_info = Auth::user();
                 管理者画面へ
             </a>
             @endif
+            @if(request()->is('mypage') || request()->is('mypage/*'))
+            <x-point-exchange></x-point-exchange>
+            @else
             <a href="{{ $button_link }}" {{ $button_text ?? 'hidden'  }} {{ $attributes->merge(['class' => 'rounded-lg w-40 mx-3 my-1 px-7 py-2 shadow-md text-center text-sm text-white transition-all hover:shadow-lg hover:opacity-75 '.$bgColor]) }}>
                 {{ $button_text ?? '' }}
             </a>
+            @endif
             <div x-data=" { tooltip: false }" x-on:mouseover="tooltip = true" x-on:mouseleave="tooltip = false" class="w-24 h-12 mx-2 cursor-pointer relative">
                 <div class="flex justify-between items-center">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
