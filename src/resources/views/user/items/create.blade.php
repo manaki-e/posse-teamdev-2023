@@ -47,7 +47,7 @@
                                 </div>
                                 <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">アイテムの状態<span class="text-red-600">*</span></h4>
                                 <div class="mb-4 border border-gray-300 rounded-md">
-                                    <select name="condition" id="example1" class="p-1 block w-full rounded-md border-gray-300 shadow-sm text-lg text-gray-500" required>
+                                    <select name="condition" id="example1" class="p-1 block w-full rounded-md border-gray-300 shadow-sm text-base text-gray-500" required>
                                         @foreach($conditions as $key => $condition)
                                         <option value="{{ $key }}">{{ $condition }}</option>
                                         @endforeach
@@ -68,7 +68,7 @@
                             </div>
                             <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">関連するリクエスト</h4>
                             <div class="mb-4 border border-gray-300 rounded-md">
-                                <select name="request_id" id="example1" class="p-1 block w-full rounded-md border-gray-300 shadow-sm text-lg text-gray-500">
+                                <select name="request_id" id="example1" class="p-1 block w-full rounded-md border-gray-300 shadow-sm text-base text-gray-500">
                                     <option value="">なし</option>
                                     @foreach($requests as $request)
                                     @if(isset($chosen_request_id)&&$chosen_request_id==$request->id)

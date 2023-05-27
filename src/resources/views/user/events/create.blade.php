@@ -27,7 +27,7 @@
                             </div>
                             <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">関連するリクエスト</h4>
                             <div class="mb-4 border border-gray-300 rounded-md">
-                                <select name="request_id" id="example1" class="p-1 block w-full rounded-md border-gray-300 shadow-sm text-lg text-gray-500">
+                                <select name="request_id" id="example1" class="p-1 block w-full rounded-md border-gray-300 shadow-sm text-base text-gray-500">
                                     <option value="">なし</option>
                                     @foreach($requests as $request)
                                     @if(isset($chosen_request_id)&&$chosen_request_id==$request->id)
@@ -54,7 +54,7 @@
                             </div>
                             <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">開催形態<span class="text-red-600">*</span></h4>
                             <div class="mb-4 border border-gray-300 rounded-md">
-                                <select name="location" id="example1" class="p-1 block w-full rounded-md border-gray-300 shadow-sm text-lg text-gray-500" required>
+                                <select name="location" id="example1" class="p-1 block w-full rounded-md border-gray-300 shadow-sm text-base text-gray-500" required>
                                     @foreach($locations as $location)
                                     <option value="{{ $location }}">{{ $location }}</option>
                                     @endforeach
