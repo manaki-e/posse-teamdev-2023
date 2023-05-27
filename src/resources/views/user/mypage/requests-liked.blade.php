@@ -25,9 +25,6 @@
                     @foreach ($unresolved_liked_requests as $request)
                     <li>
                         <x-mypage-request-list>
-                            <x-slot:id>{{ $request->id }}</x-slot:id>
-                            <x-slot:is_liked>{{ $request->idLiked }}</x-slot:is_liked>
-                            <x-slot:fill>@if($request->isLiked) red @else none @endif</x-slot:fill>
                             <x-slot:title>{{ $request -> title }}</x-slot:title>
                             <x-slot:description>{{ $request -> description }}</x-slot:description>
                             <x-slot:tag>
@@ -58,8 +55,6 @@
                     @foreach ($resolved_liked_requests as $request)
                     <li>
                         <x-mypage-request-list>
-                            <x-slot:id>{{ $request->id }}</x-slot:id>
-                            <x-slot:fill>@if($request->isLiked) red @else none @endif</x-slot:fill>
                             <x-slot:title>{{ $request -> title }}</x-slot:title>
                             <x-slot:description>{{ $request -> description }}</x-slot:description>
                             <x-slot:tag>

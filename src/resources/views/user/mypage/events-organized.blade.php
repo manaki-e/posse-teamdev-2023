@@ -30,9 +30,6 @@
                     @foreach ($before_held_events as $event)
                     <li>
                         <x-mypage-event-list>
-                            <x-slot:id>{{ $event -> id }}</x-slot:id>
-                            <x-slot:is_liked>{{ $event -> isLiked }}</x-slot:is_liked>
-                            <x-slot:fill>@if($event->isLiked) red @else none @endif</x-slot:fill>
                             <x-slot:title>{{ $event -> title }}</x-slot:title>
                             <x-slot:description>{{ $event -> description }}</x-slot:description>
                             <x-slot:tag>
