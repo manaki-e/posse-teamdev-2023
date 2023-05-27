@@ -23,7 +23,7 @@
                         <div class="ml-4 text-center flex items-center">
                             <x-icon-pps></x-icon-pps>
                         </div>
-                        <p class="font-patua" :class=" (isSidebarOpen) ? 'hidden': 'text-xs'">Product</p>
+                        <p x-show="!isSidebarOpen" class="font-patua text-xs">Product</p>
                         <p x-cloak x-show="isSidebarOpen" x-transition.duration.100ms class="font-patua ml-2 text-base">Peer Product
                             Share</p>
                     </div>
@@ -34,7 +34,7 @@
                         <div class="ml-4 text-center flex items-center" :class="{ '' : isSidebarOpen, 'mx-auto' : !isSidebarOpen}">
                             <x-icon-pe></x-icon-pe>
                         </div>
-                        <p class="font-patua" :class=" (isSidebarOpen) ? 'hidden': 'text-xs'">Event</p>
+                        <p x-show="!isSidebarOpen" class="font-patua text-xs">Event</p>
                         <p x-cloak x-show="isSidebarOpen" x-transition.duration.100ms class="font-patua ml-2 text-base">Peer Event</p>
                     </div>
                 </a>
@@ -45,7 +45,7 @@
                         <div class="ml-4 text-center flex items-center" :class="{ '' : isSidebarOpen, 'mx-auto' : !isSidebarOpen}">
                             <x-icon-pr></x-icon-pr>
                         </div>
-                        <p class="font-patua" :class=" (isSidebarOpen) ? 'hidden': 'text-xs'">Request</p>
+                        <p x-show="!isSidebarOpen" class="font-patua text-xs">Request</p>
                         <p x-cloak x-show="isSidebarOpen" x-transition.duration.100ms class="font-patua ml-2 text-base">Peer Request</p>
                     </div>
                 </a>
