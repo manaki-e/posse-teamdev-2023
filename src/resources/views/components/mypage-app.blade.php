@@ -24,7 +24,7 @@
                                 </x-nav-link>
                             </li>
                             <li>
-                                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                                <x-nav-link :href="route('mypage.account')" :active="request()->routeIs('mypage.account')">
                                     {{ __('アカウント') }}
                                 </x-nav-link>
                             </li>

@@ -129,6 +129,12 @@ class MyPageController extends Controller
         return view('user.mypage.items', compact('available_products', 'occupied_products'));
     }
 
+    public function account()
+    {
+        $user = Auth::user();
+        return view('user.mypage.account', compact('user'));
+    }
+
     public function itemsListed()
     {
         $user = Auth::user();

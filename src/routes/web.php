@@ -68,6 +68,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/points', [MyPageController::class, 'points'])->name('points');
         Route::get('/point/history', [MyPageController::class, 'pointHistory'])->name('point.history');
         Route::get('/profile', [MyPageController::class, 'profile'])->name('profile');
+        Route::get('/account', [MyPageController::class, 'account'])->name('account');
+        Route::post('/account/slack', [ProfileController::class, 'setSlackProfile'])->name('account.slack');
         Route::get('/items/listed', [MyPageController::class, 'itemsListed'])->name('items.listed');
         Route::get('/events/organized', [MyPageController::class, 'eventsOrganized'])->name('events.organized');
         Route::get('/events/joined', [MyPageController::class, 'eventsJoined'])->name('events.joined');
