@@ -54,23 +54,18 @@
                                         <div class="w-full text-xl text-gray-800 mb-4">
                                             <p class="font-bold pl-2 border-l-4 border-pink-600">{{ $event->title }}</p>
                                         </div>
-                                        <!-- タグ -->
-                                        <div class="w-full">
-                                            <div class="inline-flex flex-wrap mb-4">
-                                                @foreach($event->eventTags as $event_tag)
-                                                <span class="items-center gap-1 rounded-full border border-gray-300 bg-gray-50 px-2 py-1 text-xs font-semibold text-gray-400">
-                                                    {{ $event_tag->tag->name }}
-                                                </span>
-                                                @endforeach
-                                            </div>
+                                        <!-- 概要 -->
+                                        <div class="w-full text-sm text-gray-800 mb-4">
+                                            <p class="text-gray-500">{!! $event->description !!}</p>
                                         </div>
                                         <!-- データ -->
                                         <div class="relative flex mb-4">
                                             <div class="w-1/2 space-y-1 flex flex-col text-sm">
-                                                <p>日程：{{ $event->show_date }}</p>
-                                                <p>形態：{{ $event->location }}</p>
-                                                <p>開催状況：{{ $event->isCompleted }}</p>
-                                                <p>主催：
+                                                <h3 class="pl-1 mb-1 border-l-2 border-pink-600 text-gray-800">詳細</h3>
+                                                <p class="pl-1">日程：{{ $event->show_date }}</p>
+                                                <p class="pl-1">形態：{{ $event->location }}</p>
+                                                <p class="pl-1">開催状況：{{ $event->isCompleted }}</p>
+                                                <p class="pl-1">主催：
                                                     <!-- プロフィール参照機能できたら代入 -->
                                                     <span><a href="#" class="hover:border-gray-400 border-transparent border-b">{{ $event->user->name }}</a></span>
                                                 </p>
@@ -100,15 +95,21 @@
                                             </div>
                                         </div>
                                     </section>
-                                    <!-- 概要 -->
+                                    <!-- ボタン・タグ -->
                                     <div>
-                                        <div class="w-full text-sm text-gray-800 mb-4">
-                                            <p class="pl-1 mb-1 border-l-2 border-pink-600">概要</p>
-                                            <p class="text-gray-500">{!! $event->description !!}</p>
+                                        <!-- タグ -->
+                                        <div class="w-full">
+                                            <div class="inline-flex flex-wrap gap-1 mb-4">
+                                                @foreach($event->eventTags as $event_tag)
+                                                <span class="items-center rounded-full border border-gray-300 bg-gray-50 px-2 py-1 text-xs font-semibold text-gray-400">
+                                                    {{ $event_tag->tag->name }}
+                                                </span>
+                                                @endforeach
+                                            </div>
                                         </div>
                                         <!-- ボタン・モーダル -->
                                         <div x-data="{ modelOpen: false }">
-                                            <div @click="modelOpen =!modelOpen" class="flex items-center justify-center px-3">
+                                            <div @click="modelOpen =!modelOpen" class="flex items-center justify-center">
                                                 @if($event->isParticipated)
                                                 <!-- 色は適当 -->
                                                 <x-user-already-registered-button textColor="text-gray-600" bgColor="bg-white" borderColor="border-gray-600">
@@ -161,7 +162,7 @@
                                             <div class="likes" data-event_id="{{ $event->id }}" data-is_liked="{{ $event->isLiked }}">
                                                 <div class="flex justify-end">
                                                     <button class="text-gray-500">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="@if($event->isLiked) red @else none @endif" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="@if($event->isLiked) red @else none @endif" viewBox="0 0 24 24" stroke-width="1.5" stroke="@if($event->isLiked) red @else currentColor @endif" class="w-6 h-6">
                                                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
                                                         </svg>
                                                     </button>
