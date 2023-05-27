@@ -44,11 +44,11 @@
                     </x-user-search-event>
                 </x-user-search-box>
                 <div class="mx-auto max-w-5xl my-4">
-                    <div class="mx-auto grid grid-cols-2 gap-4">
+                    <div class="mx-auto grid grid-cols-2 justify-items-stretch gap-4">
                         @foreach($events as $event)
-                        <div x-data="{ open: false }" data-completed="{{ $event->isCompleted }}" data-tag="{{ $event->data_tag  }}" class=" col-span-1 filter-target">
-                            <div class="rounded-lg border border-gray-200 bg-white shadow-sm">
-                                <div class="flex flex-col rounded-lg text-xs shadow-md p-4 pb-1 text-gray-500 bg-white">
+                        <div data-completed="{{ $event->isCompleted }}" data-tag="{{ $event->data_tag  }}" class="h-full col-span-1 filter-target">
+                            <div class="h-full rounded-lg border border-gray-200 bg-white shadow-sm">
+                                <div class="h-full flex flex-col justify-between rounded-lg text-xs px-4 pt-4 text-gray-500 bg-white">
                                     <section>
                                         <!-- イベント名 -->
                                         <div class="w-full text-xl text-gray-800 mb-4">
@@ -90,28 +90,14 @@
                                                 </button>
                                             </div>
                                         </div>
-                                        <!-- <div class="w-full"> -->
-                                        <div class="likes relative top-0 right-0" data-event_id="{{ $event->id }}" data-is_liked="{{ $event->isLiked }}">
-                                            <div class="flex justify-end relative">
-                                                <button class="text-gray-500">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="@if($event->isLiked) red @else none @endif" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-                                                    </svg>
-                                                </button>
-                                                <div class="mt-3">
-                                                    <p class="text-xs like-count">{{ $event->event_likes_count }}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- </div> -->
                                     </section>
                                     <!-- 概要 -->
-                                    <div x-show="open" x-cloak>
+                                    <div>
                                         <div class="w-full text-sm text-gray-800 mb-4">
                                             <p class="pl-1 mb-1 border-l-2 border-pink-600">概要</p>
                                             <p class="text-gray-500">{!! $event->description !!}</p>
                                         </div>
-                                        <!-- モーダル -->
+                                        <!-- ボタン・モーダル -->
                                         <div x-data="{ modelOpen: false }">
                                             <div @click="modelOpen =!modelOpen" class="flex items-center justify-center px-3">
                                                 @if($event->isParticipated)
@@ -161,11 +147,21 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div @click="open=!open" class="mb-1 flex justify-center cursor-pointer rounded-md hover:bg-gray-50">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="block h-5 w-5 transform " :class="{ 'rotate-180' : open }">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                                        </svg>
+                                        <div class="w-full flex items-end justify-between mb-1">
+                                            <p>{{$event->created_at->format('Y.m.d')}}</p>
+                                            <div class="likes" data-event_id="{{ $event->id }}" data-is_liked="{{ $event->isLiked }}">
+                                                <div class="flex justify-end">
+                                                    <button class="text-gray-500">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="@if($event->isLiked) red @else none @endif" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                                                        </svg>
+                                                    </button>
+                                                    <div class="mt-3">
+                                                        <p class="text-xs like-count">{{ $event->event_likes_count }}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -177,11 +173,6 @@
         </x-user-side-navi>
     </x-slot>
 </x-user-app>
-<style>
-    [x-cloak] {
-        display: none;
-    }
-</style>
 <script>
     // Get all filter inputs
     let filterInputs = document.querySelectorAll('.filter-input');
