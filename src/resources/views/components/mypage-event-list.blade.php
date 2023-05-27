@@ -20,7 +20,8 @@ if ($status == "開催済み" or $status == "中止") {
             <p class="text-gray-500 text-xs">{{ $description ?? '' }}</p>
             <ul class="flex flex-wrap gap-2">{{ $tag ?? '' }}</ul>
             <ul class="text-gray-500 text-xs">
-                <li>日付 : {{ $date }}</li>
+                <li>開始日時 : {{ $start_date }}</li>
+                <li>終了日時 : {{ $end_date }}</li>
                 <li>形態 : {{ $style }}</li>
                 <li>参加者数 : {{ $participants_count }}人</li>
             </ul>

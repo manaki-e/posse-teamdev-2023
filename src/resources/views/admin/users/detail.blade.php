@@ -343,11 +343,11 @@
                                         : '未定' }}
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        {{ $event -> participants_count }} 人
+                                        {{ $event -> event_participants_count ?? '0' }} 人
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        {{ $event -> participants_sum_point
-                                        ? $event -> participants_sum_point
+                                        {{ $event -> event_participants_sum_point
+                                        ? $event -> event_participants_sum_point
                                         : 0 }}
                                         pt
                                     </td>

@@ -1,8 +1,8 @@
 <x-mypage-app>
     <x-slot:border_color>border-peer-request</x-slot:border_color>
     <x-slot:title>投稿したリクエスト一覧</x-slot:title>
-    <x-slot:earned_point>580</x-slot:earned_point>
-    <x-slot:distribution_point>5000</x-slot:distribution_point>
+    <x-slot:earned_point>{{ Auth::user()->earned_point }}</x-slot:earned_point>
+    <x-slot:distribution_point>{{ Auth::user()->distribution_point }}</x-slot:distribution_point>
 
     <div class="bg-white md:p-6 w-full">
         <div x-data="{ activeTab: {{ request()->query('activeTab', 0) }} }">
@@ -85,6 +85,7 @@
                     @foreach ($resolved_requests as $request)
                     <li>
                         <x-mypage-request-list>
+                            <x-slot:likes>{{ $request->request_likes_count }}</x-slot:likes>
                             <x-slot:title>{{ $request -> title }}</x-slot:title>
                             <x-slot:description>{{ $request -> description }}</x-slot:description>
                             <x-slot:tag>
@@ -93,7 +94,7 @@
                                 @endforeach
                             </x-slot:tag>
                             <x-slot:date>{{ date( 'Y.m.d', strtotime( $request  -> created_at ) ) }}</x-slot:date>
-                            <x-slot:likes>{{ count($request -> requestLikes) }}</x-slot:likes>
+                            <x-slot:likes>{{ $request->request_likes_count }}</x-slot:likes>
                             <x-slot:user_icon>{{ $request  -> user -> icon }}</x-slot:user_icon>
                             <x-slot:user_name>{{ $request  -> user -> name }}</x-slot:user_name>
                             <x-slot:status>解決済み</x-slot:status>

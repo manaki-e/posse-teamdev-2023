@@ -38,13 +38,13 @@ class ItemController extends Controller
             } else {
                 $product->isLiked = 0;
             }
-            $product->description=$product->changeDescriptionReturnToBreakTag($product->description);
+            $product->description = $product->changeDescriptionReturnToBreakTag($product->description);
             return $product;
         })->sortByDesc('created_at');
         //statuses for filter
         unset($japanese_product_statuses[4]);
-        $filter_statuses=$japanese_product_statuses;
-        return view('user.items.index', compact('products', 'japanese_product_statuses', 'product_tags','filter_statuses'));
+        $filter_statuses = $japanese_product_statuses;
+        return view('user.items.index', compact('products', 'japanese_product_statuses', 'product_tags', 'filter_statuses'));
     }
 
     /**
@@ -114,17 +114,18 @@ class ItemController extends Controller
      */
     public function edit($id)
     {
-        $tags = Tag::productTags()->get()->map(function ($tag) {
-            $tag->is_chosen = false;
+        $product_tags = Tag::productTags()->get()->map(function ($product_tag) {
+            $product_tag->is_chosen = false;
             return $tag;
         });
         $chosen_product_tags = ProductTag::where('product_id', $id)->get();
         $product = Product::withRelations()->findOrFail($id);
         $product->japanese_product_status = Product::JAPANESE_STATUS[$product->status];
         foreach ($chosen_product_tags as $chosen_product_tag) {
-            $tags->find($chosen_product_tag->tag_id)->is_chosen = true;
+            $product_tags->find($chosen_product_tag->tag_id)->is_chosen = true;
         }
-        return view('backend_test.edit_item', compact('product', 'tags'));
+        $conditions = Product::CONDITION;
+        return view('user.items.edit', compact('product', 'product_tags', 'conditions'));
     }
 
     /**
@@ -222,6 +223,7 @@ class ItemController extends Controller
     }
     public function like($id)
     {
+        ProductLike::where('product_id', $id)->where('user_id', Auth::id())->delete();
         $product_like_instance = new ProductLike();
         $product_like_instance->product_id = $id;
         $product_like_instance->user_id = Auth::id();
