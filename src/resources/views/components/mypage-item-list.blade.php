@@ -1,6 +1,6 @@
 <div {{ $attributes->merge(['class' => 'relative flex gap-4 justify-between items-center border-t border-gray-300 py-3 px-6 text-sm']) }}>
     <div class="flex gap-2 font-mono">
-        <div>
+        <div class="min-w-max">
             <img class="w-20 h-20 object-contain" src="{{ asset('images/'.$image_url) }}" alt="Product Image">
         </div>
         <div class="flex flex-col gap-2">

@@ -156,6 +156,18 @@ class MyPageController extends Controller
         return view('user.mypage.items-listed', compact('lendable_products', 'borrowed_products', 'applying_products'));
     }
 
+    public function itemsBorrowed()
+    {
+        $user = Auth::user();
+        $borrowed_products = Product::whereHas('productDealLogs', function ($query) use ($user) {
+            $query->where('user_id', $user->id)->where('returned_at', null)->where('cancelled_at', null);
+        })
+            ->with('productImages', 'productLikes', 'productTags.tag')
+            ->get();
+
+        return view('user.mypage.items-borrowed', compact('borrowed_products'));
+    }
+
     public function eventsOrganized()
     {
         $user = Auth::user();

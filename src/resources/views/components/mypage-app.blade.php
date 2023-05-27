@@ -44,8 +44,8 @@
                                 </x-nav-link>
                             </li>
                             <li>
-                                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                                    {{ __('貸出中アイテム') }}
+                                <x-nav-link :href="route('mypage.items.borrowed')" :active="request()->routeIs('mypage.items.borrowed')">
+                                    {{ __('借りているアイテム') }}
                                 </x-nav-link>
                             </li>
                             <li>
