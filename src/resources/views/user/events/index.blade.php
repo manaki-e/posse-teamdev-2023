@@ -166,7 +166,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="w-full flex items-end justify-between mb-1">
+                                        <div class="w-full flex items-end justify-between mb-2">
                                             <p>{{$event->created_at->format('Y.m.d')}}</p>
                                             <div class="likes" data-event_id="{{ $event->id }}" data-is_liked="{{ $event->isLiked }}">
                                                 <div class="flex justify-end">
