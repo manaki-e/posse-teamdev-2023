@@ -52,7 +52,6 @@
                             <x-slot:user_name>{{ $event  -> user -> name }}</x-slot:user_name>
                             @if (in_array ($user -> id, $array_participants))
                             <x-slot:status></x-slot:status>
-                            <x-slot:timestamp></x-slot:timestamp>
                             <x-slot:button>
                                 <x-mypage-button-event-cancel action="{{ route('events.cancel', ['event' =>  $event -> id]) }}">
                                     <x-slot:content>予約をキャンセルする</x-slot:content>
@@ -67,7 +66,6 @@
                             </x-slot:button>
                             @else
                             <x-slot:status></x-slot:status>
-                            <x-slot:timestamp></x-slot:timestamp>
                             <x-slot:button>
                                 <x-mypage-button-event-held action="{{ route('events.participate',$event->id) }}">
                                     <x-slot:content>予約する</x-slot:content>

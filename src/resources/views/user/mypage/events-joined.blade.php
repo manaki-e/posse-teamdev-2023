@@ -46,7 +46,6 @@
                                 <x-slot:user_icon>{{ $event  -> user -> icon }}</x-slot:user_icon>
                                 <x-slot:user_name>{{ $event  -> user -> name }}</x-slot:user_name>
                                 <x-slot:status></x-slot:status>
-                                <x-slot:timestamp></x-slot:timestamp>
                                 <x-slot:button>
                                     <x-mypage-button-event-cancel action="{{ route('events.cancel', ['event' =>  $event -> id]) }}">
                                         <x-slot:content>予約をキャンセルする</x-slot:content>
@@ -84,7 +83,6 @@
                                 <x-slot:user_icon>{{ $event  -> user -> icon }}</x-slot:user_icon>
                                 <x-slot:user_name>{{ $event  -> user -> name }}</x-slot:user_name>
                                 <x-slot:status>開催済み</x-slot:status>
-                                <x-slot:timestamp>{{ date( 'Y.m.d', strtotime( $event  -> completed_at ) ) }}</x-slot:timestamp>
                                 <x-slot:button></x-slot:button>
                             </x-mypage-event-list>
                         </li>
@@ -111,7 +109,6 @@
                                 <x-slot:user_icon>{{ $event  -> user -> icon }}</x-slot:user_icon>
                                 <x-slot:user_name>{{ $event  -> user -> name }}</x-slot:user_name>
                                 <x-slot:status>中止</x-slot:status>
-                                <x-slot:timestamp>{{ date( 'Y.m.d', strtotime( $event  -> cancelled_at ) ) }}</x-slot:timestamp>
                                 <x-slot:button></x-slot:button>
                             </x-mypage-event-list>
                         </li>
