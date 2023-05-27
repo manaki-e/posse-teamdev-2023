@@ -20,7 +20,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
-        
+
         $tags_array = [
             ['request_type_id' => '1', 'name' => 'モニター'],
             ['request_type_id' => '1', 'name' => 'キーボード'],
@@ -42,12 +42,12 @@ return new class extends Migration
             ['request_type_id' => '2', 'name' => 'Python'],
             ['request_type_id' => '2', 'name' => 'Django'],
             ['request_type_id' => '2', 'name' => 'Ruby'],
-            ['request_type_id' => '2', 'name' => 'Java'],
-            ['request_type_id' => '2', 'name' => 'C#'],
+            ['request_type_id' => '2', 'name' => 'AI'],
+            ['request_type_id' => '2', 'name' => 'セキュリティ'],
             ['request_type_id' => '2', 'name' => 'NoSQL'],
-            ['request_type_id' => '2', 'name' => 'C'],
-            ['request_type_id' => '2', 'name' => 'ゲーム大会'],
-            ['request_type_id' => '2', 'name' => 'バーベキュー'],
+            ['request_type_id' => '2', 'name' => 'Tailwind'],
+            ['request_type_id' => '2', 'name' => 'もくもく会'],
+            ['request_type_id' => '2', 'name' => '勉強会'],
             ['request_type_id' => '2', 'name' => 'カラオケ大会'],
             ['request_type_id' => '2', 'name' => '飲み会'],
             ['request_type_id' => '2', 'name' => 'シャッフルランチ'],
