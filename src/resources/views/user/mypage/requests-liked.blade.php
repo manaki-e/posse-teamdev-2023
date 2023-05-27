@@ -26,7 +26,7 @@
                     <li>
                         <x-mypage-request-list>
                             <x-slot:title>{{ $request -> title }}</x-slot:title>
-                            <x-slot:description>{{ $request -> description }}</x-slot:description>
+                            <x-slot:description>{!! $request -> description !!}</x-slot:description>
                             <x-slot:tag>
                                 @foreach ($request -> requestTags as $tag)
                                 <x-user-tag>{{ $tag -> tag -> name }}</x-user-tag>
@@ -56,7 +56,7 @@
                     <li>
                         <x-mypage-request-list>
                             <x-slot:title>{{ $request -> title }}</x-slot:title>
-                            <x-slot:description>{{ $request -> description }}</x-slot:description>
+                            <x-slot:description>{!! $request -> description !!}</x-slot:description>
                             <x-slot:tag>
                                 @foreach ($request -> requestTags as $tag)
                                 <x-user-tag>{{ $tag -> tag -> name }}</x-user-tag>
