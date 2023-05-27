@@ -165,45 +165,21 @@ class MyPageController extends Controller
             ->where('cancelled_at', null)
             ->with(['eventLikes', 'eventParticipants.user', 'eventTags.tag'])
             ->orderBy('created_at', 'desc')
-            ->get()
-            ->map(function ($event) {
-                if ($event->eventLikes->contains('user_id', Auth::id())) {
-                    $event->isLiked = 1;
-                } else {
-                    $event->isLiked = 0;
-                }
-                return $event;
-            });
+            ->get();
 
         $after_held_events = Event::where('user_id', $user->id)
             ->where('completed_at', '!=', null)
             ->where('cancelled_at', null)
             ->with(['eventLikes', 'eventParticipants.user', 'eventTags.tag'])
             ->orderBy('created_at', 'desc')
-            ->get()
-            ->map(function ($event) {
-                if ($event->eventLikes->contains('user_id', Auth::id())) {
-                    $event->isLiked = 1;
-                } else {
-                    $event->isLiked = 0;
-                }
-                return $event;
-            });
+            ->get();
 
         $cancelled_events = Event::where('user_id', $user->id)
             ->where('completed_at', null)
             ->where('cancelled_at', '!=', null)
             ->with(['eventLikes', 'eventParticipants.user', 'eventTags.tag'])
             ->orderBy('created_at', 'desc')
-            ->get()
-            ->map(function ($event) {
-                if ($event->eventLikes->contains('user_id', Auth::id())) {
-                    $event->isLiked = 1;
-                } else {
-                    $event->isLiked = 0;
-                }
-                return $event;
-            });
+            ->get();
 
         return view('user.mypage.events-organized', compact('before_held_events', 'after_held_events', 'cancelled_events'));
     }
@@ -289,15 +265,7 @@ class MyPageController extends Controller
             ->with('requestTags.tag')
             ->withCount('requestLikes')
             ->orderBy('created_at', 'desc')
-            ->get()
-            ->each(function ($request) {
-                $request->type = $request->getRequestType($request->type_id);
-                if ($request->requestLikes->contains('user_id', Auth::id())) {
-                    $request->isLiked = 1;
-                } else {
-                    $request->isLiked = 0;
-                }
-            });
+            ->get();
 
         $unresolved_requests = Request::where('user_id', $user->id)
             ->unresolvedRequests()
@@ -305,15 +273,7 @@ class MyPageController extends Controller
             ->with('requestTags.tag')
             ->withCount('requestLikes')
             ->orderBy('created_at', 'desc')
-            ->get()
-            ->each(function ($request) {
-                $request->type = $request->getRequestType($request->type_id);
-                if ($request->requestLikes->contains('user_id', Auth::id())) {
-                    $request->isLiked = 1;
-                } else {
-                    $request->isLiked = 0;
-                }
-            });
+            ->get();
 
         return view('user.mypage.requests-posted', compact('resolved_requests', 'unresolved_requests'));
     }
@@ -330,15 +290,7 @@ class MyPageController extends Controller
             ->with(['requestTags.tag', 'requestLikes'])
             ->withCount('requestLikes')
             ->orderBy('created_at', 'desc')
-            ->get()
-            ->each(function ($request) {
-                $request->type = $request->getRequestType($request->type_id);
-                if ($request->requestLikes->contains('user_id', Auth::id())) {
-                    $request->isLiked = 1;
-                } else {
-                    $request->isLiked = 0;
-                }
-            });
+            ->get();
 
         $resolved_liked_requests = Request::whereHas('requestLikes', function ($query) use ($user) {
             $query->where('user_id', $user->id);
@@ -348,15 +300,7 @@ class MyPageController extends Controller
             ->with(['requestTags.tag', 'requestLikes'])
             ->withCount('requestLikes')
             ->orderBy('created_at', 'desc')
-            ->get()
-            ->each(function ($request) {
-                $request->type = $request->getRequestType($request->type_id);
-                if ($request->requestLikes->contains('user_id', Auth::id())) {
-                    $request->isLiked = 1;
-                } else {
-                    $request->isLiked = 0;
-                }
-            });
+            ->get();
         $product_request_type_id = Request::PRODUCT_REQUEST_TYPE_ID;
 
         return view('user.mypage.requests-liked', compact('user', 'product_request_type_id', 'unresolved_liked_requests', 'resolved_liked_requests'));
