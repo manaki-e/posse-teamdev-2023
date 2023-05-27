@@ -67,7 +67,8 @@
                                         <!-- データ -->
                                         <div class="relative flex mb-4">
                                             <div class="w-1/2 space-y-1 flex flex-col text-sm">
-                                                <p>日程：{{ $event->show_date }}</p>
+                                                <p>開始日時：{{ $event  -> start_date ? date( 'Y.m.d H:i', strtotime( $event  -> start_date ) ) : '未定' }}</p>
+                                                <p>終了日時：{{ $event  -> end_date ? date( 'Y.m.d H:i', strtotime( $event  -> end_date ) ) : '未定' }}</p>
                                                 <p>形態：{{ $event->location }}</p>
                                                 <p>開催状況：{{ $event->isCompleted }}</p>
                                                 <p>主催：
