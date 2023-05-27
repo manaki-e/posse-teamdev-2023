@@ -134,23 +134,20 @@ class MyPageController extends Controller
         $user = Auth::user();
         $lendable_products = Product::where('user_id', $user->id)
             ->availableProducts()
-            ->with('productImages')
-            ->with('productLikes')
-            ->with('productTags.tag')
+            ->with('productImages', 'productLikes', 'productTags.tag')
+            ->orderBy('created_at', 'desc')
             ->get();
 
         $borrowed_products = Product::where('user_id', $user->id)
             ->occupiedAndDeliveringProducts()
-            ->with('productImages')
-            ->with('productLikes')
-            ->with('productTags.tag')
+            ->with('productImages', 'productLikes', 'productTags.tag')
+            ->orderBy('created_at', 'desc')
             ->get();
 
         $applying_products = Product::where('user_id', $user->id)
             ->pendingProducts()
-            ->with('productImages')
-            ->with('productLikes')
-            ->with('productTags.tag')
+            ->with('productImages', 'productLikes', 'productTags.tag')
+            ->orderBy('created_at', 'desc')
             ->get();
 
         return view('user.mypage.items-listed', compact('lendable_products', 'borrowed_products', 'applying_products'));
@@ -163,9 +160,25 @@ class MyPageController extends Controller
             $query->where('user_id', $user->id)->where('returned_at', null)->where('cancelled_at', null);
         })
             ->with('productImages', 'productLikes', 'productTags.tag')
+            ->orderBy('created_at', 'desc')
             ->get();
 
         return view('user.mypage.items-borrowed', compact('borrowed_products'));
+    }
+
+    public function itemsLiked()
+    {
+        $user = Auth::user();
+
+        $liked_products = Product::whereHas('productLikes', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })
+            ->where('user_id', '!=', $user->id)
+            ->with('productImages', 'productLikes', 'productTags.tag')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('user.mypage.items-liked', compact('liked_products'));
     }
 
     public function eventsOrganized()

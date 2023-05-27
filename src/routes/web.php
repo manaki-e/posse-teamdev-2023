@@ -70,6 +70,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/profile', [MyPageController::class, 'profile'])->name('profile');
         Route::get('/items/listed', [MyPageController::class, 'itemsListed'])->name('items.listed');
         Route::get('/items/borrowed', [MyPageController::class, 'itemsBorrowed'])->name('items.borrowed');
+        Route::get('/items/liked', [MyPageController::class, 'itemsLiked'])->name('items.liked');
         Route::get('/events/organized', [MyPageController::class, 'eventsOrganized'])->name('events.organized');
         Route::get('/events/joined', [MyPageController::class, 'eventsJoined'])->name('events.joined');
         Route::get('/events/liked', [MyPageController::class, 'eventsLiked'])->name('events.liked');
