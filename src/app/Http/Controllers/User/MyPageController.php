@@ -181,6 +181,27 @@ class MyPageController extends Controller
         return view('user.mypage.items-liked', compact('liked_products'));
     }
 
+    public function itemsHistory()
+    {
+        $user = Auth::user();
+
+        $lend_product_histories = ProductDealLog::whereHas('product', function ($query) use ($user) {
+            $query->withTrashed()->where('user_id', $user->id);
+        })
+            ->with('product.productImages', 'product.productTags.tag', 'user')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $borrow_product_histories = ProductDealLog::where('user_id', $user->id)
+            ->with(['product' => function ($query) {
+                $query->withTrashed();
+            }])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('user.mypage.items-history', compact('lend_product_histories', 'borrow_product_histories'));
+    }
+
     public function eventsOrganized()
     {
         $user = Auth::user();

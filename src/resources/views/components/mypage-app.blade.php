@@ -49,18 +49,13 @@
                                 </x-nav-link>
                             </li>
                             <li>
-                                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                                <x-nav-link :href="route('mypage.items.history')" :active="request()->routeIs('mypage.items.history')">
                                     {{ __('貸し借り履歴') }}
                                 </x-nav-link>
                             </li>
                             <li>
                                 <x-nav-link :href="route('mypage.items.liked')" :active="request()->routeIs('mypage.items.liked')">
                                     {{ __('いいねしたアイテム') }}
-                                </x-nav-link>
-                            </li>
-                            <li>
-                                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                                    {{ __('アイテム取引履歴') }}
                                 </x-nav-link>
                             </li>
                         </ul>
