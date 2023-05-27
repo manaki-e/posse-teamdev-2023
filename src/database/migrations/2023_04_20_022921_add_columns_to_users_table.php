@@ -92,7 +92,7 @@ return new class extends Migration
         ]);
 
         $event_controller = new SlackController;
-        $event_controller->createChannel("peerperk管理者", true);
+        $event_controller->createChannel("","peerperk管理者", true);
     }
 
     /**
