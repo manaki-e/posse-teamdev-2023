@@ -1,6 +1,6 @@
 <x-mypage-app>
     <x-slot:border_color>border-blue-400</x-slot:border_color>
-    <x-slot:title>出品したアイテム一覧</x-slot:title>
+    <x-slot:title>借りているアイテム一覧</x-slot:title>
     <x-slot:earned_point>580</x-slot:earned_point>
     <x-slot:distribution_point>5000</x-slot:distribution_point>
 
