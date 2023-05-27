@@ -58,7 +58,7 @@ return new class extends Migration
                 'condition' => 2,
                 'request_id' => 8,
                 'user_id' => 4,
-                'created_at' => '2023-05-27 20:26:02',
+                'created_at' => '2023/05/27 20:26:02',
                 'deleted_at' => '2023/05/27 20:30:00'
             ],
             [
@@ -69,7 +69,7 @@ return new class extends Migration
                 'condition' => 4,
                 'request_id' => null,
                 'user_id' => 1,
-                'created_at' => '2023-05-28 20:26:02',
+                'created_at' => '2023/05/28 20:26:02',
                 'deleted_at' => null
             ],
             [
@@ -80,7 +80,7 @@ return new class extends Migration
                 'condition' => 2,
                 'request_id' => null,
                 'user_id' => 2,
-                'created_at' => '2023-05-29 20:26:02',
+                'created_at' => '2023/05/29 20:26:02',
                 'deleted_at' => null
             ],
             [
@@ -91,7 +91,7 @@ return new class extends Migration
                 'condition' => 3,
                 'request_id' => null,
                 'user_id' => 1,
-                'created_at' => '2023-05-30 20:26:02',
+                'created_at' => '2023/05/30 20:26:02',
                 'deleted_at' => null
             ],
             [
@@ -102,7 +102,7 @@ return new class extends Migration
                 'condition' => 6,
                 'request_id' => null,
                 'user_id' => 2,
-                'created_at' => '2023-05-31 20:26:02',
+                'created_at' => '2023/05/31 20:26:02',
                 'deleted_at' => null
             ],
             [
@@ -113,7 +113,7 @@ return new class extends Migration
                 'condition' => 3,
                 'request_id' => 1,
                 'user_id' => 3,
-                'created_at' => '2023-06-01 20:26:02',
+                'created_at' => '2023/06/01 20:26:02',
                 'deleted_at' => null
             ],
             [
@@ -124,7 +124,7 @@ return new class extends Migration
                 'condition' => 3,
                 'request_id' => null,
                 'user_id' => 1,
-                'created_at' => '2023-06-02 20:26:02',
+                'created_at' => '2023/06/02 20:26:02',
                 'deleted_at' => null
             ],
             [
@@ -135,7 +135,7 @@ return new class extends Migration
                 'condition' => 1,
                 'request_id' => null,
                 'user_id' => 5,
-                'created_at' => '2023-06-03 20:26:02',
+                'created_at' => '2023/06/03 20:26:02',
                 'deleted_at' => null
             ],
         ];
