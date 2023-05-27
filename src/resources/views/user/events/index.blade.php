@@ -109,16 +109,21 @@
                                         </div>
                                         <!-- ボタン・モーダル -->
                                         <div x-data="{ modelOpen: false }">
-                                            <div @click="modelOpen =!modelOpen" class="flex items-center justify-center">
-                                                @if($event->isParticipated)
-                                                <!-- 色は適当 -->
-                                                <x-user-already-registered-button textColor="text-gray-600" bgColor="bg-white" borderColor="border-gray-600">
-                                                    <x-slot name="button">予約済み</x-slot>
-                                                </x-user-already-registered-button>
+                                            <div class="flex items-center justify-center">
+                                                @if($event->isCompleted == "開催済み")
+                                                <div class="block cursor-none w-full rounded-lg my-3 py-3 font-bold text-center text-sm align-middle text-white bg-gray-300">
+                                                    開催済み
+                                                </div>
+                                                @elseif($event->isParticipated)
+                                                <div class="block cursor-none w-full rounded-lg my-3 py-3 font-bold text-center text-sm align-middle text-white bg-pink-800">
+                                                    予約済み
+                                                </div>
                                                 @else
-                                                <x-user-register-button textColor="text-pink-600" bgColor="bg-white" borderColor="border-pink-600">
-                                                    <x-slot name="button">予約する</x-slot>
-                                                </x-user-register-button>
+                                                <div @click="modelOpen =!modelOpen" class="w-full">
+                                                    <x-user-register-button textColor="text-pink-600" bgColor="bg-white" borderColor="border-pink-600">
+                                                        <x-slot name="button">予約する</x-slot>
+                                                    </x-user-register-button>
+                                                </div>
                                                 @endif
                                             </div>
 
