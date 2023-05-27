@@ -48,7 +48,7 @@ return new class extends Migration
             ['request_type_id' => '2', 'name' => 'Tailwind'],
             ['request_type_id' => '2', 'name' => 'もくもく会'],
             ['request_type_id' => '2', 'name' => '勉強会'],
-            ['request_type_id' => '2', 'name' => 'カラオケ大会'],
+            ['request_type_id' => '2', 'name' => 'React'],
             ['request_type_id' => '2', 'name' => '飲み会'],
             ['request_type_id' => '2', 'name' => 'シャッフルランチ'],
         ];
