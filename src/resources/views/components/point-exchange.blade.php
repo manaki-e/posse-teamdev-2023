@@ -29,11 +29,12 @@ $user_info = Auth::user();
                     </button>
                 </div>
                 <p class="mt-2 text-gray-500 ">
-                    獲得ポイントをAmazonギフト券に換金できます<br>
+                    獲得ポイントをAmazonギフト券に 500pt 単位で換金できます<br>
                     現在の獲得ポイント {{$user_info->earned_point}} pt
                 </p>
                 <form action="{{route('point-exchange.store')}}" method="POST" class="mt-5">
                     @csrf
+                    @if($user_info->earned_point >= 500)
                     <div>
                         <label class="block text-sm text-gray-700 capitalize dark:text-gray-200">換金ポイント</label>
                         <select name="point" list="point_list" step="500" type="number" step="500" min="0" max="{{ 500 * floor($user_info->earned_point / 500) }}" class="block w-full px-3 py-2 mt-2 text-gray-600 placeholder-gray-400 bg-white border border-gray-200 rounded-md" required>
@@ -45,11 +46,12 @@ $user_info = Auth::user();
                             {{ 500 * floor($user_info->earned_point / 500) }} pt まで換金できます
                         </p>
                     </div>
+                    @endif
                     <div class="mt-6">
-                        @if(empty($user_info->earned_point))
+                        @if($user_info->earned_point < 500)
                         <div>
                             <div class="block w-full rounded-lg my-1 py-3 font-bold text-center text-sm transition-all align-middle text-red-400">
-                                利用可能ポイントが不足しています
+                                獲得ポイントが不足しています
                             </div>
                         </div>
                         @else

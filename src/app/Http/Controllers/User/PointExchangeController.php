@@ -44,7 +44,7 @@ class PointExchangeController extends Controller
         $request->point = (int)$request->point;
 
         // ログインユーザーのポイント足りるかチェック
-        if ($user->earned_point > $request->point) {
+        if ($user->earned_point >= $request->point) {
             // ポイントを減らす
             $user->earned_point -= $request->point;
             $user->save();
