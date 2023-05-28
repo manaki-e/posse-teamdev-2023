@@ -21,7 +21,7 @@
                 </ul>
             </div>
             <div :class="{ '!block': activeTab === 0 }" x-show.transition.in.opacity.duration.600="activeTab === 0" class="hidden">
-                <div class="overflow-hidden rounded-lg border border-gray-200 shadow-md my-4">
+                <div class="overflow-hidden border-y border-gray-200 mb-4">
                     <table class="w-full border-collapse bg-white text-left text-sm text-gray-500">
                         <thead class="bg-gray-50">
                             <tr>
@@ -30,7 +30,7 @@
                                 <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">返却日時</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-100 border-t border-gray-100">
+                        <tbody class="divide-y divide-gray-100 border-t border-gray-200">
                             @foreach ( $borrow_product_histories as $history )
                             <x-mypage-history-item>
                                 <x-slot:id>{{ $history -> product -> id }}</x-slot:id>
@@ -48,7 +48,7 @@
                 </div>
             </div>
             <div :class="{ '!block': activeTab === 1 }" x-show.transition.in.opacity.duration.600="activeTab === 1" class="hidden">
-                <div class="overflow-hidden rounded-lg border border-gray-200 shadow-md my-4">
+                <div class="overflow-hidden border-y border-gray-200 mb-4">
                     <table class="w-full border-collapse bg-white text-left text-sm text-gray-500">
                         <thead class="bg-gray-50">
                             <tr>
@@ -58,7 +58,7 @@
                                 <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">返却日時</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-100 border-t border-gray-100">
+                        <tbody class="divide-y divide-gray-100 border-t border-gray-200">
                             @foreach ( $borrow_product_histories as $history )
                             <x-mypage-history-item>
                                 <x-slot:id>{{ $history -> product -> id }}</x-slot:id>
