@@ -20,6 +20,34 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        $tags_array = [
+            ['request_type_id' => '1', 'name' => 'モニター'],
+            ['request_type_id' => '1', 'name' => 'リモートワーク'],
+            ['request_type_id' => '1', 'name' => 'キーボード'],
+            ['request_type_id' => '1', 'name' => 'マウス'],
+            ['request_type_id' => '1', 'name' => 'イヤホン'],
+            ['request_type_id' => '1', 'name' => 'デスク'],
+            ['request_type_id' => '1', 'name' => 'スタンド'],
+            ['request_type_id' => '1', 'name' => 'ヘルスケア'],
+            ['request_type_id' => '1', 'name' => 'PC'],
+            ['request_type_id' => '1', 'name' => 'タブレット'],
+            ['request_type_id' => '2', 'name' => 'PHP'],
+            ['request_type_id' => '2', 'name' => 'MySQL'],
+            ['request_type_id' => '2', 'name' => 'JavaScript'],
+            ['request_type_id' => '2', 'name' => 'Python'],
+            ['request_type_id' => '2', 'name' => 'Django'],
+            ['request_type_id' => '2', 'name' => 'Ruby'],
+            ['request_type_id' => '2', 'name' => 'AI'],
+            ['request_type_id' => '2', 'name' => 'セキュリティ'],
+            ['request_type_id' => '2', 'name' => 'NoSQL'],
+            ['request_type_id' => '2', 'name' => 'Tailwind'],
+            ['request_type_id' => '2', 'name' => 'もくもく会'],
+            ['request_type_id' => '2', 'name' => '勉強会'],
+            ['request_type_id' => '2', 'name' => 'React'],
+            ['request_type_id' => '2', 'name' => '社内イベント'],
+        ];
+        DB::table('tags')->insert($tags_array);
     }
 
     /**
