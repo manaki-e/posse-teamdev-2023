@@ -109,7 +109,7 @@ return new class extends Migration
                 'title' => 'Satechi デュアルバーティカルスタンド',
                 'point' => 300,
                 'description' => "家の中ではスタンドを利用してマグネット式ワイヤレス充電器として、\n外出先ではスタンドを折りたたみマグネット式ワイヤレス充電対応のモバイルバッテリーとして2通りでの利用が可能。\nご自宅でも外出先でもマグネット式ワイヤレス充電を利用可能。",
-                'status' => 1,
+                'status' => 2,
                 'condition' => 3,
                 'request_id' => 1,
                 'user_id' => 3,
