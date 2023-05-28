@@ -15,16 +15,6 @@ class DepartmentSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('departments')->insert([
-            ['name' => '総務部'],
-            ['name' => '人事部'],
-            ['name' => '経理部'],
-            ['name' => '営業部'],
-            ['name' => '開発部'],
-            ['name' => 'デザイン部'],
-            ['name' => 'マーケティング部'],
-            ['name' => '企画部'],
-            ['name' => '研究開発部'],
-        ]);
+        c
     }
 }
