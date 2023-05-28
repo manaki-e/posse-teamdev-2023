@@ -88,9 +88,14 @@ class ItemController extends Controller
         $product_instance->addProductImages($images, $product_instance->id);
         $product_instance->updateProductTags($request->product_tags, $product_instance->id);
         //slack登録申請者
-        $this->slackController->sendNotification(Auth::user()->slackID,"アイテムの登録申請を行いました！");
+        $this->slackController->sendNotification(Auth::user()->slackID, "アイテムの登録申請を行いました！");
         //slack管理者
-        $this->slackController->sendNotification($this->slackAdminChannelId,"アイテムの登録申請が行われました。管理者画面より確認しましょう。\n```".env('APP_URL')."admin/items```");
+        $this->slackController->sendNotification($this->slackAdminChannelId, "アイテムの登録申請が行われました。管理者画面より確認しましょう。\n```" . env('APP_URL') . "admin/items```");
+        //リクエストに紐づいていたら、リクエストの投稿者にslack通知
+        if (!empty($request->request_id)) {
+            $request = ModelsRequest::find($request->request_id);
+            $this->slackController->sendNotification($request->user->slackID, "<@" . Auth::user()->slackID . "> より、あなたのリクエストに対して、アイテムが登録されました！確認してみましょう。\n```" . env('APP_URL') . "items```");
+        }
         return redirect()->route('items.index')->with(['flush.message' => 'アイテム登録申請完了しました。', 'flush.alert_type' => 'success']);
     }
 
@@ -231,7 +236,7 @@ class ItemController extends Controller
         if (Auth::id() === $lender_user_instance->id) {
             //貸してる人がキャンセルした場合
             //slack借りた人
-            $this->slackController->sendNotification($product_deal_log_instance->user->slackID, "<@".$lender_user_instance->slackID."> によって、アイテムの貸し出しがキャンセルされました。");
+            $this->slackController->sendNotification($product_deal_log_instance->user->slackID, "<@" . $lender_user_instance->slackID . "> によって、アイテムの貸し出しがキャンセルされました。");
             //slack貸した人
             $this->slackController->sendNotification($lender_user_instance->slackID, "アイテムの貸出をキャンセルしました。");
         } else {
@@ -254,9 +259,10 @@ class ItemController extends Controller
     }
     public function createWithRequest($chosen_request_id)
     {
+        $conditions = Product::CONDITION;
         $product_tags = Tag::productTags()->get();
         $requests = ModelsRequest::unresolvedRequests()->productRequests()->get();
-        return view('user.items.create', compact('chosen_request_id', 'product_tags', 'requests'));
+        return view('user.items.create', compact('chosen_request_id', 'product_tags', 'requests', 'conditions'));
     }
     public function like($id)
     {
