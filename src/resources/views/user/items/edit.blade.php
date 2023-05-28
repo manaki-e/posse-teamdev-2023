@@ -33,7 +33,7 @@
                                         </div>
                                         <div class="text-gray-600"><a href="#" class="font-medium text-primary-500 hover:text-primary-700">クリックして追加</a>
                                             または ファイルをドロップ</div>
-                                        <p class="text-sm text-gray-500">SVG, PNG, JPG or GIF (max. 800x400px)</p>
+                                        <p class="text-sm text-gray-500">SVG, PNG or JPG (max. 1MB)</p>
                                     </div>
                                     <input id="file" type="file" name="product_images[]" class="sr-only" multiple required onchange="checkFileSize(this),preview(this)" />
                                     <div class="preview-area "></div>
@@ -55,9 +55,9 @@
                                 </div>
                                 <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">アイテムの状態<span class="text-red-600">*</span></h4>
                                 <div class="mb-4 border border-gray-300 rounded-md">
-                                    <select name="condition" id="example1" class="p-1 block w-full rounded-md border-gray-300 shadow-sm text-lg text-gray-500" required>
+                                    <select name="condition" id="example1" class="p-1 block w-full rounded-md border-gray-300 shadow-sm text-base text-gray-500" required>
                                         @foreach($conditions as $key => $condition)
-                                        <option value="{{ $key }}" @if($product->condition===$key)>{{ $condition }}</option>
+                                        <option value="{{ $key }}" @if($product->condition===$key) selected @endif>{{ $condition }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -76,7 +76,7 @@
                             </div>
                             <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">関連するリクエスト</h4>
                             <div class="mb-4 border border-gray-300 rounded-md">
-                                <select name="request_id" id="example1" class="p-1 block w-full rounded-md border-gray-300 shadow-sm text-lg text-gray-500">
+                                <select name="request_id" id="example1" class="p-1 block w-full rounded-md border-gray-300 shadow-sm text-base text-gray-500">
                                     <option value="">なし</option>
                                     @foreach($requests as $request)
                                     @if($request->id===$product->request_id)

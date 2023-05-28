@@ -8,23 +8,23 @@
         <div class="flex text-gray-600 mb-4">
             <div class="w-1/6">
                 <div class="w-full rounded-full overflow-hidden border-2 border-gray-900">
-                    <img src="{{ Auth::user()->icon }}" alt="" class="object-cover">
+                    <img src="{{ $user->icon }}" alt="" class="object-cover">
                 </div>
             </div>
             <div class="w-5/6 pl-6">
-                <h2 class="font-bold text-xl text-gray-800 mb-2">{{ Auth::user()->name }}</h2>
+                <h2 class="font-bold text-xl text-gray-800 mb-2">{{ $user->name }}</h2>
                 <div class="pl-2 flex gap-2">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z">
                         </path>
                     </svg>
-                    <p class="text-sm">{{ Auth::user()->display_name }}</p>
+                    <p class="text-sm">{{ $user->display_name }}</p>
                 </div>
                 <div class="pl-2 flex gap-2">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M4 20C3.45 20 2.979 19.804 2.587 19.412C2.195 19.02 1.99934 18.5493 2 18V6C2 5.45 2.196 4.979 2.588 4.587C2.98 4.195 3.45067 3.99934 4 4H20C20.55 4 21.021 4.196 21.413 4.588C21.805 4.98 22.0007 5.45067 22 6V18C22 18.55 21.804 19.021 21.412 19.413C21.02 19.805 20.5493 20.0007 20 20H4ZM12 13L4 8V18H20V8L12 13ZM12 11L20 6H4L12 11ZM4 8V6V18V8Z" fill="currentColor" />
                     </svg>
-                    <p class="text-sm">{{ Auth::user()->email }}</p>
+                    <p class="text-sm">{{ $user->email }}</p>
                 </div>
                 <div class="pl-2 flex gap-2">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -315,7 +315,6 @@
                                                     </x-user-register-button>
                                                 </div>
                                                 @endif
-
                                                 <div x-cloak x-show="modelOpen" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
                                                     <div class="flex items-end justify-center min-h-screen px-4 text-center md:items-center sm:block sm:p-0">
                                                         <div x-cloak @click="modelOpen = false" x-show="modelOpen" x-transition:enter="transition ease-out duration-300 transform" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200 transform" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-40" aria-hidden="true"></div>

@@ -20,12 +20,12 @@ $user_info = Auth::user();
             <a href="{{ $top_title_link }}" class="flex title-font font-medium items-center ml-10 mb-4 md:mb-0">
                 @if (request()->is('items') || request()->is('items/*'))
                 <x-icon-pps></x-icon-pps>
-                @elseif(request()->is('mypage') || request()->is('mypage/*'))
-                <x-application-logo></x-application-logo>
                 @elseif (request()->is('events') || request()->is('events/*'))
                 <x-icon-pe></x-icon-pe>
                 @elseif (request()->is('requests') || request()->is('requests/*'))
                 <x-icon-pr></x-icon-pr>
+                @else
+                <x-application-logo></x-application-logo>
                 @endif
                 <span class="ml-3 text-xl font-patua">{{ $app_name }}</span>
             </a>

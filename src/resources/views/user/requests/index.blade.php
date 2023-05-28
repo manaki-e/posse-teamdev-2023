@@ -90,14 +90,14 @@
                                                 </span>
                                                 @endforeach
                                             </div>
-                                            <a href="#" class="divide-y divide-gray-200 flex justify-end">
+                                            <a href="{{ route('users.profile',['user_id'=>$request->user->id]) }}" class="divide-y divide-gray-200 flex justify-end">
                                                 <div class="flex justify-end space-x-4 p-1 rounded-md hover:bg-gray-50">
                                                     <div class="pl-1">
                                                         <img class="w-8 h-8 rounded-full" src="{{ $request->user->icon }}" alt="icon">
                                                     </div>
                                                     <div class="min-w-0 flex items-center">
                                                         <p class="text-sm font-medium text-gray-900 truncate">
-                                                            {{ $request->user->name }}
+                                                            {{ $request->user->display_name }}
                                                         </p>
                                                     </div>
                                                 </div>
@@ -105,12 +105,17 @@
                                         </div>
                                         <!-- ボタン・モーダル -->
                                         <div x-data="{ modelOpen: false }">
+                                            @if($request->user_id===Auth::user()->id)
+                                            <div class="block  w-full rounded-lg my-3 py-3 font-bold text-center text-sm align-middle text-white bg-gray-300">
+                                                自分のリクエストです
+                                            </div>
+                                            @else
                                             <div @click="modelOpen =!modelOpen" class="flex items-center justify-center px-3">
                                                 <x-user-register-button textColor="text-peer-request" bgColor="bg-white" borderColor="border-peer-request">
                                                     <x-slot name="button">リクエストに応える</x-slot>
                                                 </x-user-register-button>
                                             </div>
-
+                                            @endif
                                             <div x-cloak x-show="modelOpen" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
                                                 <div class="flex items-end justify-center min-h-screen px-4 text-center md:items-center sm:block sm:p-0">
                                                     <div x-cloak @click="modelOpen = false" x-show="modelOpen" x-transition:enter="transition ease-out duration-300 transform" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200 transform" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-40" aria-hidden="true"></div>
