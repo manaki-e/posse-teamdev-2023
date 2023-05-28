@@ -48,8 +48,8 @@ class Handler extends ExceptionHandler
         });
     }
 
-    public function render($request, Throwable $exception)
-    {
-        return response()->view('errors.custom', [], method_exists($exception, 'getStatusCode') ? $exception->getStatusCode() : 500);
-    }
+    // public function render($request, Throwable $exception)
+    // {
+    //     return response()->view('errors.custom', [], method_exists($exception, 'getStatusCode') ? $exception->getStatusCode() : 500);
+    // }
 }
