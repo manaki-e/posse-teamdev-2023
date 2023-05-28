@@ -30,7 +30,8 @@ return new class extends Migration
                 'user_id' => 5,
                 'type_id' => 1,
                 'created_at' => '2023/05/25 20:26:02',
-                'completed_at' => '2023/05/30 00:00:00'
+                'completed_at' => '2023/05/30 00:00:00',
+                'deleted_at' => null
             ],
             [
                 'title' => 'PHPを語り合う会',
@@ -38,7 +39,8 @@ return new class extends Migration
                 'user_id' => 2,
                 'type_id' => 2,
                 'created_at' => '2023/03/08 10:26:02',
-                'completed_at' => null
+                'completed_at' => null,
+                'deleted_at' => '2023/03/08 10:30:00'
             ],
             [
                 'title' => 'Tailwind講座',
@@ -46,7 +48,8 @@ return new class extends Migration
                 'user_id' => 3,
                 'type_id' => 2,
                 'created_at' => '2023/05/05 11:54:00',
-                'completed_at' => null
+                'completed_at' => null,
+                'deleted_at' => null
             ],
             [
                 'title' => 'Macbook',
@@ -54,7 +57,8 @@ return new class extends Migration
                 'user_id' => 5,
                 'type_id' => 1,
                 'created_at' => '2023/02/05 14:23:45',
-                'completed_at' => '2023/02/05 20:23:45'
+                'completed_at' => '2023/02/05 20:23:45',
+                'deleted_at' => null
             ],
             [
                 'title' => 'RUSTオンラインもくもく会',
@@ -62,7 +66,8 @@ return new class extends Migration
                 'user_id' => 5,
                 'type_id' => 2,
                 'created_at' => '2023/05/04 10:26:02',
-                'completed_at' => null
+                'completed_at' => null,
+                'deleted_at' => null
             ],
             [
                 'title' => 'Ruby on rails勉強会',
@@ -70,7 +75,8 @@ return new class extends Migration
                 'user_id' => 2,
                 'type_id' => 2,
                 'created_at' => '2023/04/01 10:00:00',
-                'completed_at' => '2023/04/29 14:20:30'
+                'completed_at' => '2023/04/29 14:20:30',
+                'deleted_at' => null
             ],
             [
                 'title' => 'Airpods Pro',
@@ -78,7 +84,8 @@ return new class extends Migration
                 'user_id' => 1,
                 'type_id' => 1,
                 'created_at' => '2023/04/12 10:26:02',
-                'completed_at' => null
+                'completed_at' => null,
+                'deleted_at' => null
             ],
             [
                 'title' => 'Logicool キーボード MX Mechanical 茶軸 KX850FT',
@@ -86,7 +93,8 @@ return new class extends Migration
                 'user_id' => 4,
                 'type_id' => 1,
                 'created_at' => '2023/02/26 10:26:02',
-                'completed_at' => '2023/02/28 20:20:22'
+                'completed_at' => '2023/02/28 20:20:22',
+                'deleted_at' => null
             ],
         ];
 
