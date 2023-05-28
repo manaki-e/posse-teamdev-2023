@@ -98,7 +98,7 @@ $images_count = count($product->productImages);
                             <div class="md:py-8">
                                 <h1 class="text-3xl text-gray-800 font-bold mb-1 pl-2 border-l-4 border-blue-400">{{$product->title}}</h1>
                                 <div class="px-2 flex mt-4 justify-between">
-                                    <p class="title-font font-medium text-2xl text-gray-500">{{$product->point.'pt' ?? '未設定'}}</p>
+                                    <p class="title-font font-medium text-2xl text-gray-500">{{ $product->point ?  $product->point.'pt' : '未設定'}}</p>
                                     <span class="flex items-center likes" data-item_id="{{ $product->id }}" data-is_liked="{{ $product->isLiked }}">
                                         <button>
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="@if($product->isLiked) red @else none @endif" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
