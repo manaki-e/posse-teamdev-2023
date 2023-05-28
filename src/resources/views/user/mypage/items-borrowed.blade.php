@@ -37,7 +37,7 @@
                                     <x-slot name="method"></x-slot>
                                     <x-slot name="form_slot"></x-slot>
                                 </x-mypage-button-item-receive>
-                                <x-mypage-button-item-cancel href="{{ route('items.cancel', ['item' =>  $product -> id]) }}">
+                                <x-mypage-button-item-cancel action="{{ route('items.cancel', ['item' =>  $product -> id]) }}">
                                     <x-slot name="content">
                                         貸出キャンセル
                                     </x-slot>
