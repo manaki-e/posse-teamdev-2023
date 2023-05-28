@@ -15,7 +15,7 @@
                     <section class="text-left w-full flex gap-8">
                         <div class="w-1/2">
                             <div class="mx-auto mt-6">
-                                <label for="file" class="mb-1 block text-sm font-medium text-gray-700">出品画像<span class="text-red-600">*</span><span class="text-xs text-gray-400">（最大５枚まで）</span></label>
+                                <label for="file" class="mb-1 block text-sm font-medium text-gray-700">出品画像<span class="text-red-600">*</span><span class="text-xs text-gray-400">（最大3枚まで）</span></label>
                                 <label class="relative flex w-full cursor-pointer appearance-none items-center justify-center rounded-md border-2 border-dashed border-gray-200 p-6 transition-all hover:border-gray-300 overflow-x-scroll">
                                     <div class="space-y-1 text-center">
                                         <div>削除する画像を選択</div>
@@ -33,7 +33,7 @@
                                         </div>
                                         <div class="text-gray-600"><a href="#" class="font-medium text-primary-500 hover:text-primary-700">クリックして追加</a>
                                             または ファイルをドロップ</div>
-                                        <p class="text-sm text-gray-500">SVG, PNG or JPG (max. 1MB, 5枚まで)</p>
+                                        <p class="text-sm text-gray-500">SVG, PNG or JPG (max. 1MB, 3枚まで)</p>
                                     </div>
                                     <input id="file" type="file" name="product_images[]" class="sr-only" multiple required onchange="checkFileSize(this),preview(this)" />
                                     <div class="preview-area "></div>

@@ -34,12 +34,6 @@ return new class extends Migration
             ['product_id' => 4, 'image_url' => 'AirbodsPro(1).jpg'],
             ['product_id' => 4, 'image_url' => 'AirbodsPro(2).jpg'],
             ['product_id' => 4, 'image_url' => 'AirbodsPro(3).jpg'],
-            ['product_id' => 4, 'image_url' => 'AirbodsPro(4).jpg'],
-            ['product_id' => 4, 'image_url' => 'AirbodsPro(5).jpg'],
-            ['product_id' => 4, 'image_url' => 'AirbodsPro(6).jpg'],
-            ['product_id' => 4, 'image_url' => 'AirbodsPro(7).jpg'],
-            ['product_id' => 4, 'image_url' => 'AirbodsPro(8).jpg'],
-            ['product_id' => 4, 'image_url' => 'AirbodsPro(9).jpg'],
             //anker727 5
             ['product_id' => 5, 'image_url' => 'アンカー(ANKER)Anker727ChargingStationA9126NF1(1).jpg'],
             ['product_id' => 5, 'image_url' => 'アンカー(ANKER)Anker727ChargingStationA9126NF1(2).jpg'],
@@ -48,16 +42,12 @@ return new class extends Migration
             ['product_id' => 6, 'image_url' => 'FlexiSpotE7(1).jpg'],
             ['product_id' => 6, 'image_url' => 'FlexiSpotE7(2).jpg'],
             ['product_id' => 6, 'image_url' => 'FlexiSpotE7(3).jpg'],
-            ['product_id' => 6, 'image_url' => 'FlexiSpotE7(4).jpg'],
-            ['product_id' => 6, 'image_url' => 'FlexiSpotE7(5).jpg'],
-            ['product_id' => 6, 'image_url' => 'FlexiSpotE7(6).jpg'],
             //anker511 7
             ['product_id' => 7, 'image_url' => 'アンカー(ANKER)Anker511PowerBankA1633N13.jpg'],
             //satechi 8
             ['product_id'=>8,'image_url'=>'Satechiデュアルバーティカルスタンド(1).jpg'],
             ['product_id'=>8,'image_url'=>'Satechiデュアルバーティカルスタンド(2).jpg'],
             ['product_id'=>8,'image_url'=>'Satechiデュアルバーティカルスタンド(3).jpg'],
-            ['product_id'=>8,'image_url'=>'Satechiデュアルバーティカルスタンド(4).jpg'],
             //Shokz OpenRun Pro 9
             ['product_id'=>9,'image_url'=>'ShokzOpenRunPro.jpg'],
             //galaxy watch 10

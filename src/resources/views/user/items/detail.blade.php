@@ -6,8 +6,13 @@ use Illuminate\Support\Facades\Auth;
 //userのログイン情報を$user_infoに格納
 $user_info = Auth::user();
 
-// 貸し出し可能か判定→ボタン表示
-$unavailable_tag = $product->japanese_status == '貸出可能' ? '' : '<span class="absolute left-0 top-0 rounded-br-lg bg-red-500 px-3 py-1.5 text-sm uppercase tracking-wider text-white">貸出中</span>';
+// 貸出中か配送中の時は画像にタグをつける
+if ($product->status == 3 || $product->status == 4) {
+    $cannot_borrow_tag = false;
+} else {
+    $cannot_borrow_tag = true;
+}
+$unavailable_tag = $cannot_borrow_tag ? '' : '<span class="absolute left-0 top-0 rounded-br-lg bg-red-500 px-3 py-1.5 text-sm uppercase tracking-wider text-white">貸出中</span>';
 
 //アイテムの画像の合計枚数を取得
 $images_count = count($product->productImages);
@@ -26,7 +31,7 @@ $images_count = count($product->productImages);
     </x-slot>
     <x-slot name="body_slot">
         <x-user-side-navi>
-            <div class="pb-8">
+            <div class="pb-4">
                 <nav class="flex mx-auto max-w-screen-5xl px-4 md:px-8" aria-label="Breadcrumb">
                     <ol class="my-4 inline-flex items-center space-x-1 md:space-x-3">
                         <li class="inline-flex items-center px-1 rounded hover:bg-gray-200">
@@ -49,43 +54,45 @@ $images_count = count($product->productImages);
                 </nav>
                 <div class="mx-auto max-w-screen-5xl px-4 md:px-8">
                     <div class="">
-                        <div class="grid gap-8 grid-cols-2">
+                        <div class="grid gap-8 grid-cols-2 bg-white rounded-md shadow px-1">
                             <!-- images - start -->
                             <div class="md:py-8">
-                                <div class="flex gap-2" x-data="{ activeImage: 0 }">
-                                    <div class="w-1/4">
+                                <div class="flex gap-2 h-full" x-data="{ activeImage: 0 }">
+                                    <div class="w-1/4 grid h-full">
                                         <ul class="flex flex-col gap-1">
                                             @foreach($product->productImages as $product_image)
-                                            <li class="aspect-square">
-                                                <img src="{{asset('images/'.$product_image->image_url)}}" class="shadow-md">
+                                            <li class="w-full aspect-square bg-white border border-gray-300 flex-center max-w-full max-h-full">
+                                                <img src="{{asset('images/'.$product_image->image_url)}}" class="w-full object-contain max-w-full max-h-full">
                                             </li>
                                             @endforeach
                                         </ul>
                                     </div>
                                     <div class="w-3/4 mb-4">
-                                        <ul class="flex gap-2 h-full my-auto">
-                                            <li class="my-auto w-8 flex-center">
+                                        <ul class="flex-center gap-2 h-full my-auto">
+                                            @if($images_count !== 1)
+                                            <li class="my-auto w-1/12 flex-center">
                                                 <div @click="activeImage = activeImage + {{$images_count}}-1" class="rounded-full overflow-hidden bg-gray-200 p-1 cursor-pointer flex jusitify-center items-center">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                                                     </svg>
                                                 </div>
                                             </li>
+                                            @endif
                                             @foreach($product->productImages as $index => $product_image)
-                                            <li class="flex justify-items-center items-center">
-                                                <div :class="{ 'relative block': activeImage % {{$images_count}} === {{$index}}, 'hidden': activeImage % {{$images_count}} !== {{$index}}}" x-show.transition.in.opacity.duration.600=" activeImage % {{$images_count}} === {{$index}}">
-                                                    <img class="shadow-md" src="{{asset('images/'.$product_image->image_url)}}" alt="アイテム写真">
-                                                    {!! $unavailable_tag !!}
-                                                </div>
+                                            <li :class="{ 'w-10/12 relative aspect-square bg-white max-w-full max-h-full flex-center': activeImage % {{$images_count}} === {{$index}}, 'hidden': activeImage % {{$images_count}} !== {{$index}}}" x-show.transition.in.opacity.duration.600=" activeImage % {{$images_count}} === {{$index}}">
+                                                <img class="max-h-full my-auto object-contain w-full" src="{{asset('images/'.$product_image->image_url)}}" alt="アイテム写真">
+                                                {!! $unavailable_tag !!}
                                             </li>
                                             @endforeach
-                                            <li class="my-auto w-8 flex-center">
+                                            @if($images_count !== 1)
+                                            <li class="my-auto w-1/12 flex-center">
                                                 <div @click="activeImage = activeImage + 1" class="rounded-full overflow-hidden bg-gray-200 p-1 cursor-pointer flex jusitify-center items-center">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                                         <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                                                     </svg>
                                                 </div>
                                             </li>
+                                            @endif
                                         </ul>
                                     </div>
                                 </div>
@@ -96,7 +103,7 @@ $images_count = count($product->productImages);
                             <div class="md:py-8">
                                 <h1 class="text-3xl text-gray-800 font-bold mb-1 pl-2 border-l-4 border-blue-400">{{$product->title}}</h1>
                                 <div class="px-2 flex mt-4 justify-between">
-                                    <p class="title-font font-medium text-2xl text-gray-500">{{$product->point}} pt</p>
+                                    <p class="title-font font-medium text-2xl text-gray-500">{{ $product->point ?  $product->point.'pt' : '未設定'}}</p>
                                     <span class="flex items-center likes" data-item_id="{{ $product->id }}" data-is_liked="{{ $product->isLiked }}">
                                         <button>
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="@if($product->isLiked) red @else none @endif" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">

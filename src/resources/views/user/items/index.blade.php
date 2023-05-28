@@ -50,8 +50,8 @@
                             @foreach ($products as $product)
                             <div data-status="{{ $product->status }}" data-tag="{{ $product->data_tag  }}" class="col-span-1 filter-target shadow-md bg-white rounded-lg flex flex-col justify-between">
                                 <a href="/items/{{$product->id}}">
-                                    <div class="bg-white relative h-48 rounded-t-lg overflow-hidden">
-                                        <img alt="ecommerce" class="object-cover w-full h-full block" src="{{asset('images/'.$product->productImages->first()->image_url)}}">
+                                    <div class="bg-white relative h-48 rounded-t-lg overflow-hidden shadow-sm">
+                                        <img alt="no image" class="object-cover w-full h-full block" src="{{asset('images/'.$product->productImages->first()->image_url)}}">
                                         @if ( $product->japanese_status !== '貸出可能' )
                                         <span class="absolute left-0 top-0 rounded-br-lg bg-red-500 px-3 py-1.5 text-sm uppercase tracking-wider text-white">
                                             貸出中
@@ -60,14 +60,25 @@
                                     </div>
                                     <div class="p-4 pb-0">
                                         <h2 class="text-gray-900 title-font text-lg font-medium">{{$product->title}}</h2>
-                                        <p class="text-gray-500 text-xs tracking-widest title-font mb-1">
-                                            {!! $product->description !!}
-                                        </p>
                                     </div>
                                 </a>
-                                <div class="p-4 flex justify-between">
-                                    <p class="mt-1">{{$product->point}} pt</p>
-                                    <div class="flex relative likes" data-item_id="{{ $product->id }}" data-is_liked="{{ $product->isLiked }}">
+                                <div class="mx-2 mt-2 p-2 flex justify-between border-t border-gray-300">
+                                    <div class="flex flex-col">
+                                        <p class="mb-4 text-2xl text-gray-700 font-sans font-bold">{{$product->point}} pt</p>
+                                        <a href="{{ route('users.profile',['user_id'=>$product->user->id]) }}">
+                                            <div class="flex">
+                                                <div class="h-6 w-6 relative z-30">
+                                                    <img class="h-full w-full rounded-full object-cover object-center border border-gray-800" src="{{ $product->user->icon }}" alt="icon" />
+                                                </div>
+                                                <div class="flex items-center">
+                                                    <p class="pl-1 text-sm font-medium text-gray-900 truncate">
+                                                        {{ $product->user->display_name }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="flex items-end relative likes" data-item_id="{{ $product->id }}" data-is_liked="{{ $product->isLiked }}">
                                         <button class="mt-1 text-gray-500">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="@if($product->isLiked) red @else none @endif" viewBox="0 0 24 24" stroke-width="1.5" stroke="@if($product->isLiked) red @else currentColor @endif" class="w-6 h-6">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />

@@ -91,12 +91,12 @@
                                                 @endforeach
                                             </div>
                                             <a href="{{ route('users.profile',['user_id'=>$request->user->id]) }}" class="divide-y divide-gray-200 flex justify-end">
-                                                <div class="flex justify-end space-x-4 p-1 rounded-md hover:bg-gray-50">
-                                                    <div class="pl-1">
-                                                        <img class="w-8 h-8 rounded-full" src="{{ $request->user->icon }}" alt="icon">
+                                                <div class="flex justify-end gap-1 p-1 rounded-md hover:bg-gray-50">
+                                                    <div class="rounded-full h-6 w-6 relative">
+                                                        <img class="h-full w-full rounded-full object-cover object-center border border-gray-800" src="{{ $request->user->icon }}" alt="icon">
                                                     </div>
                                                     <div class="min-w-0 flex items-center">
-                                                        <p class="text-sm font-medium text-gray-900 truncate">
+                                                        <p class="text-sm font-medium text-gray-900">
                                                             {{ $request->user->display_name }}
                                                         </p>
                                                     </div>
