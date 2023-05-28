@@ -7,17 +7,21 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
 
-    <title>
-        @if (request()->is('items') || request()->is('items/*'))
-        {{"Peer Product Share"}}
-        @elseif (request()->is('events') || request()->is('events/*'))
-        {{"Peer Event"}}
-        @elseif (request()->is('requests') || request()->is('requests/*'))
-        {{"Peer Request"}}
-        @else
-        {{"Peer Perk"}}
-        @endif
-    </title>
+    @if (request()->is('items') || request()->is('items/*'))
+    <title>{{"Peer Product Share"}}</title>
+    <link rel="shortcut icon" href="icon-pps.ico" type="image/x-icon">
+    @elseif (request()->is('events') || request()->is('events/*'))
+    <title>{{"Peer Event"}}</title>
+    <link rel="shortcut icon" href="icon-pe.ico" type="image/x-icon">
+    @elseif (request()->is('requests') || request()->is('requests/*'))
+    <title>{{"Peer Request"}}</title>
+    <link rel="shortcut icon" href="icon-pr.ico" type="image/x-icon">
+    @else
+    <title>{{"Peer Perk"}}</title>
+    <link rel="shortcut icon" href="icon-pps.ico" type="image/x-icon">
+    @endif
+
+    <link rel="icon" href="{{ asset('Slack-mark.ico') }}" type="image/x-icon" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
