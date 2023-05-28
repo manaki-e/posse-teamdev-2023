@@ -2,7 +2,7 @@
     <x-slot name="title">
         {{ __('取引履歴') }}
     </x-slot>
-    <x-slot name="discription">
+    <x-slot name="description">
         {{ __('アイテムの貸し出しまたはイベントの参加登録によって生じたポイントの移行履歴が表示されます') }}
     </x-slot>
 

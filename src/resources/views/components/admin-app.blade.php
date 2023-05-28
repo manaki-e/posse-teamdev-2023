@@ -93,8 +93,8 @@
                     <x-slot name="title">
                         {{ $title }}
                     </x-slot>
-                    <x-slot name="discription">
-                        {{ $discription }}
+                    <x-slot name="description">
+                        {{ $description }}
                     </x-slot>
                 </x-admin-title>
 

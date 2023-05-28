@@ -2,7 +2,7 @@
     <x-slot name="title">
         {{ __('ユーザ一覧') }}
     </x-slot>
-    <x-slot name="discription">
+    <x-slot name="description">
         {{ __('PeerPerkに登録されているユーザの一覧が表示されます。また、slackワークスペースに所属しているユーザをPeerPerkユーザに登録することもできます。') }}
     </x-slot>
 

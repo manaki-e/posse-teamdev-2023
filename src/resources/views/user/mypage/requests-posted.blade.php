@@ -26,7 +26,7 @@
                     <li>
                         <x-mypage-request-list>
                             <x-slot:title>{{ $request -> title }}</x-slot:title>
-                            <x-slot:description>{{ $request -> description }}</x-slot:description>
+                            <x-slot:description>{!! nl2br($request -> description) !!}</x-slot:description>
                             <x-slot:tag>
                                 @foreach ($request->requestTags as $tag)
                                 <x-user-tag>{{ $tag->tag->name }}</x-user-tag>
@@ -38,16 +38,18 @@
                             <x-slot:user_name>{{ $request  -> user -> name }}</x-slot:user_name>
                             <x-slot:status></x-slot:status>
                             <x-slot:button>
-                                <x-mypage-button-request-resolve action="{{ route('requests.resolve', ['request' =>  $request -> id]) }}">
-                                    <x-slot:content>解決済みにする</x-slot:content>
-                                    <x-slot:logo_path>
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.125 2.25h-4.5c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125v-9M10.125 2.25h.375a9 9 0 019 9v.375M10.125 2.25A3.375 3.375 0 0113.5 5.625v1.5c0 .621.504 1.125 1.125 1.125h1.5a3.375 3.375 0 013.375 3.375M9 15l2.25 2.25L15 12" />
-                                    </x-slot:logo_path>
-                                    <x-slot:modal_title>投稿したリクエストを解決済みにする</x-slot:modal_title>
-                                    <x-slot:modal_description>リクエストが解決されたら、解決済みにしてください。一度解決済みにすると、解除できません。</x-slot:modal_description>
-                                    <x-slot:method></x-slot:method>
-                                    <x-slot:form_slot></x-slot:form_slot>
-                                </x-mypage-button-request-resolve>
+                                <div class="whitespace-nowrap flex flex-col gap-2">
+                                    <x-mypage-button-request-resolve action="{{ route('requests.resolve', ['request' =>  $request -> id]) }}">
+                                        <x-slot:content>解決済みにする</x-slot:content>
+                                        <x-slot:logo_path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.125 2.25h-4.5c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125v-9M10.125 2.25h.375a9 9 0 019 9v.375M10.125 2.25A3.375 3.375 0 0113.5 5.625v1.5c0 .621.504 1.125 1.125 1.125h1.5a3.375 3.375 0 013.375 3.375M9 15l2.25 2.25L15 12" />
+                                        </x-slot:logo_path>
+                                        <x-slot:modal_title>投稿したリクエストを解決済みにする</x-slot:modal_title>
+                                        <x-slot:modal_description>リクエストが解決されたら、解決済みにしてください。一度解決済みにすると、解除できません。</x-slot:modal_description>
+                                        <x-slot:method></x-slot:method>
+                                        <x-slot:form_slot></x-slot:form_slot>
+                                    </x-mypage-button-request-resolve>
+                                </div>
                             </x-slot:button>
                             <div x-data="{ showModal: false }" x-on:keydown.window.escape="showModal = false" class="absolute top-0 right-0">
                                 <div class="flex justify-center">
@@ -87,7 +89,7 @@
                         <x-mypage-request-list>
                             <x-slot:likes>{{ $request->request_likes_count }}</x-slot:likes>
                             <x-slot:title>{{ $request -> title }}</x-slot:title>
-                            <x-slot:description>{{ $request -> description }}</x-slot:description>
+                            <x-slot:description>{!! nl2br($request -> description) !!}</x-slot:description>
                             <x-slot:tag>
                                 @foreach ($request->requestTags as $tag)
                                 <x-user-tag>{{ $tag->tag->name }}</x-user-tag>
