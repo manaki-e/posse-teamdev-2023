@@ -30,9 +30,9 @@ return new class extends Migration
         $products_array = [
             [
                 'title' => 'Macbook',
-                'point' => null,
+                'point' => 1000,
                 'description' => "写真編集とSNS投稿\nプログラミングを学んでホームページ制作やアプリ開発\nデザインソフトを使って自分の商品やブランド作り\n動画編集\n色々なことができる高性能パソコンです。",
-                'status' => 1,
+                'status' => 2,
                 'condition' => 6,
                 'request_id' => 4,
                 'user_id' => 5,
@@ -120,7 +120,7 @@ return new class extends Migration
                 'title' => 'Shokz OpenRun Pro',
                 'point' => 250,
                 'description' => "第九世代の骨伝導テクノロジー（Shokz TurboPitchテクノロジー）を採用し、\n鮮明でクリアな中高音を実現するとともに、\n新しいShokz TurboPitchテクノロジーにより、\n驚くほど深みのある低音を実現しています。",
-                'status' => 1,
+                'status' => 2,
                 'condition' => 3,
                 'request_id' => null,
                 'user_id' => 1,
@@ -129,9 +129,9 @@ return new class extends Migration
             ],
             [
                 'title' => 'サムスン(Samsung) Galaxy Watch5 SM-R900NZAAXJP',
-                'point' => 100,
+                'point' => 1000,
                 'description' => "自分自身のスタイルで、\n自分の健康を管理するための最も便利なツール。\n正確なヘルスモニタリング。",
-                'status' => 1,
+                'status' => 2,
                 'condition' => 1,
                 'request_id' => null,
                 'user_id' => 5,
