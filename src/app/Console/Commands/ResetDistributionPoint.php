@@ -23,7 +23,7 @@ class ResetDistributionPoint extends Command
      *
      * @var string
      */
-    protected $description = '定期ポイント配布';
+    protected $description = 'Peer Point配布';
 
     /**
      * Execute the console command.
@@ -40,7 +40,7 @@ class ResetDistributionPoint extends Command
             User::query()->update(['distribution_point' => $distribution_point_setting]);
             DB::commit();
             //laravel.logに記録
-            Log::info('定期ポイント配布完了');
+            Log::info('Peer Point配布完了');
             return Command::SUCCESS;
         } catch (\Exception $e) {
             DB::rollback();

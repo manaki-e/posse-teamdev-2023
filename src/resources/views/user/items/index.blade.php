@@ -51,7 +51,7 @@
                             <div data-status="{{ $product->status }}" data-tag="{{ $product->data_tag  }}" class="col-span-1 filter-target shadow-md bg-white rounded-lg flex flex-col justify-between">
                                 <a href="/items/{{$product->id}}">
                                     <div class="bg-white relative h-48 rounded-t-lg overflow-hidden">
-                                        <img alt="ecommerce" class="object-cover w-full h-full block" src=" {{asset('images/'.$product->productImages->first()->image_url)}}">
+                                        <img alt="ecommerce" class="object-cover w-full h-full block" src="{{asset('images/'.$product->productImages->first()->image_url)}}">
                                         @if ( $product->japanese_status !== '貸出可能' )
                                         <span class="absolute left-0 top-0 rounded-br-lg bg-red-500 px-3 py-1.5 text-sm uppercase tracking-wider text-white">
                                             貸出中

@@ -39,11 +39,11 @@ return new class extends Migration
                 'start_date' => null,
                 'end_date' => null,
                 'location' => 'オンライン',
-                'slack_channel' =>$event_controller->createChannel(1, "PHPを語り合う会", false),
+                'slack_channel' => $event_controller->createChannel(1, "PHPを語り合う会", false),
                 'completed_at' => null,
                 'created_at' => '2023/05/03 20:26:02',
                 'request_id' => 2,
-                'deleted_at' =>null
+                'deleted_at' => null
             ],
             //日をまたぐ
             [
@@ -54,10 +54,10 @@ return new class extends Migration
                 'end_date' => '2023/05/11 01:00:00',
                 'location' => '対面',
                 'slack_channel' => $event_controller->createChannel(2, "Tailwind講座", false),
-                'completed_at' => null,
+                'completed_at' => '2023/05/11 01:00:00',
                 'created_at' => '2023/05/06 20:26:02',
                 'request_id' => 3,
-                'deleted_at' =>null
+                'deleted_at' => null
             ],
             [
                 'user_id' => 1,
@@ -70,7 +70,7 @@ return new class extends Migration
                 'completed_at' => null,
                 'created_at' => '2023/05/09 20:26:02',
                 'request_id' => null,
-                'deleted_at' =>null
+                'deleted_at' => null
             ],
             //発表過ぎてない
             [
@@ -81,10 +81,10 @@ return new class extends Migration
                 'end_date' => '2023/05/15 22:00:00',
                 'location' => 'オンライン',
                 'slack_channel' => $event_controller->createChannel(4, "React勉強会", false),
-                'completed_at' => null,
+                'completed_at' => '2023/05/15 22:00:00',
                 'created_at' => '2023/05/12 20:26:02',
                 'request_id' => null,
-                'deleted_at' =>null
+                'deleted_at' => null
             ],
             [
                 'user_id' => 3,
@@ -97,7 +97,7 @@ return new class extends Migration
                 'completed_at' => null,
                 'created_at' => '2023/05/15 20:26:02',
                 'request_id' => 6,
-                'deleted_at' =>null
+                'deleted_at' => null
             ],
             [
                 'user_id' => 5,
@@ -110,20 +110,20 @@ return new class extends Migration
                 'completed_at' => null,
                 'created_at' => '2023/05/18 20:26:02',
                 'request_id' => 5,
-                'deleted_at' =>null
+                'deleted_at' => null
             ],
             [
                 'user_id' => 4,
                 'title' => 'AI勉強会',
                 'description' => "AI開発における「データ」に着目した取り組みについて、\n世界的な動向や、様々な人・組織の知見・ノウハウなどを共有するための勉強会です。\n具体的なテーマとしては、例えばデータ収集の工夫、データ品質の評価・改善、アノテーションの効率化など様々なものが考えられます。\nデータに主眼を置いたものを幅広く対象とします。",
-                'start_date' => null,
-                'end_date' => null,
+                'start_date' => '2023/06/10 20:00:00',
+                'end_date' => '2023/06/10 21:00:00',
                 'location' => '対面',
                 'slack_channel' => $event_controller->createChannel(7, "AI勉強会", false),
                 'completed_at' => null,
                 'created_at' => '2023/05/21 20:26:02',
                 'request_id' => null,
-                'deleted_at' =>null
+                'deleted_at' => null
             ],
             [
                 'user_id' => 1,
@@ -136,20 +136,20 @@ return new class extends Migration
                 'completed_at' => null,
                 'created_at' => '2023/05/24 20:26:02',
                 'request_id' => null,
-                'deleted_at' =>null
+                'deleted_at' => null
             ],
             [
                 'user_id' => 1,
                 'title' => 'セキュリティから学ぶ機械学習',
                 'description' => "「Pythonに触れてみたい...！」「深層学習をやってみたい...！」という方々をはじめ、\n現場でプログラミングに悩むヒトにもデータ分析を通して「使える」プログラミングを学べます...！\n複数回開催される勉強会に継続的に参加していくことで、機械学習分野における基本を体系的に理解し、\nそして自身でもビジネスへのデータサイエンス活用が可能になることを目指しております。",
-                'start_date' => null,
-                'end_date' => null,
+                'start_date' => '2023/06/06 15:00:00',
+                'end_date' => '2023/06/06 17:00:00',
                 'location' => '対面',
                 'slack_channel' => $event_controller->createChannel(9, "セキュリティから学ぶ機械学習", false),
                 'completed_at' => null,
                 'created_at' => '2023/05/27 20:26:02',
                 'request_id' => null,
-                'deleted_at' =>null
+                'deleted_at' => null
             ],
             //発表過ぎてる
             [
@@ -163,7 +163,7 @@ return new class extends Migration
                 'completed_at' => null,
                 'created_at' => '2023/05/30 20:26:02',
                 'request_id' => null,
-                'deleted_at' =>null
+                'deleted_at' => null
             ],
         ];
 
