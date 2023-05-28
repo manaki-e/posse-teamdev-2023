@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\SlackController;
 use App\Models\Product;
 use App\Models\ProductDealLog;
 use Illuminate\Http\Request;
@@ -10,6 +11,12 @@ use Illuminate\Support\Facades\Redirect;
 
 class AdminItemController extends Controller
 {
+    public function __construct(SlackController $slackController)
+    {
+        $this->slackController = $slackController;
+        $this->slackGlobalAnnouncementChannelId = $slackController->searchChannelId('peerperk全体お知らせ', false);
+        $this->slackAdminChannelId = $slackController->searchChannelId('peerperk管理者', true);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -90,7 +97,12 @@ class AdminItemController extends Controller
             $product->status = 2;
         }
         $product->save();
-
+        //slack登録申請者
+        $this->slackController->sendNotification($product->user->slackID, "管理者がポイントを設定し、あなたのアイテムを登録しました！");
+        //slack管理者
+        $this->slackController->sendNotification($this->slackAdminChannelId, "<@".$product->user->slackID.">の新たなアイテムを登録しました！");
+        //全体チャンネル
+        $this->slackController->sendNotification($this->slackGlobalAnnouncementChannelId, "<@".$product->user->slackID.">より、新たなアイテムが追加されました！");
         return Redirect::route('admin.items.index')->with(['flush.message' => 'アイテムのポイント設定が正しく行われました', 'flush.alert_type' => 'success']);
     }
 
