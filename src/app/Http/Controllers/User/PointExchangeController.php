@@ -3,12 +3,18 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\SlackController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\PointExchangeLog;
 
 class PointExchangeController extends Controller
 {
+    public function __construct(SlackController $slackController)
+    {
+        $this->slackController = $slackController;
+        $this->slackAdminChannelId = $slackController->searchChannelId('peerperk管理者', true);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -52,6 +58,10 @@ class PointExchangeController extends Controller
             $point_exchange_instance->point = $request->point;
             $point_exchange_instance->status = PointExchangeLog::STATUS['PENDING'];
             $point_exchange_instance->save();
+            //slack登録申請者
+            $this->slackController->sendNotification($user->slackID, 'ポイント交換申請を行いました。');
+            //slack管理者
+            $this->slackController->sendNotification($this->slackAdminChannelId, "<@".$user->slackID.">より、ポイントの交換申請を受け付けました。\n```".env('APP_URL')."admin/point-exchanges```");
             // redirect backする
             return redirect()->back()->with(['flush.message' => 'ポイント交換申請完了しました。', 'flush.alert_type' => 'success']);
         } else {
@@ -99,7 +109,10 @@ class PointExchangeController extends Controller
         $point_exchange_log = PointExchangeLog::findOrFail($id);
         $point_exchange_log->status = PointExchangeLog::STATUS['APPROVED'];
         $point_exchange_log->save();
-
+        //slack登録申請者
+        $this->slackController->sendNotification($point_exchange_log->user->slackID, '管理者がポイント交換申請を完了しました。（もしAmazon Gifhカードをまだ受け取っていないようでしたら、管理者にお知らせください。）');
+        //slack管理者
+        $this->slackController->sendNotification($this->slackAdminChannelId, "<@".$point_exchange_log->user->slackID.">のポイント交換を完了しました。");
         return redirect()->route('admin.point-exchanges')->with(['flush.message' => '交換完了処理が正しく行われました', 'flush.alert_type' => 'success']);
     }
 

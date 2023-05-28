@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\SlackController;
 use App\Models\Product;
 use App\Models\ProductLike;
 use App\Models\ProductTag;
@@ -14,6 +15,14 @@ use App\Models\User;
 
 class ItemController extends Controller
 {
+    /**
+     * @var SlackController
+     */
+    public function __construct(SlackController $slackController)
+    {
+        $this->slackController = $slackController;
+        $this->slackAdminChannelId = $slackController->searchChannelId('peerperk管理者', true);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -78,6 +87,15 @@ class ItemController extends Controller
         $product_instance->save();
         $product_instance->addProductImages($images, $product_instance->id);
         $product_instance->updateProductTags($request->product_tags, $product_instance->id);
+        //slack登録申請者
+        $this->slackController->sendNotification(Auth::user()->slackID, "アイテムの登録申請を行いました！");
+        //slack管理者
+        $this->slackController->sendNotification($this->slackAdminChannelId, "アイテムの登録申請が行われました。管理者画面より確認しましょう。\n```" . env('APP_URL') . "admin/items```");
+        //リクエストに紐づいていたら、リクエストの投稿者にslack通知
+        if (!empty($request->request_id)) {
+            $request = ModelsRequest::find($request->request_id);
+            $this->slackController->sendNotification($request->user->slackID, "<@" . Auth::user()->slackID . "> より、あなたのリクエストに対して、アイテムが登録されました！確認してみましょう。\n```" . env('APP_URL') . "items```");
+        }
         return redirect()->route('items.index')->with(['flush.message' => 'アイテム登録申請完了しました。', 'flush.alert_type' => 'success']);
     }
 
@@ -178,6 +196,12 @@ class ItemController extends Controller
         $product_instance->addProductDealLog($item, $borrower_user_instance->id, $product_instance->point, 0);
         // productのステータス変更
         $product_instance->changeStatusToDelivering();
+        //slack借りた人
+        $this->slackController->sendNotification($borrower_user_instance->slackID, "<@" . $lender_user_instance->slackID . "> のアイテムを借りました！DMで連絡を取ってアイテムを発送してもらいましょう。商品を受け取ったら、マイページより、商品の受取完了ボタンを押してください。\n```" . env('APP_URL') . "mypage/items/borrowed```");
+        //slack貸した人
+        $this->slackController->sendNotification($lender_user_instance->slackID, "<@" . $borrower_user_instance->slackID . "> があなたのアイテムを借りました！DMで連絡を取ってアイテムを発送しましょう。");
+        //slack管理者
+        $this->slackController->sendNotification($this->slackAdminChannelId, "<@" . $borrower_user_instance->slackID . "> が <@" . $lender_user_instance->slackID . "> のアイテムを借りました。");
         // 処理が終わった後redirect back
         return redirect()->route('items.index')->with(['flush.message' => 'レンタルが完了しました。以後、アイテムのオーナーとslackで連絡をお取りください。', 'flush.alert_type' => 'success']);
     }
@@ -189,6 +213,10 @@ class ItemController extends Controller
         $product_deal_log_instance->changeReturnedAtToNow();
         // productのステータス変更
         $product_instance->changeStatusToAvailable();
+        //slack借りた人
+        $this->slackController->sendNotification($product_deal_log_instance->user->slackID, "<@" . $product_instance->user->slackID . "> が商品の返却を完了しました。");
+        //slack貸した人
+        $this->slackController->sendNotification($product_instance->user->slackID, "商品の返却を完了しました。");
         // 処理が終わった後redirect back
         return redirect()->back();
     }
@@ -205,22 +233,40 @@ class ItemController extends Controller
         $product_instance->changeStatusToAvailable();
         // product_deal_logのcancelled_at変更
         $product_deal_log_instance->changeCancelledAtToNow();
+        if (Auth::id() === $lender_user_instance->id) {
+            //貸してる人がキャンセルした場合
+            //slack借りた人
+            $this->slackController->sendNotification($product_deal_log_instance->user->slackID, "<@" . $lender_user_instance->slackID . "> によって、アイテムの貸し出しがキャンセルされました。");
+            //slack貸した人
+            $this->slackController->sendNotification($lender_user_instance->slackID, "アイテムの貸出をキャンセルしました。");
+        } else {
+            //借りてる人がキャンセルした場合
+            //slack借りた人
+            $this->slackController->sendNotification($product_deal_log_instance->user->slackID, "アイテムの貸出をキャンセルしました。");
+            //slack貸した人
+            $this->slackController->sendNotification($lender_user_instance->slackID, "<@" . $product_deal_log_instance->user->slackID . ">によって、アイテムの貸出がキャンセルされました。");
+        }
         // 処理が終わった後redirect back
-        return redirect()->back();
+        return redirect()->back()->with(['flush.message' => 'キャンセルが完了しました。', 'flush.alert_type' => 'success']);
     }
     public function receive($item)
     {
         //productのステータス変更
         $product_instance = Product::findOrFail($item);
         $product_instance->changeStatusToOccupied();
+        //slack借りた人
+        $this->slackController->sendNotification(Auth::user()->slackID, "商品の受け取りを完了しました。");
+        //slack貸した人
+        $this->slackController->sendNotification($product_instance->user->slackID, "<@".Auth::user()->slackID.">が商品の受取を完了しました。アイテムが返却されたら、以下のリンクより、該当のアイテムの受け取り完了ボタンを押してください。\n```".env('APP_URL')."mypage/items/listed```");
         //処理が終わった後redirect back
-        return redirect()->back();
+        return redirect()->back()->with(['flush.message' => '受け取りが完了しました。', 'flush.alert_type' => 'success']);
     }
     public function createWithRequest($chosen_request_id)
     {
+        $conditions = Product::CONDITION;
         $product_tags = Tag::productTags()->get();
         $requests = ModelsRequest::unresolvedRequests()->productRequests()->get();
-        return view('user.items.create', compact('chosen_request_id', 'product_tags', 'requests'));
+        return view('user.items.create', compact('chosen_request_id', 'product_tags', 'requests', 'conditions'));
     }
     public function like($id)
     {

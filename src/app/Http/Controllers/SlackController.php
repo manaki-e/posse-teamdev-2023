@@ -103,6 +103,13 @@ class SlackController extends Controller
         $response->throw();
     }
 
+    public function slack()
+    {
+        // $message = "<@U0572LXKNLA>\nテストメッセージ";
+        $message = "テストメッセージ\n\n```https://yuta0227-congenial-space-acorn-49q6prg66rqcq7g4-80.preview.app.github.dev/slack```";
+        $this->sendNotification("U057SC3MRKJ", $message);
+    }
+
     /**
      * Slackにチャンネルを作成する
      * @param Request $request
@@ -139,7 +146,7 @@ class SlackController extends Controller
         $response = Http::withToken($this->token)
             ->post('https://slack.com/api/conversations.create', $channel_data);
 
-            if ($response->json()['ok']) {
+        if ($response->json()['ok']) {
             $channel_id = $response->json()['channel']['id'];
             $this->inviteUsersToChannel($channel_id, $invite_users);
         } elseif ($response->json()['error'] == 'name_taken') {
@@ -188,6 +195,13 @@ class SlackController extends Controller
      */
     public function inviteUsersToChannel($channel_id, $invite_users)
     {
+        $user_array = explode(',', $invite_users);
+        $admin_users = User::where('is_admin', 1)->pluck('slackID');
+        foreach ($user_array as $user) {
+            if ($admin_users->contains($user)) {
+                return;
+            }
+        }
         $invite_data = [
             'channel' => $channel_id,
             'users' => $invite_users,
@@ -211,6 +225,11 @@ class SlackController extends Controller
      */
     public function removeUserFromChannel($channel_id, $delete_user)
     {
+        $admin_users = User::where('is_admin', 1)->pluck('slackID');
+        if ($admin_users->contains($delete_user)) {
+            return;
+        }
+
         $delete_data = [
             'channel' => $channel_id,
             'user' => $delete_user,
@@ -219,6 +238,7 @@ class SlackController extends Controller
         $response = Http::withToken($this->token)
             ->post('https://slack.com/api/conversations.kick', $delete_data);
 
+        // dd($response->json());
         if ($response->json()['ok']) {
             return;
         } else {
