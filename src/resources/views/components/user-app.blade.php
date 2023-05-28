@@ -6,7 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+
+    <title>
+        @if (request()->is('items') || request()->is('items/*'))
+        {{"Peer Product Share"}}
+        @elseif (request()->is('events') || request()->is('events/*'))
+        {{"Peer Event"}}
+        @elseif (request()->is('requests') || request()->is('requests/*'))
+        {{"Peer Request"}}
+        @else
+        {{"Peer Perk"}}
+        @endif
+    </title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -17,20 +28,20 @@
     <!-- Tailwind -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <style>
-    @import url('https://fonts.googleapis.com/css?family=Karla:400,700&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&family=Patua+One&display=swap');
+        @import url('https://fonts.googleapis.com/css?family=Karla:400,700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&family=Patua+One&display=swap');
 
-    .font-family-karla {
-        font-family: karla;
-    }
+        .font-family-karla {
+            font-family: karla;
+        }
 
-    .font-sans {
-        font-family: 'Noto Sans JP', sans-serif;
-    }
+        .font-sans {
+            font-family: 'Noto Sans JP', sans-serif;
+        }
 
-    .font-patua {
-        font-family: 'Patua One', cursive;
-    }
+        .font-patua {
+            font-family: 'Patua One', cursive;
+        }
     </style>
 </head>
 

@@ -110,21 +110,21 @@
                                             @elseif ($product -> status === \App\Models\Product::STATUS['occupied'])
                                             <x-mypage-button-item-receive action="{{ route('items.return', ['item' =>  $product -> id]) }}">
                                                 <x-slot name="content">
-                                                    受取完了
+                                                    返却完了
                                                 </x-slot>
                                                 <x-slot:logo_path>
                                                     <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 7.5h-.75A2.25 2.25 0 004.5 9.75v7.5a2.25 2.25 0 002.25 2.25h7.5a2.25 2.25 0 002.25-2.25v-7.5a2.25 2.25 0 00-2.25-2.25h-.75m-6 3.75l3 3m0 0l3-3m-3 3V1.5m6 9h.75a2.25 2.25 0 012.25 2.25v7.5a2.25 2.25 0 01-2.25 2.25h-7.5a2.25 2.25 0 01-2.25-2.25v-.75" />
                                                 </x-slot:logo_path>
                                                 <x-slot name="modal_title">
-                                                    貸出したアイテムの受取完了
+                                                    貸出したアイテムの返却完了
                                                 </x-slot>
                                                 <x-slot name="modal_description">
-                                                    この操作はアイテムを受取した後に行ってください。受取完了すると、アイテムの貸出が完了し、貸出可の状態になります。
+                                                    この操作はアイテムを返却した後に行ってください。返却完了すると、アイテムの貸出が完了し、貸出可の状態になります。
                                                 </x-slot>
                                                 <x-slot name="method"></x-slot>
                                                 <x-slot name="form_slot"></x-slot>
-                                                </x-mypage-but-item-receive>
-                                                @endif
+                                            </x-mypage-button-item-receive>
+                                            @endif
                                         </div>
                                     </x-slot:button>
                                 </x-mypage-item-list>

@@ -37,13 +37,13 @@
                             </clipPath>
                         </defs>
                     </svg>
-                    <p class="text-sm">{{ $user->department->name }}</p>
+                    <p class="text-sm">{{ $user->department->name ?? '' }}</p>
                 </div>
             </div>
         </div>
         <div x-data="{ activeTab: {{ request()->query('activeTab', 0) }} }">
             <div class="border-b border-b-gray-100">
-                <ul class="-mb-px flex items-center gap-4 text-sm font-medium font-medium">
+                <ul class="-mb-px flex items-center gap-4 text-sm font-medium">
                     <li>
                         <a @click="activeTab = 0" class="inline-flex cursor-pointer items-center gap-2 px-1 py-3 text-peer-perk hover:text-peer-perk" :class="{'relative text-peer-perk after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-full after:bg-peer-perk': activeTab === 0}">
                             アイテム

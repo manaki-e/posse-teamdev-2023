@@ -186,7 +186,7 @@ class ItemController extends Controller
         $lender_user_instance = $product_instance->user;
         // ポイント足りるか確認
         if ($borrower_user_instance->distribution_point < $product_instance->point) {
-            return redirect()->back()->withErrors(['not_enough_points' => '消費ポイントが足りません']);
+            return redirect()->back()->withErrors(['not_enough_points' => 'Peer Pointが足りません']);
         }
         // 借りた人のポイント減る
         $borrower_user_instance->changeDistributionPoint(-$product_instance->point);

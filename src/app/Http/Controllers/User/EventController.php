@@ -128,17 +128,7 @@ class EventController extends Controller
      */
     public function show($id)
     {
-        $user = Auth::user();
-        $event = Event::withCount(['eventParticipants', 'eventLikes'])->with(['user', 'eventParticipants.user', 'eventTags.tag', 'eventLikes.user'])->findOrFail($id);
-        $event->isLiked = $event->eventLikes->contains('user_id', Auth::id());
-        $login_user_event_participant_instance = $event->eventParticipants->where('user_id', Auth::id())->where('cancelled_at', null)->first();
-        //nullの場合はキャンセル済みまたはそもそも参加予約したことない
-        if (empty($login_user_event_participant_instance)) {
-            $event->isParticipated = false;
-        } else {
-            $event->isParticipated = true;
-        }
-        return view('backend_test.event', compact('event', 'user'));
+        //
     }
 
     /**
@@ -260,7 +250,7 @@ class EventController extends Controller
         ]);
         //ポイント足りるかチェック
         if ($user->distribution_point < $request->point) {
-            return redirect()->back()->with(['flush.message' => '利用ポイントが不足しています。', 'flush.alert_type' => 'error']);
+            return redirect()->back()->with(['flush.message' => 'Peer Pointが足りません。', 'flush.alert_type' => 'error']);
         }
         // 提示したポイント差し引かれる
         $user->distribution_point -= $request->point;

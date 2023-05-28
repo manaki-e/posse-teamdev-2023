@@ -115,8 +115,7 @@ class RequestController extends Controller
      */
     public function show($id)
     {
-        $request = ModelsRequest::with(['user', 'requestTags.tag'])->find($id);
-        return view('backend_test.delete_request', compact('request'));
+        //
     }
 
     /**
