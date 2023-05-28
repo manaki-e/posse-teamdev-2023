@@ -50,7 +50,7 @@
                             </li>
                             <li>
                                 <x-nav-link :href="route('mypage.items.history')" :active="request()->routeIs('mypage.items.history')">
-                                    {{ __('貸し借り履歴') }}
+                                    {{ __('取引履歴') }}
                                 </x-nav-link>
                             </li>
                             <li>
