@@ -219,6 +219,10 @@ class ItemController extends Controller
         $product_instance->changeStatusToAvailable();
         // product_deal_logのcancelled_at変更
         $product_deal_log_instance->changeCancelledAtToNow();
+        //slack借りた人
+        $this->slackController->sendNotification($product_deal_log_instance->user->slackID, "アイテムの貸出をキャンセルしました。");
+        //slack貸した人
+        $this->slackController->sendNotification($lender_user_instance->slackID, "<@".$product_deal_log_instance->user->slackID.">によって、アイテムの貸出がキャンセルされました。");
         // 処理が終わった後redirect back
         return redirect()->back();
     }
