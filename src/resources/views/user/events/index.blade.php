@@ -116,11 +116,11 @@
                                         <div x-data="{ modelOpen: false }">
                                             <div class="flex items-center justify-center">
                                                 @if($event->isCompleted == "開催済み")
-                                                <div class="block cursor-none w-full rounded-lg my-3 py-3 font-bold text-center text-sm align-middle text-white bg-gray-300">
+                                                <div class="block  w-full rounded-lg my-3 py-3 font-bold text-center text-sm align-middle text-white bg-gray-300">
                                                     開催済み
                                                 </div>
                                                 @elseif($event->isParticipated)
-                                                <div class="block cursor-none w-full rounded-lg my-3 py-3 font-bold text-center text-sm align-middle text-white bg-pink-800">
+                                                <div class="block  w-full rounded-lg my-3 py-3 font-bold text-center text-sm align-middle text-white bg-pink-800">
                                                     予約済み
                                                 </div>
                                                 @else
