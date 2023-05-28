@@ -10,25 +10,88 @@ use App\Models\PointExchangeLog;
 use App\Models\Product;
 use App\Models\ProductDealLog;
 use App\Models\Request;
+use App\Models\Request as ModelsRequest;
+use App\Models\User;
+
 
 //#82-主催したイベント情報
 class MyPageController extends Controller
 {
-    public function points()
-    {
-        $user = Auth::user();
-        $earned_point = $user->earned_point;
-        $distribution_point = $user->distribution_point;
-        print_r('換金可能' . $earned_point . '換金不可能' . $distribution_point);
-        dd();
-        return view('user.mypage.points', compact('earned_point', 'distribution_point'));
-    }
     public function profile()
     {
         $user = Auth::user();
-        dd();
-        return view('user.mypage.profile', compact('user'));
+        $user_id = $user->id;
+        // アイテム
+        $japanese_product_statuses = Product::JAPANESE_STATUS;
+        unset($japanese_product_statuses[1]);
+        $products = Product::where('user_id', $user->id)->approvedProducts()->withRelations()->get()->map(function ($product) use ($japanese_product_statuses) {
+            $product->data_tag = '[' . implode(',', $product->productTags->pluck('tag_id')->toArray()) . ']';
+            //配送中は貸出中として表示
+            if ($product->status === Product::STATUS['delivering']) {
+                $product->japanese_status = $japanese_product_statuses[Product::STATUS['occupied']];
+                $product->status = Product::STATUS['occupied'];
+            } else {
+                $product->japanese_status = $japanese_product_statuses[$product->status];
+            }
+            if ($product->productLikes->contains('user_id', Auth::id())) {
+                $product->isLiked = 1;
+            } else {
+                $product->isLiked = 0;
+            }
+            $product->description = $product->changeDescriptionReturnToBreakTag($product->description);
+            return $product;
+        })->sortByDesc('created_at');
+
+        // イベント
+        $events = Event::where('user_id', $user->id)->withCount('eventLikes')->withCount(['eventParticipants' => function ($query) {
+            $query->where('cancelled_at', null);
+        }])->with(['user', 'eventTags.tag', 'eventLikes.user'])->with(['eventParticipants' => function ($query) {
+            $query->where('cancelled_at', null)->with('user');
+        }])->get()->map(function ($event) use ($user_id) {
+            $event->isLiked = $event->eventLikes->contains('user_id', $user_id);
+            $event->isParticipated = $event->eventParticipants->contains('user_id', $user_id);
+            if (empty($event->completed_at)) {
+                $event->isCompleted = Event::COMPLETED_STATUSES[0];
+            } else {
+                $event->isCompleted = Event::COMPLETED_STATUSES[1];
+            }
+            $event->data_tag = '[' . implode(',', $event->eventTags->pluck('tag_id')->toArray()) . ']';
+            $event->description = $event->changeDescriptionReturnToBreakTag($event->description);
+            if ($event->eventLikes->contains('user_id', Auth::id())) {
+                $event->isLiked = 1;
+            } else {
+                $event->isLiked = 0;
+            }
+            return $event;
+        })->sortByDesc('created_at');
+
+        // リクエスト
+        $event_request_type_id = ModelsRequest::EVENT_REQUEST_TYPE_ID;
+        $product_request_type_id = ModelsRequest::PRODUCT_REQUEST_TYPE_ID;
+        $app = [
+            $product_request_type_id => ['color' => 'text-blue-400', 'name' => 'Peer Product Share', 'japanese_name' => 'アイテム'],
+            $event_request_type_id => ['color' => 'text-pink-600', 'name' => 'Peer Event', 'japanese_name' => 'イベント']
+        ];
+        $requests = ModelsRequest::where('user_id', $user->id)->with(['user', 'requestTags.tag'])->withCount('requestLikes')->orderBy('created_at', 'desc')->unresolvedRequests()->get()->map(function ($request) {
+            $request->description = $request->changeDescriptionReturnToBreakTag($request->description);
+            $request->data_tag = '[' . implode(',', $request->requestTags->pluck('tag_id')->toArray()) . ']';
+            if ($request->requestLikes->contains('user_id', Auth::id())) {
+                $request->isLiked = 1;
+            } else {
+                $request->isLiked = 0;
+            }
+            return $request;
+        });
+
+        return view('user.mypage.profile', compact('user', 'products', 'japanese_product_statuses','events','requests', 'app', 'event_request_type_id', 'product_request_type_id'));
     }
+
+    public function account()
+    {
+        $user = Auth::user();
+        return view('user.mypage.account', compact('user'));
+    }
+
     public function pointHistory()
     {
         //消費と獲得に分ける
@@ -43,6 +106,7 @@ class MyPageController extends Controller
             if ($product_deal_log->month_count === $unchargeable_month_count - 1) {
                 //借りた最初の月
                 return [
+                    'app' => 'PPS',
                     'name' => $product_deal_log->product->title,
                     'created_at' => $product_deal_log->created_at,
                     'point' => -$product_deal_log->point,
@@ -50,6 +114,7 @@ class MyPageController extends Controller
             } else {
                 //借りた最初の月と差し引き不可能な月以外
                 return [
+                    'app' => 'PPS',
                     'name' => $product_deal_log->product->title . ($product_deal_log->created_at->subMonth()->format('(n月分)')),
                     'created_at' => $product_deal_log->created_at,
                     'point' => -$product_deal_log->point,
@@ -60,6 +125,7 @@ class MyPageController extends Controller
             $query->withTrashed();
         }])->get()->map(function ($event_participant_log) {
             return [
+                'app' => 'PE',
                 'name' => $event_participant_log->event->title,
                 'created_at' => $event_participant_log->created_at,
                 'point' => -$event_participant_log->point,
@@ -75,6 +141,7 @@ class MyPageController extends Controller
         //獲得=>point_exchange_logsとevents->withsum()とproduct_deal_logsを結合
         $earned_point_exchange_logs = PointExchangeLog::where('user_id', $user->id)->get()->map(function ($point_exchange_log) {
             return [
+                'app' => 'PP',
                 'name' => '換金申請',
                 'created_at' => $point_exchange_log->created_at,
                 'point' => -$point_exchange_log->point,
@@ -82,6 +149,7 @@ class MyPageController extends Controller
         });
         $earned_event_logs = Event::where('user_id', $user->id)->where('completed_at', '!=', null)->withSum('eventParticipants', 'point')->get()->map(function ($event) {
             return [
+                'app' => 'PE',
                 'name' => $event->title,
                 'created_at' => $event->completed_at,
                 'point' => $event->event_participants_sum_point,
@@ -94,6 +162,7 @@ class MyPageController extends Controller
             $query->where('user_id', $user->id)->withTrashed();
         })->get()->map(function ($product_deal_log) {
             return [
+                'app' => 'PPS',
                 'name' => $product_deal_log->product->title,
                 'created_at' => $product_deal_log->created_at,
                 'point' => $product_deal_log->point,
@@ -107,26 +176,8 @@ class MyPageController extends Controller
             $earned_point_log['created_at'] = $earned_point_log['created_at']->format('Y-m-d');
             return $earned_point_log;
         });
-        dd('配布ポイントの変動', $distribution_point_logs, '獲得ポイントの変動', $earned_point_logs);
-        return view('user.mypage.point_history', compact('earned_point_logs', 'distribution_point_logs'));
-    }
-    public function deals()
-    {
-        $user = Auth::user();
-        $product_deal_logs = $user->productDealLogs()->with('product.user', 'product.productImages')->get();
-        dd($product_deal_logs);
-        return view('user.mypage.deals', compact('product_deal_logs'));
-    }
-    public function items()
-    {
-        $user = Auth::user();
-        $available_products = $user->products()->availableProducts()->with('productImages')->get();
-        $occupied_products = $user->products()->occupiedProducts()->with('productImages')->with('productDealLogs.user', function ($query) {
-            //一番最後のレコード==今借りてる人
-            $query->latest()->take(1);
-        })->get();
-        dd($occupied_products);
-        return view('user.mypage.items', compact('available_products', 'occupied_products'));
+        // dd('配布ポイントの変動', $distribution_point_logs[1]["app"], '獲得ポイントの変動', $earned_point_logs);
+        return view('user.mypage.point-history', compact('earned_point_logs', 'distribution_point_logs'));
     }
 
     public function itemsListed()
@@ -350,5 +401,74 @@ class MyPageController extends Controller
         $product_request_type_id = Request::PRODUCT_REQUEST_TYPE_ID;
 
         return view('user.mypage.requests-liked', compact('user', 'product_request_type_id', 'unresolved_liked_requests', 'resolved_liked_requests'));
+    }
+
+    public function userProfile($user_id)
+    {
+        // ユーザーの情報と部署の情報を紐づけて取得
+        $user = User::where('id', $user_id)->with('department')->first();
+        // アイテム
+        $japanese_product_statuses = Product::JAPANESE_STATUS;
+        unset($japanese_product_statuses[1]);
+        $products = Product::where('user_id', $user_id)->approvedProducts()->withRelations()->get()->map(function ($product) use ($japanese_product_statuses) {
+            $product->data_tag = '[' . implode(',', $product->productTags->pluck('tag_id')->toArray()) . ']';
+            //配送中は貸出中として表示
+            if ($product->status === Product::STATUS['delivering']) {
+                $product->japanese_status = $japanese_product_statuses[Product::STATUS['occupied']];
+                $product->status = Product::STATUS['occupied'];
+            } else {
+                $product->japanese_status = $japanese_product_statuses[$product->status];
+            }
+            if ($product->productLikes->contains('user_id', Auth::id())) {
+                $product->isLiked = 1;
+            } else {
+                $product->isLiked = 0;
+            }
+            $product->description = $product->changeDescriptionReturnToBreakTag($product->description);
+            return $product;
+        })->sortByDesc('created_at');
+
+        // イベント
+        $events = Event::where('user_id', $user_id)->withCount('eventLikes')->withCount(['eventParticipants' => function ($query) {
+            $query->where('cancelled_at', null);
+        }])->with(['user', 'eventTags.tag', 'eventLikes.user'])->with(['eventParticipants' => function ($query) {
+            $query->where('cancelled_at', null)->with('user');
+        }])->get()->map(function ($event) use ($user_id) {
+            $event->isLiked = $event->eventLikes->contains('user_id', $user_id);
+            $event->isParticipated = $event->eventParticipants->contains('user_id', $user_id);
+            if (empty($event->completed_at)) {
+                $event->isCompleted = Event::COMPLETED_STATUSES[0];
+            } else {
+                $event->isCompleted = Event::COMPLETED_STATUSES[1];
+            }
+            $event->data_tag = '[' . implode(',', $event->eventTags->pluck('tag_id')->toArray()) . ']';
+            $event->description = $event->changeDescriptionReturnToBreakTag($event->description);
+            if ($event->eventLikes->contains('user_id', Auth::id())) {
+                $event->isLiked = 1;
+            } else {
+                $event->isLiked = 0;
+            }
+            return $event;
+        })->sortByDesc('created_at');
+
+        // リクエスト
+        $event_request_type_id = ModelsRequest::EVENT_REQUEST_TYPE_ID;
+        $product_request_type_id = ModelsRequest::PRODUCT_REQUEST_TYPE_ID;
+        $app = [
+            $product_request_type_id => ['color' => 'text-blue-400', 'name' => 'Peer Product Share', 'japanese_name' => 'アイテム'],
+            $event_request_type_id => ['color' => 'text-pink-600', 'name' => 'Peer Event', 'japanese_name' => 'イベント']
+        ];
+        $requests = ModelsRequest::where('user_id', $user_id)->with(['user', 'requestTags.tag'])->withCount('requestLikes')->orderBy('created_at', 'desc')->unresolvedRequests()->get()->map(function ($request) {
+            $request->description = $request->changeDescriptionReturnToBreakTag($request->description);
+            $request->data_tag = '[' . implode(',', $request->requestTags->pluck('tag_id')->toArray()) . ']';
+            if ($request->requestLikes->contains('user_id', Auth::id())) {
+                $request->isLiked = 1;
+            } else {
+                $request->isLiked = 0;
+            }
+            return $request;
+        });
+
+        return view('user.profile', compact('user', 'products', 'japanese_product_statuses', 'events', 'requests', 'app', 'event_request_type_id', 'product_request_type_id'));
     }
 }

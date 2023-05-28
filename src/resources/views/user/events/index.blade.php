@@ -65,10 +65,9 @@
                                                 <p class="pl-1">開始日時：{{ $event  -> start_date ? date( 'Y.m.d H:i', strtotime( $event  -> start_date ) ) : '未定' }}</p>
                                                 <p class="pl-1">終了日時：{{ $event  -> end_date ? date( 'Y.m.d H:i', strtotime( $event  -> end_date ) ) : '未定' }}</p>
                                                 <p class="pl-1">形態：{{ $event->location }}</p>
-                                                <p class="pl-1">開催状況：{{ $event->isCompleted }}</p>
                                                 <p class="pl-1">主催：
                                                     <!-- プロフィール参照機能できたら代入 -->
-                                                    <span><a href="#" class="hover:border-gray-400 border-transparent border-b">{{ $event->user->name }}</a></span>
+                                                    <span><a href="{{ route('users.profile',['user_id'=>$event->user->id]) }}" class="hover:border-gray-400 border-transparent border-b">{{ $event->user->display_name }}</a></span>
                                                 </p>
                                             </div>
                                             <!-- ユーザーアイコン -->
@@ -76,7 +75,7 @@
                                                 @foreach ($event->eventParticipants as $event_participant)
                                                 <div x-data="{ tooltip: false }" x-on:mouseover="tooltip = true" x-on:mouseleave="tooltip = false" class="h-8 w-8 relative z-30">
                                                     <img class="h-full w-full rounded-full object-cover object-center ring ring-white" src="{{ $event_participant->user->icon }}" alt="icon" />
-                                                    <div x-cloak x-show.transition.origin.top="tooltip" class="absolute w-20">{{ $event_participant->user->name }}</div>
+                                                    <div x-cloak x-show.transition.origin.top="tooltip" class="absolute w-20">{{ $event_participant->user->display_name }}</div>
                                                 </div>
                                                 @endforeach
                                                 <div x-data="{ openTooltip: false }" x-on:mouseover="openTooltip = true" x-on:mouseleave="openTooltip = false" class="z-50 relative">
@@ -91,7 +90,7 @@
                                                         </button>
                                                         <div x-cloak x-show.transition.origin.top="openTooltip" class="absolute rounded bg-black opacity-75 text-white p-1 gap-1 w-20 bottom-0 left-full">
                                                             @foreach ($event->eventParticipants as $event_participant)
-                                                            <p>{{ $event_participant->user->name }}</p>
+                                                            <p>{{ $event_participant->user->display_name }}</p>
                                                             @endforeach
                                                         </div>
                                                     </div>
@@ -116,12 +115,16 @@
                                         <div x-data="{ modelOpen: false }">
                                             <div class="flex items-center justify-center">
                                                 @if($event->isCompleted == "開催済み")
-                                                <div class="block cursor-none w-full rounded-lg my-3 py-3 font-bold text-center text-sm align-middle text-white bg-gray-300">
+                                                <div class="block  w-full rounded-lg my-3 py-3 font-bold text-center text-sm align-middle text-white bg-gray-300">
                                                     開催済み
                                                 </div>
                                                 @elseif($event->isParticipated)
-                                                <div class="block cursor-none w-full rounded-lg my-3 py-3 font-bold text-center text-sm align-middle text-white bg-pink-800">
+                                                <div class="block  w-full rounded-lg my-3 py-3 font-bold text-center text-sm align-middle text-white bg-pink-800">
                                                     予約済み
+                                                </div>
+                                                @elseif($event->user->id === Auth::user()->id)
+                                                <div class="block  w-full rounded-lg my-3 py-3 font-bold text-center text-sm align-middle text-white bg-pink-800">
+                                                    自分が主催するイベントです
                                                 </div>
                                                 @else
                                                 <div @click="modelOpen =!modelOpen" class="w-full">

@@ -187,7 +187,7 @@ class RequestController extends Controller
                 }
             }
         }
-        return redirect()->route('requests.edit', $id)->with(['flush.message' => 'リクエストを更新しました', 'flush.alert_type' => 'success']);
+        return redirect()->route('mypage.requests.posted', $id)->with(['flush.message' => 'リクエストを更新しました', 'flush.alert_type' => 'success']);
     }
 
     /**

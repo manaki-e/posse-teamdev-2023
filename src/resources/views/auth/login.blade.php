@@ -49,6 +49,12 @@
                 または
             </p>
         </div>
-        <a href="{{ url('/login/slack') }}" class="middle none center rounded-lg border py-3 px-6 font-sans text-xs font-bold text-white transition-all hover:opacity-75 focus:ring focus:ring-blue-200" style="background-color: #5C2C5C;">slackでログイン</a>
+        <a href="{{ url('/login/slack') }}" class="rounded-lg border border-gray-300 py-3 px-3 font-sans text-xs font-bold text-gray-600 transition-all hover:opacity-75 focus:ring focus:ring-blue-200">
+            <div class="flex items-center justify-between gap-3">
+                <img alt="Slack" src="https://a.slack-edge.com/bv1-10/slack_logo-ebd02d1.svg" class="h-4" title="Slack">
+                <p>で ログイン</p>
+            </div>
+        </a>
     </div>
 </x-guest-layout>
+style="background-color: #5C2C5C;"
