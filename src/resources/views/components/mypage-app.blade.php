@@ -19,17 +19,17 @@
                                 <span>Peer Perk</span>
                             </li>
                             <li>
-                                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                                <x-nav-link :href="route('mypage.profile')" :active="request()->routeIs('dashboard')">
                                     {{ __('プロフィール') }}
                                 </x-nav-link>
                             </li>
                             <li>
-                                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                                <x-nav-link :href="route('mypage.account')" :active="request()->routeIs('mypage.account')">
                                     {{ __('アカウント') }}
                                 </x-nav-link>
                             </li>
                             <li>
-                                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                                <x-nav-link :href="route('mypage.point.history')" :active="request()->routeIs('mypage.point.history')">
                                     {{ __('ポイント移行履歴') }}
                                 </x-nav-link>
                             </li>
@@ -59,7 +59,7 @@
                                 </x-nav-link>
                             </li>
                         </ul>
-                        <ul class="mb-3 border-b border-gray-300">　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+                        <ul class="mb-3 border-b border-gray-300">
                             <li class="border-slate-100 text-pink-600 text-lg ml-2 mt-4 rounded-t-1 group relative flex w-full items-center border-b border-solid pb-2 text-left font-semibold text-dark-500 transition-all ease-in">
                                 <span>Peer Event</span>
                             </li>

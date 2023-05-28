@@ -66,8 +66,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/deals', [MyPageController::class, 'deals'])->name('deals');
         Route::get('/requests', [MyPageController::class, 'requests'])->name('requests');
         Route::get('/points', [MyPageController::class, 'points'])->name('points');
-        Route::get('/point/history', [MyPageController::class, 'pointHistory'])->name('point.history');
         Route::get('/profile', [MyPageController::class, 'profile'])->name('profile');
+        Route::get('/account', [MyPageController::class, 'account'])->name('account');
+        Route::get('/point/history', [MyPageController::class, 'pointHistory'])->name('point.history');
+        Route::post('/account/slack', [ProfileController::class, 'setSlackProfile'])->name('account.slack');
         Route::get('/items/listed', [MyPageController::class, 'itemsListed'])->name('items.listed');
         Route::get('/items/borrowed', [MyPageController::class, 'itemsBorrowed'])->name('items.borrowed');
         Route::get('/items/history', [MyPageController::class, 'itemsHistory'])->name('items.history');
