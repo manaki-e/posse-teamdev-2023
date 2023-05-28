@@ -31,7 +31,7 @@
                     <li>
                         <x-mypage-event-list>
                             <x-slot:title>{{ $event -> title }}</x-slot:title>
-                            <x-slot:description>{{ $event -> description }}</x-slot:description>
+                            <x-slot:description>{!! nl2br($event -> description) !!}</x-slot:description>
                             <x-slot:tag>
                                 @foreach ($event->eventTags as $tag)
                                 <x-user-tag>{{ $tag->tag->name }}</x-user-tag>
@@ -46,7 +46,6 @@
                             <x-slot:user_icon>{{ $event  -> user -> icon }}</x-slot:user_icon>
                             <x-slot:user_name>{{ $event  -> user -> name }}</x-slot:user_name>
                             <x-slot:status></x-slot:status>
-                            <x-slot:timestamp></x-slot:timestamp>
                             <x-slot:button>
                                 <div class="whitespace-nowrap flex flex-col gap-2">
                                     <x-mypage-button-event-held action="{{ route('events.held', ['event' =>  $event -> id]) }}">
@@ -108,7 +107,7 @@
                     <li>
                         <x-mypage-event-list>
                             <x-slot:title>{{ $event -> title }}</x-slot:title>
-                            <x-slot:description>{{ $event -> description }}</x-slot:description>
+                            <x-slot:description>{!! nl2br($event -> description) !!}</x-slot:description>
                             <x-slot:tag>
                                 @foreach ($event->eventTags as $tag)
                                 <x-user-tag>{{ $tag->tag->name }}</x-user-tag>
@@ -122,7 +121,6 @@
                             <x-slot:user_icon>{{ $event  -> user -> icon }}</x-slot:user_icon>
                             <x-slot:user_name>{{ $event  -> user -> name }}</x-slot:user_name>
                             <x-slot:status>開催済み</x-slot:status>
-                            <x-slot:timestamp>{{ date( 'Y.m.d', strtotime( $event  -> completed_at ) ) }}</x-slot:timestamp>
                             <x-slot:button></x-slot:button>
                         </x-mypage-event-list>
                     </li>
@@ -135,7 +133,7 @@
                     <li>
                         <x-mypage-event-list>
                             <x-slot:title>{{ $event -> title }}</x-slot:title>
-                            <x-slot:description>{{ $event -> description }}</x-slot:description>
+                            <x-slot:description>{!! nl2br($event -> description) !!}</x-slot:description>
                             <x-slot:tag>
                                 @foreach ($event->eventTags as $tag)
                                 <x-user-tag>{{ $tag->tag->name }}</x-user-tag>
@@ -149,7 +147,6 @@
                             <x-slot:user_icon>{{ $event  -> user -> icon }}</x-slot:user_icon>
                             <x-slot:user_name>{{ $event  -> user -> name }}</x-slot:user_name>
                             <x-slot:status>中止</x-slot:status>
-                            <x-slot:timestamp>{{ date( 'Y.m.d', strtotime( $event  -> cancelled_at ) ) }}</x-slot:timestamp>
                             <x-slot:button></x-slot:button>
                         </x-mypage-event-list>
                     </li>

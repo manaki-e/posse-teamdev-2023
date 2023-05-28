@@ -17,7 +17,7 @@
                         <x-slot name="default_request_type_id">{{ $product_request_type_id }}</x-slot>
                         <x-slot name="filter_by_radio">
                             <x-user-search-radio>
-                                <x-slot name="radio_name">リクエストタイプ</x-slot>
+                                <x-slot name="radio_name">タイプ</x-slot>
                                 <x-slot name="radios">
                                     @foreach($app as $request_type_id=>$request_type)
                                     <!-- peer product shareとpeer eventを表示することもできる -->
@@ -35,22 +35,22 @@
                                     <h2 class="font-medium title-font text-gray-900 text-lg">カテゴリ</h2>
                                     <div class="w-full h-1 bg-gray-500 rounded mt-2 mb-4"></div>
                                     <div class="flex flex-wrap w-full text-sm font-medium text-gray-900 bg-white sm:flex">
-                                        <div class="w-full flex flex-wrap max-w-lg text-sm font-medium text-gray-900 bg-white" x-show="activeTab === {{ $product_request_type_id }}">
+                                        <div class="w-full flex flex-wrap gap-2 max-w-lg text-sm font-medium text-gray-900 bg-white" x-show="activeTab === {{ $product_request_type_id }}">
                                             @foreach ($product_tags as $index => $tag)
-                                            <div class="min-w-max m-1 border rounded border-gray-200">
-                                                <div class="flex items-center px-3">
-                                                    <input value="{{ $tag->id }}" type="checkbox" id="product_tag_{{ $index }}" name="tag_type_{{ $product_request_type_id  }}" class="w-4 h-4 bg-gray-100 border-gray-300 rounded filter-input">
-                                                    <label for="product_tag_{{ $index }}" class="w-auto py-3 pl-1 text-sm font-medium text-gray-900">{{ $tag->name }}</label>
+                                            <div class="w-auto">
+                                                <div class="flex items-center">
+                                                    <input hidden name="tag_type_{{ $product_request_type_id  }}" id="product_tag_{{ $index }}" type="checkbox" value="{{ $tag->id }}" class="filter-input w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
+                                                    <label for="product_tag_{{ $index }}" class="rounded-full border border-gray-300 bg-gray-50 px-2 py-1 text-xs font-semibold text-gray-400 cursor-pointer">{{ $tag->name }}</label>
                                                 </div>
                                             </div>
                                             @endforeach
                                         </div>
-                                        <div x-cloak class="w-full flex flex-wrap max-w-lg text-sm font-medium text-gray-900 bg-white" x-show="activeTab === {{ $event_request_type_id }}">
+                                        <div x-cloak class="w-full flex flex-wrap gap-2 max-w-lg text-sm font-medium text-gray-900 bg-white" x-show="activeTab === {{ $event_request_type_id }}">
                                             @foreach ($event_tags as $index => $tag)
-                                            <div class="min-w-max m-1 border rounded border-gray-200">
-                                                <div class="flex items-center px-3">
-                                                    <input value="{{ $tag->id }}" type="checkbox" id="event_tag_{{ $index  }}" name="tag_type_{{ $event_request_type_id }}" class="w-4 h-4 bg-gray-100 border-gray-300 rounded filter-input">
-                                                    <label for="event_tag_{{ $index }}" class="w-auto py-3 pl-1 text-sm font-medium text-gray-900">{{ $tag->name }}</label>
+                                            <div class="w-auto">
+                                                <div class="flex items-center">
+                                                    <input hidden name="tag_type_{{ $event_request_type_id  }}" id="event_tag_{{ $index }}" type="checkbox" value="{{ $tag->id }}" class="filter-input w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
+                                                    <label for="event_tag_{{ $index }}" class="rounded-full border border-gray-300 bg-gray-50 px-2 py-1 text-xs font-semibold text-gray-400 cursor-pointer">{{ $tag->name }}</label>
                                                 </div>
                                             </div>
                                             @endforeach
@@ -80,7 +80,7 @@
                                             </p>
                                         </div>
                                     </div>
-                                    <div class="bottom-0">
+                                    <div>
                                         <!--ユーザー ・ タグ -->
                                         <div class="flex justify-between">
                                             <div class="flex flex-wrap gap-1 items-center">
@@ -156,19 +156,20 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <!-- 日付・いいね -->
-                                    <div class="flex items-end justify-between mb-1">
-                                        <p>{{$request->created_at->format('Y.m.d')}}</p>
-                                        <div class="likes" data-request_id="{{ $request->id }}" data-is_liked="{{ $request->isLiked }}">
-                                            <div class="flex relative">
-                                                <button class="text-gray-500">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="@if($request->isLiked) red @else none @endif" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-                                                    </svg>
-                                                </button>
-                                                <div class="mt-3">
-                                                    <p class="text-xs like-count">{{ $request->request_likes_count }}</p>
+
+                                        <!-- 日付・いいね -->
+                                        <div class="flex items-end justify-between mb-1">
+                                            <p>{{$request->created_at->format('Y.m.d')}}</p>
+                                            <div class="likes" data-request_id="{{ $request->id }}" data-is_liked="{{ $request->isLiked }}">
+                                                <div class="flex relative">
+                                                    <button class="text-gray-500">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="@if($request->isLiked) red @else none @endif" viewBox="0 0 24 24" stroke-width="1.5" stroke="@if($request->isLiked) red @else currentColor @endif" class="w-6 h-6">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                                                        </svg>
+                                                    </button>
+                                                    <div class="mt-3">
+                                                        <p class="text-xs like-count">{{ $request->request_likes_count }}</p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -184,6 +185,35 @@
     </x-slot>
 </x-user-app>
 <script>
+    //絞り込みタグの色
+    const productCheckboxes = document.querySelectorAll('input[name="tag_type_{{ $product_request_type_id  }}"]');
+    const eventCheckboxes = document.querySelectorAll('input[name="tag_type_{{ $event_request_type_id  }}"]');
+
+    productCheckboxes.forEach((checkbox) => {
+        checkbox.addEventListener('change', function() {
+            const checkboxId = checkbox.id;
+            const targetLabel = document.querySelector(`label[for="${checkboxId}"]`);
+
+            if (checkbox.checked) {
+                targetLabel.classList.add('bg-gray-500');
+            } else {
+                targetLabel.classList.remove('bg-gray-500');
+            }
+        });
+    });
+    eventCheckboxes.forEach((checkbox) => {
+        checkbox.addEventListener('change', function() {
+            const checkboxId = checkbox.id;
+            const targetLabel = document.querySelector(`label[for="${checkboxId}"]`);
+
+            if (checkbox.checked) {
+                targetLabel.classList.add('bg-gray-500');
+            } else {
+                targetLabel.classList.remove('bg-gray-500');
+            }
+        });
+    });
+
     // Get all filter inputs
     let filterInputs = document.querySelectorAll('.filter-input');
 

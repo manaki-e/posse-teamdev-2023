@@ -2,7 +2,7 @@
     <x-slot name="title">
         {{ __('アイテム一覧') }}
     </x-slot>
-    <x-slot name="discription">
+    <x-slot name="description">
         {{ __('登録済みアイテムと登録申請待ちアイテムの一覧が表示されます') }}
     </x-slot>
 

@@ -2,7 +2,7 @@
     <x-slot name="title">
         {{ __('ユーザ詳細') }}
     </x-slot>
-    <x-slot name="discription">
+    <x-slot name="description">
         {{ __('特定のユーザに関するテータ（個人情報・アイテム取引履歴・登録済みアイテム一覧・参加したイベント一覧・主催したイベント一覧）が表示されます。') }}
     </x-slot>
 
@@ -63,7 +63,7 @@
                                     <!-- 後ほど修正する -->
                                     {{ __('2960') }}
                                 </x-slot>
-                                <x-slot name="discription">
+                                <x-slot name="description">
                                     {{ __('累計獲得ポイント') }}
                                 </x-slot>
                             </x-admin-point>
@@ -74,7 +74,7 @@
                                     <!-- 後ほど修正する -->
                                     {{ __('20700') }}
                                 </x-slot>
-                                <x-slot name="discription">
+                                <x-slot name="description">
                                     {{ __('累計消費ポイント') }}
                                 </x-slot>
                             </x-admin-point>
@@ -84,7 +84,7 @@
                                 <x-slot name="point">
                                     {{ $user_data -> earned_point }}
                                 </x-slot>
-                                <x-slot name="discription">
+                                <x-slot name="description">
                                     {{ __('今月獲得ポイント') }}
                                 </x-slot>
                             </x-admin-point>
@@ -94,7 +94,7 @@
                                 <x-slot name="point">
                                     {{ 5000 - $user_data -> distribution_point }}
                                 </x-slot>
-                                <x-slot name="discription">
+                                <x-slot name="description">
                                     {{ __('今月消費ポイント') }}
                                 </x-slot>
                             </x-admin-point>
@@ -343,11 +343,11 @@
                                         : '未定' }}
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        {{ $event -> participants_count }} 人
+                                        {{ $event -> event_participants_count ?? '0' }} 人
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        {{ $event -> participants_sum_point
-                                        ? $event -> participants_sum_point
+                                        {{ $event -> event_participants_sum_point
+                                        ? $event -> event_participants_sum_point
                                         : 0 }}
                                         pt
                                     </td>

@@ -32,7 +32,7 @@
                         <li>
                             <x-mypage-event-list>
                                 <x-slot:title>{{ $event -> title }}</x-slot:title>
-                                <x-slot:description>{{ $event -> description }}</x-slot:description>
+                                <x-slot:description>{!! nl2br($event -> description) !!}</x-slot:description>
                                 <x-slot:tag>
                                     @foreach ($event->eventTags as $tag)
                                     <x-user-tag>{{ $tag->tag->name }}</x-user-tag>
@@ -47,18 +47,19 @@
                                 <x-slot:user_icon>{{ $event  -> user -> icon }}</x-slot:user_icon>
                                 <x-slot:user_name>{{ $event  -> user -> name }}</x-slot:user_name>
                                 <x-slot:status></x-slot:status>
-                                <x-slot:timestamp></x-slot:timestamp>
                                 <x-slot:button>
-                                    <x-mypage-button-event-cancel action="{{ route('events.cancel', ['event' =>  $event -> id]) }}">
-                                        <x-slot:content>予約をキャンセルする</x-slot:content>
-                                        <x-slot:logo_path>
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5m6 4.125l2.25 2.25m0 0l2.25 2.25M12 13.875l2.25-2.25M12 13.875l-2.25 2.25M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
-                                        </x-slot:logo_path>
-                                        <x-slot:modal_title>イベントへの参加予定をキャンセル</x-slot:modal_title>
-                                        <x-slot:modal_description>参加をキャンセルすると、主催者にポイントは入りません。ただし、自分自身にポイントは戻ってこないため、ご注意ください。</x-slot:modal_description>
-                                        <x-slot:method></x-slot:method>
-                                        <x-slot:form_slot></x-slot:form_slot>
-                                    </x-mypage-button-event-cancel>
+                                    <div class="whitespace-nowrap flex flex-col gap-2">
+                                        <x-mypage-button-event-cancel action="{{ route('events.cancel', ['event' =>  $event -> id]) }}">
+                                            <x-slot:content>予約をキャンセルする</x-slot:content>
+                                            <x-slot:logo_path>
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5m6 4.125l2.25 2.25m0 0l2.25 2.25M12 13.875l2.25-2.25M12 13.875l-2.25 2.25M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
+                                            </x-slot:logo_path>
+                                            <x-slot:modal_title>イベントへの参加予定をキャンセル</x-slot:modal_title>
+                                            <x-slot:modal_description>参加をキャンセルすると、主催者にポイントは入りません。ただし、自分自身にポイントは戻ってこないため、ご注意ください。</x-slot:modal_description>
+                                            <x-slot:method></x-slot:method>
+                                            <x-slot:form_slot></x-slot:form_slot>
+                                        </x-mypage-button-event-cancel>
+                                    </div>
                                 </x-slot:button>
                             </x-mypage-event-list>
                         </li>
@@ -71,7 +72,7 @@
                         <li>
                             <x-mypage-event-list>
                                 <x-slot:title>{{ $event -> title }}</x-slot:title>
-                                <x-slot:description>{{ $event -> description }}</x-slot:description>
+                                <x-slot:description>{!! nl2br($event -> description) !!}</x-slot:description>
                                 <x-slot:tag>
                                     @foreach ($event->eventTags as $tag)
                                     <x-user-tag>{{ $tag->tag->name }}</x-user-tag>
@@ -86,7 +87,6 @@
                                 <x-slot:user_icon>{{ $event  -> user -> icon }}</x-slot:user_icon>
                                 <x-slot:user_name>{{ $event  -> user -> name }}</x-slot:user_name>
                                 <x-slot:status>開催済み</x-slot:status>
-                                <x-slot:timestamp>{{ date( 'Y.m.d', strtotime( $event  -> completed_at ) ) }}</x-slot:timestamp>
                                 <x-slot:button></x-slot:button>
                             </x-mypage-event-list>
                         </li>
@@ -99,7 +99,7 @@
                         <li>
                             <x-mypage-event-list>
                                 <x-slot:title>{{ $event -> title }}</x-slot:title>
-                                <x-slot:description>{{ $event -> description }}</x-slot:description>
+                                <x-slot:description>{!! nl2br($event -> description) !!}</x-slot:description>
                                 <x-slot:tag>
                                     @foreach ($event->eventTags as $tag)
                                     <x-user-tag>{{ $tag->tag->name }}</x-user-tag>
@@ -114,7 +114,6 @@
                                 <x-slot:user_icon>{{ $event  -> user -> icon }}</x-slot:user_icon>
                                 <x-slot:user_name>{{ $event  -> user -> name }}</x-slot:user_name>
                                 <x-slot:status>中止</x-slot:status>
-                                <x-slot:timestamp>{{ date( 'Y.m.d', strtotime( $event  -> cancelled_at ) ) }}</x-slot:timestamp>
                                 <x-slot:button></x-slot:button>
                             </x-mypage-event-list>
                         </li>
