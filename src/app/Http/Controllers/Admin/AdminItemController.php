@@ -98,7 +98,7 @@ class AdminItemController extends Controller
         }
         $product->save();
         //slack登録申請者
-        $this->slackController->sendNotification($product->user->slackID, "管理者がポイントを設定し、あなたのアイテムを登録しました！");
+        $this->slackController->sendNotification($product->user->slackID, "管理者がポイントを設定し、あなたのアイテムを登録しました！\n```".env('APP_URL')."mypage/items/listed```");
         //slack管理者
         $this->slackController->sendNotification($this->slackAdminChannelId, "<@".$product->user->slackID.">の新たなアイテムを登録しました！");
         //全体チャンネル
