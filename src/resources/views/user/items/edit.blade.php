@@ -33,7 +33,7 @@
                                         </div>
                                         <div class="text-gray-600"><a href="#" class="font-medium text-primary-500 hover:text-primary-700">クリックして追加</a>
                                             または ファイルをドロップ</div>
-                                        <p class="text-sm text-gray-500">SVG, PNG or JPG (max. 1MB, 5枚まで)</p>
+                                        <p class="text-sm text-gray-500">SVG, PNG or JPG (max. 1MB, 3枚まで)</p>
                                     </div>
                                     <input id="file" type="file" name="product_images[]" class="sr-only" multiple required onchange="checkFileSize(this),preview(this)" />
                                     <div class="preview-area "></div>
