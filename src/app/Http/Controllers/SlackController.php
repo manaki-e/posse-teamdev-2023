@@ -138,8 +138,8 @@ class SlackController extends Controller
 
         $response = Http::withToken($this->token)
             ->post('https://slack.com/api/conversations.create', $channel_data);
-        // dd($response->json());
-        if ($response->json()['ok']) {
+
+            if ($response->json()['ok']) {
             $channel_id = $response->json()['channel']['id'];
             $this->inviteUsersToChannel($channel_id, $invite_users);
         } elseif ($response->json()['error'] == 'name_taken') {
