@@ -21,7 +21,7 @@
                                         <div>削除する画像を選択</div>
                                         @foreach($product->productImages as $product_image)
                                         <label>
-                                            <img width="100" height="100" src=" {{asset('images/'.$product_image->image_url)}}">
+                                            <img width="100" height="100" src="{{asset('images/'.$product_image->image_url)}}">
                                             <input value="{{$product_image->id}}" type="checkbox" name="delete_images[]">
                                             {{ $product_image->image_url }}
                                         </label>
