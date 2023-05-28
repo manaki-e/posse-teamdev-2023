@@ -88,9 +88,9 @@ $user_info = Auth::user();
                             <img src="{{ Auth::user()->icon }}" alt="" class="w-8 h-8 object-cover">
                         </div>
                         <!-- pannel -->
-                        <div x-cloak x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="absolute right-0 top-full w-48 bg-white rounded-lg shadow border mt-5">
-                            <ul>
-                                <li class="px-5 py-3 font-medium hover:bg-gray-100">
+                        <div x-cloak x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="absolute right-0 top-full w-44 bg-white rounded-lg shadow border mt-5">
+                            <ul class="text-sm">
+                                <li class="px-4 py-3 font-medium hover:bg-gray-100">
                                     <!-- プロフィールに移行する -->
                                     <a href="{{ route('mypage.profile') }}" class="flex items-center transform transition-colors duration-200">
                                         <div class="mr-3">
@@ -102,7 +102,7 @@ $user_info = Auth::user();
                                         プロフィール
                                     </a>
                                 </li>
-                                <li class="px-5 py-3 font-medium hover:bg-gray-100">
+                                <li class="px-4 py-3 font-medium hover:bg-gray-100">
                                     <a href="{{ route('mypage.account') }}" class="flex items-center transform transition-colors duration-200">
                                         <div class="mr-3">
                                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -115,7 +115,7 @@ $user_info = Auth::user();
                                     </a>
                                 </li>
                                 <hr>
-                                <li class="px-5 py-3 font-medium hover:bg-gray-100">
+                                <li class="px-4 py-3 font-medium hover:bg-gray-100">
                                     <form method="POST" action="{{ route('logout') }}">
                                         @csrf
                                         <div class="flex items-center transform transition-colors duration-200" onclick="event.preventDefault();
