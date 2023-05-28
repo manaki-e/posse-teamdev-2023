@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{"Peer Perk"}}</title>
-    <link rel="shortcut icon" href="icon-pps.ico" type="image/x-icon">
+    <link rel="icon" href="{{ asset('logo.svg') }}" type="image/x-icon">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
