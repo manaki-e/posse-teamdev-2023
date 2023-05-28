@@ -30,8 +30,6 @@ return new class extends Migration
             ['request_type_id' => '1', 'name' => 'デスク'],
             ['request_type_id' => '1', 'name' => 'スタンド'],
             ['request_type_id' => '1', 'name' => 'ヘルスケア'],
-            ['request_type_id' => '1', 'name' => 'マイク'],
-            ['request_type_id' => '1', 'name' => 'スピーカー'],
             ['request_type_id' => '1', 'name' => '充電器'],
             ['request_type_id' => '1', 'name' => 'ケーブル'],
             ['request_type_id' => '1', 'name' => 'モバイルバッテリー'],
