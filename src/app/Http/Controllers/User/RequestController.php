@@ -219,7 +219,8 @@ class RequestController extends Controller
         $request_instance = ModelsRequest::findOrFail($id);
         $request_instance->completed_at = now();
         $request_instance->save();
-
+        //slack投稿者
+        $this->slackController->sendNotification($request_instance->user->slackID, "リクエストを解決済みにしました！");
         return redirect()->route('mypage.requests.posted');
     }
     public function like($id)
