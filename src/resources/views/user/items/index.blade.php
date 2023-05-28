@@ -62,9 +62,9 @@
                                         <h2 class="text-gray-900 title-font text-lg font-medium">{{$product->title}}</h2>
                                     </div>
                                 </a>
-                                <div class="p-4 flex justify-between">
+                                <div class="mx-2 mt-2 p-2 flex justify-between border-t border-gray-300">
                                     <div class="flex flex-col">
-                                        <p class="mb-2 text-gray-700 font-sans font-bold">{{$product->point}} pt</p>
+                                        <p class="mb-4 text-2xl text-gray-700 font-sans font-bold">{{$product->point}} pt</p>
                                         <a href="{{ route('users.profile',['user_id'=>$product->user->id]) }}">
                                             <div class="flex">
                                                 <div class="h-6 w-6 relative z-30">
