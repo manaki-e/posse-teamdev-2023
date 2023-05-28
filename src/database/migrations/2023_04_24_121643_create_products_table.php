@@ -85,7 +85,7 @@ return new class extends Migration
             ],
             [
                 'title' => 'FlexiSpot E7',
-                'point' => 250,
+                'point' => null,
                 'description' => "簡単にスタンディングデスクに切り替えられます。",
                 'status' => 1,
                 'condition' => 3,
