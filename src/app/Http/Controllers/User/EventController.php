@@ -38,7 +38,7 @@ class EventController extends Controller
             $query->where('cancelled_at', null);
         }])->with(['user', 'eventTags.tag', 'eventLikes.user'])->with(['eventParticipants' => function ($query) {
             $query->where('cancelled_at', null)->with('user');
-        }])->get()->map(function ($event) use ($user_id) {
+        }])->where('cancelled_at',null)->get()->map(function ($event) use ($user_id) {
             $event->isLiked = $event->eventLikes->contains('user_id', $user_id);
             $event->isParticipated = $event->eventParticipants->contains('user_id', $user_id);
             if (empty($event->completed_at)) {
@@ -272,7 +272,7 @@ class EventController extends Controller
         //slackイベント
         $this->slackController->sendNotification($channel_id,"<!channel><@".$user_slack_id. ">がこのイベントへの参加を申し込みました！チャンネル内でイベントについての詳細を決めましょう。もし詳細が決定している場合は、教えてあげましょう！");
         // 処理後redirect back
-        return redirect()->back();
+        return redirect()->back()->with(['flush.message' => 'イベントへの参加を申し込みました。', 'flush.alert_type' => 'success']);
     }
     public function createWithRequest($chosen_request_id)
     {

@@ -195,6 +195,13 @@ class SlackController extends Controller
      */
     public function inviteUsersToChannel($channel_id, $invite_users)
     {
+        $user_array=explode(',', $invite_users);
+        $admin_users=User::where('is_admin',1)->pluck('slackID');
+        foreach($user_array as $user){
+            if($admin_users->contains($user)){
+                return;
+            }
+        }
         $invite_data = [
             'channel' => $channel_id,
             'users' => $invite_users,
