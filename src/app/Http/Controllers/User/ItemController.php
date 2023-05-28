@@ -116,7 +116,7 @@ class ItemController extends Controller
     {
         $product_tags = Tag::productTags()->get()->map(function ($product_tag) {
             $product_tag->is_chosen = false;
-            return $tag;
+            return $product_tag;
         });
         $chosen_product_tags = ProductTag::where('product_id', $id)->get();
         $product = Product::withRelations()->findOrFail($id);
@@ -124,8 +124,9 @@ class ItemController extends Controller
         foreach ($chosen_product_tags as $chosen_product_tag) {
             $product_tags->find($chosen_product_tag->tag_id)->is_chosen = true;
         }
+        $requests = ModelsRequest::unresolvedRequests()->productRequests()->get();
         $conditions = Product::CONDITION;
-        return view('user.items.edit', compact('product', 'product_tags', 'conditions'));
+        return view('user.items.edit', compact('product', 'product_tags', 'requests', 'conditions'));
     }
 
     /**

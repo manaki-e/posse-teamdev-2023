@@ -28,7 +28,7 @@
                             </div>
                             <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">関連するリクエスト</h4>
                             <div class="mb-4 border border-gray-300 rounded-md">
-                                <select name="request_id" id="example1" class="p-1 block w-full rounded-md border-gray-300 shadow-sm text-lg text-gray-500">
+                                <select name="request_id" id="example1" class="p-1 block w-full rounded-md border-gray-300 shadow-sm text-base text-gray-500">
                                     <option value="">なし</option>
                                     @foreach($requests as $request)
                                     <option value="{{ $request->id }}" @if($request->id === $event->request_id) selected @endif>{{ $request->title }}</option>
@@ -51,7 +51,7 @@
                             </div>
                             <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">開催形態<span class="text-red-600">*</span></h4>
                             <div class="mb-4 border border-gray-300 rounded-md">
-                                <select name="location" id="example1" class="p-1 block w-full rounded-md border-gray-300 shadow-sm text-lg text-gray-500" required>
+                                <select name="location" id="example1" class="p-1 block w-full rounded-md border-gray-300 shadow-sm text-base text-gray-500" required>
                                     @foreach($locations as $location)
                                     <option value="{{ $location }}" @if($location===$event->location) selected @endif>{{ $location }}</option>
                                     @endforeach
@@ -60,11 +60,11 @@
                             <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">開催予定日</h4>
                             <div date-rangepicker class="flex items-center justify-between">
                                 <div class="relative">
-                                    <input value="{{ $event->start_date }}" name="start_date" type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full pl-10 p-2.5" placeholder="開始日">
+                                    <input id="start" value="{{ $event->start_date }}" name="start_date" type="datetime-local" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full pl-10 p-2.5" placeholder="開始日">
                                 </div>
                                 <span class="mx-4 text-gray-500">〜</span>
                                 <div class="relative">
-                                    <input value="{{ $event->end_date }}" name="end_date" type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full pl-10 p-2.5" placeholder="終了日">
+                                    <input id="end" value="{{ $event->end_date }}" name="end_date" type="datetime-local" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full pl-10 p-2.5" placeholder="終了日">
                                 </div>
                             </div>
                         </section>
@@ -79,3 +79,21 @@
         </x-user-side-navi>
     </x-slot>
 </x-user-app>
+<script>
+    var startInput = document.getElementById("start");
+    var endInput = document.getElementById("end");
+
+    startInput.addEventListener("input", validateDateTime);
+    endInput.addEventListener("input", validateDateTime);
+
+    function validateDateTime() {
+        var startValue = new Date(startInput.value);
+        var endValue = new Date(endInput.value);
+
+        if (startValue > endValue) {
+            alert("終了日時は開始日時より後の日時を設定してください。");
+            // 値をクリアする
+            endInput.value = "";
+        }
+    }
+</script>
