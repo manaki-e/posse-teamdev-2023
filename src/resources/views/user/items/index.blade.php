@@ -50,8 +50,8 @@
                             @foreach ($products as $product)
                             <div data-status="{{ $product->status }}" data-tag="{{ $product->data_tag  }}" class="col-span-1 filter-target shadow-md bg-white rounded-lg flex flex-col justify-between">
                                 <a href="/items/{{$product->id}}">
-                                    <div class="bg-white relative h-48 rounded-t-lg overflow-hidden">
-                                        <img alt="ecommerce" class="object-cover w-full h-full block" src="{{asset('images/'.$product->productImages->first()->image_url)}}">
+                                    <div class="bg-white relative h-48 rounded-t-lg overflow-hidden shadow-sm">
+                                        <img alt="no image" class="object-cover w-full h-full block" src="{{asset('images/'.$product->productImages->first()->image_url)}}">
                                         @if ( $product->japanese_status !== '貸出可能' )
                                         <span class="absolute left-0 top-0 rounded-br-lg bg-red-500 px-3 py-1.5 text-sm uppercase tracking-wider text-white">
                                             貸出中
@@ -62,9 +62,9 @@
                                         <h2 class="text-gray-900 title-font text-lg font-medium">{{$product->title}}</h2>
                                     </div>
                                 </a>
-                                <div class="p-4 flex justify-between">
+                                <div class="mx-2 mt-2 p-2 flex justify-between border-t border-gray-300">
                                     <div class="flex flex-col">
-                                        <p class="mb-2 text-gray-700 font-sans font-bold">{{$product->point}} pt</p>
+                                        <p class="mb-4 text-2xl text-gray-700 font-sans font-bold">{{$product->point}} pt</p>
                                         <a href="{{ route('users.profile',['user_id'=>$product->user->id]) }}">
                                             <div class="flex">
                                                 <div class="h-6 w-6 relative z-30">
