@@ -105,6 +105,7 @@ class EventController extends Controller
                 $event_tag->save();
             }
         }
+        //slack
         //作ったイベント詳細にとぶor redirect back
         return redirect()->route('events.index')->with(['flush.message' => 'イベント登録完了しました。', 'flush.alert_type' => 'success']);
     }

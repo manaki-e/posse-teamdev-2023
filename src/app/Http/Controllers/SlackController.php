@@ -106,8 +106,8 @@ class SlackController extends Controller
     public function slack()
     {
         // $message = "<@U0572LXKNLA>\nテストメッセージ";
-        $message = "テストメッセージ\n\n```https://manaki-e-reimagined-space-tribble-wj66j9wv96p2gqg9-80.preview.app.github.dev/slack```";
-        $this->sendNotification("U0572LXKNLA", $message);
+        $message = "テストメッセージ\n\n```https://yuta0227-congenial-space-acorn-49q6prg66rqcq7g4-80.preview.app.github.dev/slack```";
+        $this->sendNotification("U057SC3MRKJ", $message);
     }
 
     /**
