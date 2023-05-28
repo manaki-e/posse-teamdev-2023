@@ -87,6 +87,10 @@ class ItemController extends Controller
         $product_instance->save();
         $product_instance->addProductImages($images, $product_instance->id);
         $product_instance->updateProductTags($request->product_tags, $product_instance->id);
+        //slack登録申請者
+        $this->slackController->sendNotification(Auth::user()->slackID,"アイテムの登録申請を行いました！");
+        //slack管理者
+        $this->slackController->sendNotification($this->slackAdminChannelId,"アイテムの登録申請が行われました。管理者画面より確認しましょう。\n```".env('APP_URL')."admin/items```");
         return redirect()->route('items.index')->with(['flush.message' => 'アイテム登録申請完了しました。', 'flush.alert_type' => 'success']);
     }
 
