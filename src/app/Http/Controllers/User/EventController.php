@@ -247,7 +247,7 @@ class EventController extends Controller
         ]);
         //ポイント足りるかチェック
         if ($user->distribution_point < $request->point) {
-            return redirect()->back()->withErrors(['not_enough_point' => 'ポイントが足りません']);
+            return redirect()->back()->with(['flush.message' => '利用ポイントが不足しています。', 'flush.alert_type' => 'error']);
         }
         // 提示したポイント差し引かれる
         $user->distribution_point -= $request->point;
@@ -263,6 +263,8 @@ class EventController extends Controller
         $event_participant_log->user_id = $user->id;
         $event_participant_log->point = $request->point;
         $event_participant_log->save();
+        //slackイベント
+        $this->slackController->sendNotification($channel_id,"<!channel><@".$user_slack_id. ">がこのイベントへの参加を申し込みました！チャンネル内でイベントについての詳細を決めましょう。もし詳細が決定している場合は、教えてあげましょう！");
         // 処理後redirect back
         return redirect()->back();
     }
