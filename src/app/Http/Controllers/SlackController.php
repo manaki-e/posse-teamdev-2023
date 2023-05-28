@@ -225,9 +225,13 @@ class SlackController extends Controller
      */
     public function removeUserFromChannel($channel_id, $delete_user)
     {
-        $admin_users = User::where('is_admin', 1)->pluck('slackID');
-        if ($admin_users->contains($delete_user)) {
-            return;
+        //もしpeerperk管理者から外す場合は管理者かどうか無視する
+        //peerperk管理者のchannelIDと$channel_idを比較
+        if($channel_id != $this->searchChannelId('peerperk管理者',true)){
+            $admin_users = User::where('is_admin', 1)->pluck('slackID');
+            if ($admin_users->contains($delete_user)) {
+                return;
+            }
         }
 
         $delete_data = [
@@ -238,7 +242,6 @@ class SlackController extends Controller
         $response = Http::withToken($this->token)
             ->post('https://slack.com/api/conversations.kick', $delete_data);
 
-        // dd($response->json());
         if ($response->json()['ok']) {
             return;
         } else {
