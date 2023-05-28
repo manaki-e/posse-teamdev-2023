@@ -11,6 +11,7 @@
     </x-slot>
     <x-slot name="body_slot">
         <x-user-side-navi>
+            @if (request()->is('mypage') || request()->is('mypage/*'))
             <div class="container flex items-start mx-auto gap-4 font-patua">
                 <aside class="bg-white shadow rounded-lg md:p-6 w-1/4">
                     <nav>
@@ -104,6 +105,17 @@
                     {{ $slot }}
                 </div>
             </div>
+            @else
+            <div class="max-w-5xl flex items-start mx-auto gap-4 font-patua">
+                <div class="bg-white shadow rounded-lg md:p-6 w-full">
+                    <x-mypage-title>
+                        <x-slot:border_color>{{ $border_color }}</x-slot:border_color>
+                        {{ $title }}
+                    </x-mypage-title>
+                    {{ $slot }}
+                </div>
+            </div>
+            @endif
         </x-user-side-navi>
     </x-slot>
 </x-user-app>

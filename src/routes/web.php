@@ -82,6 +82,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/requests/liked', [MyPageController::class, 'requestsLiked'])->name('requests.liked');
     });
 
+    Route::get('/users/{user_id}', [MyPageController::class, 'userProfile'])->name('users.profile');
+
     Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'check.admin'], function () {
         Route::get('/histories', [AdminIndexController::class, 'histories'])->name('histories');
         Route::get('/point-exchanges', [AdminIndexController::class, 'pointExchanges'])->name('point-exchanges');

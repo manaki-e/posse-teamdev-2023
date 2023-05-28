@@ -189,15 +189,15 @@ $images_count = count($product->productImages);
                                 </div>
                                 <h3 class="text-xl mb-1 pb-1 border-b">出品者</h3>
 
-                                <a href="#" class="divide-y divide-gray-200 dark:divide-gray-700">
+                                <a href="{{ route('users.profile',['user_id'=>$product->user->id]) }}" class="divide-y divide-gray-200 dark:divide-gray-700">
                                     <div class="sm:pb-4">
                                         <div class="flex items-center space-x-4 rounded hover:bg-gray-200">
                                             <div class="flex-shrink-0 pl-1">
-                                                <img class="w-8 h-8 rounded-full" src="https://images.unsplash.com/photo-1552058544-f2b08422138a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxNTgwfDB8MXxzZWFyY2h8NXx8cGVyc29ufGVufDB8fHx8MTY4MzAzMzA2OA&ixlib=rb-4.0.3&q=80&w=400" alt="Neil image">
+                                                <img class="w-8 h-8 rounded-full" src="{{ $product->user->icon }}" alt="Neil image">
                                             </div>
                                             <div class="flex-1 min-w-0">
                                                 <p class="text-sm font-medium text-gray-900 truncate">
-                                                    {{$product->user->name}}
+                                                    {{$product->user->display_name}}
                                                 </p>
                                                 <p class="text-sm text-gray-500 truncate dark:text-gray-400">
                                                     {{$product->user->email}}

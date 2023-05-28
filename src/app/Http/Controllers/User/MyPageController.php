@@ -11,6 +11,7 @@ use App\Models\Product;
 use App\Models\ProductDealLog;
 use App\Models\Request;
 use App\Models\Request as ModelsRequest;
+use App\Models\User;
 
 
 //#82-主催したイベント情報
@@ -400,5 +401,74 @@ class MyPageController extends Controller
         $product_request_type_id = Request::PRODUCT_REQUEST_TYPE_ID;
 
         return view('user.mypage.requests-liked', compact('user', 'product_request_type_id', 'unresolved_liked_requests', 'resolved_liked_requests'));
+    }
+
+    public function userProfile($user_id)
+    {
+        // ユーザーの情報と部署の情報を紐づけて取得
+        $user = User::where('id', $user_id)->with('department')->first();
+        // アイテム
+        $japanese_product_statuses = Product::JAPANESE_STATUS;
+        unset($japanese_product_statuses[1]);
+        $products = Product::where('user_id', $user_id)->approvedProducts()->withRelations()->get()->map(function ($product) use ($japanese_product_statuses) {
+            $product->data_tag = '[' . implode(',', $product->productTags->pluck('tag_id')->toArray()) . ']';
+            //配送中は貸出中として表示
+            if ($product->status === Product::STATUS['delivering']) {
+                $product->japanese_status = $japanese_product_statuses[Product::STATUS['occupied']];
+                $product->status = Product::STATUS['occupied'];
+            } else {
+                $product->japanese_status = $japanese_product_statuses[$product->status];
+            }
+            if ($product->productLikes->contains('user_id', Auth::id())) {
+                $product->isLiked = 1;
+            } else {
+                $product->isLiked = 0;
+            }
+            $product->description = $product->changeDescriptionReturnToBreakTag($product->description);
+            return $product;
+        })->sortByDesc('created_at');
+
+        // イベント
+        $events = Event::where('user_id', $user_id)->withCount('eventLikes')->withCount(['eventParticipants' => function ($query) {
+            $query->where('cancelled_at', null);
+        }])->with(['user', 'eventTags.tag', 'eventLikes.user'])->with(['eventParticipants' => function ($query) {
+            $query->where('cancelled_at', null)->with('user');
+        }])->get()->map(function ($event) use ($user_id) {
+            $event->isLiked = $event->eventLikes->contains('user_id', $user_id);
+            $event->isParticipated = $event->eventParticipants->contains('user_id', $user_id);
+            if (empty($event->completed_at)) {
+                $event->isCompleted = Event::COMPLETED_STATUSES[0];
+            } else {
+                $event->isCompleted = Event::COMPLETED_STATUSES[1];
+            }
+            $event->data_tag = '[' . implode(',', $event->eventTags->pluck('tag_id')->toArray()) . ']';
+            $event->description = $event->changeDescriptionReturnToBreakTag($event->description);
+            if ($event->eventLikes->contains('user_id', Auth::id())) {
+                $event->isLiked = 1;
+            } else {
+                $event->isLiked = 0;
+            }
+            return $event;
+        })->sortByDesc('created_at');
+
+        // リクエスト
+        $event_request_type_id = ModelsRequest::EVENT_REQUEST_TYPE_ID;
+        $product_request_type_id = ModelsRequest::PRODUCT_REQUEST_TYPE_ID;
+        $app = [
+            $product_request_type_id => ['color' => 'text-blue-400', 'name' => 'Peer Product Share', 'japanese_name' => 'アイテム'],
+            $event_request_type_id => ['color' => 'text-pink-600', 'name' => 'Peer Event', 'japanese_name' => 'イベント']
+        ];
+        $requests = ModelsRequest::where('user_id', $user_id)->with(['user', 'requestTags.tag'])->withCount('requestLikes')->orderBy('created_at', 'desc')->unresolvedRequests()->get()->map(function ($request) {
+            $request->description = $request->changeDescriptionReturnToBreakTag($request->description);
+            $request->data_tag = '[' . implode(',', $request->requestTags->pluck('tag_id')->toArray()) . ']';
+            if ($request->requestLikes->contains('user_id', Auth::id())) {
+                $request->isLiked = 1;
+            } else {
+                $request->isLiked = 0;
+            }
+            return $request;
+        });
+
+        return view('user.profile', compact('user', 'products', 'japanese_product_statuses', 'events', 'requests', 'app', 'event_request_type_id', 'product_request_type_id'));
     }
 }
