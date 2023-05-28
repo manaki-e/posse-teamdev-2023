@@ -51,7 +51,7 @@
                                 <tr class="hover:bg-gray-50">
                                     <th class="flex gap-3 px-4 py-4 font-normal text-gray-900">
                                         <div class="relative h-10 w-10">
-                                            <img class="h-full w-full rounded-full object-cover object-center" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="ユーザアイコン" />
+                                            <img class="h-full w-full rounded-full object-cover object-center" src="{{ $user -> icon }}" alt="ユーザアイコン" />
                                             {!! $user -> is_admin === 0
                                             ? '<span class="absolute right-0 bottom-0 h-2 w-2 rounded-full bg-green-400 ring ring-white"></span>'
                                             : '<span class="absolute right-0 bottom-0 h-2 w-2 rounded-full bg-pink-400 ring ring-white"></span>'
@@ -62,7 +62,7 @@
                                     <td class="px-4 py-4">{{ $user -> email }}</td>
                                     <td class="px-4 py-4">{{ $user -> department ? $user -> department -> name : '' }}</td>
                                     <td class="px-4 py-4">
-                                        <div class="flex justify-end gap-4">
+                                        <div class="flex justify-between gap-2 text-left">
                                             <x-admin-button-detail href="{{ route('admin.users.show', ['user' =>  $user -> id]) }}"></x-admin-button-detail>
                                             <x-admin-button-edit action="{{ route('admin.users.update', ['user' =>  $user -> id]) }}">
                                                 @if ($user -> is_admin === 0)
