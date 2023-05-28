@@ -146,7 +146,7 @@ class SlackController extends Controller
         $response = Http::withToken($this->token)
             ->post('https://slack.com/api/conversations.create', $channel_data);
 
-            if ($response->json()['ok']) {
+        if ($response->json()['ok']) {
             $channel_id = $response->json()['channel']['id'];
             $this->inviteUsersToChannel($channel_id, $invite_users);
         } elseif ($response->json()['error'] == 'name_taken') {
@@ -195,10 +195,10 @@ class SlackController extends Controller
      */
     public function inviteUsersToChannel($channel_id, $invite_users)
     {
-        $user_array=explode(',', $invite_users);
-        $admin_users=User::where('is_admin',1)->pluck('slackID');
-        foreach($user_array as $user){
-            if($admin_users->contains($user)){
+        $user_array = explode(',', $invite_users);
+        $admin_users = User::where('is_admin', 1)->pluck('slackID');
+        foreach ($user_array as $user) {
+            if ($admin_users->contains($user)) {
                 return;
             }
         }
@@ -225,6 +225,11 @@ class SlackController extends Controller
      */
     public function removeUserFromChannel($channel_id, $delete_user)
     {
+        $admin_users = User::where('is_admin', 1)->pluck('slackID');
+        if ($admin_users->contains($delete_user)) {
+            return;
+        }
+
         $delete_data = [
             'channel' => $channel_id,
             'user' => $delete_user,

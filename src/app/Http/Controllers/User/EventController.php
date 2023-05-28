@@ -38,7 +38,7 @@ class EventController extends Controller
             $query->where('cancelled_at', null);
         }])->with(['user', 'eventTags.tag', 'eventLikes.user'])->with(['eventParticipants' => function ($query) {
             $query->where('cancelled_at', null)->with('user');
-        }])->where('cancelled_at',null)->get()->map(function ($event) use ($user_id) {
+        }])->get()->map(function ($event) use ($user_id) {
             $event->isLiked = $event->eventLikes->contains('user_id', $user_id);
             $event->isParticipated = $event->eventParticipants->contains('user_id', $user_id);
             if (empty($event->completed_at)) {
@@ -241,7 +241,7 @@ class EventController extends Controller
             //slackイベント
             $this->slackController->sendNotification($event_data->slack_channel, "<@".$user->slackID.">さんがイベントへの参加をキャンセルしました。");
             $this->slackController->removeUserFromChannel($event_data->slack_channel, $user->slackID);
-            return redirect()->route('mypage.events.joined');
+            return redirect()->route('mypage.events.joined')->with(['flush.message' => 'イベントへの参加をキャンセルしました。', 'flush.alert_type' => 'success']);
         }
     }
     public function participate(Request $request, $event)
