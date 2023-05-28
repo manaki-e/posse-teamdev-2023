@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.admin-bg-basic {
+    background-color: #f3f4f6;
+}
+
+.admin-bg-green {
+    background-color: #079292;
+}
+
+.admin-text-green {
+    color: #079292;
+}
+
+.admin-border-green {
+    border-color: #079292;
+}
+
+.user-bg-gray {
+    background-color: #f7fafc;
+}
+
+.user-tab-text-green {
+    color: #36b1bf;
+}
+
+.user-tab-bg-green {
+    background-color: #36b1bf;
+}
+
+.user-border-green {
+    border-color: #36b1bf;
+}
+
+.flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.font-patua {
+    font-family: "Patua One", cursive;
+}
+
+[x-cloak] {
+    display: none !important;
+}
