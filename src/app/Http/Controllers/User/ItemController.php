@@ -254,8 +254,12 @@ class ItemController extends Controller
         //productのステータス変更
         $product_instance = Product::findOrFail($item);
         $product_instance->changeStatusToOccupied();
+        //slack借りた人
+        $this->slackController->sendNotification(Auth::user()->slackID, "商品の受け取りを完了しました。");
+        //slack貸した人
+        $this->slackController->sendNotification($product_instance->user->slackID, "<@".Auth::user()->slackID.">が商品の受取を完了しました。アイテムが返却されたら、以下のリンクより、該当のアイテムの受け取り完了ボタンを押してください。\n```".env('APP_URL')."mypage/items/listed```");
         //処理が終わった後redirect back
-        return redirect()->back();
+        return redirect()->back()->with(['flush.message' => '受け取りが完了しました。', 'flush.alert_type' => 'success']);
     }
     public function createWithRequest($chosen_request_id)
     {
