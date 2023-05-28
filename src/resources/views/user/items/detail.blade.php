@@ -6,8 +6,13 @@ use Illuminate\Support\Facades\Auth;
 //userのログイン情報を$user_infoに格納
 $user_info = Auth::user();
 
-// 貸し出し可能か判定→ボタン表示
-$unavailable_tag = $product->japanese_status == '貸出可能' ? '' : '<span class="absolute left-0 top-0 rounded-br-lg bg-red-500 px-3 py-1.5 text-sm uppercase tracking-wider text-white">貸出中</span>';
+// 貸出中か配送中の時は画像にタグをつける
+if ($product->status == 3 || $product->status == 4) {
+    $cannot_borrow_tag = false;
+} else {
+    $cannot_borrow_tag = true;
+}
+$unavailable_tag = $cannot_borrow_tag ? '' : '<span class="absolute left-0 top-0 rounded-br-lg bg-red-500 px-3 py-1.5 text-sm uppercase tracking-wider text-white">貸出中</span>';
 
 //アイテムの画像の合計枚数を取得
 $images_count = count($product->productImages);
