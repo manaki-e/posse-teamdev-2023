@@ -15,7 +15,7 @@
                     <section class="text-left w-full flex gap-8">
                         <div class="w-1/2">
                             <div class="mx-auto mt-6">
-                                <label for="file" class="mb-1 block text-sm font-medium text-gray-700">出品画像<span class="text-red-600">*</span><span class="text-xs text-gray-400">（最大５枚まで）</span></label>
+                                <label for="file" class="mb-1 block text-sm font-medium text-gray-700">出品画像<span class="text-red-600">*</span><span class="text-xs text-gray-400">（最大3枚まで）</span></label>
                                 <label class="relative flex w-full cursor-pointer appearance-none items-center justify-center rounded-md border-2 border-dashed border-gray-200 p-6 transition-all hover:border-gray-300 overflow-x-scroll">
                                     <div class="space-y-1 text-center">
                                         <div class="mx-auto inline-flex h-10 w-10 items-center justify-center rounded-full bg-gray-100">
