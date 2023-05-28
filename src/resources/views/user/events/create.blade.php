@@ -63,11 +63,11 @@
                             <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">開催予定日</h4>
                             <div date-rangepicker class="flex items-center justify-between">
                                 <div class="relative">
-                                    <input name="start_date" type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full pl-10 p-2.5" placeholder="開始日">
+                                    <input id="start" name="start_date" type="datetime-local" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full pl-10 p-2.5" placeholder="開始日">
                                 </div>
                                 <span class="mx-4 text-gray-500">〜</span>
                                 <div class="relative">
-                                    <input name="end_date" type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full pl-10 p-2.5" placeholder="終了日">
+                                    <input id="end" name="end_date" type="datetime-local" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full pl-10 p-2.5" placeholder="終了日">
                                 </div>
                             </div>
                         </section>
@@ -98,4 +98,21 @@
             }
         });
     });
+
+    var startInput = document.getElementById("start");
+    var endInput = document.getElementById("end");
+
+    startInput.addEventListener("input", validateDateTime);
+    endInput.addEventListener("input", validateDateTime);
+
+    function validateDateTime() {
+        var startValue = new Date(startInput.value);
+        var endValue = new Date(endInput.value);
+
+        if (startValue > endValue) {
+            alert("終了日時は開始日時より後の日時を設定してください。");
+            // 値をクリアする
+            endInput.value = "";
+        }
+    }
 </script>
