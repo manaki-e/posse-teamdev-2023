@@ -23,6 +23,7 @@ return new class extends Migration
 
         $tags_array = [
             ['request_type_id' => '1', 'name' => 'モニター'],
+            ['request_type_id' => '1', 'name' => 'リモートワーク'],
             ['request_type_id' => '1', 'name' => 'キーボード'],
             ['request_type_id' => '1', 'name' => 'マウス'],
             ['request_type_id' => '1', 'name' => 'イヤホン'],
