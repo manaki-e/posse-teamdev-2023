@@ -58,7 +58,7 @@ class PointExchangeController extends Controller
             return redirect()->back()->with(['flush.message' => 'ポイント交換申請完了しました。', 'flush.alert_type' => 'success']);
         } else {
             //ポイントが足りないエラーメッセージ
-            return redirect()->back()->with('error', 'ポイントが不足しています。');
+            return redirect()->back()->with('error', 'Bouns Pointが不足しています。');
         }
     }
 

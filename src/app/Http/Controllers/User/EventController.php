@@ -241,7 +241,7 @@ class EventController extends Controller
         ]);
         //ポイント足りるかチェック
         if ($user->distribution_point < $request->point) {
-            return redirect()->back()->withErrors(['not_enough_point' => 'ポイントが足りません']);
+            return redirect()->back()->withErrors(['not_enough_point' => 'Peer Pointが足りません']);
         }
         // 提示したポイント差し引かれる
         $user->distribution_point -= $request->point;

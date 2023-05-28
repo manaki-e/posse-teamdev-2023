@@ -25,7 +25,7 @@ class SubtractProductPointAndSendSlackNotification extends Command
      *
      * @var string
      */
-    protected $description = '定期ポイント引き出しとslack通知';
+    protected $description = 'Peer Point引き出しとslack通知';
 
     /**
      * Execute the console command.

@@ -151,7 +151,7 @@ $images_count = count($product->productImages);
                                                         @if ( $product->point > $user_info->distribution_point)
                                                         <div>
                                                             <div class="block w-full rounded-lg my-1 py-3 font-bold text-center text-sm transition-all align-middle text-red-400">
-                                                                利用可能ポイントが不足しています
+                                                                Peer Pointが不足しています
                                                             </div>
                                                         </div>
                                                         @else
