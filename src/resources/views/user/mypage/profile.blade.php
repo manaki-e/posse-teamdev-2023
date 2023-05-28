@@ -37,7 +37,7 @@
                             </clipPath>
                         </defs>
                     </svg>
-                    <p class="text-sm">企画開発部</p>
+                    <p class="text-sm">{{ $user->department->name }}</p>
                 </div>
             </div>
         </div>
