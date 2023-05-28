@@ -242,7 +242,7 @@
                                                 <br>
                                                 貸出中のアイテムのポイントを編集すると、来月の貸出より新しいポイントが適用されます。
                                             </x-slot>
-                                            <x-slot name="form_method"></x-slot>
+                                            <x-slot name="method"></x-slot>
                                             <x-slot name="form_slot">
                                                 <div>form_slotに挿入するコンテンツ</div>
                                             </x-slot>
