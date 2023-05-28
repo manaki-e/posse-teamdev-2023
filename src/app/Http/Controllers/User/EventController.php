@@ -22,6 +22,8 @@ class EventController extends Controller
     public function __construct(SlackController $slackController)
     {
         $this->slackController = $slackController;
+        $this->slackGlobalAnnouncementChannelId = $slackController->searchChannelId('peerperk全体お知らせ', false);
+        $this->slackAdminChannelId = $slackController->searchChannelId('peerperk管理者', true);
     }
 
     /**
@@ -105,7 +107,10 @@ class EventController extends Controller
                 $event_tag->save();
             }
         }
-        //slack
+        //slackイベント
+        $this->slackController->sendNotification($slackId, "このチャンネルは参加者と連絡を取るためのものです。他のユーザが参加申し込みをすると、このチャンネルに招待されます！");
+        //slack全体
+        $this->slackController->sendNotification($this->slackGlobalAnnouncementChannelId, "<@" . Auth::user()->slackID . "> より、新たなイベントが追加されました！\n```" . env('APP_URL') . "events```");
         //作ったイベント詳細にとぶor redirect back
         return redirect()->route('events.index')->with(['flush.message' => 'イベント登録完了しました。', 'flush.alert_type' => 'success']);
     }
