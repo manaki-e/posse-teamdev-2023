@@ -111,6 +111,11 @@ class EventController extends Controller
         $this->slackController->sendNotification($slackId, "このチャンネルは参加者と連絡を取るためのものです。他のユーザが参加申し込みをすると、このチャンネルに招待されます！");
         //slack全体
         $this->slackController->sendNotification($this->slackGlobalAnnouncementChannelId, "<@" . Auth::user()->slackID . "> より、新たなイベントが追加されました！\n```" . env('APP_URL') . "events```");
+        //リクエストに紐づいていたら、リクエストの投稿者にslack通知
+        if (!empty($request->request_id)) {
+            $request = ModelsRequest::find($request->request_id);
+            $this->slackController->sendNotification($request->user->slackID, "<@" . Auth::user()->slackID . "> より、あなたのリクエストに対して、イベントが登録されました！確認してみましょう。\n```" . env('APP_URL') . "events```");
+        }
         //作ったイベント詳細にとぶor redirect back
         return redirect()->route('events.index')->with(['flush.message' => 'イベント登録完了しました。', 'flush.alert_type' => 'success']);
     }
@@ -278,11 +283,12 @@ class EventController extends Controller
     }
     public function createWithRequest($chosen_request_id)
     {
+        $locations = Event::LOCATIONS;
         //未完了のリクエストを取得
         $requests = ModelsRequest::unresolvedRequests()->eventRequests()->get();
         //イベントタグ一覧を取得
         $tags = Tag::eventTags()->get();
-        return view('user.events.create', compact('requests', 'tags', 'chosen_request_id'));
+        return view('user.events.create', compact('requests', 'tags', 'chosen_request_id', 'locations'));
     }
     public function like($id)
     {
