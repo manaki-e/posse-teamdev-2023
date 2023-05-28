@@ -15,7 +15,7 @@
                     </li>
                     <li>
                         <a @click="activeTab = 1" class="inline-flex cursor-pointer items-center gap-2 px-1 py-3 text-peer-perk hover:text-peer-perk" :class="{'relative text-peer-perk after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-full after:bg-peer-perk': activeTab === 1}">
-                            Bouns Point
+                            Bonus Point
                         </a>
                     </li>
                 </ul>
