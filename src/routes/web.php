@@ -11,6 +11,7 @@ use App\Http\Controllers\User\MyPageController;
 use App\Http\Controllers\User\PointExchangeController;
 use App\Http\Controllers\User\RequestController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Redirect;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,7 +25,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return Redirect::to('/login');
 });
 
 Route::get('/dashboard', function () {
@@ -86,6 +87,14 @@ Route::middleware('auth')->group(function () {
         Route::resource('/items', AdminItemController::class);
         Route::get('/slack/users', [SlackController::class, 'createUsers'])->name('slack.users');
     });
+});
+
+Route::fallback(function () {
+    if (auth()->check()) {
+        return redirect('/items');
+    } else {
+        return redirect('/login');
+    }
 });
 
 require __DIR__ . '/auth.php';
