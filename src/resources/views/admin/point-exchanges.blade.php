@@ -81,7 +81,7 @@
                                     </th>
                                     <td class="px-6 py-4 text-right">{{ $undone_point_exchange -> point }} pt</td>
                                     <td class="px-6 py-4 text-right">
-                                        {{ date( 'Y年m月d日 H時i分s秒', strtotime( $done_point_exchange -> created_at ) ) }}
+                                        {{ date( 'Y年m月d日 H時i分s秒', strtotime( $undone_point_exchange -> created_at ) ) }}
                                     </td>
                                     <td class="flex justify-end gap-4 px-6 py-4 font-medium">
                                         <x-admin-button-edit action="{{ route('point-exchanges.update-approved', ['id'=> $undone_point_exchange -> id]) }}">
