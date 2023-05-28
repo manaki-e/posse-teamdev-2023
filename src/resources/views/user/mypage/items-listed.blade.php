@@ -108,7 +108,7 @@
                                                 <x-slot name="form_slot"></x-slot>
                                             </x-mypage-button-item-cancel>
                                             @elseif ($product -> status === \App\Models\Product::STATUS['occupied'])
-                                            <x-mypage-button-item-receive href="{{ route('items.return', ['item' =>  $product -> id]) }}">
+                                            <x-mypage-button-item-receive action="{{ route('items.return', ['item' =>  $product -> id]) }}">
                                                 <x-slot name="content">
                                                     受取完了
                                                 </x-slot>

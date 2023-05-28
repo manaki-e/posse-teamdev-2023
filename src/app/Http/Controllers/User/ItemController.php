@@ -203,6 +203,10 @@ class ItemController extends Controller
         $product_deal_log_instance->changeReturnedAtToNow();
         // productのステータス変更
         $product_instance->changeStatusToAvailable();
+        //slack借りた人
+        $this->slackController->sendNotification($product_deal_log_instance->user->slackID, "<@" . $product_instance->user->slackID . "> が商品の返却を完了しました。");
+        //slack貸した人
+        $this->slackController->sendNotification($product_instance->user->slackID, "商品の返却を完了しました。");
         // 処理が終わった後redirect back
         return redirect()->back();
     }
