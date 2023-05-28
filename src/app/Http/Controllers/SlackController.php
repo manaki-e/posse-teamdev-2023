@@ -103,6 +103,13 @@ class SlackController extends Controller
         $response->throw();
     }
 
+    public function slack()
+    {
+        // $message = "<@U0572LXKNLA>\nテストメッセージ";
+        $message = "テストメッセージ\n\n```https://manaki-e-reimagined-space-tribble-wj66j9wv96p2gqg9-80.preview.app.github.dev/slack```";
+        $this->sendNotification("U0572LXKNLA", $message);
+    }
+
     /**
      * Slackにチャンネルを作成する
      * @param Request $request

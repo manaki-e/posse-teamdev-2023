@@ -84,5 +84,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/slack/users', [SlackController::class, 'createUsers'])->name('slack.users');
     });
 });
+Route::get('/slack', [SlackController::class, 'slack'])->name('slack');
 
 require __DIR__ . '/auth.php';
