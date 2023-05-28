@@ -27,7 +27,7 @@
                             </div>
                             <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">関連するリクエスト</h4>
                             <div class="mb-4 border border-gray-300 rounded-md">
-                                <select name="request_id" id="example1" class="p-1 block w-full rounded-md border-gray-300 shadow-sm text-lg text-gray-500">
+                                <select name="request_id" id="example1" class="p-1 block w-full rounded-md border-gray-300 shadow-sm text-base text-gray-500">
                                     <option value="">なし</option>
                                     @foreach($requests as $request)
                                     @if(isset($chosen_request_id)&&$chosen_request_id==$request->id)
@@ -42,19 +42,19 @@
                         <section class="my-6 w-1/2">
                             <h3 class="mb-2 text-xl text-gray-600 font-extrabold border-b border-gray-500">イベントの詳細</h3>
                             <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">カテゴリ</h4>
-                            <div class="w-full flex flex-wrap max-w-lg text-sm font-medium text-gray-900 bg-white">
+                            <div class="w-full flex flex-wrap gap-2 max-w-lg text-sm font-medium text-gray-900 bg-white">
                                 @foreach ($tags as $index => $tag)
-                                <div class="min-w-max m-1 border rounded border-gray-200">
-                                    <div class="flex items-center px-3">
-                                        <input name="tags[]" id="tag_{{ $index }}" type="checkbox" value="{{ $tag->id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
-                                        <label for="tag_{{ $index }}" class="w-auto py-3 pl-1 text-sm font-medium text-gray-900">{{ $tag->name }}</label>
+                                <div class="w-auto">
+                                    <div class="flex items-center">
+                                        <input hidden name="tags[]" id="tag_{{ $index }}" type="checkbox" value="{{ $tag->id }}" class="filter-input w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
+                                        <label for="tag_{{ $index }}" class="rounded-full border border-gray-300 bg-gray-50 px-2 py-1 text-xs font-semibold text-gray-400 cursor-pointer">{{ $tag->name }}</label>
                                     </div>
                                 </div>
                                 @endforeach
                             </div>
                             <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">開催形態<span class="text-red-600">*</span></h4>
                             <div class="mb-4 border border-gray-300 rounded-md">
-                                <select name="location" id="example1" class="p-1 block w-full rounded-md border-gray-300 shadow-sm text-lg text-gray-500" required>
+                                <select name="location" id="example1" class="p-1 block w-full rounded-md border-gray-300 shadow-sm text-base text-gray-500" required>
                                     @foreach($locations as $location)
                                     <option value="{{ $location }}">{{ $location }}</option>
                                     @endforeach
@@ -82,3 +82,20 @@
         </x-user-side-navi>
     </x-slot>
 </x-user-app>
+<script>
+    //タグの色
+    const checkboxes = document.querySelectorAll('input[name="tags[]"]');
+
+    checkboxes.forEach((checkbox) => {
+        checkbox.addEventListener('change', function() {
+            const checkboxId = checkbox.id;
+            const targetLabel = document.querySelector(`label[for="${checkboxId}"]`);
+
+            if (checkbox.checked) {
+                targetLabel.classList.add('bg-gray-500');
+            } else {
+                targetLabel.classList.remove('bg-gray-500');
+            }
+        });
+    });
+</script>
