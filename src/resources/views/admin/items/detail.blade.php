@@ -229,8 +229,7 @@
                             <tbody class="divide-y divide-gray-100 border-t border-gray-100">
                                 @foreach ( $product_deals as $deal )
                                 <tr class="hover:bg-gray-50">
-                                    <td class="px-6 py-4">
-                                        <a href="{{ route('admin.users.show', ['user' => $deal -> user -> id]) }}" class="hover:text-blue-700 border-b border-blue-600">{{ $deal -> user -> name }}</a>
+                                    <td class="px-6 py-4">{{ $deal -> user -> name }}
                                     </td>
                                     <td class="px-6 py-4 text-right">
                                         {{ date( 'Y年m月d日 H時i分s秒', strtotime( $deal -> created_at ) ) }}
