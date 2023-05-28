@@ -40,7 +40,7 @@ return new class extends Migration
             //anker511 7
             ['product_id' => 7, 'tag_id' => 2],
             //satechi 8
-            ['product_id' => 8, 'tag_id' => 6],
+            ['product_id' => 8, 'tag_id' => 7],
             //Shokz OpenRun Pro 9
             ['product_id' => 9, 'tag_id' => 5],
             //galaxy watch 10
