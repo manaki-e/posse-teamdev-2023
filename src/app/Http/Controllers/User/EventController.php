@@ -117,17 +117,7 @@ class EventController extends Controller
      */
     public function show($id)
     {
-        $user = Auth::user();
-        $event = Event::withCount(['eventParticipants', 'eventLikes'])->with(['user', 'eventParticipants.user', 'eventTags.tag', 'eventLikes.user'])->findOrFail($id);
-        $event->isLiked = $event->eventLikes->contains('user_id', Auth::id());
-        $login_user_event_participant_instance = $event->eventParticipants->where('user_id', Auth::id())->where('cancelled_at', null)->first();
-        //nullの場合はキャンセル済みまたはそもそも参加予約したことない
-        if (empty($login_user_event_participant_instance)) {
-            $event->isParticipated = false;
-        } else {
-            $event->isParticipated = true;
-        }
-        return view('backend_test.event', compact('event', 'user'));
+        //
     }
 
     /**

@@ -26,9 +26,7 @@ class PointExchangeController extends Controller
      */
     public function create()
     {
-        $user = Auth::user();
-
-        return view('backend_test.point-exchange', compact('user'));
+        //
     }
 
 
