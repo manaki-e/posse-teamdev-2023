@@ -191,6 +191,8 @@ class EventController extends Controller
             $event_tag->tag_id = $tag_id;
             $event_tag->save();
         }
+        //slackイベント
+        $this->slackController->sendNotification($event->slack_channel, "<!channel>イベントの登録内容が更新されました！確認しましょう。\n```".env('APP_URL')."events```");
         return redirect()->route('mypage.events.organized')->with(['flush.message' => 'イベント更新を完了しました。', 'flush.alert_type' => 'success']);
     }
 
