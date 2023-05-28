@@ -73,7 +73,7 @@ class RequestController extends Controller
         $request_instance->user_id = Auth::id();
         $request_instance->save();
         //add record to request_tag table using request_id,tag_id
-        if ($request->type_id === ModelsRequest::EVENT_REQUEST_TYPE_ID) {
+        if ((int)$request->type_id === ModelsRequest::EVENT_REQUEST_TYPE_ID) {
             if (!empty($request->event_tags)) {
                 foreach ($request->event_tags as $tag_id) {
                     RequestTag::create([
@@ -126,13 +126,15 @@ class RequestController extends Controller
             return $tag;
         });
         $request = ModelsRequest::with(['requestTags.tag'])->find($id);
-        if ($request->type_id === $event_request_type_id) {
-            $request->requestTags->map(function ($request_tag) use ($event_tags) {
+        if ($request->type_id == $event_request_type_id) {
+            $request->requestTags->map(function ($request_tag) use (&$event_tags) {
                 $event_tags->map(function ($event_tag) use ($request_tag) {
                     if ($event_tag->id === $request_tag->tag_id) {
                         $event_tag->checked = true;
                     }
+                    return $event_tag;
                 });
+                return $request_tag;
             });
         } else {
             $request->requestTags->map(function ($request_tag) use ($product_tags) {
@@ -140,10 +142,12 @@ class RequestController extends Controller
                     if ($product_tag->id === $request_tag->tag_id) {
                         $product_tag->checked = true;
                     }
+                    return $product_tag;
                 });
+                return $request_tag;
             });
         }
-        return view('backend_test.edit_request', compact('request', 'event_tags', 'product_tags', 'event_request_type_id', 'product_request_type_id'));
+        return view('user.requests.edit', compact('request', 'event_tags', 'product_tags', 'event_request_type_id', 'product_request_type_id'));
     }
 
     /**
@@ -162,10 +166,9 @@ class RequestController extends Controller
         $request_instance->title = $request->title;
         $request_instance->description = $request->description;
         $request_instance->type_id = $request->type_id;
-        $request_instance->user_id = Auth::id();
         $request_instance->save();
         //request_tagテーブルのレコードを追加
-        if ($request->type_id === ModelsRequest::EVENT_REQUEST_TYPE_ID) {
+        if ($request->type_id == ModelsRequest::EVENT_REQUEST_TYPE_ID) {
             if (!empty($request->event_tags)) {
                 foreach ($request->event_tags as $tag_id) {
                     RequestTag::create([
@@ -209,6 +212,7 @@ class RequestController extends Controller
     }
     public function like($id)
     {
+        RequestLike::where('request_id', $id)->where('user_id', Auth::id())->delete();
         $request_like_instance = new RequestLike();
         $request_like_instance->request_id = $id;
         $request_like_instance->user_id = Auth::id();

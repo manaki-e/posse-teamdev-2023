@@ -2,7 +2,7 @@
     <x-slot name="title">
         {{ __('アイテム詳細') }}
     </x-slot>
-    <x-slot name="discription">
+    <x-slot name="description">
         {{ __('特定のアイテムに関するデータ（アイテム詳細・アイテム取引履歴）が表示されます。') }}
     </x-slot>
 
@@ -103,7 +103,7 @@
                                 class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold capitalize">
                                 アイテム説明:</p>
                             <p class="block antialiased font-sans text-sm leading-normal font-normal text-gray-500">
-                                {{ $product -> description }}</p>
+                                {!! $product -> description !!}</p>
                         </li>
                         <li class="flex items-center gap-4 pl-4">
                             <p

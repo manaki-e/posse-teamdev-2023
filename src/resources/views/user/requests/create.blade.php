@@ -44,22 +44,22 @@
                                 </div>
 
                                 <h4 class=" mb-1 mt-4 block text-sm font-medium text-gray-700">カテゴリ</h4>
-                                <div class="w-full flex flex-wrap max-w-lg text-sm font-medium text-gray-900 bg-white" x-show="activeTab === 0">
+                                <div class="w-full flex flex-wrap gap-2 max-w-lg text-sm font-medium text-gray-900 bg-white" x-show="activeTab === 0">
                                     @foreach ($product_tags as $index => $tag)
-                                    <div class="min-w-max m-1 border rounded border-gray-200">
-                                        <div class="flex items-center px-3">
-                                            <input name="product_tags[]" id="product_tag_{{ $tag->id }}" type="checkbox" value="{{ $tag->id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
-                                            <label for="product_tag_{{ $tag->id }}" class="w-auto py-3 pl-1 text-sm font-medium text-gray-900">{{ $tag->name }}</label>
+                                    <div class="w-auto">
+                                        <div class="flex items-center">
+                                            <input hidden name="product_tags[]" id="product_tag_{{ $tag->id }}" type="checkbox" value="{{ $tag->id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
+                                            <label for="product_tag_{{ $tag->id }}" class="rounded-full border border-gray-300 bg-gray-50 px-2 py-1 text-xs font-semibold text-gray-400 cursor-pointer">{{ $tag->name }}</label>
                                         </div>
                                     </div>
                                     @endforeach
                                 </div>
-                                <div x-cloak class="w-full flex flex-wrap max-w-lg text-sm font-medium text-gray-900 bg-white" x-show="activeTab === 1">
+                                <div x-cloak class="w-full flex flex-wrap gap-2 max-w-lg text-sm font-medium text-gray-900 bg-white" x-show="activeTab === 1">
                                     @foreach ($event_tags as $index => $tag)
-                                    <div class="min-w-max m-1 border rounded border-gray-200">
-                                        <div class="flex items-center px-3">
-                                            <input name="event_tags[]" id="event_tag_{{ $tag->id }}" type="checkbox" value="{{ $tag->id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
-                                            <label for="event_tag_{{ $tag->id }}" class="w-auto py-3 pl-1 text-sm font-medium text-gray-900">{{ $tag->name }}</label>
+                                    <div class="w-auto">
+                                        <div class="flex items-center">
+                                            <input hidden name="event_tags[]" id="event_tag_{{ $tag->id }}" type="checkbox" value="{{ $tag->id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
+                                            <label for="event_tag_{{ $tag->id }}" class="rounded-full border border-gray-300 bg-gray-50 px-2 py-1 text-xs font-semibold text-gray-400 cursor-pointer">{{ $tag->name }}</label>
                                         </div>
                                     </div>
                                     @endforeach
@@ -77,8 +77,33 @@
         </x-user-side-navi>
     </x-slot>
 </x-user-app>
-<style>
-    [x-cloak] {
-        display: none;
-    }
-</style>
+<script>
+    //絞り込みタグの色
+    const productCheckboxes = document.querySelectorAll('input[name="product_tags[]"]');
+    const eventCheckboxes = document.querySelectorAll('input[name="event_tags[]"]');
+
+    productCheckboxes.forEach((checkbox) => {
+        checkbox.addEventListener('change', function() {
+            const checkboxId = checkbox.id;
+            const targetLabel = document.querySelector(`label[for="${checkboxId}"]`);
+
+            if (checkbox.checked) {
+                targetLabel.classList.add('bg-gray-500');
+            } else {
+                targetLabel.classList.remove('bg-gray-500');
+            }
+        });
+    });
+    eventCheckboxes.forEach((checkbox) => {
+        checkbox.addEventListener('change', function() {
+            const checkboxId = checkbox.id;
+            const targetLabel = document.querySelector(`label[for="${checkboxId}"]`);
+
+            if (checkbox.checked) {
+                targetLabel.classList.add('bg-gray-500');
+            } else {
+                targetLabel.classList.remove('bg-gray-500');
+            }
+        });
+    });
+</script>

@@ -61,6 +61,9 @@ class SubtractProductPointAndSendSlackNotification extends Command
                     } else {
                         $product->addProductDealLog($product->id, $user->id, $product->point, $last_of_product_deal_log_grouped_by_product_id->month_count + 1);
                     }
+                    //前のレコードのreturned_at入れる
+                    $last_of_product_deal_log_grouped_by_product_id->returned_at = Carbon::now();
+                    $last_of_product_deal_log_grouped_by_product_id->save();
                     //laravel.logに記録調査しやすいようにログをだす＝＞アピールするとチャンと考えてると思われる
                     Log::info('取引' . $last_of_product_deal_log_grouped_by_product_id->id . 'の分のポイント引き出し完了');
                     //！！！ここにまなきがslack通知の処理を書く！！！

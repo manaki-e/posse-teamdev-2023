@@ -134,26 +134,72 @@ class MyPageController extends Controller
         $user = Auth::user();
         $lendable_products = Product::where('user_id', $user->id)
             ->availableProducts()
-            ->with('productImages')
-            ->with('productLikes')
-            ->with('productTags.tag')
+            ->with('productImages', 'productLikes', 'productTags.tag')
+            ->orderBy('created_at', 'desc')
             ->get();
 
         $borrowed_products = Product::where('user_id', $user->id)
             ->occupiedAndDeliveringProducts()
-            ->with('productImages')
-            ->with('productLikes')
-            ->with('productTags.tag')
+            ->with('productImages', 'productLikes', 'productTags.tag')
+            ->orderBy('created_at', 'desc')
             ->get();
 
         $applying_products = Product::where('user_id', $user->id)
             ->pendingProducts()
-            ->with('productImages')
-            ->with('productLikes')
-            ->with('productTags.tag')
+            ->with('productImages', 'productLikes', 'productTags.tag')
+            ->orderBy('created_at', 'desc')
             ->get();
 
         return view('user.mypage.items-listed', compact('lendable_products', 'borrowed_products', 'applying_products'));
+    }
+
+    public function itemsBorrowed()
+    {
+        $user = Auth::user();
+        $borrowed_products = Product::whereHas('productDealLogs', function ($query) use ($user) {
+            $query->where('user_id', $user->id)->where('returned_at', null)->where('cancelled_at', null);
+        })
+            ->with('productImages', 'productLikes', 'productTags.tag')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('user.mypage.items-borrowed', compact('borrowed_products'));
+    }
+
+    public function itemsLiked()
+    {
+        $user = Auth::user();
+
+        $liked_products = Product::whereHas('productLikes', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })
+            ->where('user_id', '!=', $user->id)
+            ->with('productImages', 'productLikes', 'productTags.tag')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('user.mypage.items-liked', compact('liked_products'));
+    }
+
+    public function itemsHistory()
+    {
+        $user = Auth::user();
+
+        $lend_product_histories = ProductDealLog::whereHas('product', function ($query) use ($user) {
+            $query->withTrashed()->where('user_id', $user->id);
+        })
+            ->with('product.productImages', 'product.productTags.tag', 'user')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $borrow_product_histories = ProductDealLog::where('user_id', $user->id)
+            ->with(['product' => function ($query) {
+                $query->withTrashed();
+            }])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('user.mypage.items-history', compact('lend_product_histories', 'borrow_product_histories'));
     }
 
     public function eventsOrganized()
@@ -263,21 +309,17 @@ class MyPageController extends Controller
             ->resolvedRequests()
             ->with('requestLikes')
             ->with('requestTags.tag')
+            ->withCount('requestLikes')
             ->orderBy('created_at', 'desc')
-            ->get()
-            ->each(function ($request) {
-                $request->type = $request->getRequestType($request->type_id);
-            });
+            ->get();
 
         $unresolved_requests = Request::where('user_id', $user->id)
             ->unresolvedRequests()
             ->with('requestLikes')
             ->with('requestTags.tag')
+            ->withCount('requestLikes')
             ->orderBy('created_at', 'desc')
-            ->get()
-            ->each(function ($request) {
-                $request->type = $request->getRequestType($request->type_id);
-            });
+            ->get();
 
         return view('user.mypage.requests-posted', compact('resolved_requests', 'unresolved_requests'));
     }
@@ -292,11 +334,9 @@ class MyPageController extends Controller
             ->where('completed_at', null)
             ->where('user_id', '!=', $user->id)
             ->with(['requestTags.tag', 'requestLikes'])
+            ->withCount('requestLikes')
             ->orderBy('created_at', 'desc')
-            ->get()
-            ->each(function ($request) {
-                $request->type = $request->getRequestType($request->type_id);
-            });
+            ->get();
 
         $resolved_liked_requests = Request::whereHas('requestLikes', function ($query) use ($user) {
             $query->where('user_id', $user->id);
@@ -304,12 +344,9 @@ class MyPageController extends Controller
             ->where('completed_at', '!=', null)
             ->where('user_id', '!=', $user->id)
             ->with(['requestTags.tag', 'requestLikes'])
+            ->withCount('requestLikes')
             ->orderBy('created_at', 'desc')
-            ->get()
-            ->each(function ($request) {
-                $request->type = $request->getRequestType($request->type_id);
-            });
-
+            ->get();
         $product_request_type_id = Request::PRODUCT_REQUEST_TYPE_ID;
 
         return view('user.mypage.requests-liked', compact('user', 'product_request_type_id', 'unresolved_liked_requests', 'resolved_liked_requests'));

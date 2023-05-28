@@ -2,7 +2,7 @@
     <x-slot name="title">
         {{ __('ポイント交換履歴') }}
     </x-slot>
-    <x-slot name="discription">
+    <x-slot name="description">
         {{ __('今までに申請されたポイント交換の履歴が表示されます。Amazon Giftカードを送付した場合は『交換完了』ボタンを押してください。') }}
     </x-slot>
 

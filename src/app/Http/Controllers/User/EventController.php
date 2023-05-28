@@ -44,11 +44,6 @@ class EventController extends Controller
             } else {
                 $event->isCompleted = Event::COMPLETED_STATUSES[1];
             }
-            if (empty($event->date)) {
-                $event->show_date = '未定';
-            } else {
-                $event->show_date = $event->date->format('Y.m.d');
-            }
             $event->data_tag = '[' . implode(',', $event->eventTags->pluck('tag_id')->toArray()) . ']';
             $event->description = $event->changeDescriptionReturnToBreakTag($event->description);
             if ($event->eventLikes->contains('user_id', Auth::id())) {
@@ -145,16 +140,17 @@ class EventController extends Controller
     {
         $event = Event::findOrFail($id);
         //checkbox用にすべてのevent_tagsを取得
-        $event_tags = Tag::EventTags()->get()->map(function ($event_tag) {
-            $event_tag->is_selected = false;
-            return $event_tag;
+        $tags = Tag::EventTags()->get()->map(function ($tag) {
+            $tag->is_selected = false;
+            return $tag;
         });
         //所持するevent_tagsのis_selectedをtrueにする
-        $chosen_event_tags = EventTag::where('event_id', $id)->get()->map(function ($chosen_event_tag) use ($event_tags) {
-            $event_tags->find($chosen_event_tag->tag_id)->is_chosen = true;
-            return $chosen_event_tag;
+        EventTag::where('event_id', $id)->get()->map(function ($selected_event_tag) use ($tags) {
+            $tags->find($selected_event_tag->tag_id)->is_selected = true;
         });
-        return view('backend_test.edit_event', compact('event', 'event_tags'));
+        $requests = ModelsRequest::unresolvedRequests()->eventRequests()->get();
+        $locations = Event::LOCATIONS;
+        return view('user.events.edit', compact('event', 'tags', 'requests', 'locations'));
     }
 
     /**
@@ -170,12 +166,13 @@ class EventController extends Controller
         $event = Event::with('eventTags.tag')->findOrFail($id);
         //ログインユーザーのイベントか確認
         if ($user->id !== $event->user_id) {
-            return redirect()->back()->withErrors(['not_event_organizer' => 'あなたは主催者ではないです']);
+            return redirect()->back()->with(['flush.message' => 'あなたは主催者ではありません', 'flush.alert_type' => 'error']);
         }
         //イベント更新
         $event->title = $request->title;
         $event->description = $request->description;
-        $event->date = $request->date;
+        $event->start_date = $request->start_date;
+        $event->end_date = $request->end_date;
         $event->location = $request->location;
         $event->save();
         //event_tags更新
@@ -188,7 +185,7 @@ class EventController extends Controller
             $event_tag->tag_id = $tag_id;
             $event_tag->save();
         }
-        return redirect()->back();
+        return redirect()->route('mypage.events.organized')->with(['flush.message' => 'イベント更新を完了しました。', 'flush.alert_type' => 'success']);
     }
 
     /**
@@ -273,6 +270,7 @@ class EventController extends Controller
     }
     public function like($id)
     {
+        EventLike::where('event_id', $id)->where('user_id', Auth::id())->delete();
         $event_like_instance = new EventLike();
         $event_like_instance->event_id = $id;
         $event_like_instance->user_id = Auth::id();

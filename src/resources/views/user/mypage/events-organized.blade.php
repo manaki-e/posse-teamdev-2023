@@ -1,8 +1,8 @@
 <x-mypage-app>
     <x-slot:border_color>border-pink-600</x-slot:border_color>
     <x-slot:title>主催したイベント一覧</x-slot:title>
-    <x-slot:earned_point>580</x-slot:earned_point>
-    <x-slot:distribution_point>5000</x-slot:distribution_point>
+    <x-slot:earned_point>{{ Auth::user()->earned_point }}</x-slot:earned_point>
+    <x-slot:distribution_point>{{ Auth::user()->distribution_point }}</x-slot:distribution_point>
 
     <div class="bg-white md:p-6 w-full">
         <div x-data="{ activeTab: {{ request()->query('activeTab', 0) }} }">
@@ -31,21 +31,21 @@
                     <li>
                         <x-mypage-event-list>
                             <x-slot:title>{{ $event -> title }}</x-slot:title>
-                            <x-slot:description>{{ $event -> description }}</x-slot:description>
+                            <x-slot:description>{!! nl2br($event -> description) !!}</x-slot:description>
                             <x-slot:tag>
                                 @foreach ($event->eventTags as $tag)
                                 <x-user-tag>{{ $tag->tag->name }}</x-user-tag>
                                 @endforeach
                             </x-slot:tag>
-                            <x-slot:date>{{ $event  -> date ? date( 'Y.m.d', strtotime( $event  -> date ) ) : '未定' }}</x-slot:date>
-                            <x-slot:style>{{ $event -> style ?? '未定' }}</x-slot:style>
+                            <x-slot:start_date>{{ $event  -> start_date ? date( 'Y.m.d H:i', strtotime( $event  -> start_date ) ) : '未定' }}</x-slot:start_date>
+                            <x-slot:end_date>{{ $event  -> end_date ? date( 'Y.m.d H:i', strtotime( $event  -> end_date ) ) : '未定' }}</x-slot:end_date>
+                            <x-slot:style>{{ $event -> location ?? '未定' }}</x-slot:style>
                             <x-slot:participants_count>{{ count($event -> eventParticipants) }}</x-slot:participants_count>
                             <x-slot:create_date>{{ date( 'Y.m.d', strtotime( $event  -> created_at ) ) }}</x-slot:create_date>
                             <x-slot:likes>{{ count($event -> eventLikes) }}</x-slot:likes>
                             <x-slot:user_icon>{{ $event  -> user -> icon }}</x-slot:user_icon>
                             <x-slot:user_name>{{ $event  -> user -> name }}</x-slot:user_name>
                             <x-slot:status></x-slot:status>
-                            <x-slot:timestamp></x-slot:timestamp>
                             <x-slot:button>
                                 <div class="whitespace-nowrap flex flex-col gap-2">
                                     <x-mypage-button-event-held action="{{ route('events.held', ['event' =>  $event -> id]) }}">
@@ -107,21 +107,20 @@
                     <li>
                         <x-mypage-event-list>
                             <x-slot:title>{{ $event -> title }}</x-slot:title>
-                            <x-slot:description>{{ $event -> description }}</x-slot:description>
+                            <x-slot:description>{!! nl2br($event -> description) !!}</x-slot:description>
                             <x-slot:tag>
                                 @foreach ($event->eventTags as $tag)
                                 <x-user-tag>{{ $tag->tag->name }}</x-user-tag>
                                 @endforeach
                             </x-slot:tag>
-                            <x-slot:date>{{ $event  -> date ? date( 'Y.m.d', strtotime( $event  -> date ) ) : '未定' }}</x-slot:date>
-                            <x-slot:style>{{ $event -> style ?? '未定' }}</x-slot:style>
+                            <x-slot:start_date>{{ $event  -> start_date ? date( 'Y.m.d H:i', strtotime( $event  -> start_date ) ) : '未定' }}</x-slot:start_date>
+                            <x-slot:end_date>{{ $event  -> end_date ? date( 'Y.m.d H:i', strtotime( $event  -> end_date ) ) : '未定' }}</x-slot:end_date> <x-slot:style>{{ $event -> style ?? '未定' }}</x-slot:style>
                             <x-slot:participants_count>{{ count($event -> eventParticipants) }}</x-slot:participants_count>
                             <x-slot:create_date>{{ date( 'Y.m.d', strtotime( $event  -> created_at ) ) }}</x-slot:create_date>
                             <x-slot:likes>{{ count($event -> eventLikes) }}</x-slot:likes>
                             <x-slot:user_icon>{{ $event  -> user -> icon }}</x-slot:user_icon>
                             <x-slot:user_name>{{ $event  -> user -> name }}</x-slot:user_name>
                             <x-slot:status>開催済み</x-slot:status>
-                            <x-slot:timestamp>{{ date( 'Y.m.d', strtotime( $event  -> completed_at ) ) }}</x-slot:timestamp>
                             <x-slot:button></x-slot:button>
                         </x-mypage-event-list>
                     </li>
@@ -134,21 +133,20 @@
                     <li>
                         <x-mypage-event-list>
                             <x-slot:title>{{ $event -> title }}</x-slot:title>
-                            <x-slot:description>{{ $event -> description }}</x-slot:description>
+                            <x-slot:description>{!! nl2br($event -> description) !!}</x-slot:description>
                             <x-slot:tag>
                                 @foreach ($event->eventTags as $tag)
                                 <x-user-tag>{{ $tag->tag->name }}</x-user-tag>
                                 @endforeach
                             </x-slot:tag>
-                            <x-slot:date>{{ $event  -> date ? date( 'Y.m.d', strtotime( $event  -> date ) ) : '未定' }}</x-slot:date>
-                            <x-slot:style>{{ $event -> style ?? '未定' }}</x-slot:style>
+                            <x-slot:start_date>{{ $event  -> start_date ? date( 'Y.m.d H:i', strtotime( $event  -> start_date ) ) : '未定' }}</x-slot:start_date>
+                            <x-slot:end_date>{{ $event  -> end_date ? date( 'Y.m.d H:i', strtotime( $event  -> end_date ) ) : '未定' }}</x-slot:end_date> <x-slot:style>{{ $event -> style ?? '未定' }}</x-slot:style>
                             <x-slot:participants_count>{{ count($event -> eventParticipants) }}</x-slot:participants_count>
                             <x-slot:create_date>{{ date( 'Y.m.d', strtotime( $event  -> created_at ) ) }}</x-slot:create_date>
                             <x-slot:likes>{{ count($event -> eventLikes) }}</x-slot:likes>
                             <x-slot:user_icon>{{ $event  -> user -> icon }}</x-slot:user_icon>
                             <x-slot:user_name>{{ $event  -> user -> name }}</x-slot:user_name>
                             <x-slot:status>中止</x-slot:status>
-                            <x-slot:timestamp>{{ date( 'Y.m.d', strtotime( $event  -> cancelled_at ) ) }}</x-slot:timestamp>
                             <x-slot:button></x-slot:button>
                         </x-mypage-event-list>
                     </li>
