@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\SlackController;
 use App\Models\Product;
 use App\Models\ProductLike;
 use App\Models\ProductTag;
@@ -14,6 +15,14 @@ use App\Models\User;
 
 class ItemController extends Controller
 {
+    /**
+     * @var SlackController
+     */
+    public function __construct(SlackController $slackController)
+    {
+        $this->slackController = $slackController;
+        $this->slackAdminChannelId = $slackController->searchChannelId('peerperk管理者', true);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -177,6 +186,12 @@ class ItemController extends Controller
         $product_instance->addProductDealLog($item, $borrower_user_instance->id, $product_instance->point, 0);
         // productのステータス変更
         $product_instance->changeStatusToDelivering();
+        //slack借りた人
+        $this->slackController->sendNotification($borrower_user_instance->slackID, "<@" . $lender_user_instance->slackID . "> のアイテムを借りました！DMで連絡を取ってアイテムを発送してもらいましょう。商品を受け取ったら、マイページより、商品の受取完了ボタンを押してください。\n```" . env('APP_URL') . "mypage/items/borrowed```");
+        //slack貸した人
+        $this->slackController->sendNotification($lender_user_instance->slackID, "<@" . $borrower_user_instance->slackID . "> があなたのアイテムを借りました！DMで連絡を取ってアイテムを発送しましょう。");
+        //slack管理者
+        $this->slackController->sendNotification($this->slackAdminChannelId, "<@".$borrower_user_instance->slackID."> が <@".$lender_user_instance->slackID."> のアイテムを借りました。");
         // 処理が終わった後redirect back
         return redirect()->route('items.index')->with(['flush.message' => 'レンタルが完了しました。以後、アイテムのオーナーとslackで連絡をお取りください。', 'flush.alert_type' => 'success']);
     }
