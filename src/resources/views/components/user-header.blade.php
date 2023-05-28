@@ -84,7 +84,7 @@ $user_info = Auth::user();
                 <div x-data="{ open: false }" class="flex justify-center items-center">
                     <div @click="open = !open" class="relative w-12 h-12 cursor-pointer flex justify-center items-center" :class="{'transform transition duration-300 ': open}" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100">
                         <!-- icon -->
-                        <div class="w-8 h-8 rounded-full overflow-hidden border-2 border-gray-900">
+                        <div class="w-8 h-8 rounded-full overflow-hidden border border-gray-800">
                             <img src="{{ Auth::user()->icon }}" alt="" class="w-8 h-8 object-cover">
                         </div>
                         <!-- pannel -->
