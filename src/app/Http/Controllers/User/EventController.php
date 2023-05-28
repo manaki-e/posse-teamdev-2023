@@ -238,6 +238,9 @@ class EventController extends Controller
             $event_participant_log = EventParticipantLog::where('event_id', $event)->where('user_id', $user->id)->where('cancelled_at', null)->first();
             $event_participant_log->cancelled_at = now();
             $event_participant_log->save();
+            //slackイベント
+            $this->slackController->sendNotification($event_data->slack_channel, "<@".$user->slackID.">さんがイベントへの参加をキャンセルしました。");
+            $this->slackController->removeUserFromChannel($event_data->slack_channel, $user->slackID);
             return redirect()->route('mypage.events.joined');
         }
     }

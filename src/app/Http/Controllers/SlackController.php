@@ -226,6 +226,7 @@ class SlackController extends Controller
         $response = Http::withToken($this->token)
             ->post('https://slack.com/api/conversations.kick', $delete_data);
 
+        // dd($response->json());
         if ($response->json()['ok']) {
             return;
         } else {
