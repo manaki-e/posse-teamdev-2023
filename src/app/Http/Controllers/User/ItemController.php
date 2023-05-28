@@ -191,7 +191,7 @@ class ItemController extends Controller
         //slack貸した人
         $this->slackController->sendNotification($lender_user_instance->slackID, "<@" . $borrower_user_instance->slackID . "> があなたのアイテムを借りました！DMで連絡を取ってアイテムを発送しましょう。");
         //slack管理者
-        $this->slackController->sendNotification($this->slackAdminChannelId, "<@".$borrower_user_instance->slackID."> が <@".$lender_user_instance->slackID."> のアイテムを借りました。");
+        $this->slackController->sendNotification($this->slackAdminChannelId, "<@" . $borrower_user_instance->slackID . "> が <@" . $lender_user_instance->slackID . "> のアイテムを借りました。");
         // 処理が終わった後redirect back
         return redirect()->route('items.index')->with(['flush.message' => 'レンタルが完了しました。以後、アイテムのオーナーとslackで連絡をお取りください。', 'flush.alert_type' => 'success']);
     }
@@ -219,10 +219,19 @@ class ItemController extends Controller
         $product_instance->changeStatusToAvailable();
         // product_deal_logのcancelled_at変更
         $product_deal_log_instance->changeCancelledAtToNow();
-        //slack借りた人
-        $this->slackController->sendNotification($product_deal_log_instance->user->slackID, "アイテムの貸出をキャンセルしました。");
-        //slack貸した人
-        $this->slackController->sendNotification($lender_user_instance->slackID, "<@".$product_deal_log_instance->user->slackID.">によって、アイテムの貸出がキャンセルされました。");
+        if (Auth::id() === $lender_user_instance->id) {
+            //貸してる人がキャンセルした場合
+            //slack借りた人
+            $this->slackController->sendNotification($product_deal_log_instance->user->slackID, "<@".$lender_user_instance->slackID."> によって、アイテムの貸し出しがキャンセルされました。");
+            //slack貸した人
+            $this->slackController->sendNotification($lender_user_instance->slackID, "アイテムの貸出をキャンセルしました。");
+        } else {
+            //借りてる人がキャンセルした場合
+            //slack借りた人
+            $this->slackController->sendNotification($product_deal_log_instance->user->slackID, "アイテムの貸出をキャンセルしました。");
+            //slack貸した人
+            $this->slackController->sendNotification($lender_user_instance->slackID, "<@" . $product_deal_log_instance->user->slackID . ">によって、アイテムの貸出がキャンセルされました。");
+        }
         // 処理が終わった後redirect back
         return redirect()->back();
     }

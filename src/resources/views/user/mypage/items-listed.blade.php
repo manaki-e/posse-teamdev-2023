@@ -91,7 +91,7 @@
                                     <x-slot:button>
                                         <div class="whitespace-nowrap flex flex-col gap-2">
                                             @if ($product -> status === \App\Models\Product::STATUS['delivering'])
-                                            <x-mypage-button-item-cancel href="{{ route('items.cancel', ['item' =>  $product -> id]) }}">
+                                            <x-mypage-button-item-cancel action="{{ route('items.cancel', ['item' =>  $product -> id]) }}">
                                                 <x-slot name="content">
                                                     貸出キャンセル
                                                 </x-slot>
