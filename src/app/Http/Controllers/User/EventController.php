@@ -214,10 +214,12 @@ class EventController extends Controller
         $event_instance->save();
         //参加者のポイント集める=>メソッドuserモデルに書いてあるから後で修正
         $event_points = EventParticipantLog::where('event_id', $event)->sum('point');
-        // var_dump($event_instance->user->earned_point);
         $event_instance->user->earned_point += $event_points;
         $event_instance->user->save();
-        // var_dump($event_instance->user->earned_point);
+        //slackイベント
+        $this->slackController->sendNotification($event_instance->slack_channel, "<!channel>イベントの開催を完了しました！次は、他のイベントにも積極的に参加したり、イベントを開催したりしてみましょう。");
+        //slack全体
+        $this->slackController->sendNotification($this->slackGlobalAnnouncementChannelId, "イベントの開催が完了しました！<@".$event_instance->user->slackID.">はこのチャンネルで感想を一言お願いします！");
         return redirect()->route('mypage.events.organized');
     }
     public function cancel($event)
