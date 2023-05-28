@@ -62,7 +62,7 @@
                                     <td class="px-4 py-4">{{ $user -> email }}</td>
                                     <td class="px-4 py-4">{{ $user -> department ? $user -> department -> name : '' }}</td>
                                     <td class="px-4 py-4">
-                                        <div class="flex justify-end gap-4">
+                                        <div class="flex justify-between gap-2 text-left">
                                             <x-admin-button-detail href="{{ route('admin.users.show', ['user' =>  $user -> id]) }}"></x-admin-button-detail>
                                             <x-admin-button-edit action="{{ route('admin.users.update', ['user' =>  $user -> id]) }}">
                                                 @if ($user -> is_admin === 0)
