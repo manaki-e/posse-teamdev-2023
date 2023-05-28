@@ -30,7 +30,7 @@ $user_info = Auth::user();
                 <span class="ml-3 text-xl font-patua">{{ $app_name }}</span>
             </a>
         </div>
-        <div class="flex">
+        <div class="flex max-w-full">
             @if(Auth::user()->is_admin == 1)
             <a href="{{ route('admin.items.index') }}" class="rounded-lg w-40 mx-3 my-1 px-7 py-2 shadow-md text-center text-sm admin-text-green border
             admin-border-green transition-all hover:shadow-lg hover:opacity-75 ">
