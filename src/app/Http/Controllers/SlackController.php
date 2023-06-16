@@ -125,7 +125,7 @@ class SlackController extends Controller
         if (empty($user) && $is_private) {
             $create_user = "";
             $channel_name = $event_title;
-        } elseif (empty($use) && !$is_private) {
+        } elseif (empty($user) && !$is_private) {
             $create_user = "";
             $channel_name = 'peerevent-' . $event_id . '-' . $event_title;
         } else {
