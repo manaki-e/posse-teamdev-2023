@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\SlackController;
 use App\Models\Product;
 use App\Models\ProductDealLog;
+use App\Models\Request as ModelsRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
@@ -95,6 +96,11 @@ class AdminItemController extends Controller
         $product->point = $request->point;
         if ($product->status == 1) {
             $product->status = 2;
+            //リクエストに紐づいていたら、リクエストの投稿者にslack通知
+            if (!empty($product->request_id)) {
+                $request = ModelsRequest::find($product->request_id);
+                $this->slackController->sendNotification($request->user->slackID, "<@" . $product->user->slackID . "> より、あなたのリクエストに対して、アイテムが登録されました！確認してみましょう。\n```" . env('APP_URL') . "items```");
+            }
         }
         $product->save();
         //slack登録申請者
