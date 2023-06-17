@@ -91,11 +91,6 @@ class ItemController extends Controller
         $this->slackController->sendNotification(Auth::user()->slackID, "アイテムの登録申請を行いました！");
         //slack管理者
         $this->slackController->sendNotification($this->slackAdminChannelId, "アイテムの登録申請が行われました。管理者画面より確認しましょう。\n```" . env('APP_URL') . "admin/items```");
-        //リクエストに紐づいていたら、リクエストの投稿者にslack通知
-        if (!empty($request->request_id)) {
-            $request = ModelsRequest::find($request->request_id);
-            $this->slackController->sendNotification($request->user->slackID, "<@" . Auth::user()->slackID . "> より、あなたのリクエストに対して、アイテムが登録されました！確認してみましょう。\n```" . env('APP_URL') . "items```");
-        }
         return redirect()->route('items.index')->with(['flush.message' => 'アイテム登録申請完了しました。', 'flush.alert_type' => 'success']);
     }
 
@@ -257,7 +252,7 @@ class ItemController extends Controller
         //slack借りた人
         $this->slackController->sendNotification(Auth::user()->slackID, "商品の受け取りを完了しました。");
         //slack貸した人
-        $this->slackController->sendNotification($product_instance->user->slackID, "<@".Auth::user()->slackID.">が商品の受取を完了しました。アイテムが返却されたら、以下のリンクより、該当のアイテムの受け取り完了ボタンを押してください。\n```".env('APP_URL')."mypage/items/listed```");
+        $this->slackController->sendNotification($product_instance->user->slackID, "<@" . Auth::user()->slackID . ">が商品の受取を完了しました。アイテムが返却されたら、以下のリンクより、該当のアイテムの受け取り完了ボタンを押してください。\n```" . env('APP_URL') . "mypage/items/listed```");
         //処理が終わった後redirect back
         return redirect()->back()->with(['flush.message' => '受け取りが完了しました。', 'flush.alert_type' => 'success']);
     }
