@@ -60,3 +60,22 @@ likes.forEach((like) => {
         }
     });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const forms = document.querySelectorAll("form");
+
+    forms.forEach(function (form) {
+        form.addEventListener("submit", function () {
+            const submitButton = form.querySelector("button[type='submit']");
+            //ボタン無効にする
+            submitButton.disabled = true;
+            //灰色にする
+            submitButton.style.backgroundColor = "#ccc";
+            submitButton.style.border = "1px solid #ccc";
+            //hoverしても何も起きないようにする
+            submitButton.classList.remove("hover:shadow-lg");
+            submitButton.classList.remove("hover:opacity-75");
+            submitButton.innerHTML = "送信中...";
+        });
+    });
+});
