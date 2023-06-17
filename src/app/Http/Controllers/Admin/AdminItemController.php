@@ -104,11 +104,11 @@ class AdminItemController extends Controller
         }
         $product->save();
         //slack登録申請者
-        $this->slackController->sendNotification($product->user->slackID, "管理者がポイントを設定し、あなたのアイテムを登録しました！\n```".env('APP_URL')."mypage/items/listed```");
+        $this->slackController->sendNotification($product->user->slackID, "管理者がポイントを設定し、あなたのアイテムを登録しました！\n```" . env('APP_URL') . "mypage/items/listed```");
         //slack管理者
-        $this->slackController->sendNotification($this->slackAdminChannelId, "<@".$product->user->slackID.">の新たなアイテムを登録しました！");
+        $this->slackController->sendNotification($this->slackAdminChannelId, "<@" . $product->user->slackID . ">の新たなアイテムを登録しました！");
         //全体チャンネル
-        $this->slackController->sendNotification($this->slackGlobalAnnouncementChannelId, "<@".$product->user->slackID.">より、新たなアイテムが追加されました！\n```".env('APP_URL')."items```");
+        $this->slackController->sendNotification($this->slackGlobalAnnouncementChannelId, "<@" . $product->user->slackID . ">より、新たなアイテムが追加されました！\n```" . env('APP_URL') . "items```");
         return Redirect::route('admin.items.index')->with(['flush.message' => 'アイテムのポイント設定が正しく行われました', 'flush.alert_type' => 'success']);
     }
 
