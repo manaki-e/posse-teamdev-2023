@@ -59,7 +59,7 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100 border-t border-gray-200">
-                            @foreach ( $borrow_product_histories as $history )
+                            @foreach ( $lend_product_histories as $history )
                             <x-mypage-history-item>
                                 <x-slot:id>{{ $history -> product -> id }}</x-slot:id>
                                 <x-slot:image_url>{{ $history -> product -> productImages[0] -> image_url }}</x-slot:image_url>
