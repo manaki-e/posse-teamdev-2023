@@ -83,7 +83,7 @@ class MyPageController extends Controller
             return $request;
         });
 
-        return view('user.mypage.profile', compact('user', 'products', 'japanese_product_statuses','events','requests', 'app', 'event_request_type_id', 'product_request_type_id'));
+        return view('user.mypage.profile', compact('user', 'products', 'japanese_product_statuses', 'events', 'requests', 'app', 'event_request_type_id', 'product_request_type_id'));
     }
 
     public function account()
@@ -224,7 +224,6 @@ class MyPageController extends Controller
         $liked_products = Product::whereHas('productLikes', function ($query) use ($user) {
             $query->where('user_id', $user->id);
         })
-            ->where('user_id', '!=', $user->id)
             ->with('productImages', 'productLikes', 'productTags.tag')
             ->orderBy('created_at', 'desc')
             ->get();
