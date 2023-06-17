@@ -32,32 +32,28 @@ likes.forEach((like) => {
         let likeCount = like.querySelector(".like-count");
         //if isLiked is true, send unlike product
         if (isLiked === "1") {
+            //change isLiked data to false
+            like.setAttribute("data-is_liked", 0);
+            //change svg color to gray
+            like.querySelector("svg").style.fill = "none";
+            //decrease like count
+            likeCount.innerHTML = parseInt(likeCount.innerHTML) - 1;
             axios
                 .post("/" + app_name + "s/" + id + "/unlike")
-                .then(function (response) {
-                    //change isLiked data to false
-                    like.setAttribute("data-is_liked", 0);
-                    //change svg color to gray
-                    like.querySelector("svg").style.fill = "none";
-                    //decrease like count
-                    likeCount.innerHTML = parseInt(likeCount.innerHTML) - 1;
-                })
                 .catch(function (error) {
                     console.log(error);
                 });
         }
         //if isLiked is false, send like product
         else {
+            //change isLiked data to true
+            like.setAttribute("data-is_liked", 1);
+            //change svg color to red
+            like.querySelector("svg").style.fill = "red";
+            //increase like count
+            likeCount.innerHTML = parseInt(likeCount.innerHTML) + 1;
             axios
                 .post("/" + app_name + "s/" + id + "/like")
-                .then(function (response) {
-                    //change isLiked data to true
-                    like.setAttribute("data-is_liked", 1);
-                    //change svg color to red
-                    like.querySelector("svg").style.fill = "red";
-                    //increase like count
-                    likeCount.innerHTML = parseInt(likeCount.innerHTML) + 1;
-                })
                 .catch(function (error) {
                     console.log(error);
                 });
