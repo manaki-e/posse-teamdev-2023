@@ -138,15 +138,12 @@
     function checkFileSize(input) {
         const maxSize = 1 * 1024 * 1024; // 1MB in bytes
         const files = input.files;
-        for (let i = 0; i < files.length; i++) {
-            if (files[i].size > maxSize) {
-                // File size exceeds the maximum limit
-                alert('1MB以下の画像を選択してください.');
-                input.value = null; // Clear the file input
-                return;
-            }
+        let totalSize=Array.from(files).reduce((accumulator,file)=>accumulator+file.size,0);
+        const totalSizeInMB=totalSize/(1024*1024);
+        if(totalSizeInMB>1){
+            alert('合計ファイルサイズが1MBを超えています。');
+            input.value=null;
         }
-
         // Proceed with file preview or submission
         preview(input);
     }
