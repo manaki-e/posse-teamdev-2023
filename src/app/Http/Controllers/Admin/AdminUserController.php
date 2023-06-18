@@ -92,7 +92,11 @@ class AdminUserController extends Controller
         $held_events = Event::where('user_id', $user)->with('eventParticipants')->withSum('eventParticipants', 'point')->withCount('eventParticipants')->paginate(10);
         // dd($held_events);
         $requests = AppRequest::where('user_id', $user)->with('product')->with('event')->paginate(10);
-
+        //累計獲得Bonus Point=>開催済みイベントの合計ポイント、自分のアイテムの合計ポイント
+        $total_earned_points_by_events=Event::getSumOfEarnedPoints($user);
+        //累計消費Peer Point
+        //今月獲得Bonus Point
+        //今月消費Peer Point
         return view('admin.users.detail', compact('user', 'user_data', 'product_deal_logs', 'products', 'joined_event_logs', 'held_events', 'requests'));
     }
 

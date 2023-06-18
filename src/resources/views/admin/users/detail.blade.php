@@ -61,10 +61,10 @@
                             <x-admin-point>
                                 <x-slot name="point">
                                     <!-- 後ほど修正する -->
-                                    {{ __('2960') }}
+                                    {{ $user_data->earned_point }}
                                 </x-slot>
                                 <x-slot name="description">
-                                    {{ __('累計獲得ポイント') }}
+                                    {{ __('累計獲得 Bonus Point') }}
                                 </x-slot>
                             </x-admin-point>
                         </div>
@@ -72,10 +72,10 @@
                             <x-admin-point>
                                 <x-slot name="point">
                                     <!-- 後ほど修正する -->
-                                    {{ __('20700') }}
+                                    {{ $user_data->distribution_point }}
                                 </x-slot>
                                 <x-slot name="description">
-                                    {{ __('累計消費ポイント') }}
+                                    {{ __('累計消費 Peer Point') }}
                                 </x-slot>
                             </x-admin-point>
                         </div>
@@ -85,7 +85,7 @@
                                     {{ $user_data -> earned_point }}
                                 </x-slot>
                                 <x-slot name="description">
-                                    {{ __('今月獲得ポイント') }}
+                                    {{ __('今月獲得 Bonus Point') }}
                                 </x-slot>
                             </x-admin-point>
                         </div>
@@ -95,7 +95,7 @@
                                     {{ 5000 - $user_data -> distribution_point }}
                                 </x-slot>
                                 <x-slot name="description">
-                                    {{ __('今月消費ポイント') }}
+                                    {{ __('今月消費 Peer Point') }}
                                 </x-slot>
                             </x-admin-point>
                         </div>

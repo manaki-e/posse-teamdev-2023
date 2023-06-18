@@ -57,4 +57,8 @@ class Event extends Model
     {
         return str_replace("\n", "<br>", e($value));
     }
+    public static function getSumOfEarnedPoints($user_id)
+    {
+        return self::where('user_id', $user_id)->where('completed_at', '!=', null)->withSum('eventParticipants', 'point')->get()->sum('event_participants_sum_point');
+    }
 }
