@@ -46,7 +46,7 @@
                             <x-slot:start_date>{{ $event  -> start_date ? date( 'Y.m.d H:i', strtotime( $event  -> start_date ) ) : '未定' }}</x-slot:start_date>
                             <x-slot:end_date>{{ $event  -> end_date ? date( 'Y.m.d H:i', strtotime( $event  -> end_date ) ) : '未定' }}</x-slot:end_date>
                             <x-slot:style>{{ $event -> style ?? '未定' }}</x-slot:style>
-                            <x-slot:participants_count>{{ count($event -> eventParticipants) }}</x-slot:participants_count>
+                            <x-slot:participants_count>{{ $event->event_participants_count }}</x-slot:participants_count>
                             <x-slot:create_date>{{ date( 'Y.m.d', strtotime( $event  -> created_at ) ) }}</x-slot:create_date>
                             <x-slot:likes>{{ count($event -> eventLikes) }}</x-slot:likes>
                             <x-slot:user_icon>{{ $event  -> user -> icon }}</x-slot:user_icon>
@@ -117,7 +117,7 @@
                             </x-slot:tag>
                             <x-slot:start_date>{{ $event  -> start_date ? date( 'Y.m.d H:i', strtotime( $event  -> start_date ) ) : '未定' }}</x-slot:start_date>
                             <x-slot:end_date>{{ $event  -> end_date ? date( 'Y.m.d H:i', strtotime( $event  -> end_date ) ) : '未定' }}</x-slot:end_date> <x-slot:style>{{ $event -> style ?? '未定' }}</x-slot:style>
-                            <x-slot:participants_count>{{ count($event -> eventParticipants) }}</x-slot:participants_count>
+                            <x-slot:participants_count>{{ $event->event_participants_count }}</x-slot:participants_count>
                             <x-slot:create_date>{{ date( 'Y.m.d', strtotime( $event  -> created_at ) ) }}</x-slot:create_date>
                             <x-slot:likes>{{ count($event -> eventLikes) }}</x-slot:likes>
                             <x-slot:user_icon>{{ $event  -> user -> icon }}</x-slot:user_icon>
@@ -149,7 +149,7 @@
                             </x-slot:tag>
                             <x-slot:start_date>{{ $event  -> start_date ? date( 'Y.m.d H:i', strtotime( $event  -> start_date ) ) : '未定' }}</x-slot:start_date>
                             <x-slot:end_date>{{ $event  -> end_date ? date( 'Y.m.d H:i', strtotime( $event  -> end_date ) ) : '未定' }}</x-slot:end_date> <x-slot:style>{{ $event -> style ?? '未定' }}</x-slot:style>
-                            <x-slot:participants_count>{{ count($event -> eventParticipants) }}</x-slot:participants_count>
+                            <x-slot:participants_count>{{ $event->event_participants_count }}</x-slot:participants_count>
                             <x-slot:create_date>{{ date( 'Y.m.d', strtotime( $event  -> created_at ) ) }}</x-slot:create_date>
                             <x-slot:likes>{{ count($event -> eventLikes) }}</x-slot:likes>
                             <x-slot:user_icon>{{ $event  -> user -> icon }}</x-slot:user_icon>
