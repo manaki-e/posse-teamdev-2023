@@ -94,6 +94,7 @@ class AdminItemController extends Controller
     {
         $product = Product::findOrFail($item);
         $product->point = $request->point;
+        //ポイント設定して承認
         if ($product->status == 1) {
             $product->status = 2;
             //リクエストに紐づいていたら、リクエストの投稿者にslack通知
@@ -101,14 +102,23 @@ class AdminItemController extends Controller
                 $request = ModelsRequest::find($product->request_id);
                 $this->slackController->sendNotification($request->user->slackID, "<@" . $product->user->slackID . "> より、あなたのリクエストに対して、アイテムが登録されました！確認してみましょう。\n```" . env('APP_URL') . "items```");
             }
+            //slack登録申請者
+            $this->slackController->sendNotification($product->user->slackID, "管理者がポイントを設定し、あなたのアイテムを登録しました！\n```" . env('APP_URL') . "mypage/items/listed```");
+            //slack管理者
+            $this->slackController->sendNotification($this->slackAdminChannelId, "<@" . $product->user->slackID . ">の新たなアイテムを登録しました！");
+            //全体チャンネル
+            $this->slackController->sendNotification($this->slackGlobalAnnouncementChannelId, "<@" . $product->user->slackID . ">より、新たなアイテムが追加されました！\n```" . env('APP_URL') . "items```");
+        }
+        //ポイント再設定
+        else {
+            //slack登録申請者
+            $this->slackController->sendNotification($product->user->slackID, "管理者があなたのアイテムのポイントを再設定しました！\n```" . env('APP_URL') . "mypage/items/listed```");
+            //slack管理者
+            $this->slackController->sendNotification($this->slackAdminChannelId, "<@" . $product->user->slackID . ">のアイテムのポイントを再設定しました！");
+            //全体チャンネル
+            $this->slackController->sendNotification($this->slackGlobalAnnouncementChannelId, "<@" . $product->user->slackID . ">のアイテムのポイントが再設定されました！\n```" . env('APP_URL') . "items```");
         }
         $product->save();
-        //slack登録申請者
-        $this->slackController->sendNotification($product->user->slackID, "管理者がポイントを設定し、あなたのアイテムを登録しました！\n```" . env('APP_URL') . "mypage/items/listed```");
-        //slack管理者
-        $this->slackController->sendNotification($this->slackAdminChannelId, "<@" . $product->user->slackID . ">の新たなアイテムを登録しました！");
-        //全体チャンネル
-        $this->slackController->sendNotification($this->slackGlobalAnnouncementChannelId, "<@" . $product->user->slackID . ">より、新たなアイテムが追加されました！\n```" . env('APP_URL') . "items```");
         return Redirect::route('admin.items.index')->with(['flush.message' => 'アイテムのポイント設定が正しく行われました', 'flush.alert_type' => 'success']);
     }
 
