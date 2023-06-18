@@ -27,7 +27,7 @@
                         <x-mypage-point-history-list>
                             <x-slot:app>{{ $point_log["app"] }}</x-slot:app>
                             <x-slot:name>{{ $point_log["name"] }}</x-slot:name>
-                            <x-slot:created_at>{{ date( 'Y.m.d H:m', strtotime( $point_log["created_at"] ) ) }}</x-slot:created_at>
+                            <x-slot:created_at>{{ $point_log["created_at"] }}</x-slot:created_at>
                             <x-slot:point>{{ $point_log["point"] ? $point_log["point"] . " pt" : "0 pt" }}</x-slot:point>
                         </x-mypage-point-history-list>
                     </li>
@@ -41,7 +41,7 @@
                         <x-mypage-point-history-list>
                             <x-slot:app>{{ $point_log["app"] }}</x-slot:app>
                             <x-slot:name>{{ $point_log["name"] }}</x-slot:name>
-                            <x-slot:created_at>{{ date( 'Y.m.d H:m', strtotime( $point_log["created_at"] ) ) }}</x-slot:created_at>
+                            <x-slot:created_at>{{ $point_log["created_at"] }}</x-slot:created_at>
                             <x-slot:point>{{ $point_log["point"] ? $point_log["point"] . " pt" : "0 pt" }}</x-slot:point>
                         </x-mypage-point-history-list>
                     </li>
