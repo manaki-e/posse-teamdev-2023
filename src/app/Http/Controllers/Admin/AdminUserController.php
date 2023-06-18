@@ -96,6 +96,8 @@ class AdminUserController extends Controller
         $total_earned_points_by_events=Event::getSumOfEarnedPoints($user);
         //累計消費Peer Point
         //今月獲得Bonus Point
+        $current_month_earned_points_by_events=Event::getSumOfEarnedPointsCurrentMonth($user);
+        dd($current_month_earned_points_by_events);
         //今月消費Peer Point
         return view('admin.users.detail', compact('user', 'user_data', 'product_deal_logs', 'products', 'joined_event_logs', 'held_events', 'requests'));
     }
