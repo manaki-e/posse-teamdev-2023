@@ -66,7 +66,7 @@
                         @endforeach
                     </ul>
                 </div>
-                <div :class="{ '!block': activeTab === 2 }" x-show.transition.in.opacity.duration.600="activeTab === 2" class="hidden">
+                <div :class="{ '!block': activeTab === 1 }" x-show.transition.in.opacity.duration.600="activeTab === 2" class="hidden">
                     <ul class="border-b border-gray-300">
                         @foreach ($after_held_joined_events as $event)
                         <li>
@@ -93,7 +93,7 @@
                         @endforeach
                     </ul>
                 </div>
-                <div :class="{ '!block': activeTab === 1 }" x-show.transition.in.opacity.duration.600="activeTab === 1" class="hidden">
+                <div :class="{ '!block': activeTab === 2 }" x-show.transition.in.opacity.duration.600="activeTab === 1" class="hidden">
                     <ul class="border-b border-gray-300">
                         @foreach ($cancelled_joined_events as $event)
                         <li>
