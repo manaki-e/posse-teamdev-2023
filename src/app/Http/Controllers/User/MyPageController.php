@@ -135,7 +135,7 @@ class MyPageController extends Controller
         $distribution_event_participant_logs = collect($distribution_event_participant_logs);
         $distribution_product_deal_logs = collect($distribution_product_deal_logs);
         $distribution_point_logs = $distribution_product_deal_logs->merge($distribution_event_participant_logs)->sortByDesc('created_at')->map(function ($distribution_point_log) {
-            $distribution_point_log['created_at'] = $distribution_point_log['created_at']->format('Y-m-d');
+            $distribution_point_log['created_at'] = $distribution_point_log['created_at']->format('Y.m.d H:i');
             return $distribution_point_log;
         });
         //獲得=>point_exchange_logsとevents->withsum()とproduct_deal_logsを結合
@@ -173,7 +173,7 @@ class MyPageController extends Controller
         $earned_product_deal_logs = collect($earned_product_deal_logs);
         $earned_point_exchange_logs = collect($earned_point_exchange_logs);
         $earned_point_logs = $earned_point_exchange_logs->merge($earned_event_logs)->merge($earned_product_deal_logs)->sortByDesc('created_at')->map(function ($earned_point_log) {
-            $earned_point_log['created_at'] = $earned_point_log['created_at']->format('Y-m-d');
+            $earned_point_log['created_at'] = $earned_point_log['created_at']->format('Y.m.d H:i');
             return $earned_point_log;
         });
         // dd('配布ポイントの変動', $distribution_point_logs[1]["app"], '獲得ポイントの変動', $earned_point_logs);
