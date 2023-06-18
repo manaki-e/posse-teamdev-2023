@@ -305,9 +305,9 @@ class MyPageController extends Controller
             ->where('completed_at', null)
             ->where('cancelled_at', null)
             ->withCount(['eventParticipants' => function ($query) {
-                $query->where('cancelled_at', null);
+                $query->where('cancelled_at', null)->with('user');
             }])
-            ->with('eventLikes', 'eventParticipants.user', 'eventTags.tag')
+            ->with('eventLikes', 'eventTags.tag')
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -317,9 +317,9 @@ class MyPageController extends Controller
             ->where('completed_at', '!=', null)
             ->where('cancelled_at', null)
             ->withCount(['eventParticipants' => function ($query) {
-                $query->where('cancelled_at', null);
+                $query->where('cancelled_at', null)->with('user');
             }])
-            ->with(['eventLikes', 'eventParticipants.user', 'eventTags.tag'])
+            ->with(['eventLikes', 'eventTags.tag'])
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -329,13 +329,11 @@ class MyPageController extends Controller
             ->where('completed_at', null)
             ->where('cancelled_at', '!=', null)
             ->withCount(['eventParticipants' => function ($query) {
-                $query->where('cancelled_at', null);
+                $query->where('cancelled_at', null)->with('user');
             }])
-            ->with(['eventLikes', 'eventParticipants.user', 'eventTags.tag'])
+            ->with(['eventLikes', 'eventTags.tag'])
             ->orderBy('created_at', 'desc')
             ->get();
-        // dd($after_held_joined_events);
-        // dd($cancelled_joined_events);
         return view('user.mypage.events-joined', compact('before_held_joined_events', 'after_held_joined_events', 'cancelled_joined_events'));
     }
 
@@ -351,6 +349,9 @@ class MyPageController extends Controller
             ->withCount(['eventParticipants' => function ($query) {
                 $query->where('cancelled_at', null);
             }])
+            ->with(['eventParticipants' => function ($query) {
+                $query->where('cancelled_at', null)->with('user');
+            }])
             ->where('user_id', '!=', $user->id)
             ->with('eventLikes', 'eventTags.tag')
             ->orderBy('created_at', 'desc')
@@ -364,6 +365,9 @@ class MyPageController extends Controller
             ->withCount(['eventParticipants' => function ($query) {
                 $query->where('cancelled_at', null);
             }])
+            ->with(['eventParticipants' => function ($query) {
+                $query->where('cancelled_at', null)->with('user');
+            }])
             ->where('user_id', '!=', $user->id)
             ->with('eventLikes', 'eventTags.tag')
             ->orderBy('created_at', 'desc')
@@ -376,6 +380,9 @@ class MyPageController extends Controller
             ->where('cancelled_at', '!=', null)
             ->withCount(['eventParticipants' => function ($query) {
                 $query->where('cancelled_at', null);
+            }])
+            ->with(['eventParticipants' => function ($query) {
+                $query->where('cancelled_at', null)->with('user');
             }])
             ->where('user_id', '!=', $user->id)
             ->with('eventLikes', 'eventTags.tag')
