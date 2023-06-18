@@ -247,7 +247,14 @@
                                                 <div>form_slotに挿入するコンテンツ</div>
                                             </x-slot>
                                         </x-admin-button-edit>
-                                        <x-admin-button-delete action="{{ route('admin.items.destroy', ['item' =>  $product -> id]) }}"></x-admin-button-delete>
+                                        <x-admin-button-delete action="{{ route('admin.items.destroy', ['item' =>  $product -> id]) }}">
+                                            <x-slot name="modal_title">
+                                                {{ $product -> title }}を削除しますか？
+                                            </x-slot>
+                                            <x-slot name="modal_description">
+                                                対象のアイテムを削除します。削除したアイテムは元に戻せません。
+                                            </x-slot>
+                                        </x-admin-button-delete>
                                     </td>
                                 </tr>
                                 @endforeach
