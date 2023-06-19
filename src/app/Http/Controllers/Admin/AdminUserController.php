@@ -105,12 +105,14 @@ class AdminUserController extends Controller
         // })->pluck('point'), $total_earned_points_by_events);
         //累計消費Peer Point
         $total_used_points_by_events=EventParticipantLog::getSumOfUsedPoints($user);
+        $total_used_points_by_products=ProductDealLog::getSumOfUsedPoints($user);
         //今月獲得Bonus Point=>今月開催済みイベントの合計ポイント、今月自分のアイテムの合計ポイント
         $current_month_earned_points_by_events=Event::getSumOfEarnedPointsCurrentMonth($user);
         $current_month_earned_points_by_products=Product::getSumOfEarnedPointsCurrentMonth($user);
         dd(Product::where('user_id',$user)->with('productDealLogs',function($query){$query->whereMonth('created_at',date('m'));})->get(),$current_month_earned_points_by_products);
         //今月消費Peer Point
         $current_month_used_points_by_events=EventParticipantLog::getSumOfUsedPointsCurrentMonth($user);
+        $current_month_used_points_by_products=ProductDealLog::getSumOfUsedPointsCurrentMonth($user);
         return view('admin.users.detail', compact('user', 'user_data', 'product_deal_logs', 'products', 'joined_event_logs', 'held_events', 'requests'));
     }
 
