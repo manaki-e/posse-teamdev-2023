@@ -106,6 +106,11 @@ class AdminUserController extends Controller
         //累計消費Peer Point
         $total_used_points_by_events=EventParticipantLog::getSumOfUsedPoints($user);
         $total_used_points_by_products=ProductDealLog::getSumOfUsedPoints($user);
+        $total_used_points=$total_used_points_by_events+$total_used_points_by_products;
+        //productによる累計消費peer pointの確認用コード
+        // dd(ProductDealLog::where('user_id',$user)->pluck('point'), $total_used_points_by_products);
+        //eventによる累計消費peer pointの確認用コード
+        // dd(EventParticipantLog::where('user_id',$user)->pluck('point'), $total_used_points_by_events);
         //今月獲得Bonus Point=>今月開催済みイベントの合計ポイント、今月自分のアイテムの合計ポイント
         $current_month_earned_points_by_events=Event::getSumOfEarnedPointsCurrentMonth($user);
         $current_month_earned_points_by_products=Product::getSumOfEarnedPointsCurrentMonth($user);
