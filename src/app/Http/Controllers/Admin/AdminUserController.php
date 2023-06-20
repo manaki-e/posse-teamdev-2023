@@ -89,12 +89,14 @@ class AdminUserController extends Controller
         $product_deal_logs = ProductDealLog::UserInvolved($user)->with('user')->paginate(10);
         $products = Product::approvedProducts()->where('user_id', $user)->with('productTags.tag')->withCount('productLikes')->paginate(10);
         $joined_event_logs = EventParticipantLog::where('user_id', $user)->with('event.eventTags.tag')->paginate(10);
-        $held_events = Event::where('user_id', $user)->with('eventParticipants')->withSum('eventParticipants', 'point')->withCount('eventParticipants')->paginate(10);
+        $held_events = Event::where('user_id', $user)->with('eventParticipants')->withSum('eventParticipants', 'point')->withCount(['eventParticipants' => function ($query) {
+            $query->where('cancelled_at', null);
+        }])->paginate(10);
         $requests = AppRequest::where('user_id', $user)->with('product')->with('event')->paginate(10);
         //累計獲得Bonus Point=>開催済みイベントの合計ポイント、自分のアイテムの合計ポイント
-        $total_earned_points_by_events=Event::getSumOfEarnedPoints($user);
-        $total_earned_points_by_products=Product::getSumOfEarnedPoints($user);
-        $total_earned_points=$total_earned_points_by_events+$total_earned_points_by_products;
+        $total_earned_points_by_events = Event::getSumOfEarnedPoints($user);
+        $total_earned_points_by_products = Product::getSumOfEarnedPoints($user);
+        $total_earned_points = $total_earned_points_by_events + $total_earned_points_by_products;
         //productによる獲得bonus pointの確認用コード
         // dd(ProductDealLog::whereHas('product',function($query)use($user){
         //     $query->withTrashed()->where('user_id',$user);
@@ -104,17 +106,17 @@ class AdminUserController extends Controller
         //     $query->withTrashed()->where('user_id',$user)->where('completed_at','!=',null);
         // })->pluck('point'), $total_earned_points_by_events);
         //累計消費Peer Point
-        $total_used_points_by_events=EventParticipantLog::getSumOfUsedPoints($user);
-        $total_used_points_by_products=ProductDealLog::getSumOfUsedPoints($user);
-        $total_used_points=$total_used_points_by_events+$total_used_points_by_products;
+        $total_used_points_by_events = EventParticipantLog::getSumOfUsedPoints($user);
+        $total_used_points_by_products = ProductDealLog::getSumOfUsedPoints($user);
+        $total_used_points = $total_used_points_by_events + $total_used_points_by_products;
         //productによる累計消費peer pointの確認用コード
         // dd(ProductDealLog::where('user_id',$user)->pluck('point'), $total_used_points_by_products);
         //eventによる累計消費peer pointの確認用コード
         // dd(EventParticipantLog::where('user_id',$user)->pluck('point'), $total_used_points_by_events);
         //今月獲得Bonus Point=>今月開催済みイベントの合計ポイント、今月自分のアイテムの合計ポイント
-        $current_month_earned_points_by_events=Event::getSumOfEarnedPointsCurrentMonth($user);
-        $current_month_earned_points_by_products=Product::getSumOfEarnedPointsCurrentMonth($user);
-        $current_month_earned_points=$current_month_earned_points_by_events+$current_month_earned_points_by_products;
+        $current_month_earned_points_by_events = Event::getSumOfEarnedPointsCurrentMonth($user);
+        $current_month_earned_points_by_products = Product::getSumOfEarnedPointsCurrentMonth($user);
+        $current_month_earned_points = $current_month_earned_points_by_events + $current_month_earned_points_by_products;
         //eventによる今月獲得bonus pointの確認用コード
         // dd(Product::where('user_id', $user)->withSum(['productDealLogs' => function ($query) {
         //     $query->whereMonth('created_at', date('m'));
@@ -122,9 +124,9 @@ class AdminUserController extends Controller
         //productによる今月獲得bonus pointの確認用コード
         // dd(Event::where('user_id',$user)->where('completed_at','!=',null)->whereMonth('created_at',date('m'))->with('eventParticipants')->get()->pluck('eventParticipants')->flatten()->pluck('point'),$current_month_earned_points_by_events);
         //今月消費Peer Point
-        $current_month_used_points_by_events=EventParticipantLog::getSumOfUsedPointsCurrentMonth($user);
-        $current_month_used_points_by_products=ProductDealLog::getSumOfUsedPointsCurrentMonth($user);
-        $current_month_used_points=$current_month_used_points_by_events+$current_month_used_points_by_products;
+        $current_month_used_points_by_events = EventParticipantLog::getSumOfUsedPointsCurrentMonth($user);
+        $current_month_used_points_by_products = ProductDealLog::getSumOfUsedPointsCurrentMonth($user);
+        $current_month_used_points = $current_month_used_points_by_events + $current_month_used_points_by_products;
         //eventによる今月消費peer pointの確認用コード
         // dd(EventParticipantLog::where('user_id',$user)->whereMonth('created_at',date('m'))->pluck('point'),$current_month_used_points_by_events);
         //productによる今月消費peer pointの確認用コード
