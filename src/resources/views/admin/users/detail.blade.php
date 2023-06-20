@@ -61,7 +61,7 @@
                             <x-admin-point>
                                 <x-slot name="point">
                                     <!-- 後ほど修正する -->
-                                    {{ $user_data->earned_point }}
+                                    {{ $total_earned_points }}
                                 </x-slot>
                                 <x-slot name="description">
                                     {{ __('累計獲得 Bonus Point') }}
@@ -72,7 +72,7 @@
                             <x-admin-point>
                                 <x-slot name="point">
                                     <!-- 後ほど修正する -->
-                                    {{ $user_data->distribution_point }}
+                                    {{ $total_used_points }}
                                 </x-slot>
                                 <x-slot name="description">
                                     {{ __('累計消費 Peer Point') }}
@@ -82,7 +82,7 @@
                         <div class="p-4 w-1/4">
                             <x-admin-point>
                                 <x-slot name="point">
-                                    {{ $user_data -> earned_point }}
+                                    {{ $current_month_earned_points }}
                                 </x-slot>
                                 <x-slot name="description">
                                     {{ __('今月獲得 Bonus Point') }}
@@ -92,7 +92,7 @@
                         <div class="p-4 w-1/4">
                             <x-admin-point>
                                 <x-slot name="point">
-                                    {{ 5000 - $user_data -> distribution_point }}
+                                    {{ $current_month_used_points }}
                                 </x-slot>
                                 <x-slot name="description">
                                     {{ __('今月消費 Peer Point') }}
