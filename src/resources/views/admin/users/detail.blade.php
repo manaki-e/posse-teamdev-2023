@@ -31,7 +31,7 @@
             <div class="pl-4">
                 <div class="w-24 h-24">
                     <!-- 後ほど修正する -->
-                    <img class="rounded-full overflow-hidden" src="{{ asset('images/sample_product_1.jpeg') }}" alt="ユーザ写真">
+                    <img class="rounded-full overflow-hidden" src="{{ $user_data->icon }}" alt="ユーザ写真">
                 </div>
             </div>
             <div>
