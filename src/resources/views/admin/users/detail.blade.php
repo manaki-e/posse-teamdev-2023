@@ -221,7 +221,7 @@
                                         {{ $product -> product_likes_count }}
                                     </td>
                                     <td class="px-6 py-4 text-center">
-                                        @if ( $product -> status === 3 )
+                                        @if ( $product -> status === $product_occupied_status || $product -> status === $product_delivering_status)
                                         <x-admin-status-red>貸出中</x-admin-status-red>
                                         @else
                                         <x-admin-status-green>貸出可能</x-admin-status-green>

@@ -88,6 +88,8 @@ class AdminUserController extends Controller
         $user_data = User::with('department')->findOrFail($user);
         $product_deal_logs = ProductDealLog::UserInvolved($user)->with('user')->paginate(10);
         $products = Product::approvedProducts()->where('user_id', $user)->with('productTags.tag')->withCount('productLikes')->paginate(10);
+        $product_occupied_status = Product::STATUS['occupied'];
+        $product_delivering_status = Product::STATUS['delivering'];
         $joined_event_logs = EventParticipantLog::where('user_id', $user)->with('event.eventTags.tag')->paginate(10);
         $held_events = Event::where('user_id', $user)->with('eventParticipants')->withSum('eventParticipants', 'point')->withCount(['eventParticipants' => function ($query) {
             $query->where('cancelled_at', null);
@@ -131,7 +133,7 @@ class AdminUserController extends Controller
         // dd(EventParticipantLog::where('user_id',$user)->whereMonth('created_at',date('m'))->pluck('point'),$current_month_used_points_by_events);
         //productによる今月消費peer pointの確認用コード
         // dd(ProductDealLog::where('user_id',$user)->whereMonth('created_at',date('m'))->pluck('point'),$current_month_used_points_by_products);
-        return view('admin.users.detail', compact('user', 'user_data', 'product_deal_logs', 'products', 'joined_event_logs', 'held_events', 'requests', 'total_earned_points', 'total_used_points', 'current_month_earned_points', 'current_month_used_points'));
+        return view('admin.users.detail', compact('user', 'user_data', 'product_deal_logs', 'products', 'joined_event_logs', 'held_events', 'requests', 'total_earned_points', 'total_used_points', 'current_month_earned_points', 'current_month_used_points', 'product_occupied_status', 'product_delivering_status'));
     }
 
     /**
