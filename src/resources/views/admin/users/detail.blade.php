@@ -272,7 +272,8 @@
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">イベント名</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">カテゴリー</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">参加状況</th>
-                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">開催日時</th>
+                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">開始日時</th>
+                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">終了日時</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">支払いポイント</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
                                 </tr>
@@ -294,9 +295,10 @@
                                         @endif
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        {{ $event_log -> event -> date
-                                        ? date( 'Y年m月d日 H時i分s秒', strtotime( $event_log -> event -> date ) )
-                                        : '未定' }}
+                                        {{ $event_log -> event -> start_date ? date( 'Y.m.d H:i', strtotime( $event_log -> event -> start_date ) ) : '未定' }}
+                                    </td>
+                                    <td class="px-6 py-4 text-right">
+                                        {{ $event_log -> event -> end_date ? date( 'Y.m.d H:i', strtotime( $event_log -> event -> end_date ) ) : '未定' }}
                                     </td>
                                     <td class="px-6 py-4 text-right">
                                         {{ $event_log -> point }} pt
@@ -321,7 +323,8 @@
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">イベント名</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">カテゴリー</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-center">開催状況</th>
-                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">開催日時</th>
+                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">開始日時</th>
+                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">終了日時</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">参加人数</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">獲得ポイント</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
@@ -346,9 +349,10 @@
                                         @endif
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        {{ $event -> date
-                                        ? date( 'Y年m月d日 H時i分s秒', strtotime( $event -> date ) )
-                                        : '未定' }}
+                                        {{ $event -> start_date ? date( 'Y.m.d H:i', strtotime( $event -> start_date ) ) : '未定' }}
+                                    </td>
+                                    <td class="px-6 py-4 text-right">
+                                        {{ $event -> end_date ? date( 'Y.m.d H:i', strtotime( $event -> end_date ) ) : '未定' }}
                                     </td>
                                     <td class="px-6 py-4 text-right">
                                         {{ $event -> event_participants_count ?? '0' }} 人
