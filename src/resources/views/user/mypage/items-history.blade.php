@@ -40,7 +40,15 @@
                                 <x-slot:user_icon>{{ $history -> product -> user -> icon }}</x-slot:user_icon>
                                 <x-slot:user_name>{{ $history -> product -> user -> name }}</x-slot:user_name>
                                 <x-slot:borrowing_time>{{ date( 'Y年m月d日', strtotime( $history -> created_at ) ) }}</x-slot:borrowing_time>
-                                <x-slot:return_time>{{ $history -> returned_at ? date( 'Y年m月d日', strtotime( $history -> returned_at ) ) : '未返却' }}</x-slot:return_time>
+                                <x-slot:return_time>
+                                    @if($history -> cancelled_at)
+                                    キャンセル済み
+                                    @elseif($history -> returned_at)
+                                    {{ date('Y年m月d日',strtotime($history -> returned_at)) }}
+                                    @else
+                                    未返却
+                                    @endif
+                                </x-slot:return_time>
                             </x-mypage-history-item>
                             @endforeach
                         </tbody>
