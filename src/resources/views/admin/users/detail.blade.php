@@ -287,7 +287,7 @@
                                         @endforeach
                                     </td>
                                     <td class="px-6 py-4">
-                                        @if ( $event_log -> deleted_at )
+                                        @if ( $event_log -> cancelled_at )
                                         <x-admin-status-red>キャンセル済み</x-admin-status-red>
                                         @else
                                         <x-admin-status-green>参加</x-admin-status-green>
