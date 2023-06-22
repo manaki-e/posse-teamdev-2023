@@ -84,7 +84,7 @@ class EventController extends Controller
     public function store(Request $request)
     {
         // slackチャンネル作成
-        $event_id = Event::max('id') + 1;
+        $event_id = Event::withTrashed()->max('id') + 1;
         $slackId = $this->slackController->createChannel($event_id, $request->title, false);
 
         //events追加
