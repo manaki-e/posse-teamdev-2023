@@ -56,6 +56,13 @@ class AdminUserController extends Controller
      */
     public function store(Request $request)
     {
+        // 一度削除したユーザであった場合は復元する（データは消されているためポイントのデータのみ復元される）
+        $user = User::withTrashed()->where('email', $request->email)->first();
+        if ($user->trashed()) {
+            $user->restore();
+            return Redirect::route('admin.users.index')->with(['flush.message' => 'slackにいるユーザを新しくPeerPerkユーザとして登録しました', 'flush.alert_type' => 'success']);
+        }
+
         if (empty($request->department_name)) {
             $department_id = null;
         } else {
