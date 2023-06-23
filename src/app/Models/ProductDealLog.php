@@ -57,8 +57,4 @@ class ProductDealLog extends Model
     {
         return self::where('user_id', $user_id)->sum('point');
     }
-    public static function getSumOfUsedPointsCurrentMonth($user_id)
-    {
-        return self::where('user_id', $user_id)->currentMonth()->sum('point');
-    }
 }
