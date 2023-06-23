@@ -189,12 +189,14 @@ class Product extends Model
     }
     public static function getSumOfEarnedPoints($user_id)
     {
-        return self::where('user_id', $user_id)->withSum('productDealLogs', 'point')->get()->sum('product_deal_logs_sum_point');
+        return self::where('user_id', $user_id)->withSum(['productDealLogs'=>function($query){
+            $query->where('cancelled_at',null);
+        }], 'point')->get()->sum('product_deal_logs_sum_point');
     }
     public static function getSumOfEarnedPointsCurrentMonth($user_id)
     {
         return self::where('user_id', $user_id)->withSum(['productDealLogs' => function ($query) {
-            $query->whereMonth('created_at', date('m'));
+            $query->whereMonth('created_at', date('m'))->where('cancelled_at',null);
         }], 'point')->get()->sum('product_deal_logs_sum_point');
     }
 }
