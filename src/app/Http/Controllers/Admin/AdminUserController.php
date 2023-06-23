@@ -10,12 +10,14 @@ use App\Models\EventParticipantLog;
 use App\Models\Product;
 use App\Models\ProductDealLog;
 use App\Models\Request as AppRequest;
+use App\Models\Setting;
 use App\Models\SlackUser;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
+
 
 class AdminUserController extends Controller
 {
@@ -95,12 +97,28 @@ class AdminUserController extends Controller
         $user_data = User::with('department')->findOrFail($user);
         $product_deal_logs = ProductDealLog::UserInvolved($user)->with('user')->paginate(10);
         $products = Product::approvedProducts()->where('user_id', $user)->with('productTags.tag')->withCount('productLikes')->paginate(10);
+        $product_occupied_status = Product::STATUS['occupied'];
+        $product_delivering_status = Product::STATUS['delivering'];
         $joined_event_logs = EventParticipantLog::where('user_id', $user)->with('event.eventTags.tag')->paginate(10);
-        $held_events = Event::where('user_id', $user)->with('eventParticipants')->withSum('eventParticipants', 'point')->withCount('eventParticipants')->paginate(10);
-        // dd($held_events);
+        $held_events = Event::where('user_id', $user)->with('eventParticipants')->withSum('eventParticipants', 'point')->withCount(['eventParticipants' => function ($query) {
+            $query->where('cancelled_at', null);
+        }])->paginate(10);
         $requests = AppRequest::where('user_id', $user)->with('product')->with('event')->paginate(10);
 
-        return view('admin.users.detail', compact('user', 'user_data', 'product_deal_logs', 'products', 'joined_event_logs', 'held_events', 'requests'));
+        $total_earned_points_by_events = Event::getSumOfEarnedPoints($user);
+        $total_earned_points_by_products = Product::getSumOfEarnedPoints($user);
+        $total_earned_points = $total_earned_points_by_events + $total_earned_points_by_products;
+
+        $total_used_points_by_events = EventParticipantLog::getSumOfUsedPoints($user);
+        $total_used_points_by_products = ProductDealLog::getSumOfUsedPoints($user);
+        $total_used_points = $total_used_points_by_events + $total_used_points_by_products;
+
+        $current_month_earned_points_by_events = Event::getSumOfEarnedPointsCurrentMonth($user);
+        $current_month_earned_points_by_products = Product::getSumOfEarnedPointsCurrentMonth($user);
+        $current_month_earned_points = $current_month_earned_points_by_events + $current_month_earned_points_by_products;
+
+        $current_month_used_points = Setting::monthlyDistributionPoint()-$user_data->distribution_point;
+        return view('admin.users.detail', compact('user', 'user_data', 'product_deal_logs', 'products', 'joined_event_logs', 'held_events', 'requests', 'total_earned_points', 'total_used_points', 'current_month_earned_points', 'current_month_used_points', 'product_occupied_status', 'product_delivering_status'));
     }
 
     /**

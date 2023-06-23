@@ -180,14 +180,16 @@ class EventController extends Controller
         //まずはevent_tagsをすべて削除
         EventTag::where('event_id', $id)->delete();
         //event_tags追加
-        foreach ($request->tags as $tag_id) {
-            $event_tag = new EventTag();
-            $event_tag->event_id = $id;
-            $event_tag->tag_id = $tag_id;
-            $event_tag->save();
+        if (!empty($request->tags)) {
+            foreach ($request->tags as $tag_id) {
+                $event_tag = new EventTag();
+                $event_tag->event_id = $id;
+                $event_tag->tag_id = $tag_id;
+                $event_tag->save();
+            }
         }
         //slackイベント
-        $this->slackController->sendNotification($event->slack_channel, "<!channel>イベントの登録内容が更新されました！確認しましょう。\n```".env('APP_URL')."events```");
+        $this->slackController->sendNotification($event->slack_channel, "<!channel>イベントの登録内容が更新されました！確認しましょう。\n```" . env('APP_URL') . "events```");
         return redirect()->route('mypage.events.organized')->with(['flush.message' => 'イベント更新を完了しました。', 'flush.alert_type' => 'success']);
     }
 
@@ -216,7 +218,7 @@ class EventController extends Controller
         //slackイベント
         $this->slackController->sendNotification($event_instance->slack_channel, "<!channel>イベントの開催を完了しました！次は、他のイベントにも積極的に参加したり、イベントを開催したりしてみましょう。");
         //slack全体
-        $this->slackController->sendNotification($this->slackGlobalAnnouncementChannelId, "イベントの開催が完了しました！<@".$event_instance->user->slackID.">はこのチャンネルで感想を一言お願いします！");
+        $this->slackController->sendNotification($this->slackGlobalAnnouncementChannelId, "イベントの開催が完了しました！<@" . $event_instance->user->slackID . ">はこのチャンネルで感想を一言お願いします！");
         return redirect()->route('mypage.events.organized');
     }
     public function cancel($event)
@@ -236,7 +238,7 @@ class EventController extends Controller
             $event_participant_log->cancelled_at = now();
             $event_participant_log->save();
             //slackイベント
-            $this->slackController->sendNotification($event_data->slack_channel, "<@".$user->slackID.">さんがイベントへの参加をキャンセルしました。");
+            $this->slackController->sendNotification($event_data->slack_channel, "<@" . $user->slackID . ">さんがイベントへの参加をキャンセルしました。");
             $this->slackController->removeUserFromChannel($event_data->slack_channel, $user->slackID);
             return redirect()->route('mypage.events.joined')->with(['flush.message' => 'イベントへの参加をキャンセルしました。', 'flush.alert_type' => 'success']);
         }
@@ -267,7 +269,7 @@ class EventController extends Controller
         $event_participant_log->point = $request->point;
         $event_participant_log->save();
         //slackイベント
-        $this->slackController->sendNotification($channel_id,"<!channel><@".$user_slack_id. ">がこのイベントへの参加を申し込みました！チャンネル内でイベントについての詳細を決めましょう。もし詳細が決定している場合は、教えてあげましょう！");
+        $this->slackController->sendNotification($channel_id, "<!channel><@" . $user_slack_id . ">がこのイベントへの参加を申し込みました！チャンネル内でイベントについての詳細を決めましょう。もし詳細が決定している場合は、教えてあげましょう！");
         // 処理後redirect back
         return redirect()->back()->with(['flush.message' => 'イベントへの参加を申し込みました。', 'flush.alert_type' => 'success']);
     }
