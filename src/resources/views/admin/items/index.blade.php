@@ -88,7 +88,7 @@
                                                     <div class="relative flex gap-4">
                                                         <label for="point"
                                                             class="leading-7 text-sm text-gray-600 flex-center">Point:</label>
-                                                        <input type="number" id="point" name="point"
+                                                        <input max="5000" type="number" id="point" name="point"
                                                             value="{{ $not_pending_product -> point }}"
                                                             class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                                                     </div>
@@ -160,7 +160,7 @@
                                                     <div class="relative flex gap-4">
                                                         <label for="point"
                                                             class="leading-7 text-sm text-gray-600 flex-center">Point:</label>
-                                                        <input type="number" id="point" name="point"
+                                                        <input max="5000" type="number" id="point" name="point"
                                                             class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" required>
                                                     </div>
                                                 </div>
