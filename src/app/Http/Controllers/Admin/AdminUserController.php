@@ -153,8 +153,13 @@ class AdminUserController extends Controller
             $this->slackController->inviteUsersToChannel($channel_id, $user_slack_id);
         }
         $user_instance->save();
-
-        return Redirect::route('admin.users.index')->with(['flush.message' => '権限の変更が正しく行われました', 'flush.alert_type' => 'success']);
+        //ログインしている管理者が自分を一般ユーザーに変更した場合はログアウトさせる
+        if (auth()->user()->id === $user_instance->id) {
+            auth()->logout();
+            return Redirect::route('login');
+        } else {
+            return Redirect::route('admin.users.index')->with(['flush.message' => '権限の変更が正しく行われました', 'flush.alert_type' => 'success']);
+        }
     }
 
     /**
@@ -167,7 +172,10 @@ class AdminUserController extends Controller
     {
         User::findOrFail($user)->delete();
         // ユーザテーブルに紐づく各テーブルのデータも削除する
-
-        return Redirect::route('admin.users.index')->with(['flush.message' => 'ユーザ削除が正しく行われました', 'flush.alert_type' => 'success']);
+        if (auth()->user()->id === $user) {
+            return Redirect::route('login');
+        } else {
+            return Redirect::route('admin.users.index')->with(['flush.message' => 'ユーザ削除が正しく行われました', 'flush.alert_type' => 'success']);
+        }
     }
 }
