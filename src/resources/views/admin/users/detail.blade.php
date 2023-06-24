@@ -180,7 +180,7 @@
                                         {{ date( 'Y年m月d日 H時i分s秒', strtotime( $product_deal_log -> created_at ) ) }}
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        @if($product_deal_log-> cancelled_at)
+                                        @if($product_deal_log -> cancelled_at)
                                         キャンセル済み
                                         @elseif($product_deal_log -> returned_at)
                                         {{ date('Y年m月d日',strtotime($product_deal_log -> returned_at)) }}
