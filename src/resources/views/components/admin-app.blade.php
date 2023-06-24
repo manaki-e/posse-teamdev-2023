@@ -48,15 +48,16 @@
                         {{ __('ユーザー画面へ') }}
                     </x-admin-nav-link>
                     <form method="POST" action="{{ route('logout') }}">
-                        <button type="submit" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
-                            @csrf
+                        @csrf
+                        <div class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item cursor-pointer" onclick="event.preventDefault();
+                                                this.closest('form').submit();">
                             <div class="w-8 h-8 mr-6">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M17 7L15.59 8.41L18.17 11H8V13H18.17L15.59 15.58L17 17L22 12L17 7ZM4 5H12V3H4C2.9 3 2 3.9 2 5V19C2 20.1 2.9 21 4 21H12V19H4V5Z" fill="currentColor" />
                                 </svg>
                             </div>
                             {{ __('ログアウト') }}
-                        </button>
+                        </div>
                     </form>
                 </div>
             </div>
