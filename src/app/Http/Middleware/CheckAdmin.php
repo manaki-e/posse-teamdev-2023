@@ -23,13 +23,16 @@ class CheckAdmin
             return redirect()->back()->with(['flush.message' => '管理者のみアクセスできます。', 'flush.alert_type' => 'warning']);
         }
         $response = $next($request);
-        if (strpos($previous_url, 'admin') === 0 && $request->method() === 'GET') {
+        if (strpos($previous_url, 'admin') === 0&& $request->method()==='GET') {
             //ログインしている管理者が自分を一般ユーザーに変更した処理の後
             if (auth()->user()->is_admin === 0) {
                 auth()->logout();
+                return redirect()->route('login');
             }
-            //ログインしている管理者が自分を削除した処理の後何もしない
-            return redirect()->route('login');
+            //ログインしている管理者が自分を削除した処理の後
+            elseif(!empty(auth()->user()->deleted_at)){
+                return redirect()->route('login');
+            }
         }
         return $response;
     }
