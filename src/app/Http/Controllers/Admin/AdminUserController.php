@@ -117,7 +117,7 @@ class AdminUserController extends Controller
         $current_month_earned_points_by_products = Product::getSumOfEarnedPointsCurrentMonth($user);
         $current_month_earned_points = $current_month_earned_points_by_events + $current_month_earned_points_by_products;
 
-        $current_month_used_points = Setting::monthlyDistributionPoint()-$user_data->distribution_point;
+        $current_month_used_points = Setting::monthlyDistributionPoint() - $user_data->distribution_point;
         return view('admin.users.detail', compact('user', 'user_data', 'product_deal_logs', 'products', 'joined_event_logs', 'held_events', 'requests', 'total_earned_points', 'total_used_points', 'current_month_earned_points', 'current_month_used_points', 'product_occupied_status', 'product_delivering_status'));
     }
 
