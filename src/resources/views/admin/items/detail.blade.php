@@ -118,9 +118,8 @@
                             <p class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold capitalize">
                                 リクエストの紐付け:</p>
                             <p class="block antialiased font-sans text-sm leading-normal font-normal text-gray-500">
-                                <!-- 後ほど修正する -->
                                 {!! ( $product -> request )
-                                ? 'あり <a href="#" class="hover:text-blue-700 border-b border-blue-800">（ここを押すと紐づけられたリクエストの詳細に飛びます）</a>'
+                                ? 'あり'
                                 : 'なし' !!}
                             </p>
                         </li>
