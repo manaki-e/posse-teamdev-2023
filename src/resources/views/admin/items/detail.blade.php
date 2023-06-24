@@ -119,7 +119,7 @@
                                 リクエストの紐付け:</p>
                             <p class="block antialiased font-sans text-sm leading-normal font-normal text-gray-500">
                                 {!! ( $product -> request )
-                                ? 'あり '
+                                ? 'あり'
                                 : 'なし' !!}
                             </p>
                         </li>
