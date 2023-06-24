@@ -30,7 +30,6 @@
         <div class="flex gap-16 pt-4">
             <div class="pl-4">
                 <div class="w-24 h-24">
-                    <!-- 後ほど修正する -->
                     <img class="rounded-full overflow-hidden" src="{{ $user_data->icon }}" alt="ユーザ写真">
                 </div>
             </div>
@@ -60,7 +59,6 @@
                         <div class="p-4 w-1/4">
                             <x-admin-point>
                                 <x-slot name="point">
-                                    <!-- 後ほど修正する -->
                                     {{ $total_earned_points }}
                                 </x-slot>
                                 <x-slot name="description">
@@ -71,7 +69,6 @@
                         <div class="p-4 w-1/4">
                             <x-admin-point>
                                 <x-slot name="point">
-                                    <!-- 後ほど修正する -->
                                     {{ $total_used_points }}
                                 </x-slot>
                                 <x-slot name="description">
@@ -229,7 +226,6 @@
                                     </td>
                                     <td class="flex justify-end gap-4 px-6 py-4 font-medium">
                                         <x-admin-button-detail href="{{ route('admin.items.show', ['item' =>  $product -> id]) }}"></x-admin-button-detail>
-                                        <!-- 後ほど修正する -->
                                         <x-admin-button-edit action="">
                                             <x-slot name="content">
                                                 ポイント再設定
@@ -304,7 +300,6 @@
                                         {{ $event_log -> point }} pt
                                     </td>
                                     <td class="flex justify-end gap-4 px-6 py-4 font-medium">
-                                        <!-- 後ほど修正する -->
                                         <x-admin-button-detail href="#"></x-admin-button-detail>
                                     </td>
                                 </tr>
@@ -364,7 +359,6 @@
                                         pt
                                     </td>
                                     <td class="flex justify-end gap-4 px-6 py-4 font-medium">
-                                        <!-- 後ほど修正する -->
                                         <x-admin-button-detail href="#"></x-admin-button-detail>
                                     </td>
                                 </tr>
@@ -401,7 +395,6 @@
                                         {{ date( 'Y年m月d日 H時i分s秒', strtotime( $request -> created_at ) ) }}
                                     </td>
                                     <td class="flex justify-end gap-4 px-6 py-4 font-medium">
-                                        <!-- 後ほど修正する -->
                                         <x-admin-button-detail></x-admin-button-detail>
                                     </td>
                                 </tr>
