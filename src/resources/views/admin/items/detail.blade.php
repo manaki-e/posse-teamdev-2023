@@ -134,7 +134,11 @@
                         <li class="flex items-center gap-4 pl-4">
                             <p class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold capitalize">
                                 貸出者:</p>
-                            <p class="block antialiased font-sans text-sm leading-normal font-normal text-gray-500">{{ $product -> user -> name }}</p>
+                            <p class="block antialiased font-sans text-sm leading-normal font-normal text-gray-500">
+                                <a href="{{ route('admin.users.show', ['user' => $product -> user -> id]) }}" class="border-b border-blue-600 hover:text-blue-700">
+                                    {{ $product -> user -> name }}
+                                </a>
+                            </p>
                         </li>
                         <li class="flex items-center gap-4 pl-4 mt-4">
                             @if ($product -> status === 1)
@@ -229,7 +233,10 @@
                             <tbody class="divide-y divide-gray-100 border-t border-gray-100">
                                 @foreach ( $product_deals as $deal )
                                 <tr class="hover:bg-gray-50">
-                                    <td class="px-6 py-4">{{ $deal -> user -> name }}
+                                    <td class="px-6 py-4">
+                                        <a href="{{ route('admin.users.show', ['user' => $deal -> user -> id]) }}" class="border-b border-blue-600 hover:text-blue-700">
+                                            {{ $deal -> user -> name }}
+                                        </a>
                                     </td>
                                     <td class="px-6 py-4 text-right">
                                         {{ date( 'Y年m月d日 H時i分s秒', strtotime( $deal -> created_at ) ) }}
