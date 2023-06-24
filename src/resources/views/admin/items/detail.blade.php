@@ -118,7 +118,6 @@
                             <p class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold capitalize">
                                 リクエストの紐付け:</p>
                             <p class="block antialiased font-sans text-sm leading-normal font-normal text-gray-500">
-                                <!-- 後ほど修正する -->
                                 {!! ( $product -> request )
                                 ? 'あり '
                                 : 'なし' !!}
