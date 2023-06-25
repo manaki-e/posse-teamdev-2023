@@ -26,7 +26,6 @@ class AdminItemController extends Controller
     public function index()
     {
         //登録済みアイテム一覧
-        $japanese_product_statuses = Product::JAPANESE_STATUS;
         $not_pending_products = Product::approvedProducts()->with('user')->paginate(10, ['*'], 'not_pending')->appends(['pending' => request('pending')]);
 
         //登録申請対応待ちアイテム一覧

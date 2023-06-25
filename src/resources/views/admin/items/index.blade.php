@@ -51,10 +51,10 @@
                                         <a href="{{ route('admin.users.show', ['user' => $not_pending_product -> user -> id]) }}" class="border-b border-blue-600 hover:text-blue-700">{{ $not_pending_product -> user -> name }}</a>
                                     </td>
                                     <td class="px-6 py-4 text-center">
-                                        @if ($not_pending_product -> status === 3)
-                                        <x-admin-status-red>貸出中</x-admin-status-red>
-                                        @elseif ($not_pending_product -> status === 2)
+                                        @if ($not_pending_product -> status === \App\Models\Product::STATUS['available'])
                                         <x-admin-status-green>貸出可能</x-admin-status-green>
+                                        @else
+                                        <x-admin-status-red>貸出中</x-admin-status-red>
                                         @endif
                                     </td>
                                     <td class="flex justify-end gap-4 px-6 py-4 font-medium">
