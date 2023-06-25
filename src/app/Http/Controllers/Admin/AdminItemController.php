@@ -100,7 +100,7 @@ class AdminItemController extends Controller
             //リクエストに紐づいていたら、リクエストの投稿者にslack通知
             if (!empty($product->request_id)) {
                 $request = ModelsRequest::find($product->request_id);
-                $this->slackController->sendNotification($request->user->slackID, "<@" . $product->user->slackID . "> より、あなたのリクエストに対して、アイテムが登録されました！確認してみましょう。\n```" . env('APP_URL') . "items```");
+                $this->slackController->sendNotification($request->user->slackID, "<@" . $product->user->slackID . "> より、あなたのリクエストに対して、アイテムが登録されました！確認してみましょう。\n```" . env('APP_URL') . "items/" . $item . "```");
             }
             //slack登録申請者
             $this->slackController->sendNotification($product->user->slackID, "管理者がポイントを設定し、あなたのアイテムを登録しました！\n```" . env('APP_URL') . "mypage/items/listed```");
