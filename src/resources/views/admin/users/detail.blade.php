@@ -275,7 +275,6 @@
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">開始日時</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">終了日時</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">支払いポイント</th>
-                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-100 border-t border-gray-100">
@@ -303,9 +302,6 @@
                                     <td class="px-6 py-4 text-right">
                                         {{ $event_log -> point }} pt
                                     </td>
-                                    <td class="flex justify-end gap-4 px-6 py-4 font-medium">
-                                        <x-admin-button-detail href="#"></x-admin-button-detail>
-                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -326,7 +322,6 @@
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">終了日時</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">参加人数</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">獲得ポイント</th>
-                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-100 border-t border-gray-100">
@@ -361,9 +356,6 @@
                                         ? $event -> event_participants_sum_point
                                         : 0 }}
                                         pt
-                                    </td>
-                                    <td class="flex justify-end gap-4 px-6 py-4 font-medium">
-                                        <x-admin-button-detail href="#"></x-admin-button-detail>
                                     </td>
                                 </tr>
                                 @endforeach
