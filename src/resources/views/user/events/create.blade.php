@@ -109,6 +109,16 @@
         var startValue = new Date(startInput.value);
         var endValue = new Date(endInput.value);
 
+        var today = new Date();
+        if (startValue < today || endValue < today) {
+            alert("開始日時と終了日時は現在時刻より後の日時を設定してください。");
+            // 値をクリアする
+            if(startValue < today){
+                startInput.value = "";
+            }else if(endValue < today){
+                endInput.value = "";
+            }
+        }
         if (startValue > endValue) {
             alert("終了日時は開始日時より後の日時を設定してください。");
             // 値をクリアする
