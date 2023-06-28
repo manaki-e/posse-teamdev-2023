@@ -280,6 +280,10 @@ class EventController extends Controller
         $requests = ModelsRequest::unresolvedRequests()->eventRequests()->get();
         //イベントタグ一覧を取得
         $tags = Tag::eventTags()->get();
+        //リクエストのタグを取得して、チェック済みにする
+        $request_tags = ModelsRequest::findOrFail($chosen_request_id)->requestTags->map(function ($request_tag) use ($tags) {
+            $tags->find($request_tag->tag_id)->setAttribute('checked', true);
+        });
         return view('user.events.create', compact('requests', 'tags', 'chosen_request_id', 'locations'));
     }
     public function like($id)
