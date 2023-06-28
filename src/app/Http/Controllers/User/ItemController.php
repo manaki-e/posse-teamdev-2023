@@ -259,9 +259,13 @@ class ItemController extends Controller
     public function createWithRequest($chosen_request_id)
     {
         $conditions = Product::CONDITION;
-        $product_tags = Tag::productTags()->get();
+        $tags = Tag::productTags()->get();
         $requests = ModelsRequest::unresolvedRequests()->productRequests()->get();
-        return view('user.items.create', compact('chosen_request_id', 'product_tags', 'requests', 'conditions'));
+        //リクエストのタグを取得して、チェック済みにする
+        $request_tags = ModelsRequest::findOrFail($chosen_request_id)->requestTags->map(function ($request_tag) use ($tags) {
+            $tags->find($request_tag->tag_id)->setAttribute('checked', true);
+        });
+        return view('user.items.create', compact('chosen_request_id', 'tags', 'requests', 'conditions'));
     }
     public function like($id)
     {
