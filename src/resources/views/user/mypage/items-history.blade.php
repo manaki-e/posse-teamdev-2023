@@ -26,7 +26,7 @@
                         <thead class="bg-gray-50">
                             <tr>
                                 <th scope="col" class="px-6 py-4 font-medium text-gray-900">商品情報</th>
-                                <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">貸出日時</th>
+                                <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">借用日時</th>
                                 <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">返却日時</th>
                             </tr>
                         </thead>
