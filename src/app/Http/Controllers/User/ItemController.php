@@ -259,7 +259,9 @@ class ItemController extends Controller
     public function createWithRequest($chosen_request_id)
     {
         $conditions = Product::CONDITION;
+        //アイテムタグ一覧を取得
         $tags = Tag::productTags()->get();
+        //未完了のリクエストを取得
         $requests = ModelsRequest::unresolvedRequests()->productRequests()->get();
         //リクエストのタグを取得して、チェック済みにする
         $request_tags = ModelsRequest::findOrFail($chosen_request_id)->requestTags->map(function ($request_tag) use ($tags) {
