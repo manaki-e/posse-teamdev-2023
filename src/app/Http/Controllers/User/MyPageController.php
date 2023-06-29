@@ -99,17 +99,17 @@ class MyPageController extends Controller
         //消費=>product_deal_logsとevent_participant_logsを結合
         //消費はキャンセル関係なくポイントが減るためwithTrashed()
         $unchargeable_month_count = ProductDealLog::UNCHARGEABLE_MONTH_COUNT;
-        $user = Auth::user();
+        $user_id = Auth::id();
         //削除済みアイテムに関する取引履歴の実装はdiscordの返信をまつ
-        $distribution_product_deal_logs = ProductDealLog::getUserChargeableProductDealLogsIncludingTrashedProduct($user->id)->map(function ($product_deal_log) {
+        $distribution_product_deal_logs = ProductDealLog::getUserChargeableProductDealLogsIncludingTrashedProduct($user_id)->map(function ($product_deal_log) {
             return $product_deal_log->formatProductDealLogForMyPageDistributionPointHistory();
         });
-        $distribution_event_participant_logs = EventParticipantLog::getUserEventParticipantLogsIncludingTrashedEvent($user->id)->map(function ($event_participant_log) {
+        $distribution_event_participant_logs = EventParticipantLog::getUserEventParticipantLogsIncludingTrashedEvent($user_id)->map(function ($event_participant_log) {
             return $event_participant_log->formatEventParticipantLogForMyPageDistributionPointHistory();
         });
         $distribution_point_logs=collect([$distribution_product_deal_logs,$distribution_event_participant_logs])->flatten(1)->sortByDesc('created_at');
         //獲得=>point_exchange_logsとevents->withsum()とproduct_deal_logsを結合
-        $earned_point_exchange_logs = PointExchangeLog::where('user_id', $user->id)->get()->map(function ($point_exchange_log) {
+        $earned_point_exchange_logs = PointExchangeLog::where('user_id', $user_id)->get()->map(function ($point_exchange_log) {
             return [
                 'app' => 'PP',
                 'name' => '換金申請',
@@ -117,7 +117,7 @@ class MyPageController extends Controller
                 'point' => -$point_exchange_log->point,
             ];
         });
-        $earned_event_logs = Event::where('user_id', $user->id)->where('completed_at', '!=', null)->withSum('eventParticipants', 'point')->get()->map(function ($event) {
+        $earned_event_logs = Event::where('user_id', $user_id)->where('completed_at', '!=', null)->withSum('eventParticipants', 'point')->get()->map(function ($event) {
             return [
                 'app' => 'PE',
                 'name' => $event->title,
@@ -128,8 +128,8 @@ class MyPageController extends Controller
         //productが削除されてもポイントの変動は残る、product_deal_logが削除＝キャンセルされた場合はポイントの変動も削除
         $earned_product_deal_logs = ProductDealLog::notCancelled()->chargeable()->with(['product' => function ($query) {
             $query->withTrashed();
-        }])->whereHas('product', function ($query) use ($user) {
-            $query->where('user_id', $user->id)->withTrashed();
+        }])->whereHas('product', function ($query) use ($user_id) {
+            $query->where('user_id', $user_id)->withTrashed();
         })->get()->map(function ($product_deal_log) {
             return [
                 'app' => 'PPS',
