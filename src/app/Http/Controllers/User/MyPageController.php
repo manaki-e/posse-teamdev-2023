@@ -100,12 +100,12 @@ class MyPageController extends Controller
         //消費はキャンセル関係なくポイントが減るためwithTrashed()
         $unchargeable_month_count = ProductDealLog::UNCHARGEABLE_MONTH_COUNT;
         $user = Auth::user();
+        //削除済みアイテムに関する取引履歴の実装はdiscordの返信をまつ
         $distribution_product_deal_logs = ProductDealLog::getUserChargeableProductDealLogsIncludingTrashedProduct($user->id)->map(function ($product_deal_log) {
             return $product_deal_log->formatProductDealLogForMyPagePointHistory();
         });
-        $distribution_event_participant_logs = EventParticipantLog::withTrashed()->where('user_id', $user->id)->with(['event' => function ($query) {
-            $query->withTrashed();
-        }])->get()->map(function ($event_participant_log) {
+        $distribution_event_participant_logs = EventParticipantLog::getUserEventParticipantLogsIncludingTrashedEvent($user->id)->map(function ($event_participant_log) {
+            return $event_participant_log->formatEventParticipantLogForMyPagePointHistory();
             return [
                 'app' => 'PE',
                 'name' => $event_participant_log->event->title,
