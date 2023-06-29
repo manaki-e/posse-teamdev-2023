@@ -109,13 +109,8 @@ class MyPageController extends Controller
         });
         $distribution_point_logs=collect([$distribution_product_deal_logs,$distribution_event_participant_logs])->flatten(1)->sortByDesc('created_at');
         //獲得=>point_exchange_logsとevents->withsum()とproduct_deal_logsを結合
-        $earned_point_exchange_logs = PointExchangeLog::where('user_id', $user_id)->get()->map(function ($point_exchange_log) {
-            return [
-                'app' => 'PP',
-                'name' => '換金申請',
-                'created_at' => $point_exchange_log->created_at,
-                'point' => -$point_exchange_log->point,
-            ];
+        $earned_point_exchange_logs = PointExchangeLog::getUserPointExchangeLogs($user_id)->map(function ($point_exchange_log) {
+            return $point_exchange_log->formatPointExchangeLogForMyPageEarnedPointHistory();
         });
         $earned_event_logs = Event::where('user_id', $user_id)->where('completed_at', '!=', null)->withSum('eventParticipants', 'point')->get()->map(function ($event) {
             return [
