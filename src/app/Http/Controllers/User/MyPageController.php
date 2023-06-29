@@ -110,10 +110,7 @@ class MyPageController extends Controller
         //バグ発生対策
         $distribution_event_participant_logs = collect($distribution_event_participant_logs);
         $distribution_product_deal_logs = collect($distribution_product_deal_logs);
-        $distribution_point_logs = $distribution_product_deal_logs->merge($distribution_event_participant_logs)->sortByDesc('created_at')->map(function ($distribution_point_log) {
-            $distribution_point_log['created_at'] = $distribution_point_log['created_at']->format('Y.m.d H:i');
-            return $distribution_point_log;
-        });
+        $distribution_point_logs = $distribution_product_deal_logs->merge($distribution_event_participant_logs)->sortByDesc('created_at');
         //獲得=>point_exchange_logsとevents->withsum()とproduct_deal_logsを結合
         $earned_point_exchange_logs = PointExchangeLog::where('user_id', $user->id)->get()->map(function ($point_exchange_log) {
             return [

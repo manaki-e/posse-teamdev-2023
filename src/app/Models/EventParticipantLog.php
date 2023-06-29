@@ -43,7 +43,7 @@ class EventParticipantLog extends Model
         return [
             'app' => 'PE',
             'name' => $this->event->title,
-            'created_at' => $this->created_at,
+            'created_at' => $this->created_at->format('Y.m.d H:i'),
             'point' => -$this->point,
         ];
     }
