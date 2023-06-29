@@ -100,26 +100,8 @@ class MyPageController extends Controller
         //消費はキャンセル関係なくポイントが減るためwithTrashed()
         $unchargeable_month_count = ProductDealLog::UNCHARGEABLE_MONTH_COUNT;
         $user = Auth::user();
-        $distribution_product_deal_logs = ProductDealLog::where('user_id', $user->id)->chargeable()->with(['product' => function ($query) {
-            $query->withTrashed();
-        }])->get()->map(function ($product_deal_log) use ($unchargeable_month_count) {
-            if ($product_deal_log->month_count === $unchargeable_month_count - 1) {
-                //借りた最初の月
-                return [
-                    'app' => 'PPS',
-                    'name' => $product_deal_log->product->title,
-                    'created_at' => $product_deal_log->created_at,
-                    'point' => -$product_deal_log->point,
-                ];
-            } else {
-                //借りた最初の月と差し引き不可能な月以外
-                return [
-                    'app' => 'PPS',
-                    'name' => $product_deal_log->product->title . ($product_deal_log->created_at->subMonth()->format('(n月分)')),
-                    'created_at' => $product_deal_log->created_at,
-                    'point' => -$product_deal_log->point,
-                ];
-            }
+        $distribution_product_deal_logs = ProductDealLog::getUserChargeableProductDealLogsIncludingTrashedProduct($user->id)->map(function ($product_deal_log) {
+            return $product_deal_log->formatProductDealLogForMyPagePointHistory();
         });
         $distribution_event_participant_logs = EventParticipantLog::withTrashed()->where('user_id', $user->id)->with(['event' => function ($query) {
             $query->withTrashed();

@@ -57,4 +57,34 @@ class ProductDealLog extends Model
     {
         return self::where('user_id', $user_id)->sum('point');
     }
+    public static function getUserChargeableProductDealLogsIncludingTrashedProduct($user_id)
+    {
+        dd(self::where('user_id', $user_id)->chargeable()->with(['product' => function ($query) {
+            $query->withTrashed();
+        }])->get());
+        return self::where('user_id', $user_id)->chargeable()->with(['product' => function ($query) {
+            $query->withTrashed();
+        }])->get();
+    }
+    public function formatProductDealLogForMyPagePointHistory()
+    {
+        if ($this->isFirstMonth()) {
+            //借りた最初の月
+            $name = $this->product->title;
+        } else {
+            //借りた最初の月と差し引き不可能な月以外
+            $name = $this->product->title . ($this->created_at->subMonth()->format('(n月分)'));
+        }
+
+        return [
+            'app' => 'PPS',
+            'name' => $name,
+            'created_at' => $this->created_at,
+            'point' => -$this->point,
+        ];
+    }
+    public function isFirstMonth()
+    {
+        return $this->month_count === self::UNCHARGEABLE_MONTH_COUNT - 1;
+    }
 }
