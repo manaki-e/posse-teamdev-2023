@@ -4,8 +4,6 @@
             <x-slot:app_name>Peer Perk</x-slot:app_name>
             <x-slot:button_text>ポイント交換</x-slot:button_text>
             <x-slot:button_link>#</x-slot:button_link>
-            <x-slot:earned_point>{{ $earned_point }}</x-slot:earned_point>
-            <x-slot:distribution_point>{{ $distribution_point }}</x-slot:distribution_point>
             <x-slot:top_title_link>#</x-slot:top_title_link>
         </x-user-header>
     </x-slot>
