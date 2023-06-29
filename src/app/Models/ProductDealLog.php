@@ -66,7 +66,7 @@ class ProductDealLog extends Model
             $query->withTrashed();
         }])->get();
     }
-    public function formatProductDealLogForMyPagePointHistory()
+    public function formatProductDealLogForMyPageDistributionPointHistory()
     {
         if ($this->isFirstMonth()) {
             //借りた最初の月

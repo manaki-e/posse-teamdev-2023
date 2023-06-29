@@ -102,10 +102,10 @@ class MyPageController extends Controller
         $user = Auth::user();
         //削除済みアイテムに関する取引履歴の実装はdiscordの返信をまつ
         $distribution_product_deal_logs = ProductDealLog::getUserChargeableProductDealLogsIncludingTrashedProduct($user->id)->map(function ($product_deal_log) {
-            return $product_deal_log->formatProductDealLogForMyPagePointHistory();
+            return $product_deal_log->formatProductDealLogForMyPageDistributionPointHistory();
         });
         $distribution_event_participant_logs = EventParticipantLog::getUserEventParticipantLogsIncludingTrashedEvent($user->id)->map(function ($event_participant_log) {
-            return $event_participant_log->formatEventParticipantLogForMyPagePointHistory();
+            return $event_participant_log->formatEventParticipantLogForMyPageDistributionPointHistory();
         });
         //バグ発生対策
         $distribution_event_participant_logs = collect($distribution_event_participant_logs);

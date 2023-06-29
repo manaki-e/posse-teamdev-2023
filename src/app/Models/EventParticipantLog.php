@@ -38,7 +38,7 @@ class EventParticipantLog extends Model
             $query->withTrashed();
         }])->get();
     }
-    public function formatEventParticipantLogForMyPagePointHistory()
+    public function formatEventParticipantLogForMyPageDistributionPointHistory()
     {
         return [
             'app' => 'PE',
