@@ -116,14 +116,6 @@
     }
 </style>
 <script>
-    // function preview(elem, output = '') {
-    //     Array.from(elem.files).map((file) => {
-    //         const blobUrl = window.URL.createObjectURL(file)
-    //         output += `<img src=${blobUrl}>`
-    //     })
-    //     elem.nextElementSibling.innerHTML = output
-    // }
-
     // function checkFileSize(input) {
     //     const maxSize = 1 * 1024 * 1024; // 1MB in bytes
     //     const files = input.files;
@@ -135,9 +127,6 @@
     //             return;
     //         }
     //     }
-
-    //     // Proceed with file preview or submission
-    //     preview(input);
     // }
 
     // 既存の画像削除ボタンのクリックイベント
