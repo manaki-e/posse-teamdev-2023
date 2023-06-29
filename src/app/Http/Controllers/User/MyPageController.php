@@ -106,12 +106,6 @@ class MyPageController extends Controller
         });
         $distribution_event_participant_logs = EventParticipantLog::getUserEventParticipantLogsIncludingTrashedEvent($user->id)->map(function ($event_participant_log) {
             return $event_participant_log->formatEventParticipantLogForMyPagePointHistory();
-            return [
-                'app' => 'PE',
-                'name' => $event_participant_log->event->title,
-                'created_at' => $event_participant_log->created_at,
-                'point' => -$event_participant_log->point,
-            ];
         });
         //バグ発生対策
         $distribution_event_participant_logs = collect($distribution_event_participant_logs);
