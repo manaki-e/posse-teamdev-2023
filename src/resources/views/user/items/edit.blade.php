@@ -17,7 +17,7 @@
                             <div class="mx-auto mt-6">
                                 <div class="mb-1 block text-sm font-medium text-gray-700">出品画像<span class="text-red-600">*</span><span class="text-xs text-gray-400">（最大3枚まで）</span></div>
                                 <div class="relative flex flex-col w-full cursor-pointer appearance-none items-center justify-center rounded-md border-2 border-dashed border-gray-200 transition-all hover:border-gray-300 overflow-x-scroll">
-                                    <div id="image-preview" class="preview-area overflow-x-scroll">
+                                    <div id="image-preview" class="preview-area w-full h-24 flex justify-start overflow-x-auto">
                                         <!-- 既存画像 -->
                                         @foreach ($product->productImages as $key => $product_image)
                                         <div>
@@ -33,7 +33,7 @@
                                         @endforeach
                                     </div>
                                     <!-- 画像追加 -->
-                                    <div class="mt-24 w-full flex justify-center">
+                                    <div class="w-full flex justify-center">
                                         <input type="file" id="image-input" name="product_images[]" style="display: none;" multiple>
                                         <button type="button" id="add-btn" class="block rounded-lg my-2 mx-2 px-2 py-1 border border-gray-300 shadow text-center text-sm transition-all align-middle hover:shadow-md hover:opacity-75 ">画像を追加</button>
                                     </div>
@@ -100,18 +100,9 @@
     </x-slot>
 </x-user-app>
 <style>
-    .preview-area {
-        width: 100%;
-        height: 6rem;
-        position: absolute;
-        top: 0;
-        left: 0;
-        display: flex;
-        overflow-x: scroll;
-    }
-
     .preview-area div {
         position: relative;
+        flex-shrink: 0;
         max-height: 6rem;
         height: 100%;
         padding: 0 1rem;
@@ -121,10 +112,8 @@
 
     .preview-area div img {
         height: 100%;
-        width: auto;
         object-fit: contain;
     }
-
 </style>
 <script>
     // function preview(elem, output = '') {
@@ -179,7 +168,7 @@
                 const imageUrl = event.target.result;
                 const imageElement = document.createElement('div');
                 imageElement.innerHTML = `
-        <img class="h-full" src="${imageUrl}" alt="${file.name}">
+        <img src="${imageUrl}" alt="${file.name}">
         <button type="button" class="delete-btn absolute top-0 right-0 bg-gray-100 rounded-full">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M8 1C4.1 1 1 4.1 1 8C1 11.9 4.1 15 8 15C11.9 15 15 11.9 15 8C15 4.1 11.9 1 8 1ZM8 14C4.7 14 2 11.3 2 8C2 4.7 4.7 2 8 2C11.3 2 14 4.7 14 8C14 11.3 11.3 14 8 14Z" fill="currentColor" />
