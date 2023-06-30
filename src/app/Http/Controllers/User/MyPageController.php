@@ -127,7 +127,7 @@ class MyPageController extends Controller
             $query->where('user_id', $user_id)->withTrashed();
         })->get()->map(function ($product_deal_log) {
             return [
-                'app' => 'PPS',
+                'app' => 'PI',
                 'name' => $product_deal_log->product->title,
                 'created_at' => $product_deal_log->created_at,
                 'point' => $product_deal_log->point,
