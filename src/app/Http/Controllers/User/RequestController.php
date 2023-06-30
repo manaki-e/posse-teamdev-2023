@@ -33,7 +33,7 @@ class RequestController extends Controller
         $event_request_type_id = ModelsRequest::EVENT_REQUEST_TYPE_ID;
         $product_request_type_id = ModelsRequest::PRODUCT_REQUEST_TYPE_ID;
         $app = [
-            $product_request_type_id => ['color' => 'text-blue-400', 'name' => 'Peer Product Share', 'japanese_name' => 'アイテム'],
+            $product_request_type_id => ['color' => 'text-blue-400', 'name' => 'Peer Item', 'japanese_name' => 'アイテム'],
             $event_request_type_id => ['color' => 'text-pink-600', 'name' => 'Peer Event', 'japanese_name' => 'イベント']
         ];
         $product_tags = Tag::where('request_type_id', $product_request_type_id)->get();
@@ -103,7 +103,7 @@ class RequestController extends Controller
             }
         }
         //slack全体
-        $this->slackController->sendNotification($this->slackGlobalAnnouncementChannelId, "<@".Auth::user()->slackID.">より、新たなリクエストが追加されました！\n```".env('APP_URL')."requests```");
+        $this->slackController->sendNotification($this->slackGlobalAnnouncementChannelId, "<@" . Auth::user()->slackID . ">より、新たなリクエストが追加されました！\n```" . env('APP_URL') . "requests```");
         return Redirect::route('requests.index')->with(['flush.message' => 'リクエストを追加しました', 'flush.alert_type' => 'success']);
     }
 
