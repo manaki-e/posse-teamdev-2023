@@ -61,7 +61,7 @@
                                                         {{ $product -> title }}を削除しますか？
                                                     </x-slot>
                                                     <x-slot name="modal_description">
-                                                        対象のイベントを削除します。一度削除すると復元できません。
+                                                        対象のアイテムを削除します。一度削除すると復元できません。
                                                     </x-slot>
                                                 </x-mypage-button-delete>
                                             </li>
