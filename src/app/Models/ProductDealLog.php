@@ -87,4 +87,21 @@ class ProductDealLog extends Model
     {
         return $this->month_count === self::UNCHARGEABLE_MONTH_COUNT - 1;
     }
+    public static function getUserEarnableProductDealLogsIncludingTrashedProduct($user_id)
+    {
+        return self::notCancelled()->chargeable()->with(['product' => function ($query) {
+            $query->withTrashed();
+        }])->whereHas('product', function ($query) use ($user_id) {
+            $query->where('user_id', $user_id)->withTrashed();
+        })->get();
+    }
+    public function formatProductDealLogForMyPageEarnedPointHistory()
+    {
+        return [
+            'app' => 'PI',
+            'name' => $this->product->title,
+            'created_at' => $this->created_at,
+            'point' => $this->point,
+        ];
+    }
 }

@@ -116,17 +116,8 @@ class MyPageController extends Controller
             return $event->formatEventForMyPageEarnedPointHistory();
         });
         //productが削除されてもポイントの変動は残る、product_deal_logが削除＝キャンセルされた場合はポイントの変動も削除
-        $earned_product_deal_logs = ProductDealLog::notCancelled()->chargeable()->with(['product' => function ($query) {
-            $query->withTrashed();
-        }])->whereHas('product', function ($query) use ($user_id) {
-            $query->where('user_id', $user_id)->withTrashed();
-        })->get()->map(function ($product_deal_log) {
-            return [
-                'app' => 'PI',
-                'name' => $product_deal_log->product->title,
-                'created_at' => $product_deal_log->created_at,
-                'point' => $product_deal_log->point,
-            ];
+        $earned_product_deal_logs = ProductDealLog::getUserEarnableProductDealLogsIncludingTrashedProduct($user_id)->map(function ($product_deal_log) {
+            return $product_deal_log->formatProductDealLogForMyPageEarnedPointHistory();
         });
         //バグ発生対策
         $earned_event_logs = collect($earned_event_logs);
