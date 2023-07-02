@@ -112,13 +112,8 @@ class MyPageController extends Controller
         $earned_point_exchange_logs = PointExchangeLog::getUserPointExchangeLogs($user_id)->map(function ($point_exchange_log) {
             return $point_exchange_log->formatPointExchangeLogForMyPageEarnedPointHistory();
         });
-        $earned_event_logs = Event::where('user_id', $user_id)->where('completed_at', '!=', null)->withSum('eventParticipants', 'point')->get()->map(function ($event) {
-            return [
-                'app' => 'PE',
-                'name' => $event->title,
-                'created_at' => $event->completed_at,
-                'point' => $event->event_participants_sum_point,
-            ];
+        $earned_event_logs = Event::getUserEventsWithPointSum($user_id)->map(function ($event) {
+            return $event->formatEventForMyPageEarnedPointHistory();
         });
         //productが削除されてもポイントの変動は残る、product_deal_logが削除＝キャンセルされた場合はポイントの変動も削除
         $earned_product_deal_logs = ProductDealLog::notCancelled()->chargeable()->with(['product' => function ($query) {
