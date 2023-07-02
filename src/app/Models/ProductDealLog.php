@@ -59,9 +59,6 @@ class ProductDealLog extends Model
     }
     public static function getUserChargeableProductDealLogsIncludingTrashedProduct($user_id)
     {
-        // dd(self::where('user_id', $user_id)->chargeable()->with(['product' => function ($query) {
-        //     $query->withTrashed();
-        // }])->get());
         return self::where('user_id', $user_id)->chargeable()->with(['product' => function ($query) {
             $query->withTrashed();
         }])->get();

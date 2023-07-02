@@ -94,13 +94,8 @@ class MyPageController extends Controller
 
     public function pointHistory()
     {
-        //消費と獲得に分ける
-        //内容：カテゴリ（イベント、アイテム、換金）、内容（イベント名、アイテム名、換金）、日時、ポイント
-        //消費=>product_deal_logsとevent_participant_logsを結合
-        //消費はキャンセル関係なくポイントが減るためwithTrashed()
-        $unchargeable_month_count = ProductDealLog::UNCHARGEABLE_MONTH_COUNT;
         $user_id = Auth::id();
-        //削除済みアイテムに関する取引履歴の実装はdiscordの返信をまつ
+
         $distribution_product_deal_logs = ProductDealLog::getUserChargeableProductDealLogsIncludingTrashedProduct($user_id)->map(function ($product_deal_log) {
             return $product_deal_log->formatProductDealLogForMyPageDistributionPointHistory();
         });
@@ -108,18 +103,18 @@ class MyPageController extends Controller
             return $event_participant_log->formatEventParticipantLogForMyPageDistributionPointHistory();
         });
         $distribution_point_logs = collect([$distribution_product_deal_logs, $distribution_event_participant_logs])->flatten(1)->sortByDesc('created_at');
-        //獲得=>point_exchange_logsとevents->withsum()とproduct_deal_logsを結合
+
         $earned_point_exchange_logs = PointExchangeLog::getUserPointExchangeLogs($user_id)->map(function ($point_exchange_log) {
             return $point_exchange_log->formatPointExchangeLogForMyPageEarnedPointHistory();
         });
         $earned_event_logs = Event::getUserEventsWithPointSum($user_id)->map(function ($event) {
             return $event->formatEventForMyPageEarnedPointHistory();
         });
-        //productが削除されてもポイントの変動は残る、product_deal_logが削除＝キャンセルされた場合はポイントの変動も削除
         $earned_product_deal_logs = ProductDealLog::getUserEarnableProductDealLogsIncludingTrashedProduct($user_id)->map(function ($product_deal_log) {
             return $product_deal_log->formatProductDealLogForMyPageEarnedPointHistory();
         });
         $earned_point_logs = collect([$earned_point_exchange_logs, $earned_event_logs, $earned_product_deal_logs])->flatten(1)->sortByDesc('created_at');
+        
         return view('user.mypage.point-history', compact('earned_point_logs', 'distribution_point_logs'));
     }
 
