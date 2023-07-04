@@ -34,7 +34,7 @@
                         <table class="w-full border-collapse bg-white text-left text-sm text-gray-500">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900">商品名</th>
+                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900">アイテム名</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">ポイント</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">借用者氏名</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">貸出者氏名</th>
