@@ -12,7 +12,9 @@ class AdminIndexController extends Controller
     public function histories()
     {
         // アイテムやユーザを削除した時にエラーが出るので注意
-        $product_deals = ProductDealLog::with('product.user')->with('user')->paginate(10, ['*'], 'product_deal')->appends(['event_participant' => request('event_participant')]);
+        $product_deals = ProductDealLog::whereHas('product',function($query){
+            $query->withTrashed()->with('user');
+        })->withTrashed()->paginate(10, ['*'], 'product_deal')->appends(['event_participant' => request('event_participant')]);
         $event_participants = EventParticipantLog::with('event')->with('user')->paginate(10, ['*'], 'event_participant')->appends(['product_deal' => request('product_deal')]);
 
         return view('admin.histories', compact('product_deals', 'event_participants'));
