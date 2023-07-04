@@ -48,7 +48,7 @@
                                     <td class="px-6 py-4">
                                         <a href="{{ route('admin.items.show', ['item' => $product_deal -> product -> id]) }}" class="border-b border-blue-600 hover:text-blue-700">{{ $product_deal -> product -> title }}</a>
                                     </td>
-                                    <td class="px-6 py-4 text-right">{{ $product_deal -> product -> point }} pt</td>
+                                    <td class="px-6 py-4 text-right">{{ $product_deal -> point }} pt</td>
                                     <td class="px-6 py-4">
                                         <a href="{{ route('admin.users.show', ['user' => $product_deal -> user -> id]) }}" class="border-b border-blue-600 hover:text-blue-700">{{ $product_deal -> user -> name }}</a>
                                     </td>
