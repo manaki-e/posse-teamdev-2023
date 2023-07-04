@@ -59,9 +59,13 @@
                                         {{ date( 'Y年m月d日 H時i分s秒', strtotime( $product_deal -> created_at ) ) }}
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        {{ $product_deal -> returned_at
-                                        ? date( 'Y年m月d日 H時i分s秒', strtotime( $product_deal -> returned_at ) )
-                                        : '未返却' }}
+                                        @if($product_deal -> cancelled_at)
+                                        キャンセル済み
+                                        @elseif($product_deal -> returned_at)
+                                        {{ date('Y年m月d日 H時i分s秒',strtotime($product_deal -> returned_at)) }}
+                                        @else
+                                        未返却
+                                        @endif
                                     </td>
                                 </tr>
                                 @endforeach
