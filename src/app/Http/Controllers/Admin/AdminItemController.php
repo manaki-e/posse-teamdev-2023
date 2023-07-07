@@ -26,7 +26,6 @@ class AdminItemController extends Controller
     public function index()
     {
         //登録済みアイテム一覧
-        $japanese_product_statuses = Product::JAPANESE_STATUS;
         $not_pending_products = Product::approvedProducts()->with('user')->paginate(10, ['*'], 'not_pending')->appends(['pending' => request('pending')]);
 
         //登録申請対応待ちアイテム一覧
@@ -100,7 +99,7 @@ class AdminItemController extends Controller
             //リクエストに紐づいていたら、リクエストの投稿者にslack通知
             if (!empty($product->request_id)) {
                 $request = ModelsRequest::find($product->request_id);
-                $this->slackController->sendNotification($request->user->slackID, "<@" . $product->user->slackID . "> より、あなたのリクエストに対して、アイテムが登録されました！確認してみましょう。\n```" . env('APP_URL') . "items```");
+                $this->slackController->sendNotification($request->user->slackID, "<@" . $product->user->slackID . "> より、あなたのリクエストに対して、アイテムが登録されました！確認してみましょう。\n```" . env('APP_URL') . "items/" . $item . "```");
             }
             //slack登録申請者
             $this->slackController->sendNotification($product->user->slackID, "管理者がポイントを設定し、あなたのアイテムを登録しました！\n```" . env('APP_URL') . "mypage/items/listed```");

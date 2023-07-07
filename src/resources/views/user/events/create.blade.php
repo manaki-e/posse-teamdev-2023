@@ -46,8 +46,8 @@
                                 @foreach ($tags as $index => $tag)
                                 <div class="w-auto">
                                     <div class="flex items-center">
-                                        <input hidden name="tags[]" id="tag_{{ $index }}" type="checkbox" value="{{ $tag->id }}" class="filter-input w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
-                                        <label for="tag_{{ $index }}" class="rounded-full border border-gray-300 bg-gray-50 px-2 py-1 text-xs font-semibold text-gray-400 cursor-pointer">{{ $tag->name }}</label>
+                                        <input hidden name="tags[]" id="tag_{{ $index }}" type="checkbox" value="{{ $tag->id }}" class="filter-input w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded" @if($tag->checked===true) checked @endif>
+                                        <label for="tag_{{ $index }}" class="rounded-full border border-gray-300 @if($tag->checked===true) bg-gray-500 @else bg-gray-50 @endif px-2 py-1 text-xs font-semibold text-gray-400 cursor-pointer">{{ $tag->name }}</label>
                                     </div>
                                 </div>
                                 @endforeach
@@ -109,6 +109,16 @@
         var startValue = new Date(startInput.value);
         var endValue = new Date(endInput.value);
 
+        var today = new Date();
+        if (startValue < today || endValue < today) {
+            alert("開始日時と終了日時は現在時刻より後の日時を設定してください。");
+            // 値をクリアする
+            if(startValue < today){
+                startInput.value = "";
+            }else if(endValue < today){
+                endInput.value = "";
+            }
+        }
         if (startValue > endValue) {
             alert("終了日時は開始日時より後の日時を設定してください。");
             // 値をクリアする

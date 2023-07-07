@@ -152,14 +152,25 @@ class ItemController extends Controller
     public function update(Request $request, $id)
     {
         $images = $request->file('product_images');
-        $product_instance = Product::findOrFail($id);
+        $product_instance = Product::withRelations()->findOrFail($id);
+        $new_image_length = is_array($images) ? count($images) : 0;
+        $delete_image_length = is_array($request->delete_images) ? count($request->delete_images) : 0;
+        $images_count = $product_instance->productImages->count() - $delete_image_length + $new_image_length;
+
+        //既存画像の枚数-削除する画像の枚数+追加する画像の枚数 が１以上３以下
+        if ($images_count < 1 || $images_count > 3) {
+            // return redirect()->back()->withErrors(['image_count' => '画像は1枚以上3枚以下にしてください。']);
+            return redirect()->back()->with(['flush.message' => '画像は1枚以上3枚以下にしてください。', 'flush.alert_type' => 'error']);
+        }
+
         $product_instance->addProductImages($images, $id);
         $product_instance->deleteProductImages($request->delete_images);
         $product_instance->updateProductTags($request->product_tags, $id);
+        $product_instance->condition = $request->condition;         //追加
         $product_instance->title = $request->title;
         $product_instance->description = $request->description;
         $product_instance->save();
-        return redirect()->back();
+        return redirect()->route('mypage.items.listed')->with(['flush.message' => 'アイテム情報を更新しました。', 'flush.alert_type' => 'success']);
     }
 
     /**
@@ -259,9 +270,15 @@ class ItemController extends Controller
     public function createWithRequest($chosen_request_id)
     {
         $conditions = Product::CONDITION;
-        $product_tags = Tag::productTags()->get();
+        //アイテムタグ一覧を取得
+        $tags = Tag::productTags()->get();
+        //未完了のリクエストを取得
         $requests = ModelsRequest::unresolvedRequests()->productRequests()->get();
-        return view('user.items.create', compact('chosen_request_id', 'product_tags', 'requests', 'conditions'));
+        //リクエストのタグを取得して、チェック済みにする
+        $request_tags = ModelsRequest::findOrFail($chosen_request_id)->requestTags->map(function ($request_tag) use ($tags) {
+            $tags->find($request_tag->tag_id)->setAttribute('checked', true);
+        });
+        return view('user.items.create', compact('chosen_request_id', 'tags', 'requests', 'conditions'));
     }
     public function like($id)
     {

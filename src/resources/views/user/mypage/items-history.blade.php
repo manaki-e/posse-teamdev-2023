@@ -76,7 +76,14 @@
                                 <x-slot:user_icon>{{ $history -> product -> user -> icon }}</x-slot:user_icon>
                                 <x-slot:user_name>{{ $history -> product -> user -> name }}</x-slot:user_name>
                                 <x-slot:borrowing_time>{{ date( 'Y年m月d日', strtotime( $history -> created_at ) ) }}</x-slot:borrowing_time>
-                                <x-slot:return_time>{{ $history -> returned_at ? date( 'Y年m月d日', strtotime( $history -> returned_at ) ) : '未返却' }}</x-slot:return_time>
+                                <x-slot:return_time>
+                                    @if($history -> cancelled_at)
+                                    キャンセル済み
+                                    @elseif($history -> returned_at)
+                                    {{ date('Y年m月d日',strtotime($history -> returned_at)) }}
+                                    @else
+                                    未返却
+                                    @endif </x-slot:return_time>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex flex-nowrap gap-2">
                                         <img src="{{ $history -> user -> icon }}" alt="ユーザアイコン" class="w-6 h-6 rounded-full object-cover object-center">

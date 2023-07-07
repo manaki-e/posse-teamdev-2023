@@ -36,11 +36,11 @@
                                 </h3>
                                 <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">カテゴリ</h4>
                                 <div class="w-full flex flex-wrap gap-2 max-w-lg text-sm font-medium text-gray-900 bg-white">
-                                    @foreach ($product_tags as $index => $tag)
+                                    @foreach ($tags as $index => $tag)
                                     <div class="w-auto">
                                         <div class="flex items-center">
-                                            <input hidden id="tag_{{ $index }}" type="checkbox" value="{{ $tag->id }}" name="product_tags[]" class="filter-input w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
-                                            <label for="tag_{{ $index }}" class="rounded-full border border-gray-300 bg-gray-50 px-2 py-1 text-xs font-semibold text-gray-400 cursor-pointer">{{ $tag->name }}</label>
+                                            <input hidden id="tag_{{ $index }}" type="checkbox" value="{{ $tag->id }}" name="product_tags[]" class="filter-input w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded" @if($tag->checked===true) checked @endif>
+                                            <label for="tag_{{ $index }}" class="rounded-full border border-gray-300 @if($tag->checked===true) bg-gray-500 @else bg-gray-50 @endif px-2 py-1 text-xs font-semibold text-gray-400 cursor-pointer">{{ $tag->name }}</label>
                                         </div>
                                     </div>
                                     @endforeach
@@ -148,7 +148,6 @@
 
     function handleImageUpload(input) {
         const files = input.files;
-
         if (files.length > 3) {
             // 選択されたファイルが3枚を超える場合はアラートを表示
             alert('最大3枚までの画像を選択してください');

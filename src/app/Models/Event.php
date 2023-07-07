@@ -65,4 +65,15 @@ class Event extends Model
     {
         return self::where('user_id', $user_id)->where('completed_at', '!=', null)->whereMonth('created_at', date('m'))->withSum('eventParticipants', 'point')->get()->sum('event_participants_sum_point');
     }
+    public static function getUserEventsWithPointSum($user_id){
+        return self::where('user_id', $user_id)->where('completed_at', '!=', null)->withSum('eventParticipants', 'point')->get();
+    }
+    public function formatEventForMyPageEarnedPointHistory(){
+        return [
+            'app' => 'PE',
+            'name' => $this->title,
+            'created_at' => $this->completed_at,
+            'point' => $this->event_participants_sum_point,
+        ];
+    }
 }
