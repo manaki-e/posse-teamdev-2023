@@ -99,17 +99,17 @@
         });
     });
 
-    var startInput = document.getElementById("start");
-    var endInput = document.getElementById("end");
+    let startInput = document.getElementById("start");
+    let endInput = document.getElementById("end");
 
     startInput.addEventListener("input", validateDateTime);
     endInput.addEventListener("input", validateDateTime);
 
     function validateDateTime() {
-        var startValue = new Date(startInput.value);
-        var endValue = new Date(endInput.value);
+        let startValue = new Date(startInput.value);
+        let endValue = new Date(endInput.value);
 
-        var today = new Date();
+        let today = new Date();
         if (startValue < today || endValue < today) {
             alert("開始日時と終了日時は現在時刻より後の日時を設定してください。");
             // 値をクリアする
