@@ -35,7 +35,7 @@
                             <thead class="bg-gray-50">
                                 <tr>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">商品名</th>
-                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">ポイント</th>
+                                    <th scope="col" class="px-3 py-4 font-medium text-gray-900 text-right">ポイント</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">借用者氏名</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">貸出者氏名</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">貸出日時</th>
@@ -78,7 +78,7 @@
                                 <tr>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">イベント名</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">参加登録者氏名</th>
-                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">参加 pt</th>
+                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">ポイント</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">申請日時</th>
                                 </tr>
                             </thead>
