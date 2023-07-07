@@ -1,4 +1,3 @@
-
 <!--
     引数は色、アプリ名、ボタン名、各ポイント、ユーザーのアイコン、アカウントページ、マイページへのリンク
     textColorとbgColorには以下の色を指定する
@@ -82,9 +81,9 @@
                         <!-- pannel -->
                         <div x-cloak x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="absolute right-0 top-full w-44 bg-white rounded-lg shadow border mt-5">
                             <ul class="text-sm">
-                                <li class="px-4 py-3 font-medium hover:bg-gray-100">
+                                <li class="font-medium hover:bg-gray-100">
                                     <!-- プロフィールに移行する -->
-                                    <a href="{{ route('mypage.profile') }}" class="flex items-center transform transition-colors duration-200">
+                                    <a href="{{ route('mypage.profile') }}" class="px-4 py-3 flex items-center transform transition-colors duration-200">
                                         <div class="mr-3">
                                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z">
@@ -94,8 +93,8 @@
                                         プロフィール
                                     </a>
                                 </li>
-                                <li class="px-4 py-3 font-medium hover:bg-gray-100">
-                                    <a href="{{ route('mypage.account') }}" class="flex items-center transform transition-colors duration-200">
+                                <li class="font-medium hover:bg-gray-100">
+                                    <a href="{{ route('mypage.account') }}" class="px-4 py-3 flex items-center transform transition-colors duration-200">
                                         <div class="mr-3">
                                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
@@ -107,10 +106,10 @@
                                     </a>
                                 </li>
                                 <hr>
-                                <li class="px-4 py-3 font-medium hover:bg-gray-100">
+                                <li class="font-medium hover:bg-gray-100">
                                     <form method="POST" action="{{ route('logout') }}">
                                         @csrf
-                                        <div class="flex items-center transform transition-colors duration-200" onclick="event.preventDefault();
+                                        <div class="px-4 py-3 flex items-center transform transition-colors duration-200" onclick="event.preventDefault();
                                                 this.closest('form').submit();">
                                             <div class="mr-3 text-red-600">
                                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
