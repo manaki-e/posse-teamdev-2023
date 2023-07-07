@@ -26,12 +26,6 @@
             <div :class="{ '!block': activeTab === 0 }" x-show.transition.in.opacity.duration.600="activeTab === 0" class="hidden">
                 <ul class="border-b border-gray-300">
                     @foreach ($before_held_liked_events as $event)
-                    <?php
-                    $array_participants = [];
-                    foreach ($event->eventParticipants as $participant) {
-                        array_push($array_participants, $participant->user_id);
-                    }
-                    ?>
                     <li>
                         <x-mypage-event-list>
                             <x-slot:title>{{ $event -> title }}</x-slot:title>
@@ -49,7 +43,7 @@
                             <x-slot:likes>{{ count($event -> eventLikes) }}</x-slot:likes>
                             <x-slot:user_icon>{{ $event  -> user -> icon }}</x-slot:user_icon>
                             <x-slot:user_name>{{ $event  -> user -> name }}</x-slot:user_name>
-                            @if (in_array ($user -> id, $array_participants))
+                            @if ($event->isJoined)
                             <x-slot:status></x-slot:status>
                             <x-slot:button>
                                 <x-mypage-button-event-cancel action="{{ route('events.cancel', ['event' =>  $event -> id]) }}">
