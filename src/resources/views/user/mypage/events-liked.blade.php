@@ -98,12 +98,6 @@
             <div :class="{ '!block': activeTab === 1 }" x-show.transition.in.opacity.duration.600="activeTab === 1" class="hidden">
                 <ul class="border-b border-gray-300">
                     @foreach ($after_held_liked_events as $event)
-                    <?php
-                    $array_participants = [];
-                    foreach ($event->eventParticipants as $participant) {
-                        array_push($array_participants, $participant->user_id);
-                    }
-                    ?>
                     <li>
                         <x-mypage-event-list>
                             <x-slot:title>{{ $event -> title }}</x-slot:title>
@@ -130,12 +124,6 @@
             <div :class="{ '!block': activeTab === 2 }" x-show.transition.in.opacity.duration.600="activeTab === 2" class="hidden">
                 <ul class="border-b border-gray-300">
                     @foreach ($cancelled_liked_events as $event)
-                    <?php
-                    $array_participants = [];
-                    foreach ($event->eventParticipants as $participant) {
-                        array_push($array_participants, $participant->user_id);
-                    }
-                    ?>
                     <li>
                         <x-mypage-event-list>
                             <x-slot:title>{{ $event -> title }}</x-slot:title>
