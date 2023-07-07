@@ -1,6 +1,6 @@
 <div {{ $attributes->merge(['class' => 'flex justify-between items-center border-t border-gray-300 py-3 pl-6 pr-12 text-sm']) }}>
     <div class="flex gap-4 font-mono">
-        @if ($app == 'PPS')
+        @if ($app == 'PI')
         <div class="flex-center w-10 h-10 border-2 border-blue-400 rounded-lg">
             <x-icon-pps></x-icon-pps>
         </div>
