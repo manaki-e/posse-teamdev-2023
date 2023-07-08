@@ -290,7 +290,6 @@ class MyPageController extends Controller
             ->with(['eventParticipants' => function ($query) {
                 $query->where('cancelled_at', null)->with('user');
             }])
-            ->where('user_id', '!=', $user->id)
             ->with('eventLikes', 'eventTags.tag')
             ->orderBy('created_at', 'desc')
             ->get()
@@ -312,7 +311,6 @@ class MyPageController extends Controller
             ->with(['eventParticipants' => function ($query) {
                 $query->where('cancelled_at', null)->with('user');
             }])
-            ->where('user_id', '!=', $user->id)
             ->with('eventLikes', 'eventTags.tag')
             ->orderBy('created_at', 'desc')
             ->get();
@@ -328,7 +326,6 @@ class MyPageController extends Controller
             ->with(['eventParticipants' => function ($query) {
                 $query->where('cancelled_at', null)->with('user');
             }])
-            ->where('user_id', '!=', $user->id)
             ->with('eventLikes', 'eventTags.tag')
             ->orderBy('created_at', 'desc')
             ->get();

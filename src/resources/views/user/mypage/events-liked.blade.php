@@ -57,6 +57,9 @@
                                     <x-slot:form_slot></x-slot:form_slot>
                                 </x-mypage-button-event-cancel>
                             </x-slot:button>
+                            @elseif($event->user_id===Auth::id())
+                            <x-slot:status></x-slot:status>
+                            <x-slot:button></x-slot:button>
                             @else
                             <x-slot:status></x-slot:status>
                             <x-slot:button>
