@@ -144,8 +144,11 @@ class AdminUserController extends Controller
         $user_instance = User::findOrFail($user);
         $channel_id = $this->slackController->searchChannelId("peerperk管理者", true);
         $user_slack_id = $user_instance->slackID;
-
-        if ($user_instance->is_admin === 1) {
+        $admin_user_count = User::where('is_admin', 1)->count();
+        
+        if ($admin_user_count === 1 && $user_instance->is_admin === 1) {
+            return Redirect::route('admin.users.index')->with(['flush.message' => '管理者は最低一人必要です', 'flush.alert_type' => 'error']);
+        } elseif ($user_instance->is_admin === 1) {
             $user_instance->is_admin = 0;
             $this->slackController->removeUserFromChannel($channel_id, $user_slack_id);
         } elseif ($user_instance->is_admin === 0) {
