@@ -36,7 +36,7 @@
                                 </h3>
                                 <h4 class="mb-1 mt-4 block text-sm font-medium text-gray-700">カテゴリ</h4>
                                 <div class="w-full flex flex-wrap gap-2 max-w-lg text-sm font-medium text-gray-900 bg-white">
-                                    @foreach ($tags as $index => $tag)
+                                    @foreach ($product_tags as $index => $tag)
                                     <div class="w-auto">
                                         <div class="flex items-center">
                                             <input hidden id="tag_{{ $index }}" type="checkbox" value="{{ $tag->id }}" name="product_tags[]" class="filter-input w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded" @if($tag->checked===true) checked @endif>
