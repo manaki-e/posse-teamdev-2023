@@ -17,15 +17,14 @@
                         <path d="M3.75 6.75H20.25M3.75 12H20.25M3.75 17.25H20.25" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                 </button>
-                <!-- Product -->
+                <!-- Item -->
                 <a href="{{ route('items.index')}}">
                     <div class="pt-5 text-blue-400" :class=" (isSidebarOpen) ? 'flex flex-row' : 'text-center'">
                         <div class="ml-4 text-center flex items-center">
                             <x-icon-pps></x-icon-pps>
                         </div>
-                        <p x-show="!isSidebarOpen" class="font-patua text-xs">Product</p>
-                        <p x-cloak x-show="isSidebarOpen" x-transition.duration.100ms class="font-patua ml-2 text-base">Peer Product
-                            Share</p>
+                        <p x-show="!isSidebarOpen" class="font-patua text-xs">Item</p>
+                        <p x-cloak x-show="isSidebarOpen" x-transition.duration.100ms class="font-patua ml-2 text-base">Peer Item</p>
                     </div>
                 </a>
                 <!-- Event -->

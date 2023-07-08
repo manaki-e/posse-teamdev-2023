@@ -20,7 +20,7 @@
                                 <x-slot name="radio_name">タイプ</x-slot>
                                 <x-slot name="radios">
                                     @foreach($app as $request_type_id=>$request_type)
-                                    <!-- peer product shareとpeer eventを表示することもできる -->
+                                    <!-- peer Itemとpeer eventを表示することもできる -->
                                     <div class="flex items-center mb-4" @click="activeTab = {{ $request_type_id }}">
                                         <input id="box-{{ $request_type_id }}" type="radio" value="{{ $request_type_id }}" name="request_type" class="w-4 h-4 bg-gray-100 border-gray-300 filter-input" @if($request_type_id==$product_request_type_id) checked @endif>
                                         <label for="box-{{ $request_type_id }}" class="ml-2 text-sm font-medium text-gray-900">{{ $request_type['japanese_name']  }}</label>
@@ -134,7 +134,7 @@
                                                             <p class="block text-sm mb-4 text-gray-700">次のアプリに移動します</p>
                                                             <div class="flex justify-center items-center">
                                                                 <div class="flex items-center {{ $app[$request->type_id]['color'] }}">
-                                                                    @if ($app[$request->type_id]['name'] === 'Peer Product Share')
+                                                                    @if ($app[$request->type_id]['name'] === 'Peer Item')
                                                                     <x-icon-pps></x-icon-pps>
                                                                     @elseif ($app[$request->type_id]['name'] === 'Peer Event')
                                                                     <x-icon-pe></x-icon-pe>
