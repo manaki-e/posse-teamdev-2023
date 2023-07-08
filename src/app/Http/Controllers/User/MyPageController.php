@@ -114,7 +114,7 @@ class MyPageController extends Controller
             return $product_deal_log->formatProductDealLogForMyPageEarnedPointHistory();
         });
         $earned_point_logs = collect([$earned_point_exchange_logs, $earned_event_logs, $earned_product_deal_logs])->flatten(1)->sortByDesc('created_at');
-        
+
         return view('user.mypage.point-history', compact('earned_point_logs', 'distribution_point_logs'));
     }
 
@@ -293,7 +293,13 @@ class MyPageController extends Controller
             ->where('user_id', '!=', $user->id)
             ->with('eventLikes', 'eventTags.tag')
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->get()
+            ->map(function($event) use($user){
+                if($event->eventParticipants->contains('user_id', $user->id)){
+                    $event->isJoined = true;
+                }
+                return $event;
+            });
 
         $after_held_liked_events = Event::whereHas('eventLikes', function ($query) use ($user) {
             $query->where('user_id', $user->id);
