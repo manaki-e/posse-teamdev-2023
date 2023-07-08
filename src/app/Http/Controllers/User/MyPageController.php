@@ -43,13 +43,13 @@ class MyPageController extends Controller
         })->sortByDesc('created_at');
 
         // イベント
-        $events = Event::where('user_id', $user->id)->withCount('eventLikes')->withCount(['eventParticipants' => function ($query) {
+        $events = Event::where('user_id', $user->id)->withCount('eventLikes')->withCount(['eventParticipantLogs' => function ($query) {
             $query->where('cancelled_at', null);
-        }])->with(['user', 'eventTags.tag', 'eventLikes.user'])->with(['eventParticipants' => function ($query) {
+        }])->with(['user', 'eventTags.tag', 'eventLikes.user'])->with(['eventParticipantLogs' => function ($query) {
             $query->where('cancelled_at', null)->with('user');
         }])->get()->map(function ($event) use ($user_id) {
             $event->isLiked = $event->eventLikes->contains('user_id', $user_id);
-            $event->isParticipated = $event->eventParticipants->contains('user_id', $user_id);
+            $event->isParticipated = $event->eventParticipantLogs->contains('user_id', $user_id);
             if (empty($event->completed_at)) {
                 $event->isCompleted = Event::COMPLETED_STATUSES[0];
             } else {
@@ -197,9 +197,9 @@ class MyPageController extends Controller
         $before_held_events = Event::where('user_id', $user->id)
             ->where('completed_at', null)
             ->where('cancelled_at', null)
-            ->withCount(['eventParticipants' => function ($query) {
+            ->withCount(['eventParticipantLogs' => function ($query) {
                 $query->where('cancelled_at', null);
-            }])->with(['eventParticipants' => function ($query) {
+            }])->with(['eventParticipantLogs' => function ($query) {
                 $query->where('cancelled_at', null)->with('user');
             }])
             ->with(['eventLikes', 'eventTags.tag'])
@@ -209,9 +209,9 @@ class MyPageController extends Controller
         $after_held_events = Event::where('user_id', $user->id)
             ->where('completed_at', '!=', null)
             ->where('cancelled_at', null)
-            ->withCount(['eventParticipants' => function ($query) {
+            ->withCount(['eventParticipantLogs' => function ($query) {
                 $query->where('cancelled_at', null);
-            }])->with(['eventParticipants' => function ($query) {
+            }])->with(['eventParticipantLogs' => function ($query) {
                 $query->where('cancelled_at', null)->with('user');
             }])
             ->with(['eventLikes', 'eventTags.tag'])
@@ -221,9 +221,9 @@ class MyPageController extends Controller
         $cancelled_events = Event::where('user_id', $user->id)
             ->where('completed_at', null)
             ->where('cancelled_at', '!=', null)
-            ->withCount(['eventParticipants' => function ($query) {
+            ->withCount(['eventParticipantLogs' => function ($query) {
                 $query->where('cancelled_at', null);
-            }])->with(['eventParticipants' => function ($query) {
+            }])->with(['eventParticipantLogs' => function ($query) {
                 $query->where('cancelled_at', null)->with('user');
             }])
             ->with(['eventLikes', 'eventTags.tag'])
@@ -237,36 +237,36 @@ class MyPageController extends Controller
     {
         $user = Auth::user();
 
-        $before_held_joined_events = Event::whereHas('eventParticipants', function ($query) use ($user) {
+        $before_held_joined_events = Event::whereHas('eventParticipantLogs', function ($query) use ($user) {
             $query->where('user_id', $user->id)->where('cancelled_at', null);
         })
             ->where('completed_at', null)
             ->where('cancelled_at', null)
-            ->withCount(['eventParticipants' => function ($query) {
+            ->withCount(['eventParticipantLogs' => function ($query) {
                 $query->where('cancelled_at', null)->with('user');
             }])
             ->with('eventLikes', 'eventTags.tag')
             ->orderBy('created_at', 'desc')
             ->get();
 
-        $after_held_joined_events = Event::whereHas('eventParticipants', function ($query) use ($user) {
+        $after_held_joined_events = Event::whereHas('eventParticipantLogs', function ($query) use ($user) {
             $query->where('user_id', $user->id)->where('cancelled_at', null);
         })
             ->where('completed_at', '!=', null)
             ->where('cancelled_at', null)
-            ->withCount(['eventParticipants' => function ($query) {
+            ->withCount(['eventParticipantLogs' => function ($query) {
                 $query->where('cancelled_at', null)->with('user');
             }])
             ->with(['eventLikes', 'eventTags.tag'])
             ->orderBy('created_at', 'desc')
             ->get();
 
-        $cancelled_joined_events = Event::whereHas('eventParticipants', function ($query) use ($user) {
+        $cancelled_joined_events = Event::whereHas('eventParticipantLogs', function ($query) use ($user) {
             $query->where('user_id', $user->id)->where('cancelled_at', null);
         })
             ->where('completed_at', null)
             ->where('cancelled_at', '!=', null)
-            ->withCount(['eventParticipants' => function ($query) {
+            ->withCount(['eventParticipantLogs' => function ($query) {
                 $query->where('cancelled_at', null)->with('user');
             }])
             ->with(['eventLikes', 'eventTags.tag'])
@@ -284,18 +284,18 @@ class MyPageController extends Controller
         })
             ->where('completed_at', null)
             ->where('cancelled_at', null)
-            ->withCount(['eventParticipants' => function ($query) {
+            ->withCount(['eventParticipantLogs' => function ($query) {
                 $query->where('cancelled_at', null);
             }])
-            ->with(['eventParticipants' => function ($query) {
+            ->with(['eventParticipantLogs' => function ($query) {
                 $query->where('cancelled_at', null)->with('user');
             }])
             ->where('user_id', '!=', $user->id)
             ->with('eventLikes', 'eventTags.tag')
             ->orderBy('created_at', 'desc')
             ->get()
-            ->map(function($event) use($user){
-                if($event->eventParticipants->contains('user_id', $user->id)){
+            ->map(function ($event) use ($user) {
+                if ($event->eventParticipantLogs->contains('user_id', $user->id)) {
                     $event->isJoined = true;
                 }
                 return $event;
@@ -306,10 +306,10 @@ class MyPageController extends Controller
         })
             ->where('completed_at', '!=', null)
             ->where('cancelled_at', null)
-            ->withCount(['eventParticipants' => function ($query) {
+            ->withCount(['eventParticipantLogs' => function ($query) {
                 $query->where('cancelled_at', null);
             }])
-            ->with(['eventParticipants' => function ($query) {
+            ->with(['eventParticipantLogs' => function ($query) {
                 $query->where('cancelled_at', null)->with('user');
             }])
             ->where('user_id', '!=', $user->id)
@@ -322,10 +322,10 @@ class MyPageController extends Controller
         })
             ->where('completed_at', null)
             ->where('cancelled_at', '!=', null)
-            ->withCount(['eventParticipants' => function ($query) {
+            ->withCount(['eventParticipantLogs' => function ($query) {
                 $query->where('cancelled_at', null);
             }])
-            ->with(['eventParticipants' => function ($query) {
+            ->with(['eventParticipantLogs' => function ($query) {
                 $query->where('cancelled_at', null)->with('user');
             }])
             ->where('user_id', '!=', $user->id)
@@ -413,13 +413,13 @@ class MyPageController extends Controller
         })->sortByDesc('created_at');
 
         // イベント
-        $events = Event::where('user_id', $user_id)->withCount('eventLikes')->withCount(['eventParticipants' => function ($query) {
+        $events = Event::where('user_id', $user_id)->withCount('eventLikes')->withCount(['eventParticipantLogs' => function ($query) {
             $query->where('cancelled_at', null);
-        }])->with(['user', 'eventTags.tag', 'eventLikes.user'])->with(['eventParticipants' => function ($query) {
+        }])->with(['user', 'eventTags.tag', 'eventLikes.user'])->with(['eventParticipantLogs' => function ($query) {
             $query->where('cancelled_at', null)->with('user');
         }])->get()->map(function ($event) use ($user_id) {
             $event->isLiked = $event->eventLikes->contains('user_id', $user_id);
-            $event->isParticipated = $event->eventParticipants->contains('user_id', $user_id);
+            $event->isParticipated = $event->eventParticipantLogs->contains('user_id', $user_id);
             if (empty($event->completed_at)) {
                 $event->isCompleted = Event::COMPLETED_STATUSES[0];
             } else {
