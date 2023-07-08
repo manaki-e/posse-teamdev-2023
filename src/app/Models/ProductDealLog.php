@@ -57,4 +57,48 @@ class ProductDealLog extends Model
     {
         return self::where('user_id', $user_id)->sum('point');
     }
+    public static function getUserChargeableProductDealLogsIncludingTrashedProduct($user_id)
+    {
+        return self::where('user_id', $user_id)->chargeable()->with(['product' => function ($query) {
+            $query->withTrashed();
+        }])->get();
+    }
+    public function formatProductDealLogForMyPageDistributionPointHistory()
+    {
+        if ($this->isFirstMonth()) {
+            //借りた最初の月
+            $name = $this->product->title;
+        } else {
+            //借りた最初の月と差し引き不可能な月以外
+            $name = $this->product->title . ($this->created_at->subMonth()->format('(n月分)'));
+        }
+
+        return [
+            'app' => 'PI',
+            'name' => $name,
+            'created_at' => $this->created_at->format('Y.m.d H:i'),
+            'point' => -$this->point,
+        ];
+    }
+    public function isFirstMonth()
+    {
+        return $this->month_count === self::UNCHARGEABLE_MONTH_COUNT - 1;
+    }
+    public static function getUserEarnableProductDealLogsIncludingTrashedProduct($user_id)
+    {
+        return self::notCancelled()->chargeable()->with(['product' => function ($query) {
+            $query->withTrashed();
+        }])->whereHas('product', function ($query) use ($user_id) {
+            $query->where('user_id', $user_id)->withTrashed();
+        })->get();
+    }
+    public function formatProductDealLogForMyPageEarnedPointHistory()
+    {
+        return [
+            'app' => 'PI',
+            'name' => $this->product->title,
+            'created_at' => $this->created_at,
+            'point' => $this->point,
+        ];
+    }
 }

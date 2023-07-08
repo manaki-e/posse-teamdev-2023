@@ -275,7 +275,6 @@
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">開始日時</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">終了日時</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">支払いポイント</th>
-                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-100 border-t border-gray-100">
@@ -303,9 +302,6 @@
                                     <td class="px-6 py-4 text-right">
                                         {{ $event_log -> point }} pt
                                     </td>
-                                    <td class="flex justify-end gap-4 px-6 py-4 font-medium">
-                                        <x-admin-button-detail href="#"></x-admin-button-detail>
-                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -326,7 +322,6 @@
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">終了日時</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">参加人数</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">獲得ポイント</th>
-                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-100 border-t border-gray-100">
@@ -362,9 +357,6 @@
                                         : 0 }}
                                         pt
                                     </td>
-                                    <td class="flex justify-end gap-4 px-6 py-4 font-medium">
-                                        <x-admin-button-detail href="#"></x-admin-button-detail>
-                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -381,7 +373,6 @@
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">タイトル</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-center">状況</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">投稿日時</th>
-                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-100 border-t border-gray-100">
@@ -397,9 +388,6 @@
                                     </td>
                                     <td class="px-6 py-4 text-right">
                                         {{ date( 'Y年m月d日 H時i分s秒', strtotime( $request -> created_at ) ) }}
-                                    </td>
-                                    <td class="flex justify-end gap-4 px-6 py-4 font-medium">
-                                        <x-admin-button-detail></x-admin-button-detail>
                                     </td>
                                 </tr>
                                 @endforeach

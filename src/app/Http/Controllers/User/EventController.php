@@ -231,8 +231,8 @@ class EventController extends Controller
             $event_data->save();
 
             //slackイベント
-            $this->slackController->sendNotification($event_data->slack_channel, "<!channel>主催者により、イベントの開催がキャンセルされました。");
-            return redirect()->route('mypage.events.organized')->with(['flush.message' => 'イベントの開催をキャンセルしました。', 'flush.alert_type' => 'success']);
+            $this->slackController->sendNotification($event_data->slack_channel, "<!channel>主催者により、イベントの開催が中止されました。");
+            return redirect()->route('mypage.events.organized')->with(['flush.message' => 'イベントの開催を中止しました。', 'flush.alert_type' => 'success']);
         } else {
             $event_participant_log = EventParticipantLog::where('event_id', $event)->where('user_id', $user->id)->where('cancelled_at', null)->first();
             $event_participant_log->cancelled_at = now();

@@ -27,7 +27,7 @@
                                             または ファイルをドロップ</div>
                                         <p class="text-sm text-gray-500">SVG, PNG or JPG (max. 1MB, 3枚まで)</p>
                                     </div>
-                                    <input id="file" type="file" name="product_images[]" class="sr-only" multiple required onchange="checkFileSize(this),preview(this)" />
+                                    <input id="file" type="file" name="product_images[]" class="sr-only" multiple required onchange="checkFileSize(this),handleImageUpload(this),preview(this)" />
                                     <div class="preview-area "></div>
                                 </label>
                             </div>
@@ -144,7 +144,15 @@
             alert('合計ファイルサイズが1MBを超えています。');
             input.value = null;
         }
-        // Proceed with file preview or submission
-        preview(input);
+    }
+
+    function handleImageUpload(input) {
+        const files = input.files;
+        if (files.length > 3) {
+            // 選択されたファイルが3枚を超える場合はアラートを表示
+            alert('最大3枚までの画像を選択してください');
+            // 選択されたファイルをリセット
+            input.value = null;
+        }
     }
 </script>
