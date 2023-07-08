@@ -381,9 +381,9 @@
                                     <th class="px-6 py-4 font-medium text-gray-900">{{ $request -> title }}</th>
                                     <td class="px-6 py-4 text-center">
                                         @if ( $request -> completed_at )
-                                        <x-admin-status-red>解決済み</x-admin-status-red>
+                                        <x-admin-status-red>未解決</x-admin-status-red>
                                         @else
-                                        <x-admin-status-green>未解決</x-admin-status-green>
+                                        <x-admin-status-green>解決済み</x-admin-status-green>
                                         @endif
                                     </td>
                                     <td class="px-6 py-4 text-right">
