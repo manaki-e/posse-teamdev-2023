@@ -174,13 +174,13 @@
                                         <a href="{{ route('admin.users.show', ['user' => $product_deal_log -> user -> id]) }}" class="border-b border-blue-600 hover:text-blue-700">{{ $product_deal_log -> user -> name }}</a>
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        {{ date( 'Y年m月d日 H時i分s秒', strtotime( $product_deal_log -> created_at ) ) }}
+                                        {{ date( 'Y.m.d H:i', strtotime( $product_deal_log -> created_at ) ) }}
                                     </td>
                                     <td class="px-6 py-4 text-right">
                                         @if($product_deal_log -> cancelled_at)
                                         キャンセル済み
                                         @elseif($product_deal_log -> returned_at)
-                                        {{ date('Y年m月d日 H時i分s秒',strtotime($product_deal_log -> returned_at)) }}
+                                        {{ date('Y.m.d H:i',strtotime($product_deal_log -> returned_at)) }}
                                         @else
                                         未返却
                                         @endif
@@ -387,7 +387,7 @@
                                         @endif
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        {{ date( 'Y年m月d日 H時i分s秒', strtotime( $request -> created_at ) ) }}
+                                        {{ date( 'Y.m.d H:i', strtotime( $request -> created_at ) ) }}
                                     </td>
                                 </tr>
                                 @endforeach
