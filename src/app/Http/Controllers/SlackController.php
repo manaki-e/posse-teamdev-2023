@@ -103,13 +103,6 @@ class SlackController extends Controller
         $response->throw();
     }
 
-    public function slack()
-    {
-        // $message = "<@U0572LXKNLA>\nテストメッセージ";
-        $message = "テストメッセージ\n\n```https://yuta0227-congenial-space-acorn-49q6prg66rqcq7g4-80.preview.app.github.dev/slack```";
-        $this->sendNotification("U057SC3MRKJ", $message);
-    }
-
     /**
      * Slackにチャンネルを作成する
      * @param Request $request
@@ -195,13 +188,6 @@ class SlackController extends Controller
      */
     public function inviteUsersToChannel($channel_id, $invite_users)
     {
-        $user_array = explode(',', $invite_users);
-        $admin_users = User::where('is_admin', 1)->pluck('slackID');
-        foreach ($user_array as $user) {
-            if ($admin_users->contains($user)) {
-                return;
-            }
-        }
         $invite_data = [
             'channel' => $channel_id,
             'users' => $invite_users,
