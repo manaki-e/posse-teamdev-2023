@@ -37,7 +37,7 @@
                 <div :class="{ '!block': activeTab === 0 }" x-show.transition.in.opacity.duration.600="activeTab === 0" class="hidden">
                     <div class="overflow-hidden rounded-lg border border-gray-200 shadow-md my-4">
                         <table class="w-full border-collapse bg-white text-left text-sm text-gray-500 ">
-                            <thead class="bg-gray-50">
+                            <thead class="bg-gray-50 whitespace-nowrap">
                                 <tr>
                                     <th scope="col" class="px-4 py-4 font-medium text-gray-900"></th>
                                     <th scope="col" class="px-4 py-4 font-medium text-gray-900">氏名</th>
@@ -62,12 +62,12 @@
                                     <td class="px-4 py-4">{{ $user -> email }}</td>
                                     <td class="px-4 py-4">{{ $user -> department ? $user -> department -> name : '' }}</td>
                                     <td class="px-4 py-4">
-                                        <div class="flex justify-between gap-2 text-left">
+                                        <div class="flex justify-between gap-2 text-left whitespace-nowrap">
                                             <x-admin-button-detail href="{{ route('admin.users.show', ['user' =>  $user -> id]) }}"></x-admin-button-detail>
                                             <x-admin-button-edit action="{{ route('admin.users.update', ['user' =>  $user -> id]) }}">
                                                 @if ($user -> is_admin === 0)
                                                 <x-slot name="content">
-                                                    管理者に変更
+                                                    管理者権限を付与
                                                 </x-slot>
                                                 <x-slot name="modal_title">
                                                     {{ $user -> name }}を管理者に変更しますか？

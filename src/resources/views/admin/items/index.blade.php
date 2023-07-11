@@ -32,7 +32,7 @@
                 <div :class="{ '!block': activeTab === 0 }" x-show.transition.in.opacity.duration.600="activeTab === 0" class="hidden">
                     <div class="overflow-hidden rounded-lg border border-gray-200 shadow-md my-4">
                         <table class="w-full border-collapse bg-white text-left text-sm text-gray-500">
-                            <thead class="bg-gray-50">
+                            <thead class="bg-gray-50 whitespace-nowrap">
                                 <tr>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">商品名</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">利用 pt</th>
@@ -44,10 +44,10 @@
                             <tbody class="divide-y divide-gray-100 border-t border-gray-100">
                                 @foreach ($not_pending_products as $not_pending_product)
                                 <tr class="hover:bg-gray-50">
-                                    <th class="px-6 py-4 font-medium text-gray-900">{{ $not_pending_product -> title }}
+                                    <th class="px-6 py-4 font-medium text-gray-900 text-xs">{{ $not_pending_product -> title }}
                                     </th>
-                                    <td class="px-6 py-4 text-right">{{ $not_pending_product -> point }} pt</td>
-                                    <td class="px-6 py-4">
+                                    <td class="px-6 py-4 text-right whitespace-nowrap">{{ $not_pending_product -> point }} pt</td>
+                                    <td class="px-6 py-4 text-xs">
                                         <a href="{{ route('admin.users.show', ['user' => $not_pending_product -> user -> id]) }}" class="border-b border-blue-600 hover:text-blue-700">{{ $not_pending_product -> user -> name }}</a>
                                     </td>
                                     <td class="px-6 py-4 text-center">
@@ -57,7 +57,7 @@
                                         <x-admin-status-red>貸出中</x-admin-status-red>
                                         @endif
                                     </td>
-                                    <td class="flex justify-end gap-4 px-6 py-4 font-medium">
+                                    <td class="flex justify-end gap-4 px-6 py-4 font-medium whitespace-nowrap">
                                         <x-admin-button-detail href="{{ route('admin.items.show', ['item' =>  $not_pending_product -> id]) }}">
                                         </x-admin-button-detail>
                                         <x-admin-button-edit action="{{ route('admin.items.update', ['item' =>  $not_pending_product -> id]) }}">
@@ -108,7 +108,7 @@
                 <div :class="{ '!block': activeTab === 1 }" x-show.transition.in.opacity.duration.600="activeTab === 1" class="hidden">
                     <div class="overflow-hidden rounded-lg border border-gray-200 shadow-md my-4">
                         <table class="w-full border-collapse bg-white text-left text-sm text-gray-500">
-                            <thead class="bg-gray-50">
+                            <thead class="bg-gray-50 whitespace-nowrap">
                                 <tr>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">商品名</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">登録申請者氏名</th>
@@ -119,22 +119,22 @@
                             <tbody class="divide-y divide-gray-100 border-t border-gray-100">
                                 @foreach ($pending_products as $pending_product)
                                 <tr class="hover:bg-gray-50">
-                                    <th class="px-6 py-4 font-medium text-gray-900">{{ $pending_product -> title }}</th>
-                                    <td class="px-6 py-4">
+                                    <th class="px-6 py-4 font-medium text-gray-900 text-xs">{{ $pending_product -> title }}</th>
+                                    <td class="px-6 py-4 text-xs">
                                         <a href="{{ route('admin.users.show', ['user' => $pending_product -> user -> id]) }}" class="border-b border-blue-600 hover:text-blue-700">{{ $pending_product -> user -> name }}</a>
                                     </td>
-                                    <td class=" px-6 py-4">
-                                        {{ date( 'Y年m月d日 H時i分s秒', strtotime( $pending_product -> created_at ) ) }}
+                                    <td class="px-6 py-4">
+                                        {{ date( 'Y年m月d日', strtotime( $pending_product -> created_at ) ) }}
                                     </td>
-                                    <td class="flex justify-end gap-4 px-6 py-4 font-medium">
+                                    <td class="flex justify-end gap-4 px-6 py-4 font-medium whitespace-nowrap">
                                         <x-admin-button-detail href="{{ route('admin.items.show', ['item' =>  $pending_product -> id]) }}">
                                         </x-admin-button-detail>
                                         <x-admin-button-edit action="{{ route('admin.items.update', ['item' =>  $pending_product -> id]) }}">
                                             <x-slot name="content">
-                                                ポイントを設定して承認する
+                                                ポイントを設定する
                                             </x-slot>
                                             <x-slot name="modal_title">
-                                                ポイントを設定して承認する
+                                                ポイントを設定する
                                             </x-slot>
                                             <x-slot name="modal_description">
                                                 ポイントを設定すると、アイテムが登録され、誰でも借りることができるようになります。また、ポイントはいつでも変更することができます。
