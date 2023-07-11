@@ -100,7 +100,7 @@ class AdminUserController extends Controller
         $product_occupied_status = Product::STATUS['occupied'];
         $product_delivering_status = Product::STATUS['delivering'];
         $joined_event_logs = EventParticipantLog::where('user_id', $user)->with('event.eventTags.tag')->paginate(10);
-        $held_events = Event::where('user_id', $user)->with('eventParticipants')->withSum('eventParticipants', 'point')->withCount(['eventParticipants' => function ($query) {
+        $held_events = Event::where('user_id', $user)->with('eventParticipantLogs')->withSum('eventParticipantLogs', 'point')->withCount(['eventParticipantLogs' => function ($query) {
             $query->where('cancelled_at', null);
         }])->paginate(10);
         $requests = AppRequest::where('user_id', $user)->with('product')->with('event')->paginate(10);

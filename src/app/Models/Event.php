@@ -24,7 +24,7 @@ class Event extends Model
     public static function booted()
     {
         static::deleted(function ($event) {
-            $event->eventParticipants()->delete();
+            $event->eventParticipantLogs()->delete();
             $event->eventTags()->delete();
             $event->eventLikes()->delete();
         });
@@ -33,7 +33,7 @@ class Event extends Model
     {
         return self::pluck('id')->toArray();
     }
-    public function eventParticipants()
+    public function eventParticipantLogs()
     {
         return $this->hasMany(EventParticipantLog::class);
     }
@@ -59,16 +59,18 @@ class Event extends Model
     }
     public static function getSumOfEarnedPoints($user_id)
     {
-        return self::where('user_id', $user_id)->where('completed_at', '!=', null)->withSum('eventParticipants', 'point')->get()->sum('event_participants_sum_point');
+        return self::where('user_id', $user_id)->where('completed_at', '!=', null)->withSum('eventParticipantLogs', 'point')->get()->sum('event_participants_sum_point');
     }
     public static function getSumOfEarnedPointsCurrentMonth($user_id)
     {
-        return self::where('user_id', $user_id)->where('completed_at', '!=', null)->whereMonth('created_at', date('m'))->withSum('eventParticipants', 'point')->get()->sum('event_participants_sum_point');
+        return self::where('user_id', $user_id)->where('completed_at', '!=', null)->whereMonth('created_at', date('m'))->withSum('eventParticipantLogs', 'point')->get()->sum('event_participants_sum_point');
     }
-    public static function getUserEventsWithPointSum($user_id){
-        return self::where('user_id', $user_id)->where('completed_at', '!=', null)->withSum('eventParticipants', 'point')->get();
+    public static function getUserEventsWithPointSum($user_id)
+    {
+        return self::where('user_id', $user_id)->where('completed_at', '!=', null)->withSum('eventParticipantLogs', 'point')->get();
     }
-    public function formatEventForMyPageEarnedPointHistory(){
+    public function formatEventForMyPageEarnedPointHistory()
+    {
         return [
             'app' => 'PE',
             'name' => $this->title,
