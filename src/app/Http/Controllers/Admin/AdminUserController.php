@@ -144,8 +144,11 @@ class AdminUserController extends Controller
         $user_instance = User::findOrFail($user);
         $channel_id = $this->slackController->searchChannelId("peerperk管理者", true);
         $user_slack_id = $user_instance->slackID;
+        $admin_user_count = User::where('is_admin', 1)->count();
 
-        if ($user_instance->is_admin === 1) {
+        if ($admin_user_count === 1 && $user_instance->is_admin === 1) {
+            return Redirect::route('admin.users.index')->with(['flush.message' => '管理者は最低一人必要です', 'flush.alert_type' => 'error']);
+        } elseif ($user_instance->is_admin === 1) {
             $user_instance->is_admin = 0;
             $this->slackController->removeUserFromChannel($channel_id, $user_slack_id);
         } elseif ($user_instance->is_admin === 0) {
@@ -170,7 +173,13 @@ class AdminUserController extends Controller
      */
     public function destroy($user)
     {
-        User::findOrFail($user)->delete();
+        $user_instance =User::findOrFail($user);
+        $admin_user_count = User::where('is_admin', 1)->count();
+        if($admin_user_count === 1 && $user_instance->is_admin === 1){
+            return Redirect::route('admin.users.index')->with(['flush.message' => '管理者は最低一人必要です', 'flush.alert_type' => 'error']);
+        }else{
+            $user_instance->delete();
+        }
         // ユーザテーブルに紐づく各テーブルのデータも削除する
         if (auth()->user()->id === $user) {
             return Redirect::route('login');
