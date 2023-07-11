@@ -118,7 +118,7 @@ class AdminItemController extends Controller
             $this->slackController->sendNotification($this->slackGlobalAnnouncementChannelId, "<@" . $product->user->slackID . ">のアイテムのポイントが再設定されました！\n```" . env('APP_URL') . "items```");
         }
         $product->save();
-        return Redirect::route('admin.items.index')->with(['flush.message' => 'アイテムのポイント設定が正しく行われました', 'flush.alert_type' => 'success']);
+        return Redirect::back()->with(['flush.message' => 'アイテムのポイント設定が正しく行われました', 'flush.alert_type' => 'success']);
     }
 
     /**
