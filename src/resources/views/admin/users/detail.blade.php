@@ -155,7 +155,7 @@
                             <thead class="bg-gray-50">
                                 <tr>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">商品名</th>
-                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">利用ポイント</th>
+                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">ポイント</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">貸出者氏名</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">借用者氏名</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">貸出日時</th>
@@ -200,7 +200,7 @@
                                 <tr>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">商品名</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">カテゴリー</th>
-                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">利用ポイント</th>
+                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">ポイント</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">いいね数</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">貸出状況</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
@@ -284,7 +284,7 @@
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">参加状況</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">開始日時</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">終了日時</th>
-                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">支払いポイント</th>
+                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">ポイント</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-100 border-t border-gray-100">
@@ -331,7 +331,7 @@
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">開始日時</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">終了日時</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">参加人数</th>
-                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">獲得ポイント</th>
+                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">ポイント</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-100 border-t border-gray-100">

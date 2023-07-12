@@ -35,7 +35,7 @@
                             <thead class="bg-gray-50 whitespace-nowrap">
                                 <tr>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">商品名</th>
-                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">利用 pt</th>
+                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">ポイント</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">登録者氏名</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-center">貸出状況</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
@@ -78,7 +78,7 @@
                                             <x-slot name="form_slot">
                                                 <div class="mb-4">
                                                     <div class="relative flex gap-4">
-                                                        <label for="point" class="leading-7 text-sm text-gray-600 flex-center">Point:</label>
+                                                        <label for="point" class="leading-7 text-sm text-gray-600 flex-center">ポイント:</label>
                                                         <input max="5000" type="number" id="point" name="point" value="{{ $not_pending_product -> point }}" class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                                                     </div>
                                                     <p class="ml-2 text-xs text-gray-500 ">
