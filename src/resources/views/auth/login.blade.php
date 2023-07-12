@@ -57,4 +57,3 @@
         </a>
     </div>
 </x-guest-layout>
-style="background-color: #5C2C5C;"
