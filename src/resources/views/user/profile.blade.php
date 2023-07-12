@@ -184,7 +184,7 @@
                                                     </div>
                                                     @elseif(!empty($event->cancelled_at))
                                                     <div class="block  w-full rounded-lg my-3 py-3 font-bold text-center text-sm align-middle text-white bg-gray-300">
-                                                        中止されたイベントです
+                                                        開催中止
                                                     </div>
                                                     @elseif($event->user->id === Auth::user()->id)
                                                     <div class="block  w-full rounded-lg my-3 py-3 font-bold text-center text-sm align-middle text-white bg-pink-800">
