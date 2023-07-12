@@ -29,7 +29,7 @@
                 </a>
                 <!-- Event -->
                 <a href="{{ route('events.index') }}">
-                    <div href="#" class="text-pink-600" :class=" (isSidebarOpen) ? 'flex flex-row justify-start my-8' : 'text-center my-4'">
+                    <div class="text-pink-600" :class=" (isSidebarOpen) ? 'flex flex-row justify-start my-8' : 'text-center my-4'">
                         <div class="ml-4 text-center flex items-center" :class="{ '' : isSidebarOpen, 'mx-auto' : !isSidebarOpen}">
                             <x-icon-pe></x-icon-pe>
                         </div>
@@ -39,7 +39,7 @@
                 </a>
                 <!-- Request -->
                 <a href="{{ route('requests.index') }}">
-                    <div href="#" class="mb-4 text-peer-request" :class=" (isSidebarOpen) ? 'flex flex-row'
+                    <div class="mb-4 text-peer-request" :class=" (isSidebarOpen) ? 'flex flex-row'
                         : 'text-center'">
                         <div class="ml-4 text-center flex items-center" :class="{ '' : isSidebarOpen, 'mx-auto' : !isSidebarOpen}">
                             <x-icon-pr></x-icon-pr>
