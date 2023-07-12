@@ -35,7 +35,7 @@
                             <thead class="bg-gray-50">
                                 <tr>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">商品名</th>
-                                    <th scope="col" class="px-3 py-4 font-medium text-gray-900 text-right">ポイント</th>
+                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">ポイント</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">登録者氏名</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-center">貸出状況</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
