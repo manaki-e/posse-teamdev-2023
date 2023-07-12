@@ -60,7 +60,7 @@ class AdminUserController extends Controller
     {
         // 一度削除したユーザであった場合は復元する（データは消されているためポイントのデータのみ復元される）
         $user = User::withTrashed()->where('email', $request->email)->first();
-        if ($user->trashed()) {
+        if (!empty($user)) {
             $user->restore();
             return Redirect::route('admin.users.index')->with(['flush.message' => 'slackにいるユーザを新しくPeerPerkユーザとして登録しました', 'flush.alert_type' => 'success']);
         }
@@ -173,11 +173,11 @@ class AdminUserController extends Controller
      */
     public function destroy($user)
     {
-        $user_instance =User::findOrFail($user);
+        $user_instance = User::findOrFail($user);
         $admin_user_count = User::where('is_admin', 1)->count();
-        if($admin_user_count === 1 && $user_instance->is_admin === 1){
+        if ($admin_user_count === 1 && $user_instance->is_admin === 1) {
             return Redirect::route('admin.users.index')->with(['flush.message' => '管理者は最低一人必要です', 'flush.alert_type' => 'error']);
-        }else{
+        } else {
             $user_instance->delete();
         }
         // ユーザテーブルに紐づく各テーブルのデータも削除する
