@@ -70,7 +70,7 @@
                         <p class="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">
                             {{ $product -> title }}
                         </p>
-                        @if ($product -> status === 3)
+                        @if ($product -> status === 3 || $product -> status === 4)
                         <x-admin-status-red>貸出中</x-admin-status-red>
                         @elseif ($product -> status === 2)
                         <x-admin-status-green>貸出可能</x-admin-status-green>
