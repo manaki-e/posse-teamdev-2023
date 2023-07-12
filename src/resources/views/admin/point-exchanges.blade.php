@@ -32,7 +32,7 @@
                 <div :class="{ '!block': activeTab === 0 }" x-show.transition.in.opacity.duration.600="activeTab === 0" class="hidden">
                     <div class="overflow-hidden rounded-lg border border-gray-200 shadow-md my-4">
                         <table class="w-full border-collapse bg-white text-left text-sm text-gray-500">
-                            <thead class="bg-gray-50">
+                            <thead class="bg-gray-50 whitespace-nowrap">
                                 <tr>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">申請者氏名</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">交換ポイント</th>
@@ -47,7 +47,7 @@
                                     <th class="px-6 py-4">
                                         <a href="{{ route('admin.users.show', ['user' => $done_point_exchange -> user -> id]) }}" class="border-b border-blue-600 hover:text-blue-700">{{ $done_point_exchange -> user -> name }}</a>
                                     </th>
-                                    <td class="px-6 py-4 text-right">{{ $done_point_exchange -> point }} pt</td>
+                                    <td class="px-6 py-4 text-right whitespace-nowrap">{{ $done_point_exchange -> point }} pt</td>
                                     <td class="px-6 py-4 text-right">
                                         {{ date( 'Y.m.d H:i', strtotime( $done_point_exchange -> created_at ) ) }}
                                     </td>
@@ -65,7 +65,7 @@
                 <div :class="{ '!block': activeTab === 1 }" x-show.transition.in.opacity.duration.600="activeTab === 1" class="hidden">
                     <div class="overflow-hidden rounded-lg border border-gray-200 shadow-md my-4">
                         <table class="w-full border-collapse bg-white text-left text-sm text-gray-500">
-                            <thead class="bg-gray-50">
+                            <thead class="bg-gray-50 whitespace-nowrap">
                                 <tr>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">申請者氏名</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">交換ポイント</th>
@@ -79,11 +79,11 @@
                                     <th class="px-6 py-4">
                                         <a href="{{ route('admin.users.show', ['user' => $undone_point_exchange -> user -> id]) }}" class="border-b border-blue-600 hover:text-blue-700">{{ $undone_point_exchange -> user -> name }}</a>
                                     </th>
-                                    <td class="px-6 py-4 text-right">{{ $undone_point_exchange -> point }} pt</td>
+                                    <td class="px-6 py-4 text-right whitespace-nowrap">{{ $undone_point_exchange -> point }} pt</td>
                                     <td class="px-6 py-4 text-right">
                                         {{ date( 'Y.m.d H:i', strtotime( $undone_point_exchange -> created_at ) ) }}
                                     </td>
-                                    <td class="flex justify-end gap-4 px-6 py-4 font-medium">
+                                    <td class="flex justify-end gap-4 px-6 py-4 font-medium whitespace-nowrap">
                                         <x-admin-button-edit action="{{ route('point-exchanges.update-approved', ['id'=> $undone_point_exchange -> id]) }}">
                                             <x-slot name="content">
                                                 交換完了

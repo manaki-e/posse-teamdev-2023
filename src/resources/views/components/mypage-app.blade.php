@@ -18,7 +18,7 @@
                                 <span>Peer Perk</span>
                             </li>
                             <li>
-                                <x-nav-link :href="route('mypage.profile')" :active="request()->routeIs('dashboard')">
+                                <x-nav-link :href="route('mypage.profile')" :active="request()->routeIs('mypage.profile')">
                                     {{ __('プロフィール') }}
                                 </x-nav-link>
                             </li>
