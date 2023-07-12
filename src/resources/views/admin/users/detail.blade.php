@@ -174,13 +174,13 @@
                                         <a href="{{ route('admin.users.show', ['user' => $product_deal_log -> user -> id]) }}" class="border-b border-blue-600 hover:text-blue-700">{{ $product_deal_log -> user -> name }}</a>
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        {{ date( 'Y年m月d日 H時i分s秒', strtotime( $product_deal_log -> created_at ) ) }}
+                                        {{ date( 'Y.m.d H:i', strtotime( $product_deal_log -> created_at ) ) }}
                                     </td>
                                     <td class="px-6 py-4 text-right">
                                         @if($product_deal_log -> cancelled_at)
                                         キャンセル済み
                                         @elseif($product_deal_log -> returned_at)
-                                        {{ date('Y年m月d日 H時i分s秒',strtotime($product_deal_log -> returned_at)) }}
+                                        {{ date('Y.m.d H:i',strtotime($product_deal_log -> returned_at)) }}
                                         @else
                                         未返却
                                         @endif
@@ -230,7 +230,7 @@
                                     </td>
                                     <td class="flex justify-end gap-4 px-6 py-4 font-medium">
                                         <x-admin-button-detail href="{{ route('admin.items.show', ['item' =>  $product -> id]) }}"></x-admin-button-detail>
-                                        <x-admin-button-edit action="">
+                                        <x-admin-button-edit action="{{ route('admin.items.update', ['item' =>  $product -> id]) }}">
                                             <x-slot name="content">
                                                 ポイント再設定
                                             </x-slot>
@@ -242,9 +242,19 @@
                                                 <br>
                                                 貸出中のアイテムのポイントを編集すると、来月の貸出より新しいポイントが適用されます。
                                             </x-slot>
-                                            <x-slot name="method"></x-slot>
+                                            <x-slot name="method">
+                                                @method('PUT')
+                                            </x-slot>
                                             <x-slot name="form_slot">
-                                                <div>form_slotに挿入するコンテンツ</div>
+                                                <div class="mb-4">
+                                                    <div class="relative flex gap-4">
+                                                        <label for="point" class="leading-7 text-sm text-gray-600 flex-center">Point:</label>
+                                                        <input max="5000" type="number" id="point" name="point" value="{{ $product -> point }}" class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                                    </div>
+                                                    <p class="ml-2 text-xs text-gray-500 ">
+                                                        ポイントの上限は 5000 pt
+                                                    </p>
+                                                </div>
                                             </x-slot>
                                         </x-admin-button-edit>
                                         <x-admin-button-delete action="{{ route('admin.items.destroy', ['item' =>  $product -> id]) }}">
@@ -349,7 +359,7 @@
                                         {{ $event -> end_date ? date( 'Y.m.d H:i', strtotime( $event -> end_date ) ) : '未定' }}
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        {{ $event -> event_participants_count ?? '0' }} 人
+                                        {{ $event -> event_participant_logs_count ?? '0' }} 人
                                     </td>
                                     <td class="px-6 py-4 text-right">
                                         {{ $event -> event_participants_sum_point
@@ -381,13 +391,13 @@
                                     <th class="px-6 py-4 font-medium text-gray-900">{{ $request -> title }}</th>
                                     <td class="px-6 py-4 text-center">
                                         @if ( $request -> completed_at )
-                                        <x-admin-status-red>解決済み</x-admin-status-red>
+                                        <x-admin-status-green>解決済み</x-admin-status-green>
                                         @else
-                                        <x-admin-status-green>未解決</x-admin-status-green>
+                                        <x-admin-status-red>未解決</x-admin-status-red>
                                         @endif
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        {{ date( 'Y年m月d日 H時i分s秒', strtotime( $request -> created_at ) ) }}
+                                        {{ date( 'Y.m.d H:i', strtotime( $request -> created_at ) ) }}
                                     </td>
                                 </tr>
                                 @endforeach

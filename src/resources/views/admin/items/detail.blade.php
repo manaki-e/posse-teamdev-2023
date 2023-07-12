@@ -70,7 +70,7 @@
                         <p class="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">
                             {{ $product -> title }}
                         </p>
-                        @if ($product -> status === 3)
+                        @if ($product -> status === 3 || $product -> status === 4)
                         <x-admin-status-red>貸出中</x-admin-status-red>
                         @elseif ($product -> status === 2)
                         <x-admin-status-green>貸出可能</x-admin-status-green>
@@ -102,7 +102,7 @@
                             <p class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold capitalize">
                                 作成日時:</p>
                             <p class="block antialiased font-sans text-sm leading-normal font-normal text-gray-500">
-                                {{ date( 'Y年m月d日 H時i分s秒', strtotime( $product -> created_at ) ) }}
+                                {{ date( 'Y.m.d H:i', strtotime( $product -> created_at ) ) }}
                             </p>
                         </li>
                         @if ( $product -> deleted_at )
@@ -110,7 +110,7 @@
                             <p class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold capitalize">
                                 削除日時:</p>
                             <p class="block antialiased font-sans text-sm leading-normal font-normal text-gray-500">
-                                {{ date( 'Y年m月d日 H時i分s秒', strtotime( $product -> deleted_at ) ) }}
+                                {{ date( 'Y.m.d H:i', strtotime( $product -> deleted_at ) ) }}
                             </p>
                         </li>
                         @endif
@@ -244,11 +244,11 @@
                                         </a>
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        {{ date( 'Y年m月d日 H時i分s秒', strtotime( $deal -> created_at ) ) }}
+                                        {{ date( 'Y.m.d H:i', strtotime( $deal -> created_at ) ) }}
                                     </td>
                                     <td class="px-6 py-4 text-right">
                                         {{ $deal -> returned_at
-                                        ? date( 'Y年m月d日 H時i分s秒', strtotime( $deal -> returned_at ) )
+                                        ? date( 'Y.m.d H:i', strtotime( $deal -> returned_at ) )
                                         : '未返却' }}
                                     </td>
                                 </tr>

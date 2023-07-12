@@ -123,8 +123,8 @@
                                     <td class="px-6 py-4 text-xs">
                                         <a href="{{ route('admin.users.show', ['user' => $pending_product -> user -> id]) }}" class="border-b border-blue-600 hover:text-blue-700">{{ $pending_product -> user -> name }}</a>
                                     </td>
-                                    <td class="px-6 py-4">
-                                        {{ date( 'Y年m月d日', strtotime( $pending_product -> created_at ) ) }}
+                                    <td class=" px-6 py-4">
+                                        {{ date( 'Y.m.d H:i', strtotime( $pending_product -> created_at ) ) }}
                                     </td>
                                     <td class="flex justify-end gap-4 px-6 py-4 font-medium whitespace-nowrap">
                                         <x-admin-button-detail href="{{ route('admin.items.show', ['item' =>  $pending_product -> id]) }}">
