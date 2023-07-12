@@ -131,10 +131,10 @@
                                         </x-admin-button-detail>
                                         <x-admin-button-edit action="{{ route('admin.items.update', ['item' =>  $pending_product -> id]) }}">
                                             <x-slot name="content">
-                                                ポイントを設定する
+                                                ポイントを設定
                                             </x-slot>
                                             <x-slot name="modal_title">
-                                                ポイントを設定する
+                                                ポイントを設定
                                             </x-slot>
                                             <x-slot name="modal_description">
                                                 ポイントを設定すると、アイテムが登録され、誰でも借りることができるようになります。また、ポイントはいつでも変更することができます。
