@@ -21,7 +21,7 @@ $images_count = count($product->productImages);
 <x-user-app>
     <x-slot name="header_slot">
         <x-user-header textColor="text-blue-400" bgColor="bg-blue-400">
-            <x-slot:app_name>Peer Product Share</x-slot:app_name>
+            <x-slot:app_name>Peer Item</x-slot:app_name>
             <x-slot:button_text>アイテム登録</x-slot:button_text>
             <x-slot:button_link>{{ route('items.create') }}</x-slot:button_link>
             <x-slot:earned_point>{{ Auth::user()->earned_point }}</x-slot:earned_point>

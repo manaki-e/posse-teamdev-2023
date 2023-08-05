@@ -1,7 +1,7 @@
 <x-user-app>
     <x-slot name="header_slot">
         <x-user-header textColor="text-blue-400" bgColor="bg-blue-400">
-            <x-slot:app_name>Peer Product Share</x-slot:app_name>
+            <x-slot:app_name>Peer Item</x-slot:app_name>
             <x-slot:button_link>{{ route('items.create') }}</x-slot:button_link>
             <x-slot:button_text>アイテム登録</x-slot:button_text>
             <x-slot:top_title_link>{{ route('items.index') }}</x-slot:top_title_link>
@@ -23,11 +23,11 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" />
                                             </svg>
                                         </div>
-                                        <div class="text-gray-600"><a href="#" class="font-medium text-primary-500 hover:text-primary-700">クリックして追加</a>
+                                        <div class="text-gray-600"><a class="font-medium text-primary-500 hover:text-primary-700">クリックして追加</a>
                                             または ファイルをドロップ</div>
                                         <p class="text-sm text-gray-500">SVG, PNG or JPG (max. 1MB, 3枚まで)</p>
                                     </div>
-                                    <input id="file" type="file" name="product_images[]" class="sr-only" multiple required onchange="checkFileSize(this),preview(this)" />
+                                    <input id="file" type="file" name="product_images[]" class="sr-only" multiple required onchange="checkFileSize(this),handleImageUpload(this),preview(this)" />
                                     <div class="preview-area "></div>
                                 </label>
                             </div>
@@ -39,8 +39,8 @@
                                     @foreach ($product_tags as $index => $tag)
                                     <div class="w-auto">
                                         <div class="flex items-center">
-                                            <input hidden id="tag_{{ $index }}" type="checkbox" value="{{ $tag->id }}" name="product_tags[]" class="filter-input w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
-                                            <label for="tag_{{ $index }}" class="rounded-full border border-gray-300 bg-gray-50 px-2 py-1 text-xs font-semibold text-gray-400 cursor-pointer">{{ $tag->name }}</label>
+                                            <input hidden id="tag_{{ $index }}" type="checkbox" value="{{ $tag->id }}" name="product_tags[]" class="filter-input w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded" @if($tag->checked===true) checked @endif>
+                                            <label for="tag_{{ $index }}" class="rounded-full border border-gray-300 @if($tag->checked===true) bg-gray-500 @else bg-gray-50 @endif px-2 py-1 text-xs font-semibold text-gray-400 cursor-pointer">{{ $tag->name }}</label>
                                         </div>
                                     </div>
                                     @endforeach
@@ -138,16 +138,21 @@
     function checkFileSize(input) {
         const maxSize = 1 * 1024 * 1024; // 1MB in bytes
         const files = input.files;
-        for (let i = 0; i < files.length; i++) {
-            if (files[i].size > maxSize) {
-                // File size exceeds the maximum limit
-                alert('1MB以下の画像を選択してください.');
-                input.value = null; // Clear the file input
-                return;
-            }
+        let totalSize = Array.from(files).reduce((accumulator, file) => accumulator + file.size, 0);
+        const totalSizeInMB = totalSize / (1024 * 1024);
+        if (totalSizeInMB > 1) {
+            alert('合計ファイルサイズが1MBを超えています。');
+            input.value = null;
         }
+    }
 
-        // Proceed with file preview or submission
-        preview(input);
+    function handleImageUpload(input) {
+        const files = input.files;
+        if (files.length > 3) {
+            // 選択されたファイルが3枚を超える場合はアラートを表示
+            alert('最大3枚までの画像を選択してください');
+            // 選択されたファイルをリセット
+            input.value = null;
+        }
     }
 </script>

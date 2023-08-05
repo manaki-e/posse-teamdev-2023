@@ -10,7 +10,7 @@ $user_info = Auth::user();
 
 <div x-data="{ modelOpen: false }">
     <div @click="modelOpen =!modelOpen" class="rounded-lg w-40 mx-3 my-1 px-7 py-2 shadow-md text-center text-sm text-white admin-bg-green border admin-border-green transition-all hover:shadow-lg hover:opacity-75 ">
-        <a href="#" class="">
+        <a class="">
             ポイント交換
         </a>
     </div>

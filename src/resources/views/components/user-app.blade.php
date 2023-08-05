@@ -8,7 +8,7 @@
 
 
     @if (request()->is('items') || request()->is('items/*'))
-    <title>{{"Peer Product Share"}}</title>
+    <title>{{"Peer Item"}}</title>
     <link rel="icon" href="{{ asset('icon-pps.ico') }}" type="image/x-icon">
     @elseif (request()->is('events') || request()->is('events/*'))
     <title>{{"Peer Event"}}</title>

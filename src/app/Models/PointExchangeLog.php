@@ -27,4 +27,17 @@ class PointExchangeLog extends Model
     {
         return $query->where('status', self::STATUS['APPROVED']);
     }
+    public static function getUserPointExchangeLogs($user_id)
+    {
+        return self::where('user_id', $user_id)->get();
+    }
+    public function formatPointExchangeLogForMyPageEarnedPointHistory()
+    {
+        return [
+            'app' => 'PP',
+            'name' => '換金申請',
+            'created_at' => $this->created_at,
+            'point' => -$this->point,
+        ];
+    }
 }

@@ -70,7 +70,7 @@
                         <p class="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">
                             {{ $product -> title }}
                         </p>
-                        @if ($product -> status === 3)
+                        @if ($product -> status === 3 || $product -> status === 4)
                         <x-admin-status-red>貸出中</x-admin-status-red>
                         @elseif ($product -> status === 2)
                         <x-admin-status-green>貸出可能</x-admin-status-green>
@@ -102,7 +102,7 @@
                             <p class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold capitalize">
                                 作成日時:</p>
                             <p class="block antialiased font-sans text-sm leading-normal font-normal text-gray-500">
-                                {{ date( 'Y年m月d日 H時i分s秒', strtotime( $product -> created_at ) ) }}
+                                {{ date( 'Y.m.d H:i', strtotime( $product -> created_at ) ) }}
                             </p>
                         </li>
                         @if ( $product -> deleted_at )
@@ -110,7 +110,7 @@
                             <p class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold capitalize">
                                 削除日時:</p>
                             <p class="block antialiased font-sans text-sm leading-normal font-normal text-gray-500">
-                                {{ date( 'Y年m月d日 H時i分s秒', strtotime( $product -> deleted_at ) ) }}
+                                {{ date( 'Y.m.d H:i', strtotime( $product -> deleted_at ) ) }}
                             </p>
                         </li>
                         @endif
@@ -118,9 +118,8 @@
                             <p class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold capitalize">
                                 リクエストの紐付け:</p>
                             <p class="block antialiased font-sans text-sm leading-normal font-normal text-gray-500">
-                                <!-- 後ほど修正する -->
                                 {!! ( $product -> request )
-                                ? 'あり <a href="#" class="hover:text-blue-700 border-b border-blue-800">（ここを押すと紐づけられたリクエストの詳細に飛びます）</a>'
+                                ? 'あり'
                                 : 'なし' !!}
                             </p>
                         </li>
@@ -134,7 +133,11 @@
                         <li class="flex items-center gap-4 pl-4">
                             <p class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold capitalize">
                                 貸出者:</p>
-                            <p class="block antialiased font-sans text-sm leading-normal font-normal text-gray-500">{{ $product -> user -> name }}</p>
+                            <p class="block antialiased font-sans text-sm leading-normal font-normal text-gray-500">
+                                <a href="{{ route('admin.users.show', ['user' => $product -> user -> id]) }}" class="border-b border-blue-600 hover:text-blue-700">
+                                    {{ $product -> user -> name }}
+                                </a>
+                            </p>
                         </li>
                         <li class="flex items-center gap-4 pl-4 mt-4">
                             @if ($product -> status === 1)
@@ -155,8 +158,11 @@
                                     <div class="mb-4">
                                         <div class="relative flex gap-4">
                                             <label for="point" class="leading-7 text-sm text-gray-600 flex-center">Point:</label>
-                                            <input type="number" id="point" name="point" class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" required>
+                                            <input max="5000" type="number" id="point" name="point" class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" required>
                                         </div>
+                                        <p class="ml-2 text-xs text-gray-500 ">
+                                            ポイントの上限は 5000 pt
+                                        </p>
                                     </div>
                                 </x-slot>
                             </x-admin-button-edit>
@@ -179,9 +185,12 @@
                                 <x-slot name="form_slot">
                                     <div class="mb-4">
                                         <div class="relative flex gap-4">
-                                            <label for="point" class="leading-7 text-sm text-gray-600 flex-center">Point:</label>
-                                            <input type="text" id="point" name="point" value="{{ $product -> point }}" class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                            <label for="point" class="leading-7 text-sm text-gray-600 flex-center">ポイント:</label>
+                                            <input max="5000" type="number" id="point" name="point" value="{{ $product -> point }}" class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                                         </div>
+                                        <p class="ml-2 text-xs text-gray-500 ">
+                                            ポイントの上限は 5000 pt
+                                        </p>
                                     </div>
                                 </x-slot>
                             </x-admin-button-edit>
@@ -229,14 +238,17 @@
                             <tbody class="divide-y divide-gray-100 border-t border-gray-100">
                                 @foreach ( $product_deals as $deal )
                                 <tr class="hover:bg-gray-50">
-                                    <td class="px-6 py-4">{{ $deal -> user -> name }}
+                                    <td class="px-6 py-4">
+                                        <a href="{{ route('admin.users.show', ['user' => $deal -> user -> id]) }}" class="border-b border-blue-600 hover:text-blue-700">
+                                            {{ $deal -> user -> name }}
+                                        </a>
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        {{ date( 'Y年m月d日 H時i分s秒', strtotime( $deal -> created_at ) ) }}
+                                        {{ date( 'Y.m.d H:i', strtotime( $deal -> created_at ) ) }}
                                     </td>
                                     <td class="px-6 py-4 text-right">
                                         {{ $deal -> returned_at
-                                        ? date( 'Y年m月d日 H時i分s秒', strtotime( $deal -> returned_at ) )
+                                        ? date( 'Y.m.d H:i', strtotime( $deal -> returned_at ) )
                                         : '未返却' }}
                                     </td>
                                 </tr>

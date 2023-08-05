@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -17,7 +18,7 @@ class CheckAdmin
     public function handle(Request $request, Closure $next)
     {
         if (!auth()->user()->is_admin) {
-            return redirect()->back()->with('error', '管理者のみアクセスできます。');
+            return redirect()->back()->with(['flush.message' => '管理者のみアクセスできます。', 'flush.alert_type' => 'warning']);
         }
         return $next($request);
     }

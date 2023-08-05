@@ -41,7 +41,7 @@ return new class extends Migration
                 'display_name' => 'sohtatu ido',
                 'email' => 'sohtatsu.ido@keio.jp',
                 'password' => Hash::make('password'),
-                'icon' => 'https://secure.gravatar.com/avatar/043535e31b28f2131d9f5111526d8aa3.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0009-512.png',
+                'icon' => 'https://avatars.slack-edge.com/2023-06-03/5361141931894_5135cf4f35851443dce9_512.jpg',
                 'slackID' => 'U056N55T9AB',
                 'is_admin' => 1,
                 'department_id' => 1,

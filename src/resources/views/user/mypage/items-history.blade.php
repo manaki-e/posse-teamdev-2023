@@ -26,7 +26,7 @@
                         <thead class="bg-gray-50">
                             <tr>
                                 <th scope="col" class="px-6 py-4 font-medium text-gray-900">商品情報</th>
-                                <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">貸出日時</th>
+                                <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">借用日時</th>
                                 <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">返却日時</th>
                             </tr>
                         </thead>
@@ -39,8 +39,16 @@
                                 <x-slot:point>{{ $history->point .' pt'}}</x-slot:point>
                                 <x-slot:user_icon>{{ $history -> product -> user -> icon }}</x-slot:user_icon>
                                 <x-slot:user_name>{{ $history -> product -> user -> name }}</x-slot:user_name>
-                                <x-slot:borrowing_time>{{ date( 'Y年m月d日', strtotime( $history -> created_at ) ) }}</x-slot:borrowing_time>
-                                <x-slot:return_time>{{ $history -> returned_at ? date( 'Y年m月d日', strtotime( $history -> returned_at ) ) : '未返却' }}</x-slot:return_time>
+                                <x-slot:borrowing_time>{{ date( 'Y.m.d', strtotime( $history -> created_at ) ) }}</x-slot:borrowing_time>
+                                <x-slot:return_time>
+                                    @if($history -> cancelled_at)
+                                    キャンセル済み
+                                    @elseif($history -> returned_at)
+                                    {{ date('Y.m.d',strtotime($history -> returned_at)) }}
+                                    @else
+                                    未返却
+                                    @endif
+                                </x-slot:return_time>
                             </x-mypage-history-item>
                             @endforeach
                         </tbody>
@@ -59,7 +67,7 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100 border-t border-gray-200">
-                            @foreach ( $borrow_product_histories as $history )
+                            @foreach ( $lend_product_histories as $history )
                             <x-mypage-history-item>
                                 <x-slot:id>{{ $history -> product -> id }}</x-slot:id>
                                 <x-slot:image_url>{{ $history -> product -> productImages[0] -> image_url }}</x-slot:image_url>
@@ -67,8 +75,15 @@
                                 <x-slot:point>{{ $history->point .' pt'}}</x-slot:point>
                                 <x-slot:user_icon>{{ $history -> product -> user -> icon }}</x-slot:user_icon>
                                 <x-slot:user_name>{{ $history -> product -> user -> name }}</x-slot:user_name>
-                                <x-slot:borrowing_time>{{ date( 'Y年m月d日', strtotime( $history -> created_at ) ) }}</x-slot:borrowing_time>
-                                <x-slot:return_time>{{ $history -> returned_at ? date( 'Y年m月d日', strtotime( $history -> returned_at ) ) : '未返却' }}</x-slot:return_time>
+                                <x-slot:borrowing_time>{{ date( 'Y.m.d', strtotime( $history -> created_at ) ) }}</x-slot:borrowing_time>
+                                <x-slot:return_time>
+                                    @if($history -> cancelled_at)
+                                    キャンセル済み
+                                    @elseif($history -> returned_at)
+                                    {{ date('Y.m.d',strtotime($history -> returned_at)) }}
+                                    @else
+                                    未返却
+                                    @endif </x-slot:return_time>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex flex-nowrap gap-2">
                                         <img src="{{ $history -> user -> icon }}" alt="ユーザアイコン" class="w-6 h-6 rounded-full object-cover object-center">

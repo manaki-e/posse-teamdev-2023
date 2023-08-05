@@ -28,4 +28,23 @@ class EventParticipantLog extends Model
     {
         return $query->whereYear('created_at', now()->year)->whereMonth('created_at', now()->month);
     }
+    public static function getSumOfUsedPoints($user_id)
+    {
+        return self::where('user_id', $user_id)->sum('point');
+    }
+    public static function getUserEventParticipantLogsIncludingTrashedEvent($user_id)
+    {
+        return self::withTrashed()->where('user_id', $user_id)->with(['event' => function ($query) {
+            $query->withTrashed();
+        }])->get();
+    }
+    public function formatEventParticipantLogForMyPageDistributionPointHistory()
+    {
+        return [
+            'app' => 'PE',
+            'name' => $this->event->title,
+            'created_at' => $this->created_at->format('Y.m.d H:i'),
+            'point' => -$this->point,
+        ];
+    }
 }

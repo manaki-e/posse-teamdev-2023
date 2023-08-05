@@ -10,12 +10,14 @@ use App\Models\EventParticipantLog;
 use App\Models\Product;
 use App\Models\ProductDealLog;
 use App\Models\Request as AppRequest;
+use App\Models\Setting;
 use App\Models\SlackUser;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
+
 
 class AdminUserController extends Controller
 {
@@ -56,6 +58,13 @@ class AdminUserController extends Controller
      */
     public function store(Request $request)
     {
+        // 一度削除したユーザであった場合は復元する（データは消されているためポイントのデータのみ復元される）
+        $user = User::withTrashed()->where('email', $request->email)->first();
+        if (!empty($user)) {
+            $user->restore();
+            return Redirect::route('admin.users.index')->with(['flush.message' => 'slackにいるユーザを新しくPeerPerkユーザとして登録しました', 'flush.alert_type' => 'success']);
+        }
+
         if (empty($request->department_name)) {
             $department_id = null;
         } else {
@@ -88,12 +97,28 @@ class AdminUserController extends Controller
         $user_data = User::with('department')->findOrFail($user);
         $product_deal_logs = ProductDealLog::UserInvolved($user)->with('user')->paginate(10);
         $products = Product::approvedProducts()->where('user_id', $user)->with('productTags.tag')->withCount('productLikes')->paginate(10);
+        $product_occupied_status = Product::STATUS['occupied'];
+        $product_delivering_status = Product::STATUS['delivering'];
         $joined_event_logs = EventParticipantLog::where('user_id', $user)->with('event.eventTags.tag')->paginate(10);
-        $held_events = Event::where('user_id', $user)->with('eventParticipants')->withSum('eventParticipants', 'point')->withCount('eventParticipants')->paginate(10);
-        // dd($held_events);
+        $held_events = Event::where('user_id', $user)->with('eventParticipantLogs')->withSum('eventParticipantLogs', 'point')->withCount(['eventParticipantLogs' => function ($query) {
+            $query->where('cancelled_at', null);
+        }])->paginate(10);
         $requests = AppRequest::where('user_id', $user)->with('product')->with('event')->paginate(10);
 
-        return view('admin.users.detail', compact('user', 'user_data', 'product_deal_logs', 'products', 'joined_event_logs', 'held_events', 'requests'));
+        $total_earned_points_by_events = Event::getSumOfEarnedPoints($user);
+        $total_earned_points_by_products = Product::getSumOfEarnedPoints($user);
+        $total_earned_points = $total_earned_points_by_events + $total_earned_points_by_products;
+
+        $total_used_points_by_events = EventParticipantLog::getSumOfUsedPoints($user);
+        $total_used_points_by_products = ProductDealLog::getSumOfUsedPoints($user);
+        $total_used_points = $total_used_points_by_events + $total_used_points_by_products;
+
+        $current_month_earned_points_by_events = Event::getSumOfEarnedPointsCurrentMonth($user);
+        $current_month_earned_points_by_products = Product::getSumOfEarnedPointsCurrentMonth($user);
+        $current_month_earned_points = $current_month_earned_points_by_events + $current_month_earned_points_by_products;
+
+        $current_month_used_points = Setting::monthlyDistributionPoint() - $user_data->distribution_point;
+        return view('admin.users.detail', compact('user', 'user_data', 'product_deal_logs', 'products', 'joined_event_logs', 'held_events', 'requests', 'total_earned_points', 'total_used_points', 'current_month_earned_points', 'current_month_used_points', 'product_occupied_status', 'product_delivering_status'));
     }
 
     /**
@@ -119,8 +144,11 @@ class AdminUserController extends Controller
         $user_instance = User::findOrFail($user);
         $channel_id = $this->slackController->searchChannelId("peerperk管理者", true);
         $user_slack_id = $user_instance->slackID;
+        $admin_user_count = User::where('is_admin', 1)->count();
 
-        if ($user_instance->is_admin === 1) {
+        if ($admin_user_count === 1 && $user_instance->is_admin === 1) {
+            return Redirect::route('admin.users.index')->with(['flush.message' => '管理者は最低一人必要です', 'flush.alert_type' => 'error']);
+        } elseif ($user_instance->is_admin === 1) {
             $user_instance->is_admin = 0;
             $this->slackController->removeUserFromChannel($channel_id, $user_slack_id);
         } elseif ($user_instance->is_admin === 0) {
@@ -128,8 +156,13 @@ class AdminUserController extends Controller
             $this->slackController->inviteUsersToChannel($channel_id, $user_slack_id);
         }
         $user_instance->save();
-
-        return Redirect::route('admin.users.index')->with(['flush.message' => '権限の変更が正しく行われました', 'flush.alert_type' => 'success']);
+        //ログインしている管理者が自分を一般ユーザーに変更した場合はログアウトさせる
+        if (auth()->user()->id === $user_instance->id) {
+            auth()->logout();
+            return Redirect::route('login');
+        } else {
+            return Redirect::route('admin.users.index')->with(['flush.message' => '権限の変更が正しく行われました', 'flush.alert_type' => 'success']);
+        }
     }
 
     /**
@@ -140,9 +173,18 @@ class AdminUserController extends Controller
      */
     public function destroy($user)
     {
-        User::findOrFail($user)->delete();
+        $user_instance = User::findOrFail($user);
+        $admin_user_count = User::where('is_admin', 1)->count();
+        if ($admin_user_count === 1 && $user_instance->is_admin === 1) {
+            return Redirect::route('admin.users.index')->with(['flush.message' => '管理者は最低一人必要です', 'flush.alert_type' => 'error']);
+        } else {
+            $user_instance->delete();
+        }
         // ユーザテーブルに紐づく各テーブルのデータも削除する
-
-        return Redirect::route('admin.users.index')->with(['flush.message' => 'ユーザ削除が正しく行われました', 'flush.alert_type' => 'success']);
+        if (auth()->user()->id === $user) {
+            return Redirect::route('login');
+        } else {
+            return Redirect::route('admin.users.index')->with(['flush.message' => 'ユーザ削除が正しく行われました', 'flush.alert_type' => 'success']);
+        }
     }
 }

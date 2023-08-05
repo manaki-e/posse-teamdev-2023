@@ -41,7 +41,7 @@
                                 <x-slot:start_date>{{ $event  -> start_date ? date( 'Y.m.d H:i', strtotime( $event  -> date ) ) : '未定' }}</x-slot:start_date>
                                 <x-slot:end_date>{{ $event  -> end_date ? date( 'Y.m.d H:i', strtotime( $event  -> date ) ) : '未定' }}</x-slot:end_date>
                                 <x-slot:style>{{ $event -> style ?? '未定' }}</x-slot:style>
-                                <x-slot:participants_count>{{ count($event -> eventParticipants) }}</x-slot:participants_count>
+                                <x-slot:participants_count>{{ $event->event_participant_logs_count }}</x-slot:participants_count>
                                 <x-slot:create_date>{{ date( 'Y.m.d', strtotime( $event  -> created_at ) ) }}</x-slot:create_date>
                                 <x-slot:likes>{{ count($event -> eventLikes) }}</x-slot:likes>
                                 <x-slot:user_icon>{{ $event  -> user -> icon }}</x-slot:user_icon>
@@ -55,7 +55,7 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5m6 4.125l2.25 2.25m0 0l2.25 2.25M12 13.875l2.25-2.25M12 13.875l-2.25 2.25M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
                                             </x-slot:logo_path>
                                             <x-slot:modal_title>イベントへの参加予定をキャンセル</x-slot:modal_title>
-                                            <x-slot:modal_description>参加をキャンセルすると、主催者にポイントは入りません。ただし、自分自身にポイントは戻ってこないため、ご注意ください。</x-slot:modal_description>
+                                            <x-slot:modal_description>参加予定をキャンセルしても、主催者にポイントは入ります。ただし、自分自身にポイントは戻ってこないため、ご注意ください。</x-slot:modal_description>
                                             <x-slot:method></x-slot:method>
                                             <x-slot:form_slot></x-slot:form_slot>
                                         </x-mypage-button-event-cancel>
@@ -66,7 +66,7 @@
                         @endforeach
                     </ul>
                 </div>
-                <div :class="{ '!block': activeTab === 2 }" x-show.transition.in.opacity.duration.600="activeTab === 2" class="hidden">
+                <div :class="{ '!block': activeTab === 1 }" x-show.transition.in.opacity.duration.600="activeTab === 2" class="hidden">
                     <ul class="border-b border-gray-300">
                         @foreach ($after_held_joined_events as $event)
                         <li>
@@ -81,7 +81,7 @@
                                 <x-slot:start_date>{{ $event  -> start_date ? date( 'Y.m.d H:i', strtotime( $event  -> start_date ) ) : '未定' }}</x-slot:start_date>
                                 <x-slot:end_date>{{ $event  -> end_date ? date( 'Y.m.d H:i', strtotime( $event  -> end_date ) ) : '未定' }}</x-slot:end_date>
                                 <x-slot:style>{{ $event -> style ?? '未定' }}</x-slot:style>
-                                <x-slot:participants_count>{{ count($event -> eventParticipants) }}</x-slot:participants_count>
+                                <x-slot:participants_count>{{ $event->event_participant_logs_count }}</x-slot:participants_count>
                                 <x-slot:create_date>{{ date( 'Y.m.d', strtotime( $event  -> created_at ) ) }}</x-slot:create_date>
                                 <x-slot:likes>{{ count($event -> eventLikes) }}</x-slot:likes>
                                 <x-slot:user_icon>{{ $event  -> user -> icon }}</x-slot:user_icon>
@@ -93,7 +93,7 @@
                         @endforeach
                     </ul>
                 </div>
-                <div :class="{ '!block': activeTab === 1 }" x-show.transition.in.opacity.duration.600="activeTab === 1" class="hidden">
+                <div :class="{ '!block': activeTab === 2 }" x-show.transition.in.opacity.duration.600="activeTab === 1" class="hidden">
                     <ul class="border-b border-gray-300">
                         @foreach ($cancelled_joined_events as $event)
                         <li>
@@ -108,7 +108,7 @@
                                 <x-slot:start_date>{{ $event  -> start_date ? date( 'Y.m.d H:i', strtotime( $event  -> start_date ) ) : '未定' }}</x-slot:start_date>
                                 <x-slot:end_date>{{ $event  -> end_date ? date( 'Y.m.d H:i', strtotime( $event  -> end_date ) ) : '未定' }}</x-slot:end_date>
                                 <x-slot:style>{{ $event -> style ?? '未定' }}</x-slot:style>
-                                <x-slot:participants_count>{{ count($event -> eventParticipants) }}</x-slot:participants_count>
+                                <x-slot:participants_count>{{ $event->event_participant_logs_count }}</x-slot:participants_count>
                                 <x-slot:create_date>{{ date( 'Y.m.d', strtotime( $event  -> created_at ) ) }}</x-slot:create_date>
                                 <x-slot:likes>{{ count($event -> eventLikes) }}</x-slot:likes>
                                 <x-slot:user_icon>{{ $event  -> user -> icon }}</x-slot:user_icon>

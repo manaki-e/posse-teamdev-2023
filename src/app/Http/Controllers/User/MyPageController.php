@@ -43,13 +43,13 @@ class MyPageController extends Controller
         })->sortByDesc('created_at');
 
         // イベント
-        $events = Event::where('user_id', $user->id)->withCount('eventLikes')->withCount(['eventParticipants' => function ($query) {
+        $events = Event::where('user_id', $user->id)->withCount('eventLikes')->withCount(['eventParticipantLogs' => function ($query) {
             $query->where('cancelled_at', null);
-        }])->with(['user', 'eventTags.tag', 'eventLikes.user'])->with(['eventParticipants' => function ($query) {
+        }])->with(['user', 'eventTags.tag', 'eventLikes.user'])->with(['eventParticipantLogs' => function ($query) {
             $query->where('cancelled_at', null)->with('user');
         }])->get()->map(function ($event) use ($user_id) {
             $event->isLiked = $event->eventLikes->contains('user_id', $user_id);
-            $event->isParticipated = $event->eventParticipants->contains('user_id', $user_id);
+            $event->isParticipated = $event->eventParticipantLogs->contains('user_id', $user_id);
             if (empty($event->completed_at)) {
                 $event->isCompleted = Event::COMPLETED_STATUSES[0];
             } else {
@@ -83,7 +83,7 @@ class MyPageController extends Controller
             return $request;
         });
 
-        return view('user.mypage.profile', compact('user', 'products', 'japanese_product_statuses','events','requests', 'app', 'event_request_type_id', 'product_request_type_id'));
+        return view('user.mypage.profile', compact('user', 'products', 'japanese_product_statuses', 'events', 'requests', 'app', 'event_request_type_id', 'product_request_type_id'));
     }
 
     public function account()
@@ -94,89 +94,27 @@ class MyPageController extends Controller
 
     public function pointHistory()
     {
-        //消費と獲得に分ける
-        //内容：カテゴリ（イベント、アイテム、換金）、内容（イベント名、アイテム名、換金）、日時、ポイント
-        //消費=>product_deal_logsとevent_participant_logsを結合
-        //消費はキャンセル関係なくポイントが減るためwithTrashed()
-        $unchargeable_month_count = ProductDealLog::UNCHARGEABLE_MONTH_COUNT;
-        $user = Auth::user();
-        $distribution_product_deal_logs = ProductDealLog::where('user_id', $user->id)->chargeable()->with(['product' => function ($query) {
-            $query->withTrashed();
-        }])->get()->map(function ($product_deal_log) use ($unchargeable_month_count) {
-            if ($product_deal_log->month_count === $unchargeable_month_count - 1) {
-                //借りた最初の月
-                return [
-                    'app' => 'PPS',
-                    'name' => $product_deal_log->product->title,
-                    'created_at' => $product_deal_log->created_at,
-                    'point' => -$product_deal_log->point,
-                ];
-            } else {
-                //借りた最初の月と差し引き不可能な月以外
-                return [
-                    'app' => 'PPS',
-                    'name' => $product_deal_log->product->title . ($product_deal_log->created_at->subMonth()->format('(n月分)')),
-                    'created_at' => $product_deal_log->created_at,
-                    'point' => -$product_deal_log->point,
-                ];
-            }
+        $user_id = Auth::id();
+
+        $distribution_product_deal_logs = ProductDealLog::getUserChargeableProductDealLogsIncludingTrashedProduct($user_id)->map(function ($product_deal_log) {
+            return $product_deal_log->formatProductDealLogForMyPageDistributionPointHistory();
         });
-        $distribution_event_participant_logs = EventParticipantLog::withTrashed()->where('user_id', $user->id)->with(['event' => function ($query) {
-            $query->withTrashed();
-        }])->get()->map(function ($event_participant_log) {
-            return [
-                'app' => 'PE',
-                'name' => $event_participant_log->event->title,
-                'created_at' => $event_participant_log->created_at,
-                'point' => -$event_participant_log->point,
-            ];
+        $distribution_event_participant_logs = EventParticipantLog::getUserEventParticipantLogsIncludingTrashedEvent($user_id)->map(function ($event_participant_log) {
+            return $event_participant_log->formatEventParticipantLogForMyPageDistributionPointHistory();
         });
-        //バグ発生対策
-        $distribution_event_participant_logs = collect($distribution_event_participant_logs);
-        $distribution_product_deal_logs = collect($distribution_product_deal_logs);
-        $distribution_point_logs = $distribution_product_deal_logs->merge($distribution_event_participant_logs)->sortByDesc('created_at')->map(function ($distribution_point_log) {
-            $distribution_point_log['created_at'] = $distribution_point_log['created_at']->format('Y-m-d');
-            return $distribution_point_log;
+        $distribution_point_logs = collect([$distribution_product_deal_logs, $distribution_event_participant_logs])->flatten(1)->sortByDesc('created_at');
+
+        $earned_point_exchange_logs = PointExchangeLog::getUserPointExchangeLogs($user_id)->map(function ($point_exchange_log) {
+            return $point_exchange_log->formatPointExchangeLogForMyPageEarnedPointHistory();
         });
-        //獲得=>point_exchange_logsとevents->withsum()とproduct_deal_logsを結合
-        $earned_point_exchange_logs = PointExchangeLog::where('user_id', $user->id)->get()->map(function ($point_exchange_log) {
-            return [
-                'app' => 'PP',
-                'name' => '換金申請',
-                'created_at' => $point_exchange_log->created_at,
-                'point' => -$point_exchange_log->point,
-            ];
+        $earned_event_logs = Event::getUserEventsWithPointSum($user_id)->map(function ($event) {
+            return $event->formatEventForMyPageEarnedPointHistory();
         });
-        $earned_event_logs = Event::where('user_id', $user->id)->where('completed_at', '!=', null)->withSum('eventParticipants', 'point')->get()->map(function ($event) {
-            return [
-                'app' => 'PE',
-                'name' => $event->title,
-                'created_at' => $event->completed_at,
-                'point' => $event->event_participants_sum_point,
-            ];
+        $earned_product_deal_logs = ProductDealLog::getUserEarnableProductDealLogsIncludingTrashedProduct($user_id)->map(function ($product_deal_log) {
+            return $product_deal_log->formatProductDealLogForMyPageEarnedPointHistory();
         });
-        //productが削除されてもポイントの変動は残る、product_deal_logが削除＝キャンセルされた場合はポイントの変動も削除
-        $earned_product_deal_logs = ProductDealLog::notCancelled()->chargeable()->with(['product' => function ($query) {
-            $query->withTrashed();
-        }])->whereHas('product', function ($query) use ($user) {
-            $query->where('user_id', $user->id)->withTrashed();
-        })->get()->map(function ($product_deal_log) {
-            return [
-                'app' => 'PPS',
-                'name' => $product_deal_log->product->title,
-                'created_at' => $product_deal_log->created_at,
-                'point' => $product_deal_log->point,
-            ];
-        });
-        //バグ発生対策
-        $earned_event_logs = collect($earned_event_logs);
-        $earned_product_deal_logs = collect($earned_product_deal_logs);
-        $earned_point_exchange_logs = collect($earned_point_exchange_logs);
-        $earned_point_logs = $earned_point_exchange_logs->merge($earned_event_logs)->merge($earned_product_deal_logs)->sortByDesc('created_at')->map(function ($earned_point_log) {
-            $earned_point_log['created_at'] = $earned_point_log['created_at']->format('Y-m-d');
-            return $earned_point_log;
-        });
-        // dd('配布ポイントの変動', $distribution_point_logs[1]["app"], '獲得ポイントの変動', $earned_point_logs);
+        $earned_point_logs = collect([$earned_point_exchange_logs, $earned_event_logs, $earned_product_deal_logs])->flatten(1)->sortByDesc('created_at');
+
         return view('user.mypage.point-history', compact('earned_point_logs', 'distribution_point_logs'));
     }
 
@@ -224,7 +162,6 @@ class MyPageController extends Controller
         $liked_products = Product::whereHas('productLikes', function ($query) use ($user) {
             $query->where('user_id', $user->id);
         })
-            ->where('user_id', '!=', $user->id)
             ->with('productImages', 'productLikes', 'productTags.tag')
             ->orderBy('created_at', 'desc')
             ->get();
@@ -260,21 +197,36 @@ class MyPageController extends Controller
         $before_held_events = Event::where('user_id', $user->id)
             ->where('completed_at', null)
             ->where('cancelled_at', null)
-            ->with(['eventLikes', 'eventParticipants.user', 'eventTags.tag'])
+            ->withCount(['eventParticipantLogs' => function ($query) {
+                $query->where('cancelled_at', null);
+            }])->with(['eventParticipantLogs' => function ($query) {
+                $query->where('cancelled_at', null)->with('user');
+            }])
+            ->with(['eventLikes', 'eventTags.tag'])
             ->orderBy('created_at', 'desc')
             ->get();
 
         $after_held_events = Event::where('user_id', $user->id)
             ->where('completed_at', '!=', null)
             ->where('cancelled_at', null)
-            ->with(['eventLikes', 'eventParticipants.user', 'eventTags.tag'])
+            ->withCount(['eventParticipantLogs' => function ($query) {
+                $query->where('cancelled_at', null);
+            }])->with(['eventParticipantLogs' => function ($query) {
+                $query->where('cancelled_at', null)->with('user');
+            }])
+            ->with(['eventLikes', 'eventTags.tag'])
             ->orderBy('created_at', 'desc')
             ->get();
 
         $cancelled_events = Event::where('user_id', $user->id)
             ->where('completed_at', null)
             ->where('cancelled_at', '!=', null)
-            ->with(['eventLikes', 'eventParticipants.user', 'eventTags.tag'])
+            ->withCount(['eventParticipantLogs' => function ($query) {
+                $query->where('cancelled_at', null);
+            }])->with(['eventParticipantLogs' => function ($query) {
+                $query->where('cancelled_at', null)->with('user');
+            }])
+            ->with(['eventLikes', 'eventTags.tag'])
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -285,33 +237,41 @@ class MyPageController extends Controller
     {
         $user = Auth::user();
 
-        $before_held_joined_events = Event::whereHas('eventParticipants', function ($query) use ($user) {
+        $before_held_joined_events = Event::whereHas('eventParticipantLogs', function ($query) use ($user) {
             $query->where('user_id', $user->id)->where('cancelled_at', null);
         })
             ->where('completed_at', null)
             ->where('cancelled_at', null)
-            ->with('eventLikes', 'eventParticipants.user', 'eventTags.tag')
+            ->withCount(['eventParticipantLogs' => function ($query) {
+                $query->where('cancelled_at', null)->with('user');
+            }])
+            ->with('eventLikes', 'eventTags.tag')
             ->orderBy('created_at', 'desc')
             ->get();
 
-        $after_held_joined_events = Event::whereHas('eventParticipants', function ($query) use ($user) {
+        $after_held_joined_events = Event::whereHas('eventParticipantLogs', function ($query) use ($user) {
             $query->where('user_id', $user->id)->where('cancelled_at', null);
         })
             ->where('completed_at', '!=', null)
             ->where('cancelled_at', null)
-            ->with(['eventLikes', 'eventParticipants.user', 'eventTags.tag'])
+            ->withCount(['eventParticipantLogs' => function ($query) {
+                $query->where('cancelled_at', null)->with('user');
+            }])
+            ->with(['eventLikes', 'eventTags.tag'])
             ->orderBy('created_at', 'desc')
             ->get();
 
-        $cancelled_joined_events = Event::whereHas('eventParticipants', function ($query) use ($user) {
+        $cancelled_joined_events = Event::whereHas('eventParticipantLogs', function ($query) use ($user) {
             $query->where('user_id', $user->id)->where('cancelled_at', null);
         })
             ->where('completed_at', null)
             ->where('cancelled_at', '!=', null)
-            ->with(['eventLikes', 'eventParticipants.user', 'eventTags.tag'])
+            ->withCount(['eventParticipantLogs' => function ($query) {
+                $query->where('cancelled_at', null)->with('user');
+            }])
+            ->with(['eventLikes', 'eventTags.tag'])
             ->orderBy('created_at', 'desc')
             ->get();
-
         return view('user.mypage.events-joined', compact('before_held_joined_events', 'after_held_joined_events', 'cancelled_joined_events'));
     }
 
@@ -324,18 +284,34 @@ class MyPageController extends Controller
         })
             ->where('completed_at', null)
             ->where('cancelled_at', null)
-            ->where('user_id', '!=', $user->id)
-            ->with('eventLikes', 'eventParticipants.user', 'eventTags.tag')
+            ->withCount(['eventParticipantLogs' => function ($query) {
+                $query->where('cancelled_at', null);
+            }])
+            ->with(['eventParticipantLogs' => function ($query) {
+                $query->where('cancelled_at', null)->with('user');
+            }])
+            ->with('eventLikes', 'eventTags.tag')
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->get()
+            ->map(function ($event) use ($user) {
+                if ($event->eventParticipantLogs->contains('user_id', $user->id)) {
+                    $event->isJoined = true;
+                }
+                return $event;
+            });
 
         $after_held_liked_events = Event::whereHas('eventLikes', function ($query) use ($user) {
             $query->where('user_id', $user->id);
         })
             ->where('completed_at', '!=', null)
             ->where('cancelled_at', null)
-            ->where('user_id', '!=', $user->id)
-            ->with('eventLikes', 'eventParticipants.user', 'eventTags.tag')
+            ->withCount(['eventParticipantLogs' => function ($query) {
+                $query->where('cancelled_at', null);
+            }])
+            ->with(['eventParticipantLogs' => function ($query) {
+                $query->where('cancelled_at', null)->with('user');
+            }])
+            ->with('eventLikes', 'eventTags.tag')
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -344,8 +320,13 @@ class MyPageController extends Controller
         })
             ->where('completed_at', null)
             ->where('cancelled_at', '!=', null)
-            ->where('user_id', '!=', $user->id)
-            ->with('eventLikes', 'eventParticipants.user', 'eventTags.tag')
+            ->withCount(['eventParticipantLogs' => function ($query) {
+                $query->where('cancelled_at', null);
+            }])
+            ->with(['eventParticipantLogs' => function ($query) {
+                $query->where('cancelled_at', null)->with('user');
+            }])
+            ->with('eventLikes', 'eventTags.tag')
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -429,13 +410,13 @@ class MyPageController extends Controller
         })->sortByDesc('created_at');
 
         // イベント
-        $events = Event::where('user_id', $user_id)->withCount('eventLikes')->withCount(['eventParticipants' => function ($query) {
+        $events = Event::where('user_id', $user_id)->withCount('eventLikes')->withCount(['eventParticipantLogs' => function ($query) {
             $query->where('cancelled_at', null);
-        }])->with(['user', 'eventTags.tag', 'eventLikes.user'])->with(['eventParticipants' => function ($query) {
+        }])->with(['user', 'eventTags.tag', 'eventLikes.user'])->with(['eventParticipantLogs' => function ($query) {
             $query->where('cancelled_at', null)->with('user');
         }])->get()->map(function ($event) use ($user_id) {
             $event->isLiked = $event->eventLikes->contains('user_id', $user_id);
-            $event->isParticipated = $event->eventParticipants->contains('user_id', $user_id);
+            $event->isParticipated = $event->eventParticipantLogs->contains('user_id', $user_id);
             if (empty($event->completed_at)) {
                 $event->isCompleted = Event::COMPLETED_STATUSES[0];
             } else {

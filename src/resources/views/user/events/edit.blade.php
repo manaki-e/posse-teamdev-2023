@@ -80,16 +80,26 @@
     </x-slot>
 </x-user-app>
 <script>
-    var startInput = document.getElementById("start");
-    var endInput = document.getElementById("end");
+    let startInput = document.getElementById("start");
+    let endInput = document.getElementById("end");
 
     startInput.addEventListener("input", validateDateTime);
     endInput.addEventListener("input", validateDateTime);
 
     function validateDateTime() {
-        var startValue = new Date(startInput.value);
-        var endValue = new Date(endInput.value);
+        let startValue = new Date(startInput.value);
+        let endValue = new Date(endInput.value);
 
+        let today = new Date();
+        if (startValue < today || endValue < today) {
+            alert("開始日時と終了日時は現在時刻より後の日時を設定してください。");
+            // 値をクリアする
+            if (startValue < today) {
+                startInput.value = "";
+            } else if (endValue < today) {
+                endInput.value = "";
+            }
+        }
         if (startValue > endValue) {
             alert("終了日時は開始日時より後の日時を設定してください。");
             // 値をクリアする

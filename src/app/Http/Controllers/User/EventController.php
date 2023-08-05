@@ -34,13 +34,13 @@ class EventController extends Controller
     public function index()
     {
         $user_id = Auth::id();
-        $events = Event::withCount('eventLikes')->withCount(['eventParticipants' => function ($query) {
+        $events = Event::withCount('eventLikes')->withCount(['eventParticipantLogs' => function ($query) {
             $query->where('cancelled_at', null);
-        }])->with(['user', 'eventTags.tag', 'eventLikes.user'])->with(['eventParticipants' => function ($query) {
+        }])->with(['user', 'eventTags.tag', 'eventLikes.user'])->with(['eventParticipantLogs' => function ($query) {
             $query->where('cancelled_at', null)->with('user');
         }])->get()->map(function ($event) use ($user_id) {
             $event->isLiked = $event->eventLikes->contains('user_id', $user_id);
-            $event->isParticipated = $event->eventParticipants->contains('user_id', $user_id);
+            $event->isParticipated = $event->eventParticipantLogs->contains('user_id', $user_id);
             if (empty($event->completed_at)) {
                 $event->isCompleted = Event::COMPLETED_STATUSES[0];
             } else {
@@ -84,7 +84,7 @@ class EventController extends Controller
     public function store(Request $request)
     {
         // slackチャンネル作成
-        $event_id = Event::max('id') + 1;
+        $event_id = Event::withTrashed()->max('id') + 1;
         $slackId = $this->slackController->createChannel($event_id, $request->title, false);
 
         //events追加
@@ -180,14 +180,16 @@ class EventController extends Controller
         //まずはevent_tagsをすべて削除
         EventTag::where('event_id', $id)->delete();
         //event_tags追加
-        foreach ($request->tags as $tag_id) {
-            $event_tag = new EventTag();
-            $event_tag->event_id = $id;
-            $event_tag->tag_id = $tag_id;
-            $event_tag->save();
+        if (!empty($request->tags)) {
+            foreach ($request->tags as $tag_id) {
+                $event_tag = new EventTag();
+                $event_tag->event_id = $id;
+                $event_tag->tag_id = $tag_id;
+                $event_tag->save();
+            }
         }
         //slackイベント
-        $this->slackController->sendNotification($event->slack_channel, "<!channel>イベントの登録内容が更新されました！確認しましょう。\n```".env('APP_URL')."events```");
+        $this->slackController->sendNotification($event->slack_channel, "<!channel>イベントの登録内容が更新されました！確認しましょう。\n```" . env('APP_URL') . "events```");
         return redirect()->route('mypage.events.organized')->with(['flush.message' => 'イベント更新を完了しました。', 'flush.alert_type' => 'success']);
     }
 
@@ -216,7 +218,7 @@ class EventController extends Controller
         //slackイベント
         $this->slackController->sendNotification($event_instance->slack_channel, "<!channel>イベントの開催を完了しました！次は、他のイベントにも積極的に参加したり、イベントを開催したりしてみましょう。");
         //slack全体
-        $this->slackController->sendNotification($this->slackGlobalAnnouncementChannelId, "イベントの開催が完了しました！<@".$event_instance->user->slackID.">はこのチャンネルで感想を一言お願いします！");
+        $this->slackController->sendNotification($this->slackGlobalAnnouncementChannelId, "イベントの開催が完了しました！<@" . $event_instance->user->slackID . ">はこのチャンネルで感想を一言お願いします！");
         return redirect()->route('mypage.events.organized');
     }
     public function cancel($event)
@@ -229,16 +231,16 @@ class EventController extends Controller
             $event_data->save();
 
             //slackイベント
-            $this->slackController->sendNotification($event_data->slack_channel, "<!channel>主催者により、イベントの開催がキャンセルされました。");
-            return redirect()->route('mypage.events.organized')->with(['flush.message' => 'イベントの開催をキャンセルしました。', 'flush.alert_type' => 'success']);
+            $this->slackController->sendNotification($event_data->slack_channel, "<!channel>主催者により、イベントの開催が中止されました。");
+            return redirect()->back()->with(['flush.message' => 'イベントの開催を中止しました。', 'flush.alert_type' => 'success']);
         } else {
             $event_participant_log = EventParticipantLog::where('event_id', $event)->where('user_id', $user->id)->where('cancelled_at', null)->first();
             $event_participant_log->cancelled_at = now();
             $event_participant_log->save();
             //slackイベント
-            $this->slackController->sendNotification($event_data->slack_channel, "<@".$user->slackID.">さんがイベントへの参加をキャンセルしました。");
+            $this->slackController->sendNotification($event_data->slack_channel, "<@" . $user->slackID . ">さんがイベントへの参加をキャンセルしました。");
             $this->slackController->removeUserFromChannel($event_data->slack_channel, $user->slackID);
-            return redirect()->route('mypage.events.joined')->with(['flush.message' => 'イベントへの参加をキャンセルしました。', 'flush.alert_type' => 'success']);
+            return redirect()->back()->with(['flush.message' => 'イベントへの参加をキャンセルしました。', 'flush.alert_type' => 'success']);
         }
     }
     public function participate(Request $request, $event)
@@ -267,7 +269,7 @@ class EventController extends Controller
         $event_participant_log->point = $request->point;
         $event_participant_log->save();
         //slackイベント
-        $this->slackController->sendNotification($channel_id,"<!channel><@".$user_slack_id. ">がこのイベントへの参加を申し込みました！チャンネル内でイベントについての詳細を決めましょう。もし詳細が決定している場合は、教えてあげましょう！");
+        $this->slackController->sendNotification($channel_id, "<!channel><@" . $user_slack_id . ">がこのイベントへの参加を申し込みました！チャンネル内でイベントについての詳細を決めましょう。もし詳細が決定している場合は、教えてあげましょう！");
         // 処理後redirect back
         return redirect()->back()->with(['flush.message' => 'イベントへの参加を申し込みました。', 'flush.alert_type' => 'success']);
     }
@@ -278,6 +280,10 @@ class EventController extends Controller
         $requests = ModelsRequest::unresolvedRequests()->eventRequests()->get();
         //イベントタグ一覧を取得
         $tags = Tag::eventTags()->get();
+        //リクエストのタグを取得して、チェック済みにする
+        $request_tags = ModelsRequest::findOrFail($chosen_request_id)->requestTags->map(function ($request_tag) use ($tags) {
+            $tags->find($request_tag->tag_id)->setAttribute('checked', true);
+        });
         return view('user.events.create', compact('requests', 'tags', 'chosen_request_id', 'locations'));
     }
     public function like($id)

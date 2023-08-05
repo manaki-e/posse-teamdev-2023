@@ -34,10 +34,10 @@
                         <table class="w-full border-collapse bg-white text-left text-sm text-gray-500">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900">商品名</th>
-                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">利用ポイント</th>
-                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900">貸出者氏名</th>
+                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900">アイテム名</th>
+                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">ポイント</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">借用者氏名</th>
+                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900">貸出者氏名</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">貸出日時</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">返却日時</th>
                                 </tr>
@@ -48,7 +48,7 @@
                                     <td class="px-6 py-4">
                                         <a href="{{ route('admin.items.show', ['item' => $product_deal -> product -> id]) }}" class="border-b border-blue-600 hover:text-blue-700">{{ $product_deal -> product -> title }}</a>
                                     </td>
-                                    <td class="px-6 py-4 text-right">{{ $product_deal -> product -> point }} pt</td>
+                                    <td class="px-6 py-4 text-right">{{ $product_deal -> point }} pt</td>
                                     <td class="px-6 py-4">
                                         <a href="{{ route('admin.users.show', ['user' => $product_deal -> user -> id]) }}" class="border-b border-blue-600 hover:text-blue-700">{{ $product_deal -> user -> name }}</a>
                                     </td>
@@ -56,12 +56,16 @@
                                         <a href="{{ route('admin.users.show', ['user' => $product_deal -> product -> user -> id]) }}" class="border-b border-blue-600 hover:text-blue-700">{{ $product_deal -> product -> user -> name }}</a>
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        {{ date( 'Y年m月d日 H時i分s秒', strtotime( $product_deal -> created_at ) ) }}
+                                        {{ date( 'Y.m.d H:i', strtotime( $product_deal -> created_at ) ) }}
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        {{ $product_deal -> returned_at
-                                        ? date( 'Y年m月d日 H時i分s秒', strtotime( $product_deal -> returned_at ) )
-                                        : '未返却' }}
+                                        @if($product_deal -> cancelled_at)
+                                        キャンセル済み
+                                        @elseif($product_deal -> returned_at)
+                                        {{ date('Y.m.d H:i',strtotime($product_deal -> returned_at)) }}
+                                        @else
+                                        未返却
+                                        @endif
                                     </td>
                                 </tr>
                                 @endforeach
@@ -78,7 +82,7 @@
                                 <tr>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">イベント名</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">参加登録者氏名</th>
-                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">参加 pt</th>
+                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">ポイント</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">申請日時</th>
                                 </tr>
                             </thead>
@@ -92,7 +96,7 @@
                                     </td>
                                     <td class="px-6 py-4 font-medium text-gray-900 text-right">{{ $event_participant -> point }} pt</td>
                                     <td class=" px-6 py-4 text-right">
-                                        {{ date( 'Y年m月d日 H時i分s秒', strtotime( $event_participant -> created_at ) ) }}
+                                        {{ date( 'Y.m.d H:i', strtotime( $event_participant -> created_at ) ) }}
                                     </td>
                                 </tr>
                                 @endforeach

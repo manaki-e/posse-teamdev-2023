@@ -30,8 +30,7 @@
         <div class="flex gap-16 pt-4">
             <div class="pl-4">
                 <div class="w-24 h-24">
-                    <!-- 後ほど修正する -->
-                    <img class="rounded-full overflow-hidden" src="{{ asset('images/sample_product_1.jpeg') }}" alt="ユーザ写真">
+                    <img class="rounded-full overflow-hidden" src="{{ $user_data->icon }}" alt="ユーザ写真">
                 </div>
             </div>
             <div>
@@ -60,42 +59,40 @@
                         <div class="p-4 w-1/4">
                             <x-admin-point>
                                 <x-slot name="point">
-                                    <!-- 後ほど修正する -->
-                                    {{ __('2960') }}
+                                    {{ $total_earned_points }}
                                 </x-slot>
                                 <x-slot name="description">
-                                    {{ __('累計獲得ポイント') }}
+                                    {{ __('累計獲得 Bonus Point') }}
                                 </x-slot>
                             </x-admin-point>
                         </div>
                         <div class="p-4 w-1/4">
                             <x-admin-point>
                                 <x-slot name="point">
-                                    <!-- 後ほど修正する -->
-                                    {{ __('20700') }}
+                                    {{ $total_used_points }}
                                 </x-slot>
                                 <x-slot name="description">
-                                    {{ __('累計消費ポイント') }}
+                                    {{ __('累計消費 Peer Point') }}
                                 </x-slot>
                             </x-admin-point>
                         </div>
                         <div class="p-4 w-1/4">
                             <x-admin-point>
                                 <x-slot name="point">
-                                    {{ $user_data -> earned_point }}
+                                    {{ $current_month_earned_points }}
                                 </x-slot>
                                 <x-slot name="description">
-                                    {{ __('今月獲得ポイント') }}
+                                    {{ __('今月獲得 Bonus Point') }}
                                 </x-slot>
                             </x-admin-point>
                         </div>
                         <div class="p-4 w-1/4">
                             <x-admin-point>
                                 <x-slot name="point">
-                                    {{ 5000 - $user_data -> distribution_point }}
+                                    {{ $current_month_used_points }}
                                 </x-slot>
                                 <x-slot name="description">
-                                    {{ __('今月消費ポイント') }}
+                                    {{ __('今月消費 Peer Point') }}
                                 </x-slot>
                             </x-admin-point>
                         </div>
@@ -158,7 +155,7 @@
                             <thead class="bg-gray-50">
                                 <tr>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">商品名</th>
-                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">利用ポイント</th>
+                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">ポイント</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">貸出者氏名</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">借用者氏名</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">貸出日時</th>
@@ -177,12 +174,16 @@
                                         <a href="{{ route('admin.users.show', ['user' => $product_deal_log -> user -> id]) }}" class="border-b border-blue-600 hover:text-blue-700">{{ $product_deal_log -> user -> name }}</a>
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        {{ date( 'Y年m月d日 H時i分s秒', strtotime( $product_deal_log -> created_at ) ) }}
+                                        {{ date( 'Y.m.d H:i', strtotime( $product_deal_log -> created_at ) ) }}
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        {{ $product_deal_log -> returned_at
-                                        ? date( 'Y年m月d日 H時i分s秒', strtotime( $product_deal_log -> returned_at ) )
-                                        : '貸出中' }}
+                                        @if($product_deal_log -> cancelled_at)
+                                        キャンセル済み
+                                        @elseif($product_deal_log -> returned_at)
+                                        {{ date('Y.m.d H:i',strtotime($product_deal_log -> returned_at)) }}
+                                        @else
+                                        未返却
+                                        @endif
                                     </td>
                                 </tr>
                                 @endforeach
@@ -199,7 +200,7 @@
                                 <tr>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">商品名</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">カテゴリー</th>
-                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">利用ポイント</th>
+                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">ポイント</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">いいね数</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">貸出状況</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
@@ -221,7 +222,7 @@
                                         {{ $product -> product_likes_count }}
                                     </td>
                                     <td class="px-6 py-4 text-center">
-                                        @if ( $product -> status === 3 )
+                                        @if ( $product -> status === $product_occupied_status || $product -> status === $product_delivering_status)
                                         <x-admin-status-red>貸出中</x-admin-status-red>
                                         @else
                                         <x-admin-status-green>貸出可能</x-admin-status-green>
@@ -229,8 +230,7 @@
                                     </td>
                                     <td class="flex justify-end gap-4 px-6 py-4 font-medium">
                                         <x-admin-button-detail href="{{ route('admin.items.show', ['item' =>  $product -> id]) }}"></x-admin-button-detail>
-                                        <!-- 後ほど修正する -->
-                                        <x-admin-button-edit action="">
+                                        <x-admin-button-edit action="{{ route('admin.items.update', ['item' =>  $product -> id]) }}">
                                             <x-slot name="content">
                                                 ポイント再設定
                                             </x-slot>
@@ -242,12 +242,29 @@
                                                 <br>
                                                 貸出中のアイテムのポイントを編集すると、来月の貸出より新しいポイントが適用されます。
                                             </x-slot>
-                                            <x-slot name="method"></x-slot>
+                                            <x-slot name="method">
+                                                @method('PUT')
+                                            </x-slot>
                                             <x-slot name="form_slot">
-                                                <div>form_slotに挿入するコンテンツ</div>
+                                                <div class="mb-4">
+                                                    <div class="relative flex gap-4">
+                                                        <label for="point" class="leading-7 text-sm text-gray-600 flex-center">Point:</label>
+                                                        <input max="5000" type="number" id="point" name="point" value="{{ $product -> point }}" class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                                    </div>
+                                                    <p class="ml-2 text-xs text-gray-500 ">
+                                                        ポイントの上限は 5000 pt
+                                                    </p>
+                                                </div>
                                             </x-slot>
                                         </x-admin-button-edit>
-                                        <x-admin-button-delete action="{{ route('admin.items.destroy', ['item' =>  $product -> id]) }}"></x-admin-button-delete>
+                                        <x-admin-button-delete action="{{ route('admin.items.destroy', ['item' =>  $product -> id]) }}">
+                                            <x-slot name="modal_title">
+                                                {{ $product -> title }}を削除しますか？
+                                            </x-slot>
+                                            <x-slot name="modal_description">
+                                                対象のアイテムを削除します。削除したアイテムは元に戻せません。
+                                            </x-slot>
+                                        </x-admin-button-delete>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -265,9 +282,9 @@
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">イベント名</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">カテゴリー</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">参加状況</th>
-                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">開催日時</th>
-                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">支払いポイント</th>
-                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
+                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">開始日時</th>
+                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">終了日時</th>
+                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">ポイント</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-100 border-t border-gray-100">
@@ -280,23 +297,20 @@
                                         @endforeach
                                     </td>
                                     <td class="px-6 py-4">
-                                        @if ( $event_log -> deleted_at )
+                                        @if ( $event_log -> cancelled_at )
                                         <x-admin-status-red>キャンセル済み</x-admin-status-red>
                                         @else
                                         <x-admin-status-green>参加</x-admin-status-green>
                                         @endif
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        {{ $event_log -> event -> date
-                                        ? date( 'Y年m月d日 H時i分s秒', strtotime( $event_log -> event -> date ) )
-                                        : '未定' }}
+                                        {{ $event_log -> event -> start_date ? date( 'Y.m.d H:i', strtotime( $event_log -> event -> start_date ) ) : '未定' }}
+                                    </td>
+                                    <td class="px-6 py-4 text-right">
+                                        {{ $event_log -> event -> end_date ? date( 'Y.m.d H:i', strtotime( $event_log -> event -> end_date ) ) : '未定' }}
                                     </td>
                                     <td class="px-6 py-4 text-right">
                                         {{ $event_log -> point }} pt
-                                    </td>
-                                    <td class="flex justify-end gap-4 px-6 py-4 font-medium">
-                                        <!-- 後ほど修正する -->
-                                        <x-admin-button-detail href="#"></x-admin-button-detail>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -314,10 +328,10 @@
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">イベント名</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">カテゴリー</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-center">開催状況</th>
-                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">開催日時</th>
+                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">開始日時</th>
+                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">終了日時</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">参加人数</th>
-                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">獲得ポイント</th>
-                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
+                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">ポイント</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-100 border-t border-gray-100">
@@ -330,31 +344,28 @@
                                         @endforeach
                                     </td>
                                     <td class="px-6 py-4 text-center">
-                                        @if ( $event -> deleted_at )
+                                        @if ( $event -> cancelled_at )
                                         <x-admin-status-red>開催中止</x-admin-status-red>
                                         @elseif ( $event -> completed_at )
-                                        <x-admin-status-basic>開催終了</x-admin-status-basic>
+                                        <x-admin-status-green>開催済み</x-admin-status-green>
                                         @else
-                                        <x-admin-status-green>開催前</x-admin-status-green>
+                                        <x-admin-status-basic>開催前</x-admin-status-basic>
                                         @endif
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        {{ $event -> date
-                                        ? date( 'Y年m月d日 H時i分s秒', strtotime( $event -> date ) )
-                                        : '未定' }}
+                                        {{ $event -> start_date ? date( 'Y.m.d H:i', strtotime( $event -> start_date ) ) : '未定' }}
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        {{ $event -> event_participants_count ?? '0' }} 人
+                                        {{ $event -> end_date ? date( 'Y.m.d H:i', strtotime( $event -> end_date ) ) : '未定' }}
+                                    </td>
+                                    <td class="px-6 py-4 text-right">
+                                        {{ $event -> event_participant_logs_count ?? '0' }} 人
                                     </td>
                                     <td class="px-6 py-4 text-right">
                                         {{ $event -> event_participants_sum_point
                                         ? $event -> event_participants_sum_point
                                         : 0 }}
                                         pt
-                                    </td>
-                                    <td class="flex justify-end gap-4 px-6 py-4 font-medium">
-                                        <!-- 後ほど修正する -->
-                                        <x-admin-button-detail href="#"></x-admin-button-detail>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -372,7 +383,6 @@
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">タイトル</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-center">状況</th>
                                     <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-right">投稿日時</th>
-                                    <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-100 border-t border-gray-100">
@@ -381,17 +391,13 @@
                                     <th class="px-6 py-4 font-medium text-gray-900">{{ $request -> title }}</th>
                                     <td class="px-6 py-4 text-center">
                                         @if ( $request -> completed_at )
-                                        <x-admin-status-red>解決済み</x-admin-status-red>
+                                        <x-admin-status-green>解決済み</x-admin-status-green>
                                         @else
-                                        <x-admin-status-green>未解決</x-admin-status-green>
+                                        <x-admin-status-red>未解決</x-admin-status-red>
                                         @endif
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        {{ date( 'Y年m月d日 H時i分s秒', strtotime( $request -> created_at ) ) }}
-                                    </td>
-                                    <td class="flex justify-end gap-4 px-6 py-4 font-medium">
-                                        <!-- 後ほど修正する -->
-                                        <x-admin-button-detail></x-admin-button-detail>
+                                        {{ date( 'Y.m.d H:i', strtotime( $request -> created_at ) ) }}
                                     </td>
                                 </tr>
                                 @endforeach

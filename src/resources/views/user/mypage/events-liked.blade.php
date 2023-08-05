@@ -1,8 +1,6 @@
 <x-mypage-app>
     <x-slot:border_color>border-pink-600</x-slot:border_color>
     <x-slot:title>いいねしたイベント一覧</x-slot:title>
-    <x-slot:earned_point>580</x-slot:earned_point>
-    <x-slot:distribution_point>5000</x-slot:distribution_point>
 
     <div class="bg-white md:p-6 w-full">
         <div x-data="{ activeTab: {{ request()->query('activeTab', 0) }} }">
@@ -28,12 +26,6 @@
             <div :class="{ '!block': activeTab === 0 }" x-show.transition.in.opacity.duration.600="activeTab === 0" class="hidden">
                 <ul class="border-b border-gray-300">
                     @foreach ($before_held_liked_events as $event)
-                    <?php
-                    $array_participants = [];
-                    foreach ($event->eventParticipants as $participant) {
-                        array_push($array_participants, $participant->user_id);
-                    }
-                    ?>
                     <li>
                         <x-mypage-event-list>
                             <x-slot:title>{{ $event -> title }}</x-slot:title>
@@ -46,12 +38,12 @@
                             <x-slot:start_date>{{ $event  -> start_date ? date( 'Y.m.d H:i', strtotime( $event  -> start_date ) ) : '未定' }}</x-slot:start_date>
                             <x-slot:end_date>{{ $event  -> end_date ? date( 'Y.m.d H:i', strtotime( $event  -> end_date ) ) : '未定' }}</x-slot:end_date>
                             <x-slot:style>{{ $event -> style ?? '未定' }}</x-slot:style>
-                            <x-slot:participants_count>{{ count($event -> eventParticipants) }}</x-slot:participants_count>
+                            <x-slot:participants_count>{{ $event->event_participant_logs_count }}</x-slot:participants_count>
                             <x-slot:create_date>{{ date( 'Y.m.d', strtotime( $event  -> created_at ) ) }}</x-slot:create_date>
                             <x-slot:likes>{{ count($event -> eventLikes) }}</x-slot:likes>
                             <x-slot:user_icon>{{ $event  -> user -> icon }}</x-slot:user_icon>
                             <x-slot:user_name>{{ $event  -> user -> name }}</x-slot:user_name>
-                            @if (in_array ($user -> id, $array_participants))
+                            @if ($event->isJoined)
                             <x-slot:status></x-slot:status>
                             <x-slot:button>
                                 <x-mypage-button-event-cancel action="{{ route('events.cancel', ['event' =>  $event -> id]) }}">
@@ -65,6 +57,9 @@
                                     <x-slot:form_slot></x-slot:form_slot>
                                 </x-mypage-button-event-cancel>
                             </x-slot:button>
+                            @elseif($event->user_id===Auth::id())
+                            <x-slot:status></x-slot:status>
+                            <x-slot:button></x-slot:button>
                             @else
                             <x-slot:status></x-slot:status>
                             <x-slot:button>
@@ -78,12 +73,12 @@
                                         <x-slot:modal_description>主催者に支払うポイントを設定してください。一度支払ったポイントは戻ってこないのでご注意ください。</x-slot:modal_description>
                                         <x-slot:method></x-slot:method>
                                         <x-slot:form_slot>
-                                            <div class="mb-4">
+                                            <div class="ml-2 mb-4">
                                                 <div class="relative flex gap-4">
                                                     <label for="point" class="leading-7 text-sm text-gray-600 flex-center">Point:</label>
                                                     <input type="number" id="point" name="point" class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" required>
                                                 </div>
-                                                <p class="ml-2 text-xs text-gray-500 ">
+                                                <p class="text-xs text-gray-500 ">
                                                     ポイントの上限は 500 pt
                                                 </p>
                                             </div>
@@ -100,12 +95,6 @@
             <div :class="{ '!block': activeTab === 1 }" x-show.transition.in.opacity.duration.600="activeTab === 1" class="hidden">
                 <ul class="border-b border-gray-300">
                     @foreach ($after_held_liked_events as $event)
-                    <?php
-                    $array_participants = [];
-                    foreach ($event->eventParticipants as $participant) {
-                        array_push($array_participants, $participant->user_id);
-                    }
-                    ?>
                     <li>
                         <x-mypage-event-list>
                             <x-slot:title>{{ $event -> title }}</x-slot:title>
@@ -117,7 +106,7 @@
                             </x-slot:tag>
                             <x-slot:start_date>{{ $event  -> start_date ? date( 'Y.m.d H:i', strtotime( $event  -> start_date ) ) : '未定' }}</x-slot:start_date>
                             <x-slot:end_date>{{ $event  -> end_date ? date( 'Y.m.d H:i', strtotime( $event  -> end_date ) ) : '未定' }}</x-slot:end_date> <x-slot:style>{{ $event -> style ?? '未定' }}</x-slot:style>
-                            <x-slot:participants_count>{{ count($event -> eventParticipants) }}</x-slot:participants_count>
+                            <x-slot:participants_count>{{ $event->event_participant_logs_count }}</x-slot:participants_count>
                             <x-slot:create_date>{{ date( 'Y.m.d', strtotime( $event  -> created_at ) ) }}</x-slot:create_date>
                             <x-slot:likes>{{ count($event -> eventLikes) }}</x-slot:likes>
                             <x-slot:user_icon>{{ $event  -> user -> icon }}</x-slot:user_icon>
@@ -132,12 +121,6 @@
             <div :class="{ '!block': activeTab === 2 }" x-show.transition.in.opacity.duration.600="activeTab === 2" class="hidden">
                 <ul class="border-b border-gray-300">
                     @foreach ($cancelled_liked_events as $event)
-                    <?php
-                    $array_participants = [];
-                    foreach ($event->eventParticipants as $participant) {
-                        array_push($array_participants, $participant->user_id);
-                    }
-                    ?>
                     <li>
                         <x-mypage-event-list>
                             <x-slot:title>{{ $event -> title }}</x-slot:title>
@@ -149,7 +132,7 @@
                             </x-slot:tag>
                             <x-slot:start_date>{{ $event  -> start_date ? date( 'Y.m.d H:i', strtotime( $event  -> start_date ) ) : '未定' }}</x-slot:start_date>
                             <x-slot:end_date>{{ $event  -> end_date ? date( 'Y.m.d H:i', strtotime( $event  -> end_date ) ) : '未定' }}</x-slot:end_date> <x-slot:style>{{ $event -> style ?? '未定' }}</x-slot:style>
-                            <x-slot:participants_count>{{ count($event -> eventParticipants) }}</x-slot:participants_count>
+                            <x-slot:participants_count>{{ $event->event_participant_logs_count }}</x-slot:participants_count>
                             <x-slot:create_date>{{ date( 'Y.m.d', strtotime( $event  -> created_at ) ) }}</x-slot:create_date>
                             <x-slot:likes>{{ count($event -> eventLikes) }}</x-slot:likes>
                             <x-slot:user_icon>{{ $event  -> user -> icon }}</x-slot:user_icon>
