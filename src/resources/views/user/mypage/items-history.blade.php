@@ -36,6 +36,7 @@
                                 <x-slot:id>{{ $history -> product -> id }}</x-slot:id>
                                 <x-slot:image_url>{{ $history -> product -> productImages[0] -> image_url }}</x-slot:image_url>
                                 <x-slot:title>{{ $history -> product -> title }}</x-slot:title>
+                                <x-slot:likes>{{ count($history -> product -> productLikes) }}</x-slot:likes>
                                 <x-slot:point>{{ $history->point .' pt'}}</x-slot:point>
                                 <x-slot:user_icon>{{ $history -> product -> user -> icon }}</x-slot:user_icon>
                                 <x-slot:user_name>{{ $history -> product -> user -> name }}</x-slot:user_name>
