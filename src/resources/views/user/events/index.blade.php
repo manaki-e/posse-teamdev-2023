@@ -18,12 +18,14 @@
                             <x-user-search-radio>
                                 <x-slot name="radio_name">開催状況</x-slot>
                                 <x-slot name="radios">
-                                    @foreach($completed_statuses as $index => $status)
                                     <div class="flex items-center mb-4">
-                                        <input id="box-{{ $index }}" type="radio" value="{{ $status }}" name="completed" class="w-4 h-4 bg-gray-100 border-gray-300 filter-input">
-                                        <label for="box-{{ $index }}" class="ml-2 text-sm font-medium text-gray-900">{{ $status }}</label>
+                                        <input id="box-0" type="radio" value="" name="completed" class="w-4 h-4 bg-gray-100 border-gray-300 filter-input">
+                                        <label for="box-0" class="ml-2 text-sm font-medium text-gray-900">開催予定</label>
                                     </div>
-                                    @endforeach
+                                    <div class="flex items-center mb-4">
+                                        <input id="box-1" type="radio" value="1" name="completed" class="w-4 h-4 bg-gray-100 border-gray-300 filter-input">
+                                        <label for="box-1" class="ml-2 text-sm font-medium text-gray-900">開催済み</label>
+                                    </div>
                                 </x-slot>
                             </x-user-search-radio>
                         </x-slot>
@@ -46,7 +48,7 @@
                 <div class="mx-auto max-w-5xl my-4">
                     <div class="mx-auto grid grid-cols-2 justify-items-stretch gap-4">
                         @foreach($events as $event)
-                        <div data-completed="{{ $event->isCompleted }}" data-tag="{{ $event->data_tag  }}" class="h-full col-span-1 filter-target">
+                        <div data-completed="{{ !empty($event->completed_at) }}" data-tag="{{ $event->data_tag  }}" class="h-full col-span-1 filter-target">
                             <div class="h-full rounded-lg border border-gray-200 bg-white shadow-sm">
                                 <div class="h-full flex flex-col justify-between rounded-lg text-xs px-4 pt-4 text-gray-500 bg-white">
                                     <section>
