@@ -110,7 +110,7 @@
                     <div class="mx-auto max-w-5xl my-4">
                         <div class="mx-auto grid grid-cols-2 justify-items-stretch gap-4">
                             @foreach($events as $event)
-                            <div data-completed="{{ $event->isCompleted }}" data-tag="{{ $event->data_tag  }}" class="h-full col-span-1 filter-target">
+                            <div class="h-full col-span-1 filter-target">
                                 <div class="h-full rounded-lg border border-gray-200 bg-white shadow-sm">
                                     <div class="h-full flex flex-col justify-between rounded-lg text-xs px-4 pt-4 text-gray-500 bg-white">
                                         <section>
