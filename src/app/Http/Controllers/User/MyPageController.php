@@ -412,11 +412,6 @@ class MyPageController extends Controller
         }])->get()->map(function ($event) use ($user_id) {
             $event->isLiked = $event->eventLikes->contains('user_id', $user_id);
             $event->isParticipated = $event->eventParticipantLogs->contains('user_id', $user_id);
-            if (empty($event->completed_at)) {
-                $event->isCompleted = Event::COMPLETED_STATUSES[0];
-            } else {
-                $event->isCompleted = Event::COMPLETED_STATUSES[1];
-            }
             $event->data_tag = '[' . implode(',', $event->eventTags->pluck('tag_id')->toArray()) . ']';
             $event->description = $event->changeDescriptionReturnToBreakTag($event->description);
             if ($event->eventLikes->contains('user_id', Auth::id())) {
