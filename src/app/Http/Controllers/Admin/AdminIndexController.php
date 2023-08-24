@@ -11,17 +11,29 @@ class AdminIndexController extends Controller
 {
     public function histories()
     {
-        // アイテムやユーザを削除した時にエラーが出るので注意
-        $product_deals = ProductDealLog::with(['product'=>function($query){
+        //peerpoint変動item
+        $peer_point_product_transfer_logs=ProductDealLog::with(['product'=>function($query){
             $query->withTrashed()->with(['user'=>function($query){
                 $query->withTrashed();
             }]);
         }])->with(['user'=>function($query){
             $query->withTrashed();
-        }])->withTrashed()->paginate(10, ['*'], 'product_deal')->appends(['event_participant' => request('event_participant')]);
-        $event_participants = EventParticipantLog::with('event')->with('user')->paginate(10, ['*'], 'event_participant')->appends(['product_deal' => request('product_deal')]);
+        }])->get();
+        foreach($peer_point_product_transfer_logs as $peer_point_product_transfer_log){
+            print_r($peer_point_product_transfer_log->product->title);
+            print_r($peer_point_product_transfer_log->point);
+            print_r($peer_point_product_transfer_log->user->name);
+            print_r($peer_point_product_transfer_log->product->user->name);
+            print_r($peer_point_product_transfer_log->created_at->format('Y.m.d'));
+            print_r(empty($peer_point_product_transfer_log->returned_at)?'未返却':$peer_point_product_transfer_log->returned_at->format('Y.m.d'));
+            print_r('<br>');
+        }
+        dd();
+        //peerpoint変動event
+        //bonuspoint変動item
+        //bonuspoint変動event
 
-        return view('admin.histories', compact('product_deals', 'event_participants'));
+        // return view('admin.histories', compact('product_deals', 'event_participants'));
     }
 
     public function pointExchanges()
