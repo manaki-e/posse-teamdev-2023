@@ -70,9 +70,11 @@ class AdminIndexController extends Controller
         //     print_r('<br>');
         // }
         //bonuspoint変動event
-        $bonus_point_event_transfer_logs=Event::withSum('eventParticipants','point')->with(['user'=>function($query){
+        $bonus_point_event_transfer_logs=Event::where('cancelled_at',null)->withSum('eventParticipants','point')->with(['user'=>function($query){
             $query->withTrashed();
-        }])->withCount('eventParticipants')->get();
+        }])->withCount(['eventParticipants'=>function($query){
+            $query->where('cancelled_at',null);
+        }])->get();
         // foreach($bonus_point_event_transfer_logs as $bonus_point_event_transfer_log){
         //     print_r($bonus_point_event_transfer_log->title);
         //     print_r(empty($bonus_point_event_transfer_log->event_participants_sum_point)?0:$bonus_point_event_transfer_log->event_participants_sum_point);
