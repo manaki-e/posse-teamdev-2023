@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Event;
 use App\Models\EventParticipantLog;
 use App\Models\PointExchangeLog;
 use App\Models\ProductDealLog;
@@ -69,7 +70,23 @@ class AdminIndexController extends Controller
         //     print_r('<br>');
         // }
         //bonuspoint変動event
-
+        $bonus_point_event_transfer_logs=Event::withSum('eventParticipants','point')->with(['user'=>function($query){
+            $query->withTrashed();
+        }])->withCount('eventParticipants')->get();
+        foreach($bonus_point_event_transfer_logs as $bonus_point_event_transfer_log){
+            print_r($bonus_point_event_transfer_log->title);
+            print_r($bonus_point_event_transfer_log->event_participants_sum_point);
+            print_r($bonus_point_event_transfer_log->user->name);
+            print_r($bonus_point_event_transfer_log->event_participants_count."人");
+            if(!empty($bonus_point_event_transfer_log->cancelled_at)){
+                print_r('開催中止');
+            }elseif(!empty($bonus_point_event_transfer_log->completed_at)){
+                print_r('開催済み');
+            }else{
+                print_r('開催予定');
+            }
+            print_r('<br>');
+        }
         // return view('admin.histories', compact('product_deals', 'event_participants'));
     }
 
