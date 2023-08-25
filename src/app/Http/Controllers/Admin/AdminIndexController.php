@@ -52,6 +52,22 @@ class AdminIndexController extends Controller
         //     print_r('<br>');
         // }
         //bonuspoint変動item
+        $bonus_point_product_transfer_logs=ProductDealLog::with(['product'=>function($query){
+            $query->withTrashed()->with(['user'=>function($query){
+                $query->withTrashed();
+            }]);
+        }])->with(['user'=>function($query){
+            $query->withTrashed();
+        }])->get();
+        // foreach($bonus_point_product_transfer_logs as $bonus_point_product_transfer_log){
+        //     print_r($bonus_point_product_transfer_log->product->title);
+        //     print_r($bonus_point_product_transfer_log->point);
+        //     print_r($bonus_point_product_transfer_log->user->name);
+        //     print_r($bonus_point_product_transfer_log->product->user->name);
+        //     print_r($bonus_point_product_transfer_log->created_at->format('Y.m.d'));
+        //     print_r(empty($bonus_point_product_transfer_log->returned_at)?'未返却':$bonus_point_product_transfer_log->returned_at->format('Y.m.d'));
+        //     print_r('<br>');
+        // }
         //bonuspoint変動event
 
         // return view('admin.histories', compact('product_deals', 'event_participants'));
