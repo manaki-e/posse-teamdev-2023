@@ -80,7 +80,7 @@
                                         </button>
                                     </a>
                                 </div>
-                                <ul x-cloak x-show="showModal" x-transitio class="absolute z-10 w-28 overflow-auto rounded-md border border-blue-gray-50 bg-white font-sans text-sm font-normal text-blue-gray-500 shadow-lg shadow-blue-gray-500/10 focus:outline-none">
+                                <ul x-cloak x-show="showModal" x-transitio class="absolute z-10 w-28 overflow-auto rounded-md border border-blue-gray-50 bg-white font-sans text-sm font-normal text-blue-gray-500 shadow-lg shadow-blue-gray-500/10 focus:outline-none right-10">
                                     <li role="menuitem" class="hover:bg-gray-300 block w-full cursor-pointer select-none px-3 py-4 text-start leading-tight transition-all hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900">
                                         <x-mypage-button-edit href="{{ route('events.edit', ['event' =>  $event -> id]) }}"></x-mypage-button-edit>
                                     </li>

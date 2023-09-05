@@ -25,6 +25,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         URL::forceRootUrl(env('APP_URL'));
-        URL::forceScheme('https');
+        //ローカル環境かリモート環境(codespaces,本番環境)で開発するかで条件分岐
+        if(env('APP_ENV') !== 'local'){
+            URL::forceScheme('https');
+        }
     }
 }
