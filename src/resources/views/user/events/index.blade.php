@@ -114,7 +114,7 @@
                                         <!-- ボタン・モーダル -->
                                         <div x-data="{ modelOpen: false }">
                                             <div class="flex items-center justify-center">
-                                                @if(!empty($event->completed_at))
+                                                @if($event->isCompleted == "開催済み")
                                                 <div class="block  w-full rounded-lg my-3 py-3 font-bold text-center text-sm align-middle text-white bg-gray-300">
                                                     開催済み
                                                 </div>
