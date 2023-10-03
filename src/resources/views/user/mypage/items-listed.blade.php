@@ -34,6 +34,7 @@
                                 <x-mypage-item-list>
                                     <x-slot:image_url>{{ $product -> productImages[0] -> image_url }}</x-slot:image_url>
                                     <x-slot:title>{{ $product -> title }}</x-slot:title>
+                                    <x-slot:likes>{{ count($product -> productLikes) }}</x-slot:likes>
                                     <x-slot:point>{{ empty( $product -> point ) ? '未設定' : $product->point .' pt'}}</x-slot:point>
                                     <x-slot:tag>
                                         @foreach ($product->productTags as $tag)

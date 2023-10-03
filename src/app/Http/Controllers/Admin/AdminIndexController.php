@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Event;
 use App\Models\EventParticipantLog;
 use App\Models\PointExchangeLog;
 use App\Models\ProductDealLog;
@@ -11,17 +12,85 @@ class AdminIndexController extends Controller
 {
     public function histories()
     {
-        // アイテムやユーザを削除した時にエラーが出るので注意
-        $product_deals = ProductDealLog::with(['product'=>function($query){
+        //peerpoint変動item
+        $peer_point_product_transfer_logs=ProductDealLog::with(['product'=>function($query){
             $query->withTrashed()->with(['user'=>function($query){
                 $query->withTrashed();
             }]);
         }])->with(['user'=>function($query){
             $query->withTrashed();
-        }])->withTrashed()->paginate(10, ['*'], 'product_deal')->appends(['event_participant' => request('event_participant')]);
-        $event_participants = EventParticipantLog::with('event')->with('user')->paginate(10, ['*'], 'event_participant')->appends(['product_deal' => request('product_deal')]);
-
-        return view('admin.histories', compact('product_deals', 'event_participants'));
+        }])->get();
+        // foreach($peer_point_product_transfer_logs as $peer_point_product_transfer_log){
+        //     print_r($peer_point_product_transfer_log->product->title);
+        //     print_r($peer_point_product_transfer_log->point);
+        //     print_r($peer_point_product_transfer_log->user->name);
+        //     print_r($peer_point_product_transfer_log->product->user->name);
+        //     print_r($peer_point_product_transfer_log->created_at->format('Y.m.d'));
+        //     print_r(empty($peer_point_product_transfer_log->returned_at)?'未返却':$peer_point_product_transfer_log->returned_at->format('Y.m.d'));
+        //     print_r('<br>');
+        // }
+        //peerpoint変動event
+        $peer_point_event_transfer_logs=EventParticipantLog::with(['event'=>function($query){
+            $query->withTrashed()->with(['user'=>function($query){
+                $query->withTrashed();
+            }]);
+        }])->with(['user'=>function($query){
+            $query->withTrashed();
+        }])->get();
+        // foreach($peer_point_event_transfer_logs as $peer_point_event_transfer_log){
+        //     print_r($peer_point_event_transfer_log->event->title);
+        //     if(!empty($peer_point_event_transfer_log->event->cancelled_at)){
+        //         print_r('開催中止');
+        //     }elseif(!empty($peer_point_event_transfer_log->event->completed_at)){
+        //         print_r('開催済み');
+        //     }else{
+        //         print_r('開催予定');
+        //     }
+        //     print_r($peer_point_event_transfer_log->point);
+        //     print_r($peer_point_event_transfer_log->user->name);
+        //     print_r($peer_point_event_transfer_log->event->user->name);
+        //     print_r($peer_point_event_transfer_log->created_at->format('Y.m.d'));
+        //     print_r('<br>');
+        // }
+        //bonuspoint変動item
+        $bonus_point_product_transfer_logs=ProductDealLog::with(['product'=>function($query){
+            $query->withTrashed()->with(['user'=>function($query){
+                $query->withTrashed();
+            }]);
+        }])->with(['user'=>function($query){
+            $query->withTrashed();
+        }])->get();
+        // foreach($bonus_point_product_transfer_logs as $bonus_point_product_transfer_log){
+        //     print_r($bonus_point_product_transfer_log->product->title);
+        //     print_r($bonus_point_product_transfer_log->point);
+        //     print_r($bonus_point_product_transfer_log->user->name);
+        //     print_r($bonus_point_product_transfer_log->product->user->name);
+        //     print_r($bonus_point_product_transfer_log->created_at->format('Y.m.d'));
+        //     print_r(empty($bonus_point_product_transfer_log->returned_at)?'未返却':$bonus_point_product_transfer_log->returned_at->format('Y.m.d'));
+        //     print_r('<br>');
+        // }
+        //bonuspoint変動event
+        $bonus_point_event_transfer_logs=Event::where('cancelled_at',null)->withSum('eventParticipants','point')->with(['user'=>function($query){
+            $query->withTrashed();
+        }])->withCount(['eventParticipants'=>function($query){
+            $query->where('cancelled_at',null);
+        }])->get();
+        // foreach($bonus_point_event_transfer_logs as $bonus_point_event_transfer_log){
+        //     print_r($bonus_point_event_transfer_log->title);
+        //     print_r(empty($bonus_point_event_transfer_log->event_participants_sum_point)?0:$bonus_point_event_transfer_log->event_participants_sum_point);
+        //     print_r($bonus_point_event_transfer_log->user->name);
+        //     print_r($bonus_point_event_transfer_log->event_participants_count."人");
+        //     if(!empty($bonus_point_event_transfer_log->cancelled_at)){
+        //         print_r('開催中止');
+        //     }elseif(!empty($bonus_point_event_transfer_log->completed_at)){
+        //         print_r('開催済み');
+        //     }else{
+        //         print_r('開催予定');
+        //     }
+        //     print_r('<br>');
+        // }
+        dd();
+        // return view('admin.histories', compact('product_deals', 'event_participants'));
     }
 
     public function pointExchanges()
