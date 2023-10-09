@@ -62,6 +62,46 @@ return new class extends Migration
                 'icon' => 'https://avatars.slack-edge.com/2023-05-23/5320682617089_b8913a0eb43d81b5acb8_512.jpg',
                 'is_admin' => 0,
                 'department_id' => null,
+            ],
+            [
+                // 一般ユーザー
+                'name' => '一般User',
+                'display_name' => '一般User',
+                'email' => 'user_1@peerperk.com',
+                'password' => Hash::make('password'),
+                'icon' => 'https://ca.slack-edge.com/T014Y0DTWGN-U039L5786UU-ga51ce7481a2-512.jpg',
+                'is_admin' => 0,
+                'department_id' => 4,
+            ],
+            [
+                // 一般ユーザー
+                'name' => '一般ユーザー',
+                'display_name' => '一般ユーザー',
+                'email' => 'user_2@peerperk.com',
+                'password' => Hash::make('password'),
+                'icon' => 'https://ca.slack-edge.com/T057SBPTR24-U05D2QLDXA8-g24c61da1b43-512.jpg',
+                'is_admin' => 0,
+                'department_id' => 5,
+            ],
+            [
+                // adminユーザー
+                'name' => '管理者User',
+                'display_name' => '管理者User',
+                'email' => 'admin_1@peerperk.com',
+                'password' => Hash::make('password'),
+                'icon' => 'https://ca.slack-edge.com/T014Y0DTWGN-U049BLJUAHL-g078b5c7478d-512.jpg',
+                'is_admin' => 1,
+                'department_id' => 2,
+            ],
+            [
+                // adminユーザー
+                'name' => '管理者ユーザー',
+                'display_name' => '管理者ユーザー',
+                'email' => 'admin_2@peerperk.com',
+                'password' => Hash::make('password'),
+                'icon' => 'https://ca.slack-edge.com/T014Y0DTWGN-U049J61VDEF-g45fbaea1c1b-512.jpg',
+                'is_admin' => 1,
+                'department_id' => 1,
             ]
         ]);
     }
