@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\SlackController;
 use App\Models\Request as ModelsRequest;
 use App\Models\RequestLike;
 use App\Models\RequestTag;
@@ -14,15 +13,6 @@ use Illuminate\Support\Facades\Redirect;
 
 class RequestController extends Controller
 {
-    /**
-     * @var SlackController
-     */
-    public function __construct(SlackController $slackController)
-    {
-        $this->slackController = $slackController;
-        $this->slackGlobalAnnouncementChannelId = $slackController->searchChannelId('peerperk全体お知らせ', false);
-        $this->slackAdminChannelId = $slackController->searchChannelId('peerperk管理者', true);
-    }
     /**
      * Display a listing of the resource.
      *
@@ -102,8 +92,6 @@ class RequestController extends Controller
                 }
             }
         }
-        //slack全体
-        $this->slackController->sendNotification($this->slackGlobalAnnouncementChannelId, "<@" . Auth::user()->slackID . ">より、新たなリクエストが追加されました！\n```" . env('APP_URL') . "requests```");
         return Redirect::route('requests.index')->with(['flush.message' => 'リクエストを追加しました', 'flush.alert_type' => 'success']);
     }
 
@@ -218,8 +206,6 @@ class RequestController extends Controller
         $request_instance = ModelsRequest::findOrFail($id);
         $request_instance->completed_at = now();
         $request_instance->save();
-        //slack投稿者
-        $this->slackController->sendNotification($request_instance->user->slackID, "リクエストを解決済みにしました！");
         return redirect()->route('mypage.requests.posted');
     }
     public function like($id)

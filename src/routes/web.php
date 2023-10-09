@@ -4,7 +4,6 @@ use App\Http\Controllers\Admin\AdminIndexController;
 use App\Http\Controllers\Admin\AdminItemController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\SlackController;
 use App\Http\Controllers\User\EventController;
 use App\Http\Controllers\User\ItemController;
 use App\Http\Controllers\User\MyPageController;
@@ -66,7 +65,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/profile', [MyPageController::class, 'profile'])->name('profile');
         Route::get('/account', [MyPageController::class, 'account'])->name('account');
         Route::get('/point/history', [MyPageController::class, 'pointHistory'])->name('point.history');
-        Route::post('/account/slack', [ProfileController::class, 'setSlackProfile'])->name('account.slack');
         Route::get('/items/listed', [MyPageController::class, 'itemsListed'])->name('items.listed');
         Route::get('/items/borrowed', [MyPageController::class, 'itemsBorrowed'])->name('items.borrowed');
         Route::get('/items/history', [MyPageController::class, 'itemsHistory'])->name('items.history');
@@ -85,10 +83,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/point-exchanges', [AdminIndexController::class, 'pointExchanges'])->name('point-exchanges');
         Route::resource('/users', AdminUserController::class);
         Route::resource('/items', AdminItemController::class);
-        Route::get('/slack/users', [SlackController::class, 'createUsers'])->name('slack.users');
     });
 });
-Route::get('/slack', [SlackController::class, 'slack'])->name('slack');
 
 Route::fallback(function () {
     if (auth()->check()) {

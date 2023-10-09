@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\SlackController;
 use App\Models\Department;
 use App\Models\Event;
 use App\Models\EventParticipantLog;
@@ -11,7 +10,6 @@ use App\Models\Product;
 use App\Models\ProductDealLog;
 use App\Models\Request as AppRequest;
 use App\Models\Setting;
-use App\Models\SlackUser;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -21,11 +19,6 @@ use Illuminate\Support\Str;
 
 class AdminUserController extends Controller
 {
-    public function __construct(SlackController $slackController)
-    {
-        $this->slackController = $slackController;
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -33,11 +26,9 @@ class AdminUserController extends Controller
      */
     public function index()
     {
-        $users = User::with('department')->orderBy('email', 'asc')->paginate(10, ['*'], 'users')->appends(['slack_users' => request('slack_users')]);
+        $users = User::with('department')->orderBy('email', 'asc')->paginate(10, ['*'], 'users');
 
-        $unauthenticated_users = SlackUser::unauthenticated()->orderBy('email', 'asc')->paginate(10, ['*'], 'slack_users')->appends(['users' => request('users')]);
-
-        return view('admin.users.index', compact('users', 'unauthenticated_users'));
+        return view('admin.users.index', compact('users'));
     }
 
     /**
@@ -58,32 +49,7 @@ class AdminUserController extends Controller
      */
     public function store(Request $request)
     {
-        // 一度削除したユーザであった場合は復元する（データは消されているためポイントのデータのみ復元される）
-        $user = User::withTrashed()->where('email', $request->email)->first();
-        if (!empty($user)) {
-            $user->restore();
-            return Redirect::route('admin.users.index')->with(['flush.message' => 'slackにいるユーザを新しくPeerPerkユーザとして登録しました', 'flush.alert_type' => 'success']);
-        }
-
-        if (empty($request->department_name)) {
-            $department_id = null;
-        } else {
-            $department = Department::firstOrCreate(['name' => $request->department_name]);
-            $department_id = $department->id;
-        }
-        $user_instance = new User();
-        $user_instance->name = $request->name;
-        $user_instance->display_name = $request->display_name;
-        $user_instance->email = $request->email;
-        $user_instance->password = Hash::make(Str::random(10));
-        $user_instance->icon = $request->icon;
-        $user_instance->slackID = $request->slackID;
-        $user_instance->is_admin = 0;
-        $user_instance->department_id = $department_id;
-        $user_instance->created_at = now();
-        $user_instance->save();
-
-        return Redirect::route('admin.users.index')->with(['flush.message' => 'slackにいるユーザを新しくPeerPerkユーザとして登録しました', 'flush.alert_type' => 'success']);
+        //
     }
 
     /**
@@ -142,18 +108,14 @@ class AdminUserController extends Controller
     public function update(Request $request, $user)
     {
         $user_instance = User::findOrFail($user);
-        $channel_id = $this->slackController->searchChannelId("peerperk管理者", true);
-        $user_slack_id = $user_instance->slackID;
         $admin_user_count = User::where('is_admin', 1)->count();
 
         if ($admin_user_count === 1 && $user_instance->is_admin === 1) {
             return Redirect::route('admin.users.index')->with(['flush.message' => '管理者は最低一人必要です', 'flush.alert_type' => 'error']);
         } elseif ($user_instance->is_admin === 1) {
             $user_instance->is_admin = 0;
-            $this->slackController->removeUserFromChannel($channel_id, $user_slack_id);
         } elseif ($user_instance->is_admin === 0) {
             $user_instance->is_admin = 1;
-            $this->slackController->inviteUsersToChannel($channel_id, $user_slack_id);
         }
         $user_instance->save();
         //ログインしている管理者が自分を一般ユーザーに変更した場合はログアウトさせる

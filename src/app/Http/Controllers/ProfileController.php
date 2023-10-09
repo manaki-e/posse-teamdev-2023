@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
-use App\Models\SlackUser;
-use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,14 +11,6 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
-    /**
-     * @var SlackController
-     */
-    public function __construct(SlackController $slackController)
-    {
-        $this->slackController = $slackController;
-    }
-
     /**
      * Display the user's profile form.
      */
@@ -66,21 +56,5 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
-    }
-
-    public function setSlackProfile(Request $request)
-    {
-        $this -> slackController -> createUsers($request);
-
-        $user = Auth::user();
-        $user_name = SlackUser::where('slackID', $user->slackID)->first()->name;
-        $user_display_name = SlackUser::where('slackID', $user->slackID)->first()->display_name;
-
-        $user_data = User::findOrFail($user->id);
-        $user_data -> name = $user_name;
-        $user_data -> display_name = $user_display_name;
-        $user_data -> save();
-
-        return Redirect::route('mypage.account')->with(['flush.message' => 'Slackのプロフィール情報を反映しました。', 'flush.alert_type' => 'success']);
     }
 }

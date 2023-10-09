@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\SlackController;
 use App\Models\Event;
 use App\Models\EventLike;
 use App\Models\EventParticipantLog;
@@ -16,16 +15,6 @@ use Illuminate\Support\Facades\Auth;
 
 class EventController extends Controller
 {
-    /**
-     * @var SlackController
-     */
-    public function __construct(SlackController $slackController)
-    {
-        $this->slackController = $slackController;
-        $this->slackGlobalAnnouncementChannelId = $slackController->searchChannelId('peerperk全体お知らせ', false);
-        $this->slackAdminChannelId = $slackController->searchChannelId('peerperk管理者', true);
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -83,10 +72,6 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        // slackチャンネル作成
-        $event_id = Event::withTrashed()->max('id') + 1;
-        $slackId = $this->slackController->createChannel($event_id, $request->title, false);
-
         //events追加
         $event = new Event();
         $event->user_id = Auth::id();
@@ -96,7 +81,6 @@ class EventController extends Controller
         $event->end_date = $request->end_date;
         $event->location = $request->location;
         $event->request_id = $request->request_id;
-        $event->slack_channel = $slackId;
         $event->save();
         //event_tags追加
         if (!empty($request->tags)) {
@@ -106,15 +90,6 @@ class EventController extends Controller
                 $event_tag->tag_id = $tag_id;
                 $event_tag->save();
             }
-        }
-        //slackイベント
-        $this->slackController->sendNotification($slackId, "このチャンネルは参加者と連絡を取るためのものです。他のユーザが参加申し込みをすると、このチャンネルに招待されます！");
-        //slack全体
-        $this->slackController->sendNotification($this->slackGlobalAnnouncementChannelId, "<@" . Auth::user()->slackID . "> より、新たなイベントが追加されました！\n```" . env('APP_URL') . "events```");
-        //リクエストに紐づいていたら、リクエストの投稿者にslack通知
-        if (!empty($request->request_id)) {
-            $request = ModelsRequest::find($request->request_id);
-            $this->slackController->sendNotification($request->user->slackID, "<@" . Auth::user()->slackID . "> より、あなたのリクエストに対して、イベントが登録されました！確認してみましょう。\n```" . env('APP_URL') . "events```");
         }
         //作ったイベント詳細にとぶor redirect back
         return redirect()->route('events.index')->with(['flush.message' => 'イベント登録完了しました。', 'flush.alert_type' => 'success']);
@@ -188,8 +163,6 @@ class EventController extends Controller
                 $event_tag->save();
             }
         }
-        //slackイベント
-        $this->slackController->sendNotification($event->slack_channel, "<!channel>イベントの登録内容が更新されました！確認しましょう。\n```" . env('APP_URL') . "events```");
         return redirect()->route('mypage.events.organized')->with(['flush.message' => 'イベント更新を完了しました。', 'flush.alert_type' => 'success']);
     }
 
@@ -215,10 +188,6 @@ class EventController extends Controller
         $event_points = EventParticipantLog::where('event_id', $event)->sum('point');
         $event_instance->user->earned_point += $event_points;
         $event_instance->user->save();
-        //slackイベント
-        $this->slackController->sendNotification($event_instance->slack_channel, "<!channel>イベントの開催を完了しました！次は、他のイベントにも積極的に参加したり、イベントを開催したりしてみましょう。");
-        //slack全体
-        $this->slackController->sendNotification($this->slackGlobalAnnouncementChannelId, "イベントの開催が完了しました！<@" . $event_instance->user->slackID . ">はこのチャンネルで感想を一言お願いします！");
         return redirect()->route('mypage.events.organized');
     }
     public function cancel($event)
@@ -230,16 +199,11 @@ class EventController extends Controller
             $event_data->cancelled_at = now();
             $event_data->save();
 
-            //slackイベント
-            $this->slackController->sendNotification($event_data->slack_channel, "<!channel>主催者により、イベントの開催が中止されました。");
             return redirect()->back()->with(['flush.message' => 'イベントの開催を中止しました。', 'flush.alert_type' => 'success']);
         } else {
             $event_participant_log = EventParticipantLog::where('event_id', $event)->where('user_id', $user->id)->where('cancelled_at', null)->first();
             $event_participant_log->cancelled_at = now();
             $event_participant_log->save();
-            //slackイベント
-            $this->slackController->sendNotification($event_data->slack_channel, "<@" . $user->slackID . ">さんがイベントへの参加をキャンセルしました。");
-            $this->slackController->removeUserFromChannel($event_data->slack_channel, $user->slackID);
             return redirect()->back()->with(['flush.message' => 'イベントへの参加をキャンセルしました。', 'flush.alert_type' => 'success']);
         }
     }
@@ -258,18 +222,12 @@ class EventController extends Controller
         $user->distribution_point -= $request->point;
         $user->save();
 
-        $channel_id = Event::findOrFail($event)->slack_channel;
-        $user_slack_id = $user->slackID;
-        $this->slackController->inviteUsersToChannel($channel_id, $user_slack_id);
-
         // event_participantsにレコード追加
         $event_participant_log = new EventParticipantLog();
         $event_participant_log->event_id = $event;
         $event_participant_log->user_id = $user->id;
         $event_participant_log->point = $request->point;
         $event_participant_log->save();
-        //slackイベント
-        $this->slackController->sendNotification($channel_id, "<!channel><@" . $user_slack_id . ">がこのイベントへの参加を申し込みました！チャンネル内でイベントについての詳細を決めましょう。もし詳細が決定している場合は、教えてあげましょう！");
         // 処理後redirect back
         return redirect()->back()->with(['flush.message' => 'イベントへの参加を申し込みました。', 'flush.alert_type' => 'success']);
     }

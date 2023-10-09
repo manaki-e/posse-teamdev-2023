@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\SlackController;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -22,7 +21,6 @@ return new class extends Migration
             $table->timestamp('start_date')->default(null)->nullable();
             $table->timestamp('end_date')->default(null)->nullable();
             $table->string('location');
-            $table->string('slack_channel');
             $table->timestamp('cancelled_at')->nullable();
             $table->timestamp('completed_at')->nullable();
             $table->foreignId('request_id')->nullable()->constrained('requests');
@@ -30,7 +28,7 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        $event_controller = new SlackController;
+
         $events_array = [
             [
                 'user_id' => 2,
@@ -39,7 +37,6 @@ return new class extends Migration
                 'start_date' => null,
                 'end_date' => null,
                 'location' => 'オンライン',
-                'slack_channel' => $event_controller->createChannel(1, "PHPを語り合う会", false),
                 'completed_at' => null,
                 'created_at' => '2023/05/03 20:26:02',
                 'request_id' => 2,
@@ -53,7 +50,6 @@ return new class extends Migration
                 'start_date' => '2023/05/10 22:00:00',
                 'end_date' => '2023/05/11 01:00:00',
                 'location' => '対面',
-                'slack_channel' => $event_controller->createChannel(2, "Tailwind講座", false),
                 'completed_at' => '2023/05/11 01:00:00',
                 'created_at' => '2023/05/06 20:26:02',
                 'request_id' => 3,
@@ -66,7 +62,6 @@ return new class extends Migration
                 'start_date' => null,
                 'end_date' => null,
                 'location' => 'オンライン',
-                'slack_channel' => $event_controller->createChannel(3, "Goodcode,Badcode", false),
                 'completed_at' => null,
                 'created_at' => '2023/05/09 20:26:02',
                 'request_id' => null,
@@ -80,7 +75,6 @@ return new class extends Migration
                 'start_date' => '2023/05/15 20:00:00',
                 'end_date' => '2023/05/15 22:00:00',
                 'location' => 'オンライン',
-                'slack_channel' => $event_controller->createChannel(4, "React勉強会", false),
                 'completed_at' => '2023/05/15 22:00:00',
                 'created_at' => '2023/05/12 20:26:02',
                 'request_id' => null,
@@ -93,7 +87,6 @@ return new class extends Migration
                 'start_date' => null,
                 'end_date' => null,
                 'location' => '対面',
-                'slack_channel' => $event_controller->createChannel(5, "Ruby on Rails勉強会", false),
                 'completed_at' => null,
                 'created_at' => '2023/05/15 20:26:02',
                 'request_id' => 6,
@@ -106,7 +99,6 @@ return new class extends Migration
                 'start_date' => null,
                 'end_date' => null,
                 'location' => 'オンライン',
-                'slack_channel' => $event_controller->createChannel(6, "Rustオンラインもくもく会", false),
                 'completed_at' => null,
                 'created_at' => '2023/05/18 20:26:02',
                 'request_id' => 5,
@@ -119,7 +111,6 @@ return new class extends Migration
                 'start_date' => '2023/06/10 20:00:00',
                 'end_date' => '2023/06/10 21:00:00',
                 'location' => '対面',
-                'slack_channel' => $event_controller->createChannel(7, "AI勉強会", false),
                 'completed_at' => null,
                 'created_at' => '2023/05/21 20:26:02',
                 'request_id' => null,
@@ -132,7 +123,6 @@ return new class extends Migration
                 'start_date' => null,
                 'end_date' => null,
                 'location' => '対面',
-                'slack_channel' => $event_controller->createChannel(8, "朝からもくもく会", false),
                 'completed_at' => null,
                 'created_at' => '2023/05/24 20:26:02',
                 'request_id' => null,
@@ -145,7 +135,6 @@ return new class extends Migration
                 'start_date' => '2023/06/06 15:00:00',
                 'end_date' => '2023/06/06 17:00:00',
                 'location' => '対面',
-                'slack_channel' => $event_controller->createChannel(9, "セキュリティから学ぶ機械学習", false),
                 'completed_at' => null,
                 'created_at' => '2023/05/27 20:26:02',
                 'request_id' => null,
@@ -159,7 +148,6 @@ return new class extends Migration
                 'start_date' => '2023/06/10 10:00:00',
                 'end_date' => '2023/06/10 12:00:00',
                 'location' => 'オンライン',
-                'slack_channel' => $event_controller->createChannel(10, "Redmineパッチ会", false),
                 'completed_at' => null,
                 'created_at' => '2023/05/30 20:26:02',
                 'request_id' => null,
