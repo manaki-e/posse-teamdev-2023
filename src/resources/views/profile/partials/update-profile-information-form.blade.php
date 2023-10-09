@@ -29,11 +29,10 @@
             @endif
         </div>
     </form>
-    <form method="post" action="{{ route('mypage.account.slack') }}" class="ml-24 -mt-9">
-        @csrf
-        <x-secondary-button type="submit">
+    <div class="ml-24 -mt-9">
+        <button class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25 transition ease-in-out duration-150">
             <img src="{{ asset('slack.svg') }}" alt="" class="w-4 h-4 mr-4">
             {{ __('slack上の情報を取得する') }}
-        </x-secondary-button>
-    </form>
+        </button>
+    </div>
 </section>
