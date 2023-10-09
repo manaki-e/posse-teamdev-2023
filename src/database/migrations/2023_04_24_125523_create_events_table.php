@@ -100,7 +100,7 @@ return new class extends Migration
                 'deleted_at' => null
             ],
             [
-                'user_id' => 5,
+                'user_id' => 4,
                 'title' => 'Rustオンラインもくもく会',
                 'description' => "OS自作をやっている人々で集まって、進捗を共有したり、\nみんなで黙々と作業をする時間をとる会です。\nこのイベントの対象は次のような方々です。\n自作OSに興味があり、OS関係の本を読んでいる(または今から読み始める)\n自分のOSを作っている、既存のOSを学んでいる・改造している\n低レイヤ技術に興味があり、情報交換したい",
                 'start_date' => null,

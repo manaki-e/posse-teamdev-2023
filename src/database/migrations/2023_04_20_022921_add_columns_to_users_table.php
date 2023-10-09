@@ -27,16 +27,6 @@ return new class extends Migration
 
         DB::table('users')->insert([
             [
-                'name' => '高梨 彩音 / Ayane Takahashi',
-                'display_name' => 'あやね',
-                'email' => 'manaki.endou@anti-pattern.co.jp',
-                'password' => Hash::make('password'),
-                'icon' => 'https://avatars.slack-edge.com/2023-05-10/5264743457040_ac27bba61b8057355862_512.jpg',
-                'slackID' => 'U056W35F71C',
-                'is_admin' => 0,
-                'department_id' => 2,
-            ],
-            [
                 'name' => '井戸宗達/Ido Sohtatu',
                 'display_name' => 'sohtatu ido',
                 'email' => 'sohtatsu.ido@keio.jp',
