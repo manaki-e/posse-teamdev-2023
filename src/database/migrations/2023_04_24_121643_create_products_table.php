@@ -35,7 +35,7 @@ return new class extends Migration
                 'status' => 2,
                 'condition' => 6,
                 'request_id' => 4,
-                'user_id' => 5,
+                'user_id' => 4,
                 'created_at' => '2023/05/25 20:26:02',
                 'deleted_at' => null
             ],
@@ -134,7 +134,7 @@ return new class extends Migration
                 'status' => 2,
                 'condition' => 1,
                 'request_id' => null,
-                'user_id' => 5,
+                'user_id' => 1,
                 'created_at' => '2023/06/03 20:26:02',
                 'deleted_at' => null
             ],

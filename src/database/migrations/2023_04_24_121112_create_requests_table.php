@@ -27,7 +27,7 @@ return new class extends Migration
             [
                 'title' => 'バッテリー',
                 'description' => "現在使っているバッテリーが壊れてしまったため、\n購入したバッテリーが届くまで貸してほしいです。",
-                'user_id' => 5,
+                'user_id' => 4,
                 'type_id' => 1,
                 'created_at' => '2023/05/25 20:26:02',
                 'completed_at' => '2023/05/30 00:00:00',
@@ -54,7 +54,7 @@ return new class extends Migration
             [
                 'title' => 'Macbook',
                 'description' => "WindowsにしようかMacbookにしようか迷っていて、\n使い心地を確かめたいので一週間ほど借りたいです。",
-                'user_id' => 5,
+                'user_id' => 1,
                 'type_id' => 1,
                 'created_at' => '2023/02/05 14:23:45',
                 'completed_at' => '2023/02/05 20:23:45',
@@ -63,7 +63,7 @@ return new class extends Migration
             [
                 'title' => 'RUSTオンラインもくもく会',
                 'description' => "OSについての理解を深めたいです！\n有識者さんよろしくお願いします！！",
-                'user_id' => 5,
+                'user_id' => 2,
                 'type_id' => 2,
                 'created_at' => '2023/05/04 10:26:02',
                 'completed_at' => null,
