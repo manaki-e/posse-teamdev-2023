@@ -190,6 +190,7 @@ php artisan optimze:clear
 ### 動作確認
 
 http://localhost にアクセスできるか確認
+
 アクセスできたら成功
 
 ### コンテナの停止
